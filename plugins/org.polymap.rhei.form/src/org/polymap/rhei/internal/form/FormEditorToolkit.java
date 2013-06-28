@@ -1,7 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright 2010-2013, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,8 +11,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.internal.form;
 
@@ -26,6 +23,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -54,37 +52,46 @@ import org.polymap.rhei.form.IFormEditorToolkit;
  * Basically this implementation delegates method calls to {@link FormToolkit}.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @version ($Revision$)
  */
 public class FormEditorToolkit
         implements IFormEditorToolkit {
 
-    private FormToolkit         delegate;
+    public static final String  CUSTOM_VARIANT_VALUE = "formeditor";
 
-    public static final Color   textBackground = Graphics.getColor( 0xFF, 0xFE, 0xE1 );
-    public static final Color   textBackgroundDisabled = Graphics.getColor( 0xF9, 0xF7, 0xF7 );
-    public static final Color   textBackgroundFocused = Graphics.getColor( 0xff, 0xf0, 0xd2 );
+//    public static final Color   textBackground = Graphics.getColor( 0xFF, 0xFE, 0xE1 );
+//    public static final Color   textBackgroundDisabled = Graphics.getColor( 0xF9, 0xF7, 0xF7 );
+//    public static final Color   textBackgroundFocused = Graphics.getColor( 0xff, 0xf0, 0xd2 );
     public static final Color   backgroundFocused = Graphics.getColor( 0xF0, 0xF0, 0xFF );
     public static final Color   labelForeground = Graphics.getColor( 0x70, 0x70, 0x70 );
     public static final Color   labelForegroundFocused = Graphics.getColor( 0x00, 0x00, 0x20 );
     
     
+    private FormToolkit         delegate;
+
     public FormEditorToolkit( FormToolkit delegate ) {
         super();
         this.delegate = delegate;
         this.delegate.setBorderStyle( SWT.BORDER );
     }
 
+    public <T extends Control> T adapt( T control ) {
+        control.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+        // reset colors to allow styling
+        control.setForeground( null );
+        control.setBackground( null );
+        return control;
+    }
+
     public Button createButton( Composite parent, String text, int style ) {
-        return delegate.createButton( parent, text, style );
+        return adapt( delegate.createButton( parent, text, style ) );
     }
 
     public Composite createComposite( Composite parent, int style ) {
-        return delegate.createComposite( parent, style | SWT.NO_FOCUS );
+        return adapt( delegate.createComposite( parent, style | SWT.NO_FOCUS ) );
     }
 
     public Composite createComposite( Composite parent ) {
-        return delegate.createComposite( parent, SWT.NO_FOCUS );
+        return createComposite( parent, SWT.DEFAULT );
     }
 
     public Composite createCompositeSeparator( Composite parent ) {
@@ -145,24 +152,18 @@ public class FormEditorToolkit
     }
 
     public List createList( Composite parent, int style ) {
-        List result = new List( parent, style );
-        result.setBackground( textBackground );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        List result = adapt( new List( parent, style ) );
+//        result.setBackground( textBackground );
         return result;
     }
 
     public Text createText( Composite parent, String value, int style ) {
-        Text result = delegate.createText( parent, value, style );
-        // XXX background does not work with styling!?
-        result.setBackground( textBackground );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        Text result = adapt( delegate.createText( parent, value, style ) );
         return result;
     }
 
     public Text createText( Composite parent, String value ) {
-        Text result = delegate.createText( parent, value );
-        result.setBackground( textBackground );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        Text result = adapt( delegate.createText( parent, value ) );
         return result;
     }
 
@@ -173,8 +174,8 @@ public class FormEditorToolkit
     public Upload createUpload( Composite parent, int style, int flags ) {
         Upload upload = new Upload( parent, style, flags );
         delegate.adapt( upload, false, false );
-        upload.setBackground( textBackground );
-        upload.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        adapt( upload );
+//        upload.setBackground( textBackground );
         return upload;
     }
 
@@ -185,8 +186,8 @@ public class FormEditorToolkit
     public Combo createCombo( Composite parent, Set<String> values, int style ) {
         Combo combo = new Combo( parent, style );
         delegate.adapt( combo );
-        combo.setBackground( textBackground );
-        combo.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        adapt( combo );
+//        combo.setBackground( textBackground );
         combo.setVisibleItemCount( 12 );
         for (String value : values) {
             combo.add( value );
@@ -201,8 +202,8 @@ public class FormEditorToolkit
     public DateTime createDateTime( Composite parent, Date value, int style ) {
         DateTime result = new DateTime( parent, style );
         delegate.adapt( result );
-        result.setBackground( textBackground );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor" );
+        adapt( result );
+//        result.setBackground( textBackground );
         
         if (value != null) {
             Calendar cal = Calendar.getInstance();

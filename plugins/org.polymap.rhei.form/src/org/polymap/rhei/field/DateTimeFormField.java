@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A date/time form field based on the {@link DateTime} widget.
@@ -81,7 +80,7 @@ public class DateTimeFormField
     public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
         datetime = toolkit.createDateTime( parent, new Date(), SWT.MEDIUM | SWT.DROP_DOWN );
         datetime.setEnabled( enabled );
-        datetime.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
+//        datetime.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
         
         // selection(modify) listener
         datetime.addSelectionListener( new SelectionAdapter() {
@@ -100,11 +99,11 @@ public class DateTimeFormField
         // focus listener
         datetime.addFocusListener( new FocusListener() {
             public void focusLost( FocusEvent event ) {
-                datetime.setBackground( FormEditorToolkit.textBackground );
+//                datetime.setBackground( FormEditorToolkit.textBackground );
                 site.fireEvent( DateTimeFormField.this, IFormFieldListener.FOCUS_LOST, null );
             }
             public void focusGained( FocusEvent event ) {
-                datetime.setBackground( FormEditorToolkit.textBackgroundFocused );
+//                datetime.setBackground( FormEditorToolkit.textBackgroundFocused );
                 site.fireEvent( DateTimeFormField.this, IFormFieldListener.FOCUS_GAINED, null );
             }
         });
@@ -116,7 +115,7 @@ public class DateTimeFormField
         this.enabled = enabled;
         if (datetime != null) {
             datetime.setEnabled( enabled );
-            datetime.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
+//            datetime.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
         }
         return this;
     }

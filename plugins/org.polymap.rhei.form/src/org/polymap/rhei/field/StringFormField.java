@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A form field using a {@link Text} widget.
@@ -102,23 +101,23 @@ public class StringFormField
         // focus listener
         text.addFocusListener( new FocusListener() {
             public void focusLost( FocusEvent event ) {
-                text.setBackground( FormEditorToolkit.textBackground );
+//                text.setBackground( FormEditorToolkit.textBackground );
                 site.fireEvent( StringFormField.this, IFormFieldListener.FOCUS_LOST, text.getText() );
             }
             public void focusGained( FocusEvent event ) {
-                text.setBackground( FormEditorToolkit.textBackgroundFocused );
+//                text.setBackground( FormEditorToolkit.textBackgroundFocused );
                 site.fireEvent( StringFormField.this, IFormFieldListener.FOCUS_GAINED, text.getText() );
             }
         });
         text.setEnabled( deferredEnabled );
-        text.setBackground( deferredEnabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
+//        text.setBackground( deferredEnabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
         return text;
     }
 
     public IFormField setEnabled( boolean enabled ) {
         if (text != null) {
             text.setEnabled( enabled );
-            text.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
+            //text.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );
         }
         else {
             deferredEnabled = enabled;

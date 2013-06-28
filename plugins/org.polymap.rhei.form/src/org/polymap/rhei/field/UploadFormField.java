@@ -46,7 +46,6 @@ import org.polymap.core.data.DataPlugin;
 import org.polymap.core.workbench.PolymapWorkbench;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A upload form field based on the {@link Upload} widget.
@@ -110,8 +109,8 @@ public class UploadFormField
         upload.setBrowseButtonText( "Datei..." );
         upload.setUploadButtonText( "Laden" );
         upload.setEnabled( enabled );
-        upload.setBackground( enabled ? FormEditorToolkit.textBackground
-                : FormEditorToolkit.textBackgroundDisabled );
+//        upload.setBackground( enabled ? FormEditorToolkit.textBackground
+//                : FormEditorToolkit.textBackgroundDisabled );
         FormData data = new FormData();
         data.left = new FormAttachment( 0 );
         data.right = new FormAttachment( 100 );
@@ -274,14 +273,14 @@ public class UploadFormField
 
             @Override
             public void focusLost( FocusEvent event ) {
-                upload.setBackground( FormEditorToolkit.textBackground );
+//                upload.setBackground( FormEditorToolkit.textBackground );
                 site.fireEvent( UploadFormField.this, IFormFieldListener.FOCUS_LOST, null );
             }
 
 
             @Override
             public void focusGained( FocusEvent event ) {
-                upload.setBackground( FormEditorToolkit.textBackgroundFocused );
+//                upload.setBackground( FormEditorToolkit.textBackgroundFocused );
                 site.fireEvent( UploadFormField.this, IFormFieldListener.FOCUS_GAINED, null );
             }
         } );
@@ -293,8 +292,8 @@ public class UploadFormField
         this.enabled = enabled;
         if (upload != null) {
             upload.setEnabled( enabled );
-            upload.setBackground( enabled ? FormEditorToolkit.textBackground
-                    : FormEditorToolkit.textBackgroundDisabled );
+//            upload.setBackground( enabled ? FormEditorToolkit.textBackground
+//                    : FormEditorToolkit.textBackgroundDisabled );
 
 //            enableViewButton( enabled );
         }
