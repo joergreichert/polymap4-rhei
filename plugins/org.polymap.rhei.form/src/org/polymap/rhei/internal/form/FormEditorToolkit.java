@@ -119,15 +119,15 @@ public class FormEditorToolkit
     }
 
     public Label createLabel( Composite parent, String text, int style ) {
-        Label result = delegate.createLabel( parent, text, style /*| SWT.NO_FOCUS*/ );
-        result.setForeground( labelForeground );
+        Label result = adapt( delegate.createLabel( parent, text, style /*| SWT.NO_FOCUS*/ ) );
+//        result.setForeground( labelForeground );
         return result;
     }
 
     public Label createLabel( Composite parent, String text ) {
-        Label result = delegate.createLabel( parent, text/*, SWT.NO_FOCUS*/ );
-        result.setForeground( labelForeground );
-        //result.setFont( Graphics.getFont( result.getFont().getFontData()[0].
+        Label result = adapt( delegate.createLabel( parent, text/*, SWT.NO_FOCUS*/ ) );
+//        result.setForeground( labelForeground );
+//        result.setFont( Graphics.getFont( result.getFont().getFontData()[0].
         return result;
     }
 
