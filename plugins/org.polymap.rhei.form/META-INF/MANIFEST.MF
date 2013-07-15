@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rhei-Form
+Bundle-Name: Rhei Forms Framework
 Bundle-SymbolicName: org.polymap.rhei.form;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.polymap.rhei.RheiFormPlugin
 Bundle-Vendor: polymap.org
 Require-Bundle: org.eclipse.core.resources,

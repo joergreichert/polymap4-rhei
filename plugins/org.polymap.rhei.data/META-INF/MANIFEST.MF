@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rhei-Data
+Bundle-Name: Rhei Modelling and Data
 Bundle-SymbolicName: org.polymap.rhei.data;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.polymap.rhei.data.RheiDataPlugin
 Bundle-Vendor: polymap.org
 Require-Bundle: org.eclipse.core.runtime,
@@ -19,4 +19,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.data,
  org.polymap.rhei.data.entityfeature,
  org.polymap.rhei.data.entityfeature.catalog,
- org.polymap.rhei.data.entitystore.lucene
+ org.polymap.rhei.data.entitystore.lucene,
+ org.polymap.rhei.data.model

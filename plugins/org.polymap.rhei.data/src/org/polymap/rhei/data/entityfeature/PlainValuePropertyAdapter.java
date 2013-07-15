@@ -1,7 +1,6 @@
 /*
  * polymap.org
- * Copyright 2011, Falko Bräutigam, and individual contributors as
- * indicated by the @authors tag.
+ * Copyright 2013, Falko Bräutigam. All rigths reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -18,6 +17,7 @@ package org.polymap.rhei.data.entityfeature;
 import java.util.Map;
 
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.AttributeTypeImpl;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -27,7 +27,7 @@ import org.opengis.feature.type.PropertyType;
  * Provides a plain value as OGC property. Used by {@link IFormPageProvider}
  * instances to handle complex attributes.
  * 
- * @author <a href="http://www.polymap.de">Falko Braeutigam</a>
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  * @since 3.1
  */
 public class PlainValuePropertyAdapter<T>
@@ -43,32 +43,39 @@ public class PlainValuePropertyAdapter<T>
         this.value = value;
     }
 
+    @Override
     public Name getName() {
         return new NameImpl( name );
     }
 
+    @Override
     public PropertyType getType() {
-        throw new RuntimeException( "not yet implemented." );
+        return new AttributeTypeImpl( getName(), value.getClass(), false, false, null, null, null );
     }
 
+    @Override
     public PropertyDescriptor getDescriptor() {
         // signal that we are a 'complex' property
         // see FormEditor#doSave() for implementation detail
         return null;
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
 
+    @Override
     public void setValue( Object value ) {
         this.value = (T)value;
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         throw new RuntimeException( "not yet implemented." );
     }
 
+    @Override
     public boolean isNillable() {
         throw new RuntimeException( "not yet implemented." );
     }

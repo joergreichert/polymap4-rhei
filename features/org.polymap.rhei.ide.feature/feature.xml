@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.polymap.rhei.ide.feature"
-      label="Rhei Development Environment"
-      version="2.0.0.qualifier"
+      label="Rhei Scripting IDE"
+      version="2.1.0.qualifier"
       provider-name="polymap.org">
 
    <description url="http://polymap.org/polymap3/wiki/Rhei/Start.de">
-      The Rhei system adds support for domain specific applications to POLYMAP3.
+      The Rhei scripting IDE for java.
    </description>
 
    <copyright url="http://www.example.com/copyright">

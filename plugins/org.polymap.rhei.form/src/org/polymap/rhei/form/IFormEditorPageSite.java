@@ -17,9 +17,13 @@
  */
 package org.polymap.rhei.form;
 
+import java.util.Map;
+
 import org.opengis.feature.Property;
 
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.polymap.core.runtime.event.EventManager;
 
@@ -107,7 +111,10 @@ public interface IFormEditorPageSite {
      */
     public void reloadEditor()
     throws Exception;
-    
+
+    public Map<Property,Object> doSubmit( IProgressMonitor monitor )
+    throws Exception;
+
     /**
      * True if any field of the page is dirty and/or if {@link IFormEditorPage2}
      * has reported that it is dirty.
