@@ -2,7 +2,7 @@
 <feature
       id="org.polymap.rhei.feature"
       label="Rhei System"
-      version="2.0.0.qualifier"
+      version="2.1.0.qualifier"
       provider-name="polymap.org">
 
    <description url="http://polymap.org/polymap3/wiki/Rhei/Start.de">
@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+      LGPL
    </copyright>
 
    <license>
@@ -18,7 +18,7 @@
    </license>
 
    <requires>
-      <import feature="org.polymap.core.feature" version="3.1.0.qualifier" match="compatible"/>
+      <import feature="org.polymap.core.feature" version="3.2.0.qualifier" match="compatible"/>
    </requires>
 
    <plugin
@@ -38,5 +38,12 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.polymap.rhei.batik"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
