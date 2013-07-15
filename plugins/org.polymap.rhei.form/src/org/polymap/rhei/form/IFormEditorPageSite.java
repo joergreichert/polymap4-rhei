@@ -17,13 +17,11 @@
  */
 package org.polymap.rhei.form;
 
-import java.util.Map;
-
 import org.opengis.feature.Property;
 
-import org.eclipse.swt.widgets.Composite;
+import org.apache.log4j.Layout;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.runtime.event.EventManager;
 
@@ -56,7 +54,13 @@ public interface IFormEditorPageSite {
     public void setEditorTitle( String title );
 
     public void setActivePage( String pageId );
-
+    
+    /**
+     * The parent of all controls of the page. Use this to create new controls inside
+     * the page. The returned Composite has no particular {@link Layout} set.
+     * 
+     * @return The parent Composite of the page.
+     */
     public Composite getPageBody();
 
     public IFormEditorToolkit getToolkit();
@@ -107,12 +111,15 @@ public interface IFormEditorPageSite {
     public void setFieldEnabled( String fieldName, boolean enabled );
 
     /**
-     * Reload all field from the backend.
+     * Reloads all fields of the editor from the backend.
      */
     public void reloadEditor()
     throws Exception;
 
-    public Map<Property,Object> doSubmit( IProgressMonitor monitor )
+    /**
+     * Submits all changed fields of the editor to the backend.
+     */
+    public void submitEditor()
     throws Exception;
 
     /**

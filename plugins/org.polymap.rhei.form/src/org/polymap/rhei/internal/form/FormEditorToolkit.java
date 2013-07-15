@@ -63,7 +63,7 @@ public class FormEditorToolkit
 //    public static final Color   textBackgroundFocused = Graphics.getColor( 0xff, 0xf0, 0xd2 );
     public static final Color   backgroundFocused = Graphics.getColor( 0xF0, 0xF0, 0xFF );
     public static final Color   labelForeground = Graphics.getColor( 0x70, 0x70, 0x70 );
-    public static final Color   labelForegroundFocused = Graphics.getColor( 0x00, 0x00, 0x20 );
+    public static final Color   labelForegroundFocused = Graphics.getColor( 0x00, 0x00, 0x00 );
     
     
     private FormToolkit         delegate;
@@ -200,7 +200,7 @@ public class FormEditorToolkit
     }
     
     public DateTime createDateTime( Composite parent, Date value, int style ) {
-        DateTime result = new DateTime( parent, style );
+        DateTime result = new DateTime( parent, style | SWT.BORDER );
         delegate.adapt( result );
         adapt( result );
 //        result.setBackground( textBackground );
