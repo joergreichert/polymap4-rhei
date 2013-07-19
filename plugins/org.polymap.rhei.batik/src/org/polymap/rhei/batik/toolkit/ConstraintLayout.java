@@ -417,7 +417,7 @@ public class ConstraintLayout
             assert minColumn != maxColumn : "minColumn:" + minColumn.height + ", maxColumn:" + maxColumn.height;
             
             // biggest column has just 1 elm -> nothing to optimize
-            if (maxColumn.size() == 1) {
+            if (maxColumn.size() <= 1) {
                 return false;
             }
             

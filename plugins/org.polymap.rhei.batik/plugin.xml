@@ -33,6 +33,7 @@
       <entrypoint
             class="org.polymap.rhei.batik.app.BatikApplication"
             id="org.polymap.rhei.batik.entrypoint"
+            parameter="batik"
             path="/batik">
       </entrypoint>
    </extension>

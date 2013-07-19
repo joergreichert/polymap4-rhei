@@ -62,7 +62,7 @@
                   A class that implements &lt;code&gt;IPanel&lt;/code&gt;.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.polymap.atlas.IPanel"/>
+                  <meta.attribute kind="java" basedOn=":org.polymap.rhei.batik.IPanel"/>
                </appinfo>
             </annotation>
          </attribute>

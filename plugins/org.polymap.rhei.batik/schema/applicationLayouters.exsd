@@ -77,7 +77,7 @@
                   A class that implements &lt;code&gt;IApplicationLayouter&lt;/code&gt;.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.polymap.atlas.IAtlasApplicationLayouter"/>
+                  <meta.attribute kind="java" basedOn=":org.polymap.rhei.batik.IApplicationLayouter"/>
                </appinfo>
             </annotation>
          </attribute>

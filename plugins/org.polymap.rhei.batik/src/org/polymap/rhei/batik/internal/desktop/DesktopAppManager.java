@@ -108,7 +108,7 @@ public class DesktopAppManager
         // open root panel / after main window is created
         display.asyncExec( new Runnable() {
             public void run() {
-                openPanel( new PanelIdentifier( "azvstart" ) );
+                openPanel( new PanelIdentifier( "start" ) );
             }
         });
         return mainWindow;
