@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.polymap.rhei.batik.panels">
+      <panel
+            class="org.polymap.rhei.um.ui.RegisterPanel"
+            id="org.polymap.rhei.um.RegisterPanel">
+      </panel>
+   </extension>
+   <extension
+         id="org.polymap.rhei.um.LoginModule"
+         point="org.eclipse.equinox.security.loginModule">
+      <loginModule
+            class="org.polymap.rhei.um.auth.UmLoginModule">
+      </loginModule>
+   </extension>
+   <extension
+         point="org.polymap.core.model.moduleAssemblers">
+      <assembler
+            class="org.polymap.rhei.um.providers.qi4j.UserRepositoryAssembler">
+      </assembler>
+   </extension>
+
+</plugin>
