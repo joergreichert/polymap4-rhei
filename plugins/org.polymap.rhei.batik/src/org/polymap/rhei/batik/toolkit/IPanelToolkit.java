@@ -26,7 +26,7 @@ import org.polymap.rhei.batik.IPanel;
 /**
  * The factory for basic UI elements used by {@link IPanel} instances.
  *
- * @author <a href="http://www.polymap.de">Falko BrÃ¤utigam</a>
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IPanelToolkit {
 

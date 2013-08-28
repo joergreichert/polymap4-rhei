@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 /**
  * Identifies an {@link IPanel}. The id can have several parts. Most significant part
- * comes first. This helpd to distinguish panels of same type but with different
+ * comes first. This helps to distinguish panels of same type but with different
  * data.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>

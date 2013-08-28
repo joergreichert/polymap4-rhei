@@ -90,7 +90,46 @@ public abstract class FormContainer
         }
     }
 
+    public final void createContents( FormContainer parent ) {
+        toolkit = parent.toolkit;
+        pageBody = parent.pageBody;
+        pageSite = parent.pageSite;
+
+        createFormContent( pageSite );
+    }
+
+    public void submit() throws Exception {
+        pageSite.submitEditor();
+    }
     
+    public void addFieldListener( IFormFieldListener l ) {
+        pageSite.addFieldListener( l );
+    }
+
+    public void removeFieldListener( IFormFieldListener l ) {
+        pageSite.removeFieldListener( l );
+    }
+
+    public boolean isDirty() {
+        return pageSite.isDirty();
+    }
+
+    public boolean isValid() {
+        return pageSite.isValid();
+    }
+
+    public void reloadEditor() throws Exception {
+        pageSite.reloadEditor();
+    }
+
+    public void submitEditor() throws Exception {
+        pageSite.submitEditor();
+    }
+
+    public void clearFields() {
+        pageSite.clearFields();
+    }
+
     /**
      * Activates an adapter that routes form valid status to the given panel and its
      * status line.
@@ -119,17 +158,17 @@ public abstract class FormContainer
     }
 
     @Override
-    public Action[] getEditorActions() {
+    public final Action[] getEditorActions() {
         throw new RuntimeException( "not yet implemented." );
     }
 
     @Override
-    public String getId() {
+    public final String getId() {
         throw new RuntimeException( "not yet implemented." );
     }
 
     @Override
-    public byte getPriority() {
+    public final byte getPriority() {
         throw new RuntimeException( "not yet implemented." );
     }
 
@@ -137,7 +176,7 @@ public abstract class FormContainer
     /**
      *
      */
-    private class PageContainer
+    class PageContainer
             extends AbstractFormEditorPageContainer {
 
         public PageContainer( IFormEditorPage page ) {

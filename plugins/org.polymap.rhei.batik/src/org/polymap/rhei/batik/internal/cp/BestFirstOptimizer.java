@@ -111,7 +111,7 @@ public class BestFirstOptimizer
         SolutionQueue<ScoredSolution> result = new SolutionQueue( queue.maxSize );
         result.addAll( queue );
         result.addAll( terminals );
-        log.info( "queue=" + queue.size() + ", terminals=" + terminals.size() 
+        log.debug( "queue=" + queue.size() + ", terminals=" + terminals.size() 
                 + ", maxScore=" + result.getLast().score
                 + ", loops=" + loops + ", seen=" + seen.size()
                 + " (" + timer.elapsedTime() + "ms)" );

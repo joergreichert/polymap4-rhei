@@ -39,7 +39,6 @@ import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.internal.cp.Prioritized;
 import org.polymap.rhei.batik.internal.cp.ISolver.ScoredSolution;
 
-
 /**
  * 
  *
@@ -72,7 +71,7 @@ public class ConstraintLayout
                 return false;
             }
             
-            log.info( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
+            log.debug( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
             
             ISolver solver = new BestFirstOptimizer( 200, 10 );
             solver.addGoal( new PriorityOnTopGoal( 1 ) );
