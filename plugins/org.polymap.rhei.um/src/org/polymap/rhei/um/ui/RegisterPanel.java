@@ -23,6 +23,12 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.core.commands.operations.IUndoableOperation;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
+import org.polymap.core.operation.OperationSupport;
+import org.polymap.core.runtime.IMessages;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
@@ -36,8 +42,11 @@ import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.um.Messages;
+import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
+import org.polymap.rhei.um.operations.NewUserOperation;
 
 /**
  * 
@@ -52,6 +61,8 @@ public class RegisterPanel
 
     public static final PanelIdentifier ID = new PanelIdentifier( "um", "register" );
 
+    public static final IMessages       i18n = Messages.forPrefix( "RegisterPanel" );
+
     private ContextProperty<UserPrincipal> userPrincipal;
 
     private IPanelToolkit               tk;
@@ -59,6 +70,8 @@ public class RegisterPanel
     private Button                      okBtn;
 
     private PersonForm                  personForm;
+
+    private User                        user;
     
 
     @Override
@@ -88,12 +101,17 @@ public class RegisterPanel
     public void createContents( Composite panelBody ) {
         getSite().setTitle( "Registrieren" );
         IPanelSection contents = tk.createPanelSection( panelBody, null );
-        IPanelSection personSection = tk.createPanelSection( contents, "Nutzer anlegen" );
 
+        // welcome section
+        IPanelSection welcomeSection = tk.createPanelSection( contents, "Nutzer anlegen" );
+        tk.createFlowText( welcomeSection.getBody(), i18n.get( "welcomeText" ) );
+
+        // person section
+        IPanelSection personSection = tk.createPanelSection( contents, null );
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
 
-        final User user = UserRepository.instance().newUser();
+        user = UserRepository.instance().newUser();
         
         personForm = new PersonForm( user );
         personForm.createContents( personSection );
@@ -106,8 +124,11 @@ public class RegisterPanel
                 try {
                     // create user
                     personForm.submit();
-                    UserRepository.instance().commitChanges();
+//                    UserRepository.instance().commitChanges();
 
+                    IUndoableOperation op = new NewUserOperation( user );
+                    OperationSupport.instance().execute( op, true, false );
+                    
                     // FIXME login
 //                    Polymap.instance().login( user.email().get(), passwd );
 //                    userPrincipal.set( (UserPrincipal)Polymap.instance().getUser() );
@@ -125,10 +146,27 @@ public class RegisterPanel
     }
 
     
+    private String      email;
+    
     @Override
     public void fieldChange( FormFieldEvent ev ) {
         if (ev.getEventCode() == IFormFieldListener.VALUE_CHANGE) {
-            okBtn.setEnabled( personForm.isValid() );
+            okBtn.setEnabled( false );            
+
+            if (ev.getFieldName().equals( "email" )) {
+                email = ev.getNewValue();
+            }
+            
+            if (personForm.isValid()) {
+                getSite().setStatus( Status.OK_STATUS );
+
+                if (UserRepository.instance().findUser( email ) == null) {
+                    okBtn.setEnabled( true );
+                }
+                else {
+                    getSite().setStatus( new Status( IStatus.ERROR, UmPlugin.ID, "Der Nutzername existiert bereits: " + email ) );
+                }
+            }
         }
     }
 

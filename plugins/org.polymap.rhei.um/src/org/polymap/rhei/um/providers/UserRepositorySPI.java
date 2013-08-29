@@ -36,6 +36,15 @@ public interface UserRepositorySPI {
 
     public User newUser();
 
+    /**
+     * 
+     *
+     * @param username
+     * @return The user, or null if no such username exists.
+     * @throws IllegalStateException If more than one user exosts for the given username.
+     */
+    public User findUser( String username );
+
     public void commit();
 
     public void revert();

@@ -24,6 +24,7 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.app.FormContainer;
+import org.polymap.rhei.field.EMailAddressValidator;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Messages;
@@ -64,6 +65,23 @@ public class PersonForm
         
         prop = person.firstname();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        
+        prop = person.email();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) )
+                .setLabel( i18n.get( prop.name() ) )
+                .setToolTipText( i18n.get( prop.name()+"Tip" ) )
+                .setValidator( new EMailAddressValidator() )
+                .create();
+
+        prop = person.phone();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        
+        prop = person.mobilePhone();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        
+        prop = person.fax();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        
         
         // address
         site.getToolkit().createLabel( body, null, SWT.SEPARATOR | SWT.HORIZONTAL );

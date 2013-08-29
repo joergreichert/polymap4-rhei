@@ -59,6 +59,18 @@ public class AddressForm
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() ).create();
         
+        prop = address.number();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+                .setValidator( new NotNullValidator() ).create();
+
+        prop = address.postalCode();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+                .setValidator( new NotNullValidator() ).create();
+        
+        prop = address.city();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+                .setValidator( new NotNullValidator() ).create();
+        
 //        prop = user.firstname();
 //        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
     }

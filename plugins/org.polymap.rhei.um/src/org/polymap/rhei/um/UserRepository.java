@@ -72,10 +72,17 @@ public class UserRepository
         return provider.newUser();
     }
 
+    
+    public User findUser( String username ) {
+        return provider.findUser( username );
+    }
+
+
     public void commitChanges() {
         provider.commit();
     }
 
+    
     public void revertChanges() {
         provider.revert();        
     }

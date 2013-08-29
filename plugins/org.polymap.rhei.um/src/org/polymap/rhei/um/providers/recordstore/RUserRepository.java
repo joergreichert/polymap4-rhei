@@ -60,6 +60,13 @@ public class RUserRepository
     }
     
     
+    @Override
+    public User findUser( String username ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+
     protected void registerEntities( Iterable<Entity> candidates ) {
         for (Entity candidate : candidates) {
             

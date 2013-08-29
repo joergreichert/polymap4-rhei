@@ -19,6 +19,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.qi4j.api.query.Query;
+import org.qi4j.api.query.grammar.BooleanExpression;
+import static org.qi4j.api.query.QueryExpressions.*;
+
 import com.google.common.base.Predicate;
 
 import org.polymap.core.model.CompletionException;
@@ -32,7 +36,6 @@ import org.polymap.rhei.um.Group;
 import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.providers.UserRepositorySPI;
-
 
 /**
  * 
@@ -61,26 +64,6 @@ public class QiUserRepository
 
 
     @Override
-    public void commit() {
-        try {
-            commitChanges();
-        }
-        catch (CompletionException e) {
-            throw new RuntimeException( e );
-        }
-        catch (ConcurrentModificationException e) {
-            throw new RuntimeException( e );
-        }
-    }
-
-
-    @Override
-    public void revert() {
-        revertChanges();
-    }
-
-
-    @Override
     public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
@@ -98,5 +81,37 @@ public class QiUserRepository
     public User newUser() {
         return newEntity( QiUser.class, null );
     }
+
+
+    @Override
+    public User findUser( String username ) {
+        BooleanExpression expr = eq( templateFor( QiUser.class )._username(), username );
+        Query<QiUser> query = findEntities( QiUser.class, expr, 0, 2 );
+        if (query.count() > 1) {
+            throw new IllegalStateException( "More than one user for username: " + username );
+        }
+        return query.find();
+    }
+
+
+    @Override
+    public void commit() {
+        try {
+            commitChanges();
+        }
+        catch (CompletionException e) {
+            throw new RuntimeException( e );
+        }
+        catch (ConcurrentModificationException e) {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    @Override
+    public void revert() {
+        revertChanges();
+    }
+    
     
 }

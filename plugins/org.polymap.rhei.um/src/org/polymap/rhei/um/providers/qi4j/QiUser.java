@@ -45,6 +45,9 @@ public interface QiUser
         extends User, QiEntity, PropertyChangeSupport, EntityComposite {
     
     @Optional
+    Property<String>            _username();
+    
+    @Optional
     Property<String>            _passwordHash();
     
 //    /**
@@ -63,6 +66,11 @@ public interface QiUser
         @Override
         public org.polymap.rhei.um.Property<String> passwordHash() {
             return QiProperty.create( _passwordHash() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> username() {
+            return QiProperty.create( _username() );
         }
 
         public String getLabelString( String sep ) {

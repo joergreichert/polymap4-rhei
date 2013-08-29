@@ -55,7 +55,25 @@ public interface QiPerson
     Property<String>            _firstname();
     
     @Optional
+    Property<String>            _salutation();
+
+    @Optional
     Property<QiAddressValue>    _address();
+    
+    @Optional
+    Property<String>            _email();
+    
+    @Optional
+    Property<String>            _web();
+    
+    @Optional
+    Property<String>            _phone();
+    
+    @Optional
+    Property<String>            _mobilePhone();
+    
+    @Optional
+    Property<String>            _fax();
     
     
     /**
@@ -72,6 +90,36 @@ public interface QiPerson
         @Override
         public org.polymap.rhei.um.Property<String> firstname() {
             return QiProperty.create( _firstname() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> salutation() {
+            return QiProperty.create( _salutation() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> email() {
+            return QiProperty.create( _email() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> phone() {
+            return QiProperty.create( _phone() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> mobilePhone() {
+            return QiProperty.create( _mobilePhone() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> fax() {
+            return QiProperty.create( _fax() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> web() {
+            return QiProperty.create( _web() );
         }
 
         public org.polymap.rhei.um.Property<Address> address() {

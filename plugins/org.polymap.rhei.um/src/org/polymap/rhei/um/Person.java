@@ -20,10 +20,12 @@ package org.polymap.rhei.um;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface Person
-        extends Entity, Groupable, Addressable { //, Phoneable {
+        extends Entity, Groupable, Addressable, Phoneable {
 
     public Property<String> name();
     
     public Property<String> firstname();
+    
+    public Property<String> salutation();
     
 }

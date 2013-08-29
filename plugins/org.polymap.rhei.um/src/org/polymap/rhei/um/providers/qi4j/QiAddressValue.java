@@ -72,38 +72,32 @@ public interface QiAddressValue
 
         @Override
         public org.polymap.rhei.um.Property<String> number() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._number(), valueProp );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> postalCode() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._postalCode(), valueProp );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> city() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._city(), valueProp );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> district() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._district(), valueProp );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> province() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._province(), valueProp );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> country() {
-            // XXX Auto-generated method stub
-            throw new RuntimeException( "not yet implemented." );
+            return QiValueProperty.create( delegate._country(), valueProp );
         }
         
     }

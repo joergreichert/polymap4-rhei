@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,18 +12,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.um;
+package org.polymap.rhei.um.auth;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface User
-        extends Person {
+public abstract class PasswordEncryptor {
 
-    Property<String> username();
+    public static PasswordEncryptor instance() {
+        return new CrackStationEncryptor();
+    }
+    
+    
+    // API ************************************************
+    
+    public abstract String encryptPassword( String password );
+    
+    public abstract boolean checkPassword( String inputPassword, String encryptedPassword );
 
-    Property<String> passwordHash();
-
+    public abstract String createPassword( int length );
+    
 }
