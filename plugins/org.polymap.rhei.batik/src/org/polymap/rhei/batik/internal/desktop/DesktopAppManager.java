@@ -62,10 +62,13 @@ public class DesktopAppManager
         implements IApplicationLayouter {
 
     private static Log log = LogFactory.getLog( DesktopAppManager.class );
-
-    private DesktopToolkit              tk = new DesktopToolkit();
+    
+    static final int                    DEFAULT_LAYOUT_SPACING = 10;
+    static final int                    DEFAULT_LAYOUT_MARGINS = 20;
 
     private DesktopAppContext           context = new DesktopAppContext();
+
+    private DesktopToolkit              tk = new DesktopToolkit( context );
 
     private DesktopAppWindow            mainWindow;
 
@@ -340,6 +343,17 @@ public class DesktopAppManager
         @Override
         public void layout( boolean changed ) {
             mainWindow.delayedRefresh( null );
+        }
+
+        @Override
+        public <T> T getLayoutPreference( String key ) {
+            if (LAYOUT_SPACING_KEY.equals( key )) {
+                return (T)Integer.valueOf( DEFAULT_LAYOUT_SPACING );
+            }
+            else if (LAYOUT_MARGINS_KEY.equals( key )) {
+                return (T)Integer.valueOf( DEFAULT_LAYOUT_MARGINS );
+            }
+            return null;
         }
 
     }

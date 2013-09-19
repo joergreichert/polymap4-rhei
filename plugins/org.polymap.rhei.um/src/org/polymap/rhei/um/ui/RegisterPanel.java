@@ -42,10 +42,10 @@ import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.um.Messages;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
+import org.polymap.rhei.um.internal.Messages;
 import org.polymap.rhei.um.operations.NewUserOperation;
 
 /**
@@ -99,11 +99,11 @@ public class RegisterPanel
 
     @Override
     public void createContents( Composite panelBody ) {
-        getSite().setTitle( "Registrieren" );
+        getSite().setTitle( i18n.get( "title" ) );
         IPanelSection contents = tk.createPanelSection( panelBody, null );
 
         // welcome section
-        IPanelSection welcomeSection = tk.createPanelSection( contents, "Nutzer anlegen" );
+        IPanelSection welcomeSection = tk.createPanelSection( contents, i18n.get( "sectionTitle" ) );
         tk.createFlowText( welcomeSection.getBody(), i18n.get( "welcomeText" ) );
 
         // person section
@@ -113,11 +113,11 @@ public class RegisterPanel
 
         user = UserRepository.instance().newUser();
         
-        personForm = new PersonForm( user );
+        personForm = new PersonForm( getSite(), user );
         personForm.createContents( personSection );
 
         // btn
-        okBtn = tk.createButton( body, "REGISTRIEREN", SWT.PUSH );
+        okBtn = tk.createButton( body, i18n.get( "okBtn" ), SWT.PUSH );
         okBtn.setEnabled( false );
         okBtn.addSelectionListener( new SelectionAdapter() {
             public void widgetSelected( SelectionEvent ev ) {

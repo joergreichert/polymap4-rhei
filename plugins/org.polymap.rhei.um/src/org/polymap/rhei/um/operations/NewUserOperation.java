@@ -27,10 +27,10 @@ import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.IMessages;
 
-import org.polymap.rhei.um.Messages;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
 import org.polymap.rhei.um.auth.PasswordEncryptor;
+import org.polymap.rhei.um.internal.Messages;
 
 /**
  * Creates the given user in the

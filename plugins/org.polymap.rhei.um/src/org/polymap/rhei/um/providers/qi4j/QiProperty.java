@@ -56,7 +56,8 @@ class QiProperty<T>
 
     @Override
     public String name() {
-        return delegate.qualifiedName().name();
+        String qiName = delegate.qualifiedName().name();
+        return qiName.startsWith( "_" ) ? qiName.substring( 1 ) : qiName;
     }
     
 }

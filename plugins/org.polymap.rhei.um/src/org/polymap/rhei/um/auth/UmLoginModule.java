@@ -33,9 +33,9 @@ import org.polymap.core.security.AuthorizationModule;
 import org.polymap.core.security.AuthorizationModuleExtension;
 import org.polymap.core.security.UserPrincipal;
 
-import org.polymap.rhei.um.Messages;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
+import org.polymap.rhei.um.internal.Messages;
 
 /**
  * Provides authentication based on the information stored in the currently active

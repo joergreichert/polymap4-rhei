@@ -29,6 +29,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface IPanel {
 
+    /** See {@link IPanelSite#LAYOUT_SPACING_KEY}. */
+    public static final String      LAYOUT_SPACING_KEY = IPanelSite.LAYOUT_SPACING_KEY;
+    /** See {@link IPanelSite#LAYOUT_MARGINS_KEY}. */
+    public static final String      LAYOUT_MARGINS_KEY = IPanelSite.LAYOUT_MARGINS_KEY;
+
     /**
      * Initializes the panel and checks if it is valid for the given site and
      * context.

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.um;
+package org.polymap.rhei.um.internal;
 
 import org.eclipse.rwt.RWT;
 
@@ -26,7 +26,7 @@ import org.polymap.core.runtime.MessagesImpl;
  */
 public class Messages {
 
-    private static final String BUNDLE_NAME = "org.polymap.rhei.um.messages";
+    private static final String BUNDLE_NAME = "org.polymap.rhei.um.internal.messages";
     
     private static final MessagesImpl   instance = new MessagesImpl( BUNDLE_NAME, Messages.class.getClassLoader() );
 

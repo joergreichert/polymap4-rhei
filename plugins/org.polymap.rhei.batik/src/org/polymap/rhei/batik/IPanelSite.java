@@ -30,6 +30,11 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  */
 public interface IPanelSite {
 
+    /** Constant to be used as param for {@link #getLayoutPreference(String)}. */
+    public static final String      LAYOUT_SPACING_KEY = "spacing";
+    /** Constant to be used as param for {@link #getLayoutPreference(String)}. */
+    public static final String      LAYOUT_MARGINS_KEY = "margins";
+
     /**
      * The whole path of the panel including the name of the panel as last segment.
      */
@@ -61,6 +66,18 @@ public interface IPanelSite {
 
     public void layout( boolean changed );
 
+    /**
+     * Get the layout preferences for the given key. Possible keys include:
+     * <ul>
+     * <li>{@link #LAYOUT_SPACING_KEY}</li>
+     * <li>{@link #LAYOUT_MARGINS_KEY}</li>
+     * </ul>
+     *
+     * @param key
+     * @return The value for the given key, or null.
+     */
+    public <T> T getLayoutPreference( String key );
+    
 //    /**
 //     * Registers the given {@link EventHandler event handler}.
 //     *

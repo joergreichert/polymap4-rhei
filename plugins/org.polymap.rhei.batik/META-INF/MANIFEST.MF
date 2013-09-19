@@ -13,3 +13,11 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.batik,
  org.polymap.rhei.batik.app,
  org.polymap.rhei.batik.toolkit
+Bundle-ClassPath: lib/asm-4.1.jar,
+ lib/asm-analysis-4.1.jar,
+ lib/asm-tree-4.1.jar,
+ lib/asm-util-4.1.jar,
+ lib/parboiled-core-1.1.5.jar,
+ lib/parboiled-java-1.1.5.jar,
+ lib/pegdown-1.4.1.jar,
+ .

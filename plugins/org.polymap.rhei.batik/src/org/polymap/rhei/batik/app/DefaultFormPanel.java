@@ -44,7 +44,6 @@ import org.polymap.rhei.form.IFormEditorToolkit;
 import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
-
 /**
  * This panel supports Rhei forms. Sub-classes can use the Rhei form API the
  * create forms that are connected to features or entities.

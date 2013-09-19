@@ -20,12 +20,18 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.runtime.IMessages;
+import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.FormLayoutFactory;
 
+import org.polymap.rhei.batik.IPanel;
+import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
+import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.IFormEditorToolkit;
 import org.polymap.rhei.um.Address;
-import org.polymap.rhei.um.Messages;
 import org.polymap.rhei.um.Property;
+import org.polymap.rhei.um.internal.Messages;
 
 /**
  * 
@@ -39,40 +45,59 @@ public class AddressForm
 
     public static final IMessages i18n = Messages.forPrefix( "AddressForm" );
 
+    private IPanelSite              panelSite;
+
     private IFormEditorPageSite     site;
     
     private Address                 address;
 
     
-    public AddressForm( Address address ) {
+    public AddressForm( IPanelSite panelSite, Address address ) {
+        this.panelSite = panelSite;
         this.address = address;
     }
 
 
     public void createFormContent( final IFormEditorPageSite _site ) {
         this.site = _site;
+        IFormEditorToolkit tk = site.getToolkit();
         Composite body = site.getPageBody();
         //body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
 
-        // fields
+        // street / number
+        Composite str = tk.createComposite( body );
+        str.setLayout( FormLayoutFactory.defaults()
+                .spacing( (Integer)panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY ) ).create() );
+
         Property<String> prop = address.street();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create();
+        new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+                .setValidator( new NotNullValidator() )
+                .create().setLayoutData( FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create();
+        new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
+                .setValidator( new NotNullValidator() )
+                .create().setLayoutData( FormDataFactory.filled().left( 75 ).create() );
 
-        prop = address.postalCode();
+        // postalCode / city
+        Composite city = tk.createComposite( body );
+        city.setLayout( FormLayoutFactory.defaults()
+                .spacing( (Integer)panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY ) ).create() );
+        
+//        prop = address.postalCode();
+//        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+//                .setValidator( new NotNullValidator() )
+//                .create().setLayoutData( FormDataFactory.filled().right( 25 ).create() );
+
+//        prop = address.city();
+//        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
+//                .setValidator( new NotNullValidator() )
+//                .create().setLayoutData( FormDataFactory.filled().left( 25 ).create() );
+        
+        // 
+        prop = address.country();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() ).create();
-        
-        prop = address.city();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create();
-        
-//        prop = user.firstname();
-//        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
     }
 
 }

@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
+import java.util.EventListener;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -40,8 +42,41 @@ public interface IPanelToolkit {
      */
     public Label createLabel( Composite parent, String text, int... styles );
 
+    
+    /**
+     * Creates a flow text element. Flow text allows HTML markup and <a
+     * href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>
+     * with some <a href="https://github.com/sirthias/pegdown">extensions</a> inside
+     * the text.
+     * 
+     * @param parent
+     * @param text
+     * @param styles
+     * @return The newly created control.
+     */
     public Label createFlowText( Composite parent, String text, int... styles );
 
+    /**
+     * Creates a flow text element. Flow text allows HTML markup and <a
+     * href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>
+     * with some <a href="https://github.com/sirthias/pegdown">extensions</a> inside
+     * the text.
+     * 
+     * @param parent
+     * @param text
+     * @param styles
+     * @return The newly created control.
+     */
+    public Label createFlowText( Composite parent, String text, LinkAction[] linkActions, int... styles );
+
+    public static interface LinkAction
+            extends EventListener {
+        
+        public void linkPressed() throws Exception;
+        
+    }
+    
+    
     public Label createLink( Composite parent, String text, int... styles );
 
     public Button createButton( Composite parent, String text, int... styles );

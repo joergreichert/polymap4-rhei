@@ -14,8 +14,15 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
+import org.pegdown.FastEncoder;
+import org.pegdown.LinkRenderer;
+import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.ExpLinkNode;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -39,6 +46,8 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import org.polymap.core.runtime.Polymap;
 
+import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
+import org.polymap.rhei.batik.internal.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -52,13 +61,21 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 public class DesktopToolkit
         implements IPanelToolkit {
 
+    private static Log log = LogFactory.getLog( DesktopToolkit.class );
+
     public static final String  CUSTOM_VARIANT_VALUE = "atlas-panel";
     public static final Color   COLOR_SECTION_TITLE_FG = Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) );
     public static final Color   COLOR_SECTION_TITLE_BG = Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) );
 
     private FormColors          colors;
+    
+    private DesktopAppContext   context;
 
-
+    
+    protected DesktopToolkit( DesktopAppContext context ) {
+        this.context = context;
+    }
+    
     @Override
     public Label createLabel( Composite parent, String text, int... styles ) {
         Label result = adapt( new Label( parent, stylebits( styles ) ), false, false );
@@ -72,11 +89,67 @@ public class DesktopToolkit
     public Label createFlowText( Composite parent, String text, int... styles ) {
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
-            result.setText( text );
+            // process markdown
+            LinkRenderer linkRenderer = new PageLinkRenderer();
+            String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
+            result.setText( processed );
         }
         result.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
         return result;
     }
+
+    @Override
+    public Label createFlowText( Composite parent, String text, LinkAction[] linkActions, int... styles ) {
+        Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
+        if (text != null) {
+            // process markdown
+            LinkRenderer linkRenderer = new PageLinkRenderer();
+            String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
+            result.setText( processed );
+        }
+        result.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+        return result;
+    }
+
+    /**
+     * 
+     */
+    protected class PageLinkRenderer
+            extends LinkRenderer {
+        
+        @Override
+        public Rendering render( final ExpLinkNode node, String linktext ) {
+            // handle @action/page style links
+            if (node.url.startsWith( "@" )) {
+                String id = LinkActionServiceHandler.register( new LinkAction() {
+                    @Override
+                    public void linkPressed() throws Exception {
+                        String[] urlParts = StringUtils.split( node.url, "/" );
+                        String command = "open";
+                        String panelId = urlParts[0];
+                        
+                        if (urlParts.length > 1) {
+                            command = urlParts[0].substring( 1 );
+                            panelId = urlParts[1];
+                        }
+                        if ("open".equalsIgnoreCase( command )) {
+                            log.info( command + " : " + panelId );
+                        }
+                        else {
+                            throw new IllegalStateException( "Unknown link command: " + command );
+                        }
+                    }
+                });
+                
+                String linkUrl = "javascript:sendServiceHandlerRequest('" + LinkActionServiceHandler.SERVICE_HANDLER_ID + "','" + id + "');";
+                Rendering rendering = new Rendering( linkUrl, linktext );
+                return StringUtils.isEmpty( node.title ) ? rendering : rendering.withAttribute( "title", FastEncoder.encode( node.title ) );
+            }
+            else {
+                return super.render( node, linktext );
+            }
+        }
+    };
 
     @Override
     public Label createLink( Composite parent, String text, int... styles ) {

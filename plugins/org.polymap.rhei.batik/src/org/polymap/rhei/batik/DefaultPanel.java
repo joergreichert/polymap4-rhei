@@ -27,8 +27,6 @@ public abstract class DefaultPanel
 
     private static Log log = LogFactory.getLog( DefaultPanel.class );
     
-    public static final int     DEFAULTS_SPACING = 20;
-
     private IPanelSite          site;
 
     private IAppContext         context;

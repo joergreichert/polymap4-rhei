@@ -23,13 +23,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
+import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.EMailAddressValidator;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.Address;
-import org.polymap.rhei.um.Messages;
 import org.polymap.rhei.um.Person;
 import org.polymap.rhei.um.Property;
+import org.polymap.rhei.um.internal.Messages;
 
 /**
  * 
@@ -44,9 +45,12 @@ public class PersonForm
     public static final IMessages i18n = Messages.forPrefix( "PersonForm" );
 
     private Person                  person;
+
+    private IPanelSite              panelSite;
     
             
-    public PersonForm( Person person ) {
+    public PersonForm( IPanelSite panelSite, Person person ) {
+        this.panelSite = panelSite;
         this.person = person;
     }
 
@@ -86,7 +90,7 @@ public class PersonForm
         // address
         site.getToolkit().createLabel( body, null, SWT.SEPARATOR | SWT.HORIZONTAL );
         Address address = person.address().get();
-        new AddressForm( address ).createContents( this );
+        new AddressForm( panelSite, address ).createContents( this );
     }
 
 }

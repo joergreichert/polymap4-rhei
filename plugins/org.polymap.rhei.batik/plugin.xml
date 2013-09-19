@@ -51,5 +51,18 @@
             id="org.polymap.rhei.batik.DashboardPanel">
       </panel>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.serviceHandler">
+      <serviceHandler
+            class="org.polymap.rhei.batik.internal.LinkActionServiceHandler"
+            id="org.polymap.rhei.batik.LinkActionServiceHandler">
+      </serviceHandler>
+   </extension>
+   <extension
+         point="org.eclipse.rap.ui.resources">
+      <resource
+            class="org.polymap.rhei.batik.internal.LinkActionResource">
+      </resource>
+   </extension>
 
 </plugin>
