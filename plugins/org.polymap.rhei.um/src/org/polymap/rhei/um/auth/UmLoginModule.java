@@ -54,9 +54,9 @@ public class UmLoginModule
 
     private Subject                         subject;
     
-    private UmUserPrincipal                 principal;
+    private UserPrincipal                   principal;
     
-    private String                          dialogTitle; // = i18n.get( "dialogTitle" );
+    private String                          dialogTitle = i18n.get( "dialogTitle" );
     
     private AuthorizationModule             authModule;
     
@@ -98,7 +98,6 @@ public class UmLoginModule
 
     @Override
     public boolean login() throws LoginException {
-        // XXX translation
         Callback label = new TextOutputCallback( TextOutputCallback.INFORMATION, dialogTitle );
         NameCallback nameCallback = new NameCallback( i18n.get( "username" ), "default" );
         PasswordCallback passwordCallback = new PasswordCallback( i18n.get( "password" ), false );
@@ -111,11 +110,26 @@ public class UmLoginModule
         }
 
         String username = nameCallback.getName();
+        if (username == null) {
+            return false;
+        }
+        
+        // admin
+        if (username.equals( "admin" )) {
+            // FIXME read password hash from persistent storage and check
+            log.warn( "!!! NO PASSWORD check for admin user yet !!!!!!" );
+            principal = new UserPrincipal( "admin" );
+            return loggedIn = true;                
+        }
+
+        // ordinary user
         User user = repo.findUser( username );
+        log.info( "username: " + user.email().get() );
 
         if (user != null && passwordCallback.getPassword() != null) {
             String password = String.valueOf( passwordCallback.getPassword() );
             if (PasswordEncryptor.instance().checkPassword( password, user.passwordHash().get() )) {
+                log.info( "username: " + user.username().get() );
                 principal = new UmUserPrincipal( user );
                 return loggedIn = true;                
             }

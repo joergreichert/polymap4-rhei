@@ -7,6 +7,10 @@
             class="org.polymap.rhei.um.ui.RegisterPanel"
             id="org.polymap.rhei.um.RegisterPanel">
       </panel>
+      <panel
+            class="org.polymap.rhei.um.ui.LoginPanel"
+            id="org.polymap.rhei.um.LoginPanel">
+      </panel>
    </extension>
    <extension
          id="org.polymap.rhei.um.LoginModule"

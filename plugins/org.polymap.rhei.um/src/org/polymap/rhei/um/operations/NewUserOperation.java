@@ -16,6 +16,11 @@ package org.polymap.rhei.um.operations;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
+
+import com.google.common.base.Joiner;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
@@ -30,6 +35,7 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
 import org.polymap.rhei.um.auth.PasswordEncryptor;
+import org.polymap.rhei.um.email.EmailService;
 import org.polymap.rhei.um.internal.Messages;
 
 /**
@@ -54,24 +60,46 @@ public class NewUserOperation
     }
 
     
+    public User getUser() {
+        return user;
+    }
+
+
     @Override
     public IStatus execute( IProgressMonitor monitor, IAdaptable info ) throws ExecutionException {
-        // password hash
-        PasswordEncryptor encryptor = PasswordEncryptor.instance();
-        String password = encryptor.createPassword( 8 );
-        String hash = encryptor.encryptPassword( password );
-        user.passwordHash().set( hash );
+        try {
+            // password hash
+            PasswordEncryptor encryptor = PasswordEncryptor.instance();
+            String password = encryptor.createPassword( 8 );
+            String hash = encryptor.encryptPassword( password );
+            user.passwordHash().set( hash );
+
+            // username <= email
+            String username = user.email().get();
+            assert username != null && username.length() > 0;
+            user.username().set( username );
+            log.info( "username: " + user.username().get() );
+
+            // commit
+            UserRepository.instance().commitChanges();
         
-        // username = email
-        String username = user.email().get();
-        user.username().set( username );
-        
-        // commit
-        UserRepository.instance().commitChanges();
-        
-        // XXX email
-        
-        return Status.OK_STATUS;
+            // XXX email
+            Email email = new SimpleEmail()
+                    .addTo( username )
+                    .setSubject( "Ihre Anmeldung im Portal der GKU" )
+                    .setMsg( Joiner.on( '\n' ).join(
+                            "Sehr geehrte(r) ..." + user.name().get() + ",",
+                            "",
+                            "    Nutzername: " + username,
+                            "    Password: " + password ) );
+            EmailService.instance().send( email );
+
+            return Status.OK_STATUS;
+
+        }
+        catch (EmailException e) {
+            throw new ExecutionException( i18n.get( "errorMsg", e.getLocalizedMessage() ), e );
+        }        
     }
 
     

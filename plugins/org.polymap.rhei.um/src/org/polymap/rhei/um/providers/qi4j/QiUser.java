@@ -70,6 +70,7 @@ public interface QiUser
 
         @Override
         public org.polymap.rhei.um.Property<String> username() {
+            System.out.println( "    username: " + _username().get() );
             return QiProperty.create( _username() );
         }
 

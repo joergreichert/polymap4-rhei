@@ -14,6 +14,7 @@
  */
 package org.polymap.rhei.um.auth;
 
+import java.util.Collections;
 import java.util.Set;
 
 import java.security.Principal;
@@ -26,7 +27,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.polymap.core.security.AuthorizationModule;
 
-
 /**
  * 
  *
@@ -37,18 +37,19 @@ public class UmAuthorizationModule
 
     private static Log log = LogFactory.getLog( UmAuthorizationModule.class );
 
+    private UmLoginModule       loginModule;
 
     @Override
-    public void init( LoginModule loginModule ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+    public void init( @SuppressWarnings("hiding") LoginModule loginModule ) {
+        this.loginModule = (UmLoginModule)loginModule;
     }
 
 
     @Override
     public Set<Principal> rolesOf( Subject subject ) {
         // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+        log.warn( "rolesOf(): not yet implemented." );
+        return Collections.EMPTY_SET;
     }
     
 }

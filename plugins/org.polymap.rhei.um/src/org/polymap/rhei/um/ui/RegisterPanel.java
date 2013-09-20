@@ -124,14 +124,9 @@ public class RegisterPanel
                 try {
                     // create user
                     personForm.submit();
-//                    UserRepository.instance().commitChanges();
 
                     IUndoableOperation op = new NewUserOperation( user );
                     OperationSupport.instance().execute( op, true, false );
-                    
-                    // FIXME login
-//                    Polymap.instance().login( user.email().get(), passwd );
-//                    userPrincipal.set( (UserPrincipal)Polymap.instance().getUser() );
                     
                     getContext().closePanel();
                 }
@@ -146,7 +141,7 @@ public class RegisterPanel
     }
 
     
-    private String      email;
+    private String      email, name;
     
     @Override
     public void fieldChange( FormFieldEvent ev ) {
@@ -156,8 +151,13 @@ public class RegisterPanel
             if (ev.getFieldName().equals( "email" )) {
                 email = ev.getNewValue();
             }
+            if (ev.getFieldName().equals( "name" )) {
+                name = ev.getNewValue();
+            }
             
-            if (personForm.isValid()) {
+            if (personForm.isValid()
+                    // FIXME "short" login for test :)
+                    || name != null && name.startsWith( "@" ) && email != null) {
                 getSite().setStatus( Status.OK_STATUS );
 
                 if (UserRepository.instance().findUser( email ) == null) {

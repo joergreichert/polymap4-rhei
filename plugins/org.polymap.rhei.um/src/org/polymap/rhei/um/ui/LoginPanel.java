@@ -95,14 +95,14 @@ public class LoginPanel
         IPanelSection section = tk.createPanelSection( panelBody, "Anmelden" );
         
         new LoginForm( getContext(), getSite(), user ) {
-            protected void login( String name, String passwd ) {
-                super.login( name, passwd );
-
-                if (user.get() != null) {
+            protected boolean login( String name, String passwd ) {
+                if (super.login( name, passwd )) {
                     getContext().closePanel();
+                    return true;
                 }
                 else {
                     getSite().setStatus( new Status( IStatus.WARNING, UmPlugin.ID, "Nutzername oder Passwort sind nicht korrekt." ) );
+                    return false;
                 }
             }
             
@@ -193,23 +193,31 @@ public class LoginPanel
         }
 
     
-        protected void login( final String name, final String passwd ) {
-            // user
+        /**
+         * Does the login for given name and password. This default implementation
+         * calls {@link Polymap#login(String, String)} and sets the {@link #user}
+         * variable with the resulting {@link UserPrincipal}.
+         * <p/>
+         * If the login fails then nothing is done. Override this method to add special handling.
+         * For example setting the status of the panel via:
+         * <pre>
+         * getSite().setStatus( new Status( IStatus.WARNING, UmPlugin.ID, "Nutzername oder Passwort sind nicht korrekt." ) );
+         * </pre>.
+         * 
+         * @param name
+         * @param passwd
+         * @return True, if sucessfully logged in.
+         */
+        protected boolean login( final String name, final String passwd ) {
             try {
                 Polymap.instance().login( name, passwd );
                 user.set( (UserPrincipal)Polymap.instance().getUser() );
+                return true;
             }
             catch (LoginException e) {
-                log.info( "Login: no user found for name: " + name );
+                log.warn( "Login exception: " + e.getLocalizedMessage(), e );
+                return false;
             }
-            
-//            // check
-//            if (user.get() != null || nutzer.get() != null) {
-//                formSite.getPageBody().dispose();
-//                loginBtn.dispose();
-//                
-//                formSite.getToolkit().createLabel( formSite.getPageBody(), user.get().getName() );
-//            }
         }
     }        
         

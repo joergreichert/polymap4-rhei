@@ -34,7 +34,7 @@ public class LinkActionResource
     }
 
     public final RegisterOptions getOptions() {
-        return RegisterOptions.NONE; //VERSION_AND_COMPRESS;
+        return RegisterOptions.VERSION_AND_COMPRESS;
     }
 
     public final ClassLoader getLoader() {
