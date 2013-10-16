@@ -87,8 +87,7 @@ public class UserRepositoryAssembler
         );
 
         // persistence: workspace/Lucene
-        File root = new File( Polymap.getWorkspacePath().toFile(), "data" );
-
+        File root = Polymap.getDataDir();
         File moduleRoot = new File( root, "org.polymap.rhei.um" );
         moduleRoot.mkdir();
 

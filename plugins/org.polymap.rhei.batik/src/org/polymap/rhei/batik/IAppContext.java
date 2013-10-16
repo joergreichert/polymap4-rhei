@@ -62,4 +62,12 @@ public interface IAppContext {
 
     public void removeEventHandler( Object handler );
 
+    /**
+     * Propagates this context to the given object by injecting {@link ContextProperty}
+     * instances.
+     *
+     * @param panel
+     */
+    public void propagate( Object panel );
+    
 }

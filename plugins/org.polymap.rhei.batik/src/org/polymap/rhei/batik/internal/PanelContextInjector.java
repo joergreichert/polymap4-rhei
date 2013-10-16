@@ -25,8 +25,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.ContextProperty;
-import org.polymap.rhei.batik.IPanel;
-
 
 /**
  *
@@ -38,12 +36,12 @@ public class PanelContextInjector
 
     private static Log log = LogFactory.getLog( PanelContextInjector.class );
 
-    private IPanel              panel;
+    private Object              panel;
 
     private DefaultAppContext   context;
 
 
-    public PanelContextInjector( IPanel panel, DefaultAppContext context ) {
+    public PanelContextInjector( Object panel, DefaultAppContext context ) {
         this.panel = panel;
         this.context = context;
     }

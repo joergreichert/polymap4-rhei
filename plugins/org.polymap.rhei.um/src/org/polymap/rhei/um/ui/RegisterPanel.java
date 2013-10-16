@@ -113,6 +113,10 @@ public class RegisterPanel
 
         user = UserRepository.instance().newUser();
         
+        // XXX "short" login for test :)
+        user.name().set( name = "@1" );
+        user.email().set( email = "falko@polymap.de" );
+        
         personForm = new PersonForm( getSite(), user );
         personForm.createContents( personSection );
 
@@ -156,7 +160,7 @@ public class RegisterPanel
             }
             
             if (personForm.isValid()
-                    // FIXME "short" login for test :)
+                    // XXX "short" login for test :)
                     || name != null && name.startsWith( "@" ) && email != null) {
                 getSite().setStatus( Status.OK_STATUS );
 

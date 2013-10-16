@@ -17,7 +17,7 @@ package org.polymap.rhei.um;
 /**
  * 
  *
- * @author <a href="http://www.polymap.de">Falko Br‰utigam</a>
+ * @author <a href="http://www.polymap.de">Falko Br√§utigam</a>
  */
 public interface Groupable {
 

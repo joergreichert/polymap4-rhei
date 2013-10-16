@@ -330,7 +330,6 @@ public class DesktopToolkit
     protected int stylebits( int... styles ) {
         int result = SWT.NONE;
         for (int style : styles) {
-            assert style != 0;
             result |= style;
         }
         return result;

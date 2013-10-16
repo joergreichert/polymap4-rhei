@@ -20,7 +20,6 @@ import org.polymap.rhei.batik.ContextProperty;
 import org.polymap.rhei.batik.PropertyAccessEvent;
 import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
 
-
 /**
  * 
  *
@@ -68,6 +67,5 @@ public class ContextPropertyInstance
     public String toString() {
         return "ContextPropertyInstance[scope=" + scope + ", type=" + declaredType + "]";
     }
-    
     
 }

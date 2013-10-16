@@ -46,11 +46,11 @@ public abstract class DefaultAppContext
     /**
      * 
      */
-    class PropertyValue {
+    class ScopedPropertyValue {
         protected Object        value;
         protected String        scope;
 
-        public PropertyValue( Object value, String scope ) {
+        public ScopedPropertyValue( Object value, String scope ) {
             this.value = value;
             this.scope = scope;
         }
@@ -60,7 +60,7 @@ public abstract class DefaultAppContext
     // instance *******************************************
     
     /** The property suppliers. */
-    private List<PropertyValue>             properties = new ArrayList();
+    private List<ScopedPropertyValue>       properties = new ArrayList();
 
     /** The panel hierarchy. */
     private Map<PanelPath,IPanel>           panels = new HashMap();
@@ -146,38 +146,46 @@ public abstract class DefaultAppContext
 
 
     public Object getPropertyValue( ContextProperty prop ) {
-        PropertyValue result = findPropertyValue( prop );
+        ScopedPropertyValue result = findPropertyValue( prop );
         return result != null ? result.value : null;
     }
     
 
     public Object setPropertyValue( ContextProperty prop, Object value ) {
-        PropertyValue found = findPropertyValue( prop );
+        ScopedPropertyValue found = findPropertyValue( prop );
         if (found != null) {
             Object result = found.value;
             found.value = value;
             return result;
         }
         else {
-            properties.add( new PropertyValue( value, prop.getScope() ) );
+            properties.add( new ScopedPropertyValue( value, prop.getScope() ) );
             return null;
         }
     }
 
     
-    protected PropertyValue findPropertyValue( ContextProperty prop ) {
-        PropertyValue result = null;
-        for (PropertyValue value : properties) {
+    protected ScopedPropertyValue findPropertyValue( ContextProperty prop ) {
+        ScopedPropertyValue result = null;
+        for (ScopedPropertyValue value : properties) {
             if (value.scope.equals( prop.getScope() )
                     && prop.getDeclaredType().isAssignableFrom( value.value.getClass() )) {
                 if (result != null) {
-                    throw new IllegalStateException( "Several matches for context property: " + prop );                    
+                    throw new IllegalStateException( "More than one match for context property: " + prop );                    
                 }
                 result = value;
             }
         }
         return result;
     }
+
+
+    @Override
+    public void propagate( Object panel ) {
+        assert panel != null: "Argument is null";
+        new PanelContextInjector( panel, this ).run();
+    }
+    
     
 
 //    protected int subTypeDistance( Class<?> type, Class<?> subType ) {
