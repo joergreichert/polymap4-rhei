@@ -193,6 +193,22 @@ Display {
   border: 1px solid #a4a4a4;
 }
 
+/* Mosaic-UI elements (org.polymap.mosaic.ui) */
+
+Composite.mosaic-case-action-active {
+  animation: slideIn 400ms ease-in;
+  border: 1px solid #5a9cbd;
+  border-radius: 4px;
+}
+
+Composite.mosaic-case-action-deactive {
+}
+
+Composite.mosaic-case-status {
+  /*animation: fadeIn 600ms linear;
+  background-color: #f5f3f0;*/
+}
+
 /* Default theme for all composites */
 
 Composite {
@@ -350,6 +366,8 @@ Button[CHECK],
 Button[RADIO] {
   padding: 3px 3px 3px 0;
   spacing: 7px;
+  background-color: transparent;
+  color: #222222;
 }
 
 Button[CHECK][BORDER],
@@ -376,7 +394,7 @@ Button[PUSH]:hover.atlas-navi {
   }
 */
 Button-CheckIcon {
-  background-image: url( resource/widget/rap/button/check-unselected.png );
+  background-image: url( resources/icons/errorstate.gif );
 }
 
 Button-CheckIcon:hover {
@@ -384,7 +402,7 @@ Button-CheckIcon:hover {
 }
 
 Button-CheckIcon:selected {
-  background-image: url( resource/widget/rap/button/check-selected.png );
+  background-image: url( resources/icons/run.gif );
 }
 
 Button-CheckIcon:selected:hover {
