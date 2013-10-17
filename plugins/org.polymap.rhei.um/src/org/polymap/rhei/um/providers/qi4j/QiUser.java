@@ -39,10 +39,11 @@ import org.polymap.rhei.um.User;
     PropertyChangeSupport.Mixin.class,
     ModelChangeSupport.Mixin.class,
     QiEntity.Mixin.class,
-    QiPerson.Mixin.class
+    QiPerson.Mixin.class,
+    QiGroupable.Mixin.class
 })
 public interface QiUser
-        extends User, QiEntity, PropertyChangeSupport, EntityComposite {
+        extends User, QiGroupable, QiEntity, PropertyChangeSupport, EntityComposite {
     
     @Optional
     Property<String>            _username();

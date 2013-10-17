@@ -14,6 +14,7 @@
  */
 package org.polymap.rhei.um.providers.qi4j;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +25,8 @@ import org.qi4j.api.query.grammar.BooleanExpression;
 import static org.qi4j.api.query.QueryExpressions.*;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import org.polymap.core.model.CompletionException;
 import org.polymap.core.qi4j.Qi4jPlugin;
@@ -32,7 +35,6 @@ import org.polymap.core.qi4j.QiModuleAssembler;
 import org.polymap.core.runtime.entity.ConcurrentModificationException;
 
 import org.polymap.rhei.um.Entity;
-import org.polymap.rhei.um.Group;
 import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.providers.UserRepositorySPI;
@@ -71,9 +73,20 @@ public class QiUserRepository
 
 
     @Override
-    public List<Group> groupsOf( Groupable groupable ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+    public List<String> groupsOf( Groupable groupable ) {
+        return ImmutableList.copyOf( ((QiGroupable)groupable)._groups().get() );
+    }
+
+
+    @Override
+    public boolean asignGroup( Groupable user, String group ) {
+        Collection<String> groups = ((QiGroupable)user)._groups().get();
+        if (!Iterables.contains( groups, group )) {
+            groups.add( group );
+            ((QiGroupable)user)._groups().set( groups );
+            return true;
+        }
+        return false;
     }
 
 

@@ -60,7 +60,7 @@ public class UmLoginModule
     
     private AuthorizationModule             authModule;
     
-    private UserRepository                  repo;
+    protected UserRepository                repo;
     
     private boolean                         loggedIn;
 
@@ -174,6 +174,10 @@ public class UmLoginModule
         public UmUserPrincipal( User user ) {
             super( user.username().get() );
             this.user = user;
+        }
+
+        public User getUser() {
+            return user;
         }
         
     }

@@ -63,8 +63,13 @@ public class UserRepository
     }
     
     
-    public List<Group> groupsOf( Groupable groupable ) {
+    public List<String> groupsOf( Groupable groupable ) {
         return provider.groupsOf( groupable );
+    }
+
+
+    public boolean asignGroup( Groupable user, String group ) {
+        return provider.asignGroup( user, group );
     }
 
 

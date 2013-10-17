@@ -26,7 +26,6 @@ import com.google.common.base.Predicate;
 import org.polymap.core.runtime.recordstore.IRecordStore;
 
 import org.polymap.rhei.um.Entity;
-import org.polymap.rhei.um.Group;
 import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.providers.UserRepositorySPI;
@@ -54,12 +53,19 @@ public class RUserRepository
 
 
     @Override
-    public List<Group> groupsOf( Groupable groupable ) {
+    public List<String> groupsOf( Groupable groupable ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
     
     
+    @Override
+    public boolean asignGroup( Groupable user, String group ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+
     @Override
     public User findUser( String username ) {
         // XXX Auto-generated method stub

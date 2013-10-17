@@ -19,7 +19,6 @@ import java.util.List;
 import com.google.common.base.Predicate;
 
 import org.polymap.rhei.um.Entity;
-import org.polymap.rhei.um.Group;
 import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;
 
@@ -32,7 +31,9 @@ public interface UserRepositorySPI {
 
     public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter );
 
-    public List<Group> groupsOf( Groupable groupable );
+    public List<String> groupsOf( Groupable groupable );
+
+    public boolean asignGroup( Groupable user, String group );
 
     public User newUser();
 
