@@ -14,8 +14,11 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
+import static org.polymap.rhei.batik.PanelFilters.withPrefix;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,6 +30,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.rwt.IBrowserHistory;
+import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.events.BrowserHistoryEvent;
+import org.eclipse.rwt.events.BrowserHistoryListener;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.window.Window;
@@ -35,23 +42,21 @@ import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.batik.IApplicationLayouter;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelChangeEvent;
+import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
-import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.internal.BatikComponentFactory;
 import org.polymap.rhei.batik.internal.DefaultAppContext;
 import org.polymap.rhei.batik.internal.PanelContextInjector;
 import org.polymap.rhei.batik.internal.desktop.DesktopActionBar.PLACE;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
-
-import static org.polymap.rhei.batik.PanelFilters.withPrefix;
-
 
 /**
  *
@@ -59,7 +64,7 @@ import static org.polymap.rhei.batik.PanelFilters.withPrefix;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class DesktopAppManager
-        implements IApplicationLayouter {
+        implements IApplicationLayouter, BrowserHistoryListener {
 
     private static Log log = LogFactory.getLog( DesktopAppManager.class );
     
@@ -77,12 +82,18 @@ public class DesktopAppManager
     private ScrolledPageBook            scrolledPanelContainer;
 
     private IPanel                      activePanel;
+
+    private IBrowserHistory             browserHistory;
     
 //    private Map<PanelIdentifier,Composite> activatedPanels = new HashMap();
 
 
     @Override
     public Window initMainWindow( Display display ) {
+        browserHistory = RWT.getBrowserHistory();
+        browserHistory.createEntry( "Start", "Start" );
+        browserHistory.addBrowserHistoryListener( this );
+        
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
         actionBar.add( new SearchField( ), PLACE.SEARCH );
@@ -120,6 +131,27 @@ public class DesktopAppManager
 
     @Override
     public void dispose() {
+        browserHistory.removeBrowserHistoryListener( this );
+    }
+
+
+    /** 
+     * Browser history event. 
+     */
+    @Override
+    public void navigated( BrowserHistoryEvent ev ) {
+        log.info( "BROWSER: " + ev.entryId );
+        
+        // go to start panel (no matter what)
+        while (activePanel.getSite().getPath().size() > 1) {
+            closePanel();
+            activePanel = getActivePanel();
+        }
+
+//        if ("start".equalsIgnoreCase( ev.entryId )) {
+//            //mainWindow.getShell().dispose();
+//            //JSExecutor.executeJS( "window.location.reload();" );
+//        }
     }
 
 
@@ -175,8 +207,9 @@ public class DesktopAppManager
         activePanel = panel;
         EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATED ) );
 
+        browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
-
+        
         return activePanel;
     }
 
@@ -206,6 +239,8 @@ public class DesktopAppManager
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
         scrolledPanelContainer.showPage( activePanel.id() );
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
+
+        browserHistory.createEntry( activePanel.id().id(), activePanel.getSite().getTitle() );
     }
 
     
@@ -236,6 +271,7 @@ public class DesktopAppManager
         }
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
         
+        browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
     }
 

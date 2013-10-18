@@ -122,9 +122,6 @@ public class BatikApplication
 
     private Window                      mainWindow;
 
-    public BatikApplication() {
-    }
-
 
     @Override
     public int createUI() {
