@@ -110,12 +110,12 @@ public class UmLoginModule
         }
 
         String username = nameCallback.getName();
-        if (username == null) {
-            return false;
-        }
+//        if (username == null) {
+//            return false;
+//        }
         
         // admin
-        if (username.equals( "admin" )) {
+        if (username == null || username.equals( "admin" )) {
             // FIXME read password hash from persistent storage and check
             log.warn( "!!! NO PASSWORD check for admin user yet !!!!!!" );
             principal = new UserPrincipal( "admin" );

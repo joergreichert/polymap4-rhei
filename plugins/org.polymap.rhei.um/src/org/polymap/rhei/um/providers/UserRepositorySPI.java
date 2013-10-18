@@ -29,11 +29,13 @@ import org.polymap.rhei.um.User;
  */
 public interface UserRepositorySPI {
 
-    public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter );
+    public <T extends Entity> Iterable<T> find( Class<T> type, Predicate<T> filter );
 
     public List<String> groupsOf( Groupable groupable );
 
     public boolean asignGroup( Groupable user, String group );
+
+    public boolean resignGroup( Groupable user, String group );
 
     public User newUser();
 

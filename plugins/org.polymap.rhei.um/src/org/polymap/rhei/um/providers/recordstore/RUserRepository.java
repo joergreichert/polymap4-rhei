@@ -46,7 +46,7 @@ public class RUserRepository
 
     
     @Override
-    public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter ) {
+    public <T extends Entity> Iterable<T> find( Class<T> type, Predicate<T> filter ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
@@ -61,6 +61,13 @@ public class RUserRepository
     
     @Override
     public boolean asignGroup( Groupable user, String group ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+
+    @Override
+    public boolean resignGroup( Groupable user, String group ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }

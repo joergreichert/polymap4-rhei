@@ -58,8 +58,8 @@ public class UserRepository
     }
     
     
-    public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter ) {
-        return provider.find( type, filter );    
+    public <T extends Entity> Iterable<T> find( Class<T> type, Predicate<T> filter ) {
+        return provider.find( type, filter );
     }
     
     
@@ -70,6 +70,11 @@ public class UserRepository
 
     public boolean asignGroup( Groupable user, String group ) {
         return provider.asignGroup( user, group );
+    }
+
+
+    public boolean resignGroup( Groupable user, String group ) {
+        return provider.resignGroup( user, group );
     }
 
 

@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.security;bundle-version="1.0.200",
  org.polymap.core;bundle-version="3.2.0",
  org.polymap.core.model;bundle-version="3.2.0",
+ org.polymap.core.data;bundle-version="3.2.0",
  org.polymap.rhei.batik;bundle-version="2.1.0",
  org.polymap.rhei.form;bundle-version="2.1.0",
  org.polymap.rhei.data;bundle-version="2.1.0"

@@ -66,9 +66,14 @@ public class QiUserRepository
 
 
     @Override
-    public <T extends Entity> List<T> find( Class<T> type, Predicate<T> filter ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+    public <T extends Entity> Iterable<T> find( Class<T> type, Predicate<T> filter ) {
+        if (type.equals( User.class )) {
+            return (Iterable<T>)findEntities( QiUser.class, null, 0, Integer.MAX_VALUE );
+        }
+        else {
+            throw new RuntimeException( "unhandled type: " + type );
+        }
+
     }
 
 
@@ -83,6 +88,18 @@ public class QiUserRepository
         Collection<String> groups = ((QiGroupable)user)._groups().get();
         if (!Iterables.contains( groups, group )) {
             groups.add( group );
+            ((QiGroupable)user)._groups().set( groups );
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean resignGroup( Groupable user, String group ) {
+        Collection<String> groups = ((QiGroupable)user)._groups().get();
+        if (!Iterables.contains( groups, group )) {
+            groups.remove( group );
             ((QiGroupable)user)._groups().set( groups );
             return true;
         }
