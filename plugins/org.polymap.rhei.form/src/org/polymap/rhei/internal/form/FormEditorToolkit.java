@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.rwt.graphics.Graphics;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
-import org.eclipse.rwt.widgets.Upload;
 
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
@@ -44,6 +43,8 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
+
+import org.polymap.core.ui.upload.Upload;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
 

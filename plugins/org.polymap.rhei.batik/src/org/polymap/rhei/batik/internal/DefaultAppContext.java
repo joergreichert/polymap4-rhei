@@ -153,7 +153,14 @@ public abstract class DefaultAppContext
 
     public Object setPropertyValue( ContextProperty prop, Object value ) {
         ScopedPropertyValue found = findPropertyValue( prop );
-        if (found != null) {
+        if (value == null) {
+            if (found != null) {
+                properties.remove( found );
+                return found.value;
+            }
+            return null;
+        }
+        else if (found != null) {
             Object result = found.value;
             found.value = value;
             return result;

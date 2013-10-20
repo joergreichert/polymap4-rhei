@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,14 +36,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.rwt.graphics.Graphics;
-import org.eclipse.rwt.widgets.Upload;
-import org.eclipse.rwt.widgets.UploadEvent;
-import org.eclipse.rwt.widgets.UploadItem;
-import org.eclipse.rwt.widgets.UploadListener;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import org.polymap.core.data.DataPlugin;
+import org.polymap.core.ui.upload.IUploadHandler;
+import org.polymap.core.ui.upload.Upload;
 import org.polymap.core.workbench.PolymapWorkbench;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
@@ -106,8 +105,8 @@ public class UploadFormField
             style |= Upload.SHOW_PROGRESS;
         }
         upload = toolkit.createUpload( fileSelectionArea, SWT.BORDER, style );
-        upload.setBrowseButtonText( "Datei..." );
-        upload.setUploadButtonText( "Laden" );
+//        upload.setBrowseButtonText( "Datei..." );
+//        upload.setUploadButtonText( "Laden" );
         upload.setEnabled( enabled );
 //        upload.setBackground( enabled ? FormEditorToolkit.textBackground
 //                : FormEditorToolkit.textBackgroundDisabled );
@@ -182,23 +181,13 @@ public class UploadFormField
 //        } );
 
         // uploadlistener
-        upload.addUploadListener( new UploadListener() {
-
+        upload.setHandler( new IUploadHandler() {
             @Override
-            public void uploadInProgress( UploadEvent uploadEvent ) {
-                // TODO show a progress monitor here
-            }
-
-
-            @Override
-            public void uploadFinished( UploadEvent uploadEvent ) {
-                UploadItem item = upload.getUploadItem();
-
+            public void uploadStarted( String name, String contentType, InputStream in ) throws Exception {
                 try {
-                    log.info( "Uploaded: " + item.getFileName() + ", path=" + item.getFilePath() );
+                    log.debug( "Uploaded: " + name );
 
                     // check for images
-                    String contentType = item.getContentType();
                     if (!("image/jpeg".equalsIgnoreCase( contentType )
                             || "image/png".equalsIgnoreCase( contentType ) 
                             || "image/gif".equalsIgnoreCase( contentType ) 
@@ -213,7 +202,7 @@ public class UploadFormField
                     }
 
                     // dont use the filename here
-                    String fileName = item.getFileName();
+                    String fileName = name;
                     int index = fileName.lastIndexOf( '.' );
                     String extension = ".jpg";
                     if (index != -1) {
@@ -224,7 +213,7 @@ public class UploadFormField
                     String internalFileName = id + extension;
                     File dbFile = new File( uploadDir, internalFileName );
                     FileOutputStream out = new FileOutputStream( dbFile );
-                    StreamUtils.copyThenClose( item.getFileInputStream(), out );
+                    StreamUtils.copyThenClose( in, out );
                     log.info( "### copied to: " + dbFile );
 
                     // create a thumbnail
@@ -254,6 +243,8 @@ public class UploadFormField
 
                     // image.dispose();
 
+                    // FIXME nach umstieg auf neues Upload: was soll der path? prüfen.
+                    // XXX oben StreamUtils ersetzen durch IOUtils
                     uploadedValue = new DefaultUploadedImage( fileName, item.getFilePath(),
                             contentType, internalFileName, thumbnailFileName, dbFile.length() );
 
