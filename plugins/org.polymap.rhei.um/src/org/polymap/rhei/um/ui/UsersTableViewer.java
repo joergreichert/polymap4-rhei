@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.deferred.DeferredContentProvider;
 import org.eclipse.jface.viewers.deferred.SetModel;
 
+import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
 
@@ -65,12 +66,23 @@ public class UsersTableViewer
         getTable().setLayout( new TableLayout() );
 
         TableViewerColumn vcolumn = new TableViewerColumn( this, SWT.LEFT );
-        vcolumn.getColumn().setMoveable( true );
         vcolumn.getColumn().setResizable( true );
         vcolumn.getColumn().setText( "Name" );
         vcolumn.setLabelProvider( new ColumnLabelProvider() {
             public String getText( Object elm ) {
                 return Joiner.on( ' ' ).skipNulls().join( ((User)elm).firstname().get(), ((User)elm).name().get() );
+            }
+        });
+        ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            
+
+        vcolumn = new TableViewerColumn( this, SWT.LEFT );
+        vcolumn.getColumn().setResizable( true );
+        vcolumn.getColumn().setText( "Adresse" );
+        vcolumn.setLabelProvider( new ColumnLabelProvider() {
+            public String getText( Object elm ) {
+                Address address = ((User)elm).address().get();
+                return Joiner.on( ' ' ).skipNulls().join( 
+                        address.postalCode().get(), address.city().get() );
             }
         });
         ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            

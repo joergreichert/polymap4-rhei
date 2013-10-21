@@ -213,6 +213,7 @@ public class UploadFormField
                     String internalFileName = id + extension;
                     File dbFile = new File( uploadDir, internalFileName );
                     FileOutputStream out = new FileOutputStream( dbFile );
+                    // XXX oben StreamUtils ersetzen durch IOUtils
                     StreamUtils.copyThenClose( in, out );
                     log.info( "### copied to: " + dbFile );
 
@@ -243,10 +244,8 @@ public class UploadFormField
 
                     // image.dispose();
 
-                    // FIXME nach umstieg auf neues Upload: was soll der path? prüfen.
-                    // XXX oben StreamUtils ersetzen durch IOUtils
-                    uploadedValue = new DefaultUploadedImage( fileName, item.getFilePath(),
-                            contentType, internalFileName, thumbnailFileName, dbFile.length() );
+                    uploadedValue = new DefaultUploadedImage( fileName, contentType, 
+                            internalFileName, thumbnailFileName, dbFile.length() );
 
 //                    enableViewButton( true );
                 }
@@ -338,15 +337,9 @@ public class UploadFormField
 
         String contentType();
 
-
         String originalFileName();
 
-
-        String originalFilePath();
-
-
         Long fileSize();
-
 
         String internalFileName();
         
@@ -359,8 +352,6 @@ public class UploadFormField
 
         private final String fileName;
 
-        private final String filePath;
-
         private final String contentType;
 
         private final String internalFileName;
@@ -370,10 +361,9 @@ public class UploadFormField
         private final Long   fileSize;
 
 
-        public DefaultUploadedImage( String fileName, String filePath, String contentType,
+        public DefaultUploadedImage( String fileName, String contentType,
                 String internalFileName, String thumbnailFileName, Long fileSize ) {
             this.fileName = fileName;
-            this.filePath = filePath;
             this.contentType = contentType;
             this.internalFileName = internalFileName;
             this.fileSize = fileSize;
@@ -390,12 +380,6 @@ public class UploadFormField
         @Override
         public String originalFileName() {
             return fileName;
-        }
-
-
-        @Override
-        public String originalFilePath() {
-            return filePath;
         }
 
 
