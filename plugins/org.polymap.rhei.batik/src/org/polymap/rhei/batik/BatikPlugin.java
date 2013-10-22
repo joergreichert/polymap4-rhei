@@ -30,8 +30,11 @@ public class BatikPlugin extends AbstractUIPlugin {
 
     private static final Log log = LogFactory.getLog( BatikPlugin.class );
     
-	public static final String PLUGIN_ID = "org.polymap.rhei.batik";
+    public static final String          PLUGIN_ID = "org.polymap.rhei.batik";
 
+    public static final String          CSS_PREFIX = "batik-";
+    public static final String          CSS_TABLE_ACTION = CSS_PREFIX + "table-action";
+    
     private static BatikPlugin          plugin;
     
     public static BatikPlugin instance() {

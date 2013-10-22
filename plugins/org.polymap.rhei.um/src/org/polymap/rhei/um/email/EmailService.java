@@ -16,8 +16,17 @@ package org.polymap.rhei.um.email;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+
+import com.google.common.base.Supplier;
+
+import org.polymap.core.runtime.CachedLazyInit;
+import org.polymap.core.runtime.LazyInit;
 
 /**
  * 
@@ -27,14 +36,48 @@ import org.apache.commons.logging.LogFactory;
 public class EmailService {
 
     private static Log log = LogFactory.getLog( EmailService.class );
-    
+
+    private static final LazyInit<EmailService>   instance = new CachedLazyInit( 1024 );
     
     public static EmailService instance() {
-        throw new RuntimeException( "not yet implemented." );
+        return instance.get( new Supplier<EmailService>() {
+            public EmailService get() {
+                return new EmailService();
+            }
+        });
     }
 
     
     // instance ******************************************* 
+    
+    protected EmailService() {
+    }
+
+    
+    public void send( Email email ) throws EmailException {
+        String env = System.getenv( "org.polymap.rhei.um.SMTP" );
+        if (env == null) {
+            throw new IllegalStateException( "Environment variable missing: org.polymap.rhei.um.SMTP. Format: <host>|<login>|<passwd>|<from>");
+        }
+        String[] parts = StringUtils.split( env, "|" );
+        if (parts.length < 3 || parts.length > 4) {
+            throw new IllegalStateException( "Environment variable wrong: org.polymap.rhei.um.SMTP. Format: <host>|<login>|<passwd>|<from> : " + env );
+        }
+        
+        email.setDebug( true );
+        email.setHostName( parts[0] );
+        //email.setSmtpPort( 465 );
+        //email.setSSLOnConnect( true );
+        email.setAuthenticator( new DefaultAuthenticator( parts[1], parts[2] ) );
+        if (email.getFromAddress() == null && parts.length == 4) {
+            email.setFrom( parts[3] );
+        }
+        if (email.getSubject() == null) {
+            throw new EmailException( "Missing subject." );
+        }
+        email.send();
+    }
+    
     
     public void send( String templateName, Map<String,String> replacements ) {
 //        Session session = Session.getDefaultInstance(properties);
