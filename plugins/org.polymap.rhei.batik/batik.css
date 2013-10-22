@@ -320,6 +320,7 @@ background-image: gradient(
 */
 }
 
+Button[TOGGLE]:selected.mosaic-case-submit,
 Button[TOGGLE]:selected {
 	background-color: #216292;
 
@@ -371,6 +372,7 @@ Button[TOGGLE]:hover.atlas-navi,
 Button[PUSH]:hover.atlas-navi {
  background-color: #216292;
 }
+Button[TOGGLE].mosaic-case-submit,
 Button[PUSH].mosaic-case-submit,
 Button[PUSH]:selected.mosaic-case-submit,
 Button[PUSH]:hover.mosaic-case-submit {
