@@ -195,6 +195,7 @@ public class DesktopToolkit
         }
         else {
             result = new Composite( parent, stylebits( styles ) );
+            result.setLayout( new FillLayout() );
         }
         return adapt( result );
     }

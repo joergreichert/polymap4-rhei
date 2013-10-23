@@ -22,10 +22,10 @@ import org.eclipse.core.runtime.Status;
 
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
-
 /**
- * The interface between the {@link IPanel} and the Atlas UI.
- *
+ * The interface an {@link IPanel} implementation can use to interact with the Batik
+ * UI framework.
+ * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IPanelSite {
