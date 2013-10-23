@@ -88,7 +88,7 @@ public class PersonForm
         
         
         // address
-        site.getToolkit().createLabel( body, null, SWT.SEPARATOR | SWT.HORIZONTAL );
+        //site.getToolkit().createLabel( body, null, SWT.SEPARATOR | SWT.HORIZONTAL );
         Address address = person.address().get();
         new AddressForm( panelSite, address ).createContents( this );
     }
