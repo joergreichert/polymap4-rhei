@@ -84,15 +84,15 @@ public class AddressForm
         city.setLayout( FormLayoutFactory.defaults()
                 .spacing( (Integer)panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY ) ).create() );
         
-//        prop = address.postalCode();
-//        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-//                .setValidator( new NotNullValidator() )
-//                .create().setLayoutData( FormDataFactory.filled().right( 25 ).create() );
+        prop = address.postalCode();
+        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+                .setValidator( new NotNullValidator() )
+                .create().setLayoutData( FormDataFactory.filled().right( 25 ).create() );
 
-//        prop = address.city();
-//        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
-//                .setValidator( new NotNullValidator() )
-//                .create().setLayoutData( FormDataFactory.filled().left( 25 ).create() );
+        prop = address.city();
+        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
+                .setValidator( new NotNullValidator() )
+                .create().setLayoutData( FormDataFactory.filled().left( 25 ).create() );
         
         // 
         prop = address.country();
