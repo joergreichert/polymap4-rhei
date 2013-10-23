@@ -76,8 +76,12 @@ public abstract class FormContainer
 
 
     public final void createContents( ILayoutContainer parent ) {
+        createContents( new Composite( parent.getBody(), SWT.NONE ) );
+    }
+
+    public final void createContents( Composite body ) {
         toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
-        pageBody = new Composite( parent.getBody(), SWT.NONE );
+        pageBody = body;
         pageBody.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-form"  );
         pageSite = new PageContainer( this );
 
