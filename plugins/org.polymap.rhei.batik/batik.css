@@ -151,10 +151,10 @@ Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH
   background-color: #ffffff;
 }
 /*Submit und Cancel Buttons*/
-Button[PUSH].mosaic-case-submit, Button[PUSH]:selected.mosaic-case-submit {
+Button[TOGGLE].mosaic-case-submit, Button[PUSH].mosaic-case-submit, Button[PUSH]:selected.mosaic-case-submit, Button[TOGGLE]:selected.mosaic-case-submit {
   background-color: #6eb02e;
 }
-Button[PUSH]:hover.mosaic-case-submit {
+Button[TOGGLE]:hover.mosaic-case-submit, Button[PUSH]:hover.mosaic-case-submit {
   background-color: #519028;
 }
 Button[PUSH].mosaic-case-discard, Button[PUSH]:selected.mosaic-case-discard {
