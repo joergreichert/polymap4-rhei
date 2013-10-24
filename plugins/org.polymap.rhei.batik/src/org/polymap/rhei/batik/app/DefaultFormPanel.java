@@ -103,6 +103,7 @@ public abstract class DefaultFormPanel
 
         public PageContainer( IFormEditorPage page ) {
             super( DefaultFormPanel.this, page, "_id_", "_title_" );
+            setLabelWidth( 150 );
         }
 
         public void createContent() {

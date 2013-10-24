@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2013, Falko Bräutigam. All rigths reserved.
+ * Copyright (C) 2013, Falko Bräutigam. All rigths reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.data.entityfeature;
+package org.polymap.rhei.field;
 
 import java.util.Map;
 

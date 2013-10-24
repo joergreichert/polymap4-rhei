@@ -102,6 +102,17 @@ public abstract class FormContainer
         createFormContent( pageSite );
     }
 
+    public void dispose() {
+        if (pageSite != null) {
+            pageSite.dispose();
+            pageSite = null;
+        }
+        if (pageBody != null && !pageBody.isDisposed()) {
+            pageBody.dispose();
+            pageBody = null;
+        }
+    }
+    
     public void submit() throws Exception {
         pageSite.submitEditor();
     }
@@ -185,6 +196,7 @@ public abstract class FormContainer
 
         public PageContainer( IFormEditorPage page ) {
             super( FormContainer.this, page, "_id_", "_title_" );
+            setLabelWidth( 150 );
         }
 
         public void createContent() {

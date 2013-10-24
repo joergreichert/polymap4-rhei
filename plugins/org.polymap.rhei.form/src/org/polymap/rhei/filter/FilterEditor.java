@@ -117,7 +117,7 @@ public abstract class FilterEditor
 
         final FilterFieldComposite fieldComposite = new FilterFieldComposite( this,
                 toolkit, propName, propType, field, 
-                new DefaultFormFieldLabeler( label ), new DefaultFormFieldDecorator(), 
+                new DefaultFormFieldLabeler( 100, label ), new DefaultFormFieldDecorator(), 
                 validator != null ? validator : new NullValidator() );
 
         fields.put( fieldComposite.getFieldName(), fieldComposite );

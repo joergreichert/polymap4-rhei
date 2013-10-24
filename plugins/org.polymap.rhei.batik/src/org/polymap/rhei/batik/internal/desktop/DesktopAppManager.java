@@ -217,21 +217,21 @@ public class DesktopAppManager
     protected void closePanel() {
         assert activePanel != null;
         
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATING ) );
-        scrolledPanelContainer.removePage( activePanel.id() );
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATED ) );
-        
         PanelPath activePath = activePanel.getSite().getPath();
         // remove/dispose activePanel and siblings
         for (IPanel panel : context.findPanels( withPrefix( activePath.removeLast( 1 ) ) )) {
             EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.DISPOSING ) );
-            context.removePanel( panel.getSite().getPath() );
             panel.dispose();
+            context.removePanel( panel.getSite().getPath() );
             if (scrolledPanelContainer.hasPage( panel.id() )) {
                 scrolledPanelContainer.removePage( panel.id() );
             }
             EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.DISPOSED ) );
         }
+        
+        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATING ) );
+        scrolledPanelContainer.removePage( activePanel.id() );
+        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATED ) );
         
         // activate child panel
         activePath = activePath.removeLast( 1 );

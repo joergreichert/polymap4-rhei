@@ -21,20 +21,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Scrollable;
-
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.rhei.batik.toolkit.ConstraintData;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.ILayoutElement;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
@@ -202,125 +196,125 @@ class DesktopPanelSection
     }
     
     
-    /**
-     * 
-     */
-    static class PanelSectionLayout
-            extends Layout {
-        
-        public int marginWidth = 8;
-
-        public int marginHeight = 8;
-        
-        public int spacing = 8;
-
-        
-        @Override
-        protected void layout( Composite composite, boolean flushCache ) {
-            Rectangle clientArea = composite.getClientArea();
-            Control[] children = composite.getChildren();
-            int count = children.length;
-
-            if (count > 0) {
-                int width = clientArea.width - marginWidth * 2;
-                int height = clientArea.height - marginHeight * 2;
-                height -= (count - 1) * spacing;
-                
-                int x = clientArea.x + marginWidth;
-                int y = clientArea.y + marginHeight;
-
-                int cellHeight = height / count;
-                int extra = height % count;
-                
-                for (int i=0; i<count; i++) {
-                    int childHeight = cellHeight;
-                    if (i == 0) {
-                        childHeight += extra / 2;
-                    } 
-                    else if (i == count - 1) {
-                        childHeight += (extra + 1) / 2;
-                    }
-                    
-                    children[i].setBounds( x, y, width, childHeight );
-                    y += childHeight + spacing;
-                }
-            }
-        }
-
-        
-        @Override
-        protected Point computeSize( Composite composite, int wHint, int hHint, boolean flushCache ) {
-            Control[] children = composite.getChildren();
-            int count = children.length;
-            int maxWidth = 0, maxHeight = 0;
-
-            for (int i = 0; i < count; i++) {
-                Control child = children[i];
-                int w = wHint, h = hHint;
-                if (count > 0) {
-                    // vertical
-                    if (hHint != SWT.DEFAULT) {
-                        h = Math.max( 0, (hHint - (count - 1) * spacing) / count );
-                    }
-                }
-                Point size = computeChildSize( child, w, h, flushCache );
-                maxWidth = Math.max( maxWidth, size.x );
-                maxHeight = Math.max( maxHeight, size.y );
-            }
-            int width = 0, height = 0;
-            // vertical
-            width = maxWidth;
-            height = count * maxHeight;
-            if (count != 0) {
-                height += (count - 1) * spacing;
-            }
-            
-            width += marginWidth * 2;
-            height += marginHeight * 2;
-            
-            if (wHint != SWT.DEFAULT) {
-                width = wHint;
-            }
-            if (hHint != SWT.DEFAULT) {
-                height = hHint;
-            }
-            return new Point( width, height );
-        }
-        
-        
-        protected Iterable<Control> prioritizeControls() {
-            throw new RuntimeException( "not yet implemented." );
-        }
-        
-        
-        protected Point computeChildSize( Control control, int wHint, int hHint, boolean flushCache ) {
-            ConstraintData data = (ConstraintData)control.getLayoutData ();
-            if (data == null) {
-                data = new ConstraintData();
-                control.setLayoutData( data );
-            }
-            Point size = null;
-            if (wHint == SWT.DEFAULT && hHint == SWT.DEFAULT) {
-                size = data.computeSize( control, wHint, hHint, flushCache );
-            } 
-            else {
-                // TEMPORARY CODE
-                int trimX, trimY;
-                if (control instanceof Scrollable) {
-                    Rectangle rect = ((Scrollable)control).computeTrim( 0, 0, 0, 0 );
-                    trimX = rect.width;
-                    trimY = rect.height;
-                } 
-                else {
-                    trimX = trimY = control.getBorderWidth () * 2;
-                }
-                int w = wHint == SWT.DEFAULT ? wHint : Math.max (0, wHint - trimX);
-                int h = hHint == SWT.DEFAULT ? hHint : Math.max (0, hHint - trimY);
-                size = data.computeSize( control, w, h, flushCache );
-            }
-            return size;
-        }
-
-    }
+//    /**
+//     * 
+//     */
+//    static class PanelSectionLayout
+//            extends Layout {
+//        
+//        public int marginWidth = 8;
+//
+//        public int marginHeight = 8;
+//        
+//        public int spacing = 8;
+//
+//        
+//        @Override
+//        protected void layout( Composite composite, boolean flushCache ) {
+//            Rectangle clientArea = composite.getClientArea();
+//            Control[] children = composite.getChildren();
+//            int count = children.length;
+//
+//            if (count > 0) {
+//                int width = clientArea.width - marginWidth * 2;
+//                int height = clientArea.height - marginHeight * 2;
+//                height -= (count - 1) * spacing;
+//                
+//                int x = clientArea.x + marginWidth;
+//                int y = clientArea.y + marginHeight;
+//
+//                int cellHeight = height / count;
+//                int extra = height % count;
+//                
+//                for (int i=0; i<count; i++) {
+//                    int childHeight = cellHeight;
+//                    if (i == 0) {
+//                        childHeight += extra / 2;
+//                    } 
+//                    else if (i == count - 1) {
+//                        childHeight += (extra + 1) / 2;
+//                    }
+//                    
+//                    children[i].setBounds( x, y, width, childHeight );
+//                    y += childHeight + spacing;
+//                }
+//            }
+//        }
+//
+//        
+//        @Override
+//        protected Point computeSize( Composite composite, int wHint, int hHint, boolean flushCache ) {
+//            Control[] children = composite.getChildren();
+//            int count = children.length;
+//            int maxWidth = 0, maxHeight = 0;
+//
+//            for (int i = 0; i < count; i++) {
+//                Control child = children[i];
+//                int w = wHint, h = hHint;
+//                if (count > 0) {
+//                    // vertical
+//                    if (hHint != SWT.DEFAULT) {
+//                        h = Math.max( 0, (hHint - (count - 1) * spacing) / count );
+//                    }
+//                }
+//                Point size = computeChildSize( child, w, h, flushCache );
+//                maxWidth = Math.max( maxWidth, size.x );
+//                maxHeight = Math.max( maxHeight, size.y );
+//            }
+//            int width = 0, height = 0;
+//            // vertical
+//            width = maxWidth;
+//            height = count * maxHeight;
+//            if (count != 0) {
+//                height += (count - 1) * spacing;
+//            }
+//            
+//            width += marginWidth * 2;
+//            height += marginHeight * 2;
+//            
+//            if (wHint != SWT.DEFAULT) {
+//                width = wHint;
+//            }
+//            if (hHint != SWT.DEFAULT) {
+//                height = hHint;
+//            }
+//            return new Point( width, height );
+//        }
+//        
+//        
+//        protected Iterable<Control> prioritizeControls() {
+//            throw new RuntimeException( "not yet implemented." );
+//        }
+//        
+//        
+//        protected Point computeChildSize( Control control, int wHint, int hHint, boolean flushCache ) {
+//            ConstraintData data = (ConstraintData)control.getLayoutData ();
+//            if (data == null) {
+//                data = new ConstraintData();
+//                control.setLayoutData( data );
+//            }
+//            Point size = null;
+//            if (wHint == SWT.DEFAULT && hHint == SWT.DEFAULT) {
+//                size = data.computeSize( control, wHint, hHint, flushCache );
+//            } 
+//            else {
+//                // TEMPORARY CODE
+//                int trimX, trimY;
+//                if (control instanceof Scrollable) {
+//                    Rectangle rect = ((Scrollable)control).computeTrim( 0, 0, 0, 0 );
+//                    trimX = rect.width;
+//                    trimY = rect.height;
+//                } 
+//                else {
+//                    trimX = trimY = control.getBorderWidth () * 2;
+//                }
+//                int w = wHint == SWT.DEFAULT ? wHint : Math.max (0, wHint - trimX);
+//                int h = hHint == SWT.DEFAULT ? hHint : Math.max (0, hHint - trimY);
+//                size = data.computeSize( control, w, h, flushCache );
+//            }
+//            return size;
+//        }
+//
+//    }
     
 }

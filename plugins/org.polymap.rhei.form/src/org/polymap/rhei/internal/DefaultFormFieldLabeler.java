@@ -53,16 +53,18 @@ public class DefaultFormFieldLabeler
     /**
      * Use the field name as labelStr. 
      */
-    public DefaultFormFieldLabeler() {
+    public DefaultFormFieldLabeler( int maxWidth ) {
+        this.maxWidth = maxWidth;
     }
 
-    public DefaultFormFieldLabeler( String label ) {
+    public DefaultFormFieldLabeler( int maxWidth, String label ) {
         if (label != null && label.equals( NO_LABEL )) {
             this.labelStr = label;
             this.maxWidth = 0;
         }
         else {
             this.labelStr = label;
+            this.maxWidth = maxWidth;
         }
     }
 

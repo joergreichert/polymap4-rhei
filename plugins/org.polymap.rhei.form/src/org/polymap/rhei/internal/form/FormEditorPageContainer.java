@@ -89,6 +89,8 @@ public class FormEditorPageContainer
 
     private volatile boolean            blockEvents;
 
+    private int                         labelWidth;
+
 
     public FormEditorPageContainer( IFormEditorPage page, FormEditor editor, String id, String title ) {
         super( editor, id, title );
@@ -104,6 +106,15 @@ public class FormEditorPageContainer
             field.dispose();
         }
         fields.clear();
+    }
+
+
+    public int getLabelWidth() {
+        return labelWidth;
+    }
+    
+    public void setLabelWidth( int labelWidth ) {
+        this.labelWidth = labelWidth;
     }
 
 
@@ -297,7 +308,7 @@ public class FormEditorPageContainer
 
     public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label ) {
         FormFieldComposite result = new FormFieldComposite( getEditor(), getToolkit(), prop, field,
-                new DefaultFormFieldLabeler( label ), new DefaultFormFieldDecorator(),
+                new DefaultFormFieldLabeler( labelWidth, label ), new DefaultFormFieldDecorator(),
                 validator != null ? validator : new NullValidator() );
         fields.add( result );
 

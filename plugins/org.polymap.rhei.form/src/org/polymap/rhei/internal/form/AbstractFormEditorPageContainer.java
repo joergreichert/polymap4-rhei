@@ -56,6 +56,8 @@ public abstract class AbstractFormEditorPageContainer
     private List<FormFieldComposite>    fields = new ArrayList();
 
     private volatile boolean            blockEvents;
+    
+    private int                         labelWidth = 100;
 
     
     public AbstractFormEditorPageContainer( Object editor, IFormEditorPage page, String id, String title ) {
@@ -75,6 +77,15 @@ public abstract class AbstractFormEditorPageContainer
     }
 
     
+    public int getLabelWidth() {
+        return labelWidth;
+    }
+    
+    public void setLabelWidth( int labelWidth ) {
+        this.labelWidth = labelWidth;
+    }
+
+
     public void addFieldListener( IFormFieldListener l ) {
         EventManager.instance().subscribe( l, new EventFilter<FormFieldEvent>() {
             public boolean apply( FormFieldEvent ev ) {
@@ -185,7 +196,7 @@ public abstract class AbstractFormEditorPageContainer
 
     public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label ) {
         FormFieldComposite result = new FormFieldComposite( editor, getToolkit(), prop, field,
-                new DefaultFormFieldLabeler( label ), new DefaultFormFieldDecorator(), 
+                new DefaultFormFieldLabeler( labelWidth, label ), new DefaultFormFieldDecorator(), 
                 validator != null ? validator : new NullValidator() );
         fields.add( result );
         

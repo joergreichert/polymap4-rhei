@@ -17,12 +17,11 @@ package org.polymap.rhei.um.ui;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.runtime.IMessages;
-import org.polymap.core.ui.FormDataFactory;
-import org.polymap.core.ui.FormLayoutFactory;
-
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
@@ -64,35 +63,35 @@ public class AddressForm
         Composite body = site.getPageBody();
         //body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
 
+        int spacing = panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY );
+        
         // street / number
         Composite str = tk.createComposite( body );
-        str.setLayout( FormLayoutFactory.defaults()
-                .spacing( (Integer)panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY ) ).create() );
+        str.setLayout( new FillLayout( SWT.HORIZONTAL) );
 
         Property<String> prop = address.street();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() )
-                .create().setLayoutData( FormDataFactory.filled().right( 75 ).create() );
+                .create();  //.setLayoutData( FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
                 .setValidator( new NotNullValidator() )
-                .create().setLayoutData( FormDataFactory.filled().left( 75 ).create() );
+                .create();  //.setLayoutData( FormDataFactory.filled().left( 75 ).create() );
 
         // postalCode / city
         Composite city = tk.createComposite( body );
-        city.setLayout( FormLayoutFactory.defaults()
-                .spacing( (Integer)panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY ) ).create() );
+        city.setLayout( new FillLayout( SWT.HORIZONTAL) );
         
         prop = address.postalCode();
         new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() )
-                .create().setLayoutData( FormDataFactory.filled().right( 25 ).create() );
+                .create();  //.setLayoutData( FormDataFactory.filled().right( 25 ).create() );
 
         prop = address.city();
         new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
                 .setValidator( new NotNullValidator() )
-                .create().setLayoutData( FormDataFactory.filled().left( 25 ).create() );
+                .create();  //.setLayoutData( FormDataFactory.filled().left( 25 ).create() );
         
         // 
         prop = address.country();
