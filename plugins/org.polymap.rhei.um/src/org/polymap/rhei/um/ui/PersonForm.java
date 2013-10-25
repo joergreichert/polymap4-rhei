@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.runtime.IMessages;
@@ -26,6 +27,8 @@ import org.polymap.core.ui.ColumnLayoutFactory;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.EMailAddressValidator;
+import org.polymap.rhei.field.IFormFieldLabel;
+import org.polymap.rhei.field.PicklistFormField;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Person;
@@ -62,11 +65,20 @@ public class PersonForm
             body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
         }
 
-        // fields
-        Property<String> prop = person.name();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create().setFocus();
         
+        // fields
+        Composite salu = site.getToolkit().createComposite( body );
+        salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
+
+        Property<String> prop = person.salutation();
+        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "name" ) )
+                .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
+                .setValidator( new NotNullValidator() ).create().setFocus();
+
+        prop = person.name();
+        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
+                .setValidator( new NotNullValidator() ).create();
+
         prop = person.firstname();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
         

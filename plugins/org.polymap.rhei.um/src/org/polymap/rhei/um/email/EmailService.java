@@ -55,7 +55,7 @@ public class EmailService {
 
     
     public void send( Email email ) throws EmailException {
-        String env = System.getenv( "org.polymap.rhei.um.SMTP" );
+        String env = System.getProperty( "org.polymap.rhei.um.SMTP" );
         if (env == null) {
             throw new IllegalStateException( "Environment variable missing: org.polymap.rhei.um.SMTP. Format: <host>|<login>|<passwd>|<from>");
         }

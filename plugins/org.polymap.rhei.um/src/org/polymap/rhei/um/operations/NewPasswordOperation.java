@@ -20,8 +20,6 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
-import com.google.common.base.Joiner;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IUndoableOperation;
@@ -85,18 +83,16 @@ public class NewPasswordOperation
             UserRepository.instance().commitChanges();
         
             // XXX email
+            String salu = user.salutation().get() != null ? user.salutation().get() : "";
+            String header = (salu.equalsIgnoreCase( "Herr" ) ? "r Herr " : " ") + salu + " " + user.name().get();
             Email email = new SimpleEmail()
                     .addTo( username )
-                    .setSubject( "Ihre Anmeldung im Portal der GKU" )
-                    .setMsg( Joiner.on( '\n' ).join(
-                            "Sehr geehrte(r) ..." + user.name().get() + ",",
-                            "",
-                            "    Nutzername: " + username,
-                            "    Password: " + password ) );
+                    .setSubject( i18n.get( "emailSubject") )
+                    .setMsg( i18n.get( "email", header, username, password ) );
+
             EmailService.instance().send( email );
 
             return Status.OK_STATUS;
-
         }
         catch (EmailException e) {
             throw new ExecutionException( i18n.get( "errorMsg", e.getLocalizedMessage() ), e );
