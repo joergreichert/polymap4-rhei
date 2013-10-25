@@ -24,10 +24,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.common.base.Joiner;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.rwt.RWT;
@@ -152,10 +154,14 @@ public class DesktopToolkit
     };
 
     @Override
-    public Label createLink( Composite parent, String text, int... styles ) {
-        Label result = createLabel( parent, text, styles );
-        result.setCursor( new Cursor( Polymap.getSessionDisplay(), SWT.CURSOR_HAND ) );
-        result.setForeground( Graphics.getColor( 0x00, 0x00, 0xff ) );
+    public Link createLink( Composite parent, String text, int... styles ) {
+        Link result = adapt( new Link( parent, stylebits( styles ) ), false, false );
+        if (text != null) {
+            result.setText( text.contains( "<a>" ) ? text : Joiner.on( "" ).join( "<a>", text, "</a>" ) );
+        }
+//        Label result = createLabel( parent, text, styles | SWT.L );
+//        result.setCursor( new Cursor( Polymap.getSessionDisplay(), SWT.CURSOR_HAND ) );
+//        result.setForeground( Graphics.getColor( 0x00, 0x00, 0xff ) );
         return result;
     }
 
@@ -195,7 +201,7 @@ public class DesktopToolkit
         }
         else {
             result = new Composite( parent, stylebits( styles ) );
-            result.setLayout( new FillLayout() );
+            result.setLayout( new FillLayout( SWT.HORIZONTAL ) );
         }
         return adapt( result );
     }

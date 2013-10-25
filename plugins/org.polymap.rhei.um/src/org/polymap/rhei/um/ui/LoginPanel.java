@@ -20,17 +20,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 
+import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.service.ISettingStore;
+import org.eclipse.rwt.service.SettingStoreException;
+
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
+import org.polymap.core.operation.OperationSupport;
+import org.polymap.core.runtime.IMessages;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
@@ -44,6 +50,7 @@ import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
@@ -51,6 +58,10 @@ import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.UmPlugin;
+import org.polymap.rhei.um.User;
+import org.polymap.rhei.um.UserRepository;
+import org.polymap.rhei.um.internal.Messages;
+import org.polymap.rhei.um.operations.NewPasswordOperation;
 
 /**
  * 
@@ -116,12 +127,16 @@ public class LoginPanel
     public static class LoginForm
             extends FormContainer {
 
+        private static final IMessages          i18n = Messages.forPrefix( "LoginForm" );
+        
         protected ContextProperty<UserPrincipal> user;
 
         protected Button                         loginBtn;
 
-        protected String                         username = "admin", password = "login";
+        protected String                         username, password;
 
+        protected boolean                        storeLogin;
+        
         private IAppContext                      context;
 
         private IFormEditorPageSite              formSite;
@@ -130,19 +145,44 @@ public class LoginPanel
         
         private IFormFieldListener               fieldListener;
         
-        private boolean                          showRegisterLink = false;
+        private boolean                          showRegisterLink;
+
+        private boolean                          showStoreCheck;
+        
+        private boolean                          showLostLink;
 
         
         public LoginForm( IAppContext context, IPanelSite panelSite, ContextProperty<UserPrincipal> user ) {
             this.context = context;
             this.panelSite = panelSite;
             this.user = user;
+
+            try {
+                ISettingStore settings = RWT.getSettingStore();
+                username = settings.getAttribute( getClass().getName() + ".login" );
+                password = settings.getAttribute( getClass().getName() + ".passwd" );
+                settings.removeAttribute( getClass().getName() + ".login" );
+                settings.removeAttribute( getClass().getName() + ".passwd" );
+                storeLogin = username != null;
+            }
+            catch (SettingStoreException e) {
+                log.warn( "", e );
+            } 
         }
 
         
         public LoginForm setShowRegisterLink( boolean showRegisterLink ) {
             this.showRegisterLink = showRegisterLink;
             return this;
+        }
+        
+        public LoginForm setShowStoreCheck( boolean showStoreCheck ) {
+            this.showStoreCheck = showStoreCheck;
+            return this;
+        }
+        
+        public void setShowLostLink( boolean showLostLink ) {
+            this.showLostLink = showLostLink;
         }
 
 
@@ -155,22 +195,53 @@ public class LoginPanel
                     .margins( (Integer)panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
-                    .setField( new StringFormField() ).create().setFocus();
+                    .setField( new StringFormField() )
+                    .setLabel( i18n.get( "username" ) ).setToolTipText( i18n.get( "usernameTip" ) )
+                    .create().setFocus();
             // password
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "password", password ) )
-                    .setField( new StringFormField( Style.PASSWORD ) ).create();
+                    .setField( new StringFormField( Style.PASSWORD ) ).setLabel( i18n.get( "password" ) )
+                    .create();
+
+            // store login
+            if (showStoreCheck) {
+                new FormFieldBuilder( body, new PlainValuePropertyAdapter( "store", storeLogin ) )
+                        .setField( new CheckboxFormField() )
+                        .setLabel( i18n.get( "storeLogin" ) ).setToolTipText( i18n.get( "storeLoginTip" ) )
+                        .create();
+                
+            }
             // btn
-            loginBtn = site.getToolkit().createButton( body, "ANMELDEN", SWT.PUSH );
+            loginBtn = site.getToolkit().createButton( body, i18n.get( "login" ), SWT.PUSH );
+            loginBtn.setEnabled( username != null );
             loginBtn.addSelectionListener( new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent ev ) {
                     login( username, password );
+                    if (storeLogin) {
+                        storeLogin( username, password );
+                    }
                 }
             });
 
+            Composite links = null;
+            if (showLostLink) {
+                links = panelSite.toolkit().createComposite( body );
+                Link lnk = panelSite.toolkit().createLink( links, i18n.get( "lost" ) );
+                lnk.setToolTipText( i18n.get( "lostTip" ) );
+                lnk.addSelectionListener( new SelectionAdapter() {
+                    public void widgetSelected( SelectionEvent ev ) {
+                        if (username != null && username.length() > 0) {
+                            sendNewPassword( username );
+                        }
+                    }
+                });
+            }
+
             if (showRegisterLink) {
-                Label registerLnk = panelSite.toolkit().createLink( body, "Als Nutzer registrieren..." );
-                registerLnk.addMouseListener( new MouseAdapter() {
-                    public void mouseUp( MouseEvent ev ) {
+                links = links != null ? links : panelSite.toolkit().createComposite( body );
+                Link registerLnk = panelSite.toolkit().createLink( links, i18n.get( "register" ) );
+                registerLnk.addSelectionListener( new SelectionAdapter() {
+                    public void widgetSelected( SelectionEvent e ) {
                         context.openPanel( RegisterPanel.ID );
                     }
                 });
@@ -179,14 +250,18 @@ public class LoginPanel
             // listener
             site.addFieldListener( fieldListener = new IFormFieldListener() {
                 public void fieldChange( FormFieldEvent ev ) {
-                    if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "username" ) ) {
+                    if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "store" ) ) {
+                        storeLogin = ev.getNewValue();
+                    }
+                    else if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "username" ) ) {
                         username = ev.getNewValue();
                     }
                     else if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "password" ) ) {
                         password = ev.getNewValue();
                     }
                     if (loginBtn != null && !loginBtn.isDisposed()) {
-                        loginBtn.setEnabled( username.length() > 0 && password.length() > 0 );
+                        loginBtn.setEnabled( username != null && username.length() > 0 
+                                && password != null && password.length() > 0 );
                     }
                 }
             });
@@ -219,6 +294,37 @@ public class LoginPanel
                 return false;
             }
         }
+
+
+        protected void sendNewPassword( String name ) {
+            UserRepository repo = UserRepository.instance();
+            User umuser = repo.findUser( name );
+            if (umuser != null) {
+                try {
+                    IUndoableOperation op = new NewPasswordOperation( umuser );
+                    OperationSupport.instance().execute( op, true, false );
+                }
+                catch (ExecutionException e) {
+                    log.warn( "", e );
+                }
+            }
+            else {
+                panelSite.setStatus( new Status( IStatus.WARNING, UmPlugin.ID, i18n.get( "noSuchUser", name ) ) );
+            }
+        }
+
+
+        protected void storeLogin( final String name, final String passwd ) {
+            try {
+                ISettingStore settings = RWT.getSettingStore();
+                settings.setAttribute( getClass().getName() + ".login", name );
+                settings.setAttribute( getClass().getName() + ".passwd", passwd );
+            }
+            catch (SettingStoreException e) {
+                log.warn( "", e );
+            }
+        }
+        
     }        
         
 }

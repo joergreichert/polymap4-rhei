@@ -16,9 +16,11 @@ package org.polymap.rhei.batik.toolkit;
 
 import java.util.EventListener;
 
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.ui.forms.widgets.Section;
@@ -77,10 +79,21 @@ public interface IPanelToolkit {
     }
     
     
-    public Label createLink( Composite parent, String text, int... styles );
+    public Link createLink( Composite parent, String text, int... styles );
 
     public Button createButton( Composite parent, String text, int... styles );
 
+    
+    /**
+     * Creates a new {@link Composite} under the given parent.
+     * <p/>
+     * The newly created Composite has a {@link FillLayout}. Caller may change this
+     * as needed but should keep margins and spacing.
+     * 
+     * @param parent
+     * @param styles
+     * @return Newly created Composite.
+     */
     public Composite createComposite( Composite parent, int... styles );
 
     public Section createSection( Composite parent, String title, int... styles );
