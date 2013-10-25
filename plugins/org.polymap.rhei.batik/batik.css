@@ -178,6 +178,9 @@ Button[PUSH].mosaic-case-discard, Button[PUSH]:selected.mosaic-case-discard {
 Button[PUSH]:hover.mosaic-case-discard {
   background-color: #9c1e13;
 }
+Button[PUSH]:disabled.mosaic-case-submit, Button[TOGGLE]:disabled.mosaic-case-submit {
+  opacity: 0.3;
+}
 /*Toolbar-Button*/
 Button[TOGGLE].mosaic-case-toolbar, Button[TOGGLE].mosaic-case-toolbar:selected:hover {
   color: #ffffff;
