@@ -83,6 +83,11 @@ public class UserRepository
     }
 
     
+    public void deleteUser( User user ) {
+        provider.deleteUser( user );
+    }
+
+
     public User findUser( String username ) {
         return provider.findUser( username );
     }

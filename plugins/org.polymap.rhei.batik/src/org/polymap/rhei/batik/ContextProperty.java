@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik;
 
+import org.polymap.core.runtime.event.EventFilter;
+
 /**
  * This interface allows to access an {@link IAppContext} property. Instances are
  * automatically injected into objects of type {@link IPanel} when initialized.
@@ -35,4 +37,7 @@ public interface ContextProperty<T> {
     
     public String getScope();
 
+    public void addListener( Object annotated, EventFilter<PropertyAccessEvent>... filters );
+
+    public boolean removeListener( Object annotated );
 }

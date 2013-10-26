@@ -39,6 +39,8 @@ public interface UserRepositorySPI {
 
     public User newUser();
 
+    public void deleteUser( User user );
+
     /**
      * 
      *

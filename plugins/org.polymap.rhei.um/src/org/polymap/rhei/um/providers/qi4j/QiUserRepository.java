@@ -114,6 +114,12 @@ public class QiUserRepository
 
 
     @Override
+    public void deleteUser( User user ) {
+        removeEntity( (QiUser)user );
+    }
+
+
+    @Override
     public User findUser( String username ) {
         BooleanExpression expr = eq( templateFor( QiUser.class )._username(), username );
         Query<QiUser> query = findEntities( QiUser.class, expr, 0, 2 );
