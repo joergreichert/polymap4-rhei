@@ -155,7 +155,7 @@ Button[TOGGLE]:selected:hover {
 Button[TOGGLE]:disabled:hover {
   background-color: #216292;
 }
-Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled {
+Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled, Button[TOGGLE].mosaic-case-toolbar:disabled {
   background-color: #edf3f7;
 }
 /*Submit und Cancel Buttons*/
