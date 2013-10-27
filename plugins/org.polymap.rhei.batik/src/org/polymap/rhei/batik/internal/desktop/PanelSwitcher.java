@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
-import static org.polymap.rhei.batik.PanelFilters.withPrefix;
+import static org.polymap.rhei.batik.Panels.withPrefix;
 
 import java.util.ArrayList;
 import java.util.List;

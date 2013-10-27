@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
-import static org.polymap.rhei.batik.PanelFilters.withPrefix;
+import static org.polymap.rhei.batik.Panels.withPrefix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +86,8 @@ public class DesktopAppManager
     private IBrowserHistory             browserHistory;
 
     private UserPreferences             userPrefs;
+
+    private PanelNavigator              panelNavigator;
     
 
     @Override
@@ -98,8 +100,7 @@ public class DesktopAppManager
         actionBar = new DesktopActionBar( context, tk );
 //        actionBar.add( new SearchField( ), PLACE.SEARCH );
         actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
-        actionBar.add( new PanelNavigator( this ), PLACE.PANEL_NAVI );
-        actionBar.add( new PanelSwitcher( this ), PLACE.PANEL_SWITCHER );
+        actionBar.add( panelNavigator = new PanelNavigator( this ), PLACE.PANEL_NAVI );
         actionBar.add( userPrefs = new UserPreferences( this ), PLACE.USER_PREFERENCES );
 
         // mainWindow
@@ -374,6 +375,7 @@ public class DesktopAppManager
         @Override
         public void setTitle( String title ) {
             this.title = title;
+            panelNavigator.updateBreadcrumb();
         }
 
         @Override

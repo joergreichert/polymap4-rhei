@@ -31,6 +31,7 @@ import org.polymap.rhei.batik.internal.Messages;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
+@SuppressWarnings("restriction")
 public class LogoutAction
         extends Action {
 

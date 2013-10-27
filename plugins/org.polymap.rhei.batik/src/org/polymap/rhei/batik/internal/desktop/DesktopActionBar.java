@@ -25,12 +25,10 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.jface.action.IContributionItem;
 
-import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 
@@ -63,7 +61,6 @@ class DesktopActionBar {
     public DesktopActionBar( IAppContext context, IPanelToolkit tk ) {
         this.context = context;
         this.tk = tk;
-        context.addEventHandler( this );
     }
 
 
@@ -131,11 +128,6 @@ class DesktopActionBar {
         }
 
         return contents;
-    }
-
-
-    @EventHandler(display=true)
-    protected void panelChanged( PanelChangeEvent ev ) {
     }
 
 }

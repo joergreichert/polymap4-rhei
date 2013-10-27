@@ -23,7 +23,7 @@ import com.google.common.base.Predicates;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelFilters {
+public class Panels {
 
     /**
      *

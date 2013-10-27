@@ -48,7 +48,7 @@ import org.polymap.rhei.batik.internal.Messages;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class UserPreferences
+class UserPreferences
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( UserPreferences.class );

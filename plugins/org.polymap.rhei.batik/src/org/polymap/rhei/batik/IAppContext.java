@@ -55,7 +55,7 @@ public interface IAppContext {
     /**
      * All direct children of the given path.
      *
-     * @see PanelFilters
+     * @see Panels
      * @param path
      */
     public Iterable<IPanel> findPanels( Predicate<IPanel> filter );
