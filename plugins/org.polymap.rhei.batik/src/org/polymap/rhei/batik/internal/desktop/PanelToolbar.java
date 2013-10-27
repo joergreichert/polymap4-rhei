@@ -26,6 +26,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -73,8 +74,9 @@ class PanelToolbar
 
     @Override
     public void fill( Composite parent ) {
-        this.contents = parent;
+        contents = parent;
         contents.setLayout( new FormLayout() );
+        new Label( contents, SWT.NONE ).setText( "Toolbar" );
 
         // fire pending events
         for (PanelChangeEvent ev : pendingStartEvents) {

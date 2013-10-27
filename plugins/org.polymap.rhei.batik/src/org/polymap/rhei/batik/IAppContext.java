@@ -16,6 +16,8 @@ package org.polymap.rhei.batik;
 
 import com.google.common.base.Predicate;
 
+import org.eclipse.jface.action.IAction;
+
 import org.polymap.core.runtime.event.EventFilter;
 
 /**
@@ -29,6 +31,16 @@ import org.polymap.core.runtime.event.EventFilter;
  */
 public interface IAppContext {
 
+    /**
+     * The name of the currently logged in user. The username is displayed in the the
+     * header of the application or any other status area of the application layout.
+     * 
+     * @param username
+     */
+    public void setUserName( String username );
+    
+    public void addPreferencesAction( IAction action );
+    
     /**
      *
      *

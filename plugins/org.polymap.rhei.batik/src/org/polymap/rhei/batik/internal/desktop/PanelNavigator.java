@@ -50,7 +50,7 @@ import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelNavigator
+class PanelNavigator
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelNavigator.class );

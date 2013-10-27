@@ -49,7 +49,7 @@ import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelSwitcher
+class PanelSwitcher
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelSwitcher.class );

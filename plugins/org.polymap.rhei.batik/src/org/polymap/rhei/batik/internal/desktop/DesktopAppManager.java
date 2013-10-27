@@ -84,9 +84,9 @@ public class DesktopAppManager
     private IPanel                      activePanel;
 
     private IBrowserHistory             browserHistory;
-    
-//    private Map<PanelIdentifier,Composite> activatedPanels = new HashMap();
 
+    private UserPreferences             userPrefs;
+    
 
     @Override
     public Window initMainWindow( Display display ) {
@@ -96,10 +96,11 @@ public class DesktopAppManager
         
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
-        actionBar.add( new SearchField( ), PLACE.SEARCH );
+//        actionBar.add( new SearchField( ), PLACE.SEARCH );
         actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
         actionBar.add( new PanelNavigator( this ), PLACE.PANEL_NAVI );
         actionBar.add( new PanelSwitcher( this ), PLACE.PANEL_SWITCHER );
+        actionBar.add( userPrefs = new UserPreferences( this ), PLACE.USER_PREFERENCES );
 
         // mainWindow
         mainWindow = new DesktopAppWindow( this ) {
@@ -291,6 +292,16 @@ public class DesktopAppManager
      */
     class DesktopAppContext
             extends DefaultAppContext {
+
+        @Override
+        public void setUserName( String username ) {
+            userPrefs.setUsername( username );
+        }
+
+        @Override
+        public void addPreferencesAction( IAction action ) {
+            userPrefs.addMenuContribution( action );
+        }
 
         @Override
         public IPanel openPanel( PanelIdentifier panelId ) {

@@ -119,6 +119,10 @@ abstract class DesktopAppWindow
             case IStatus.OK: {
                 getStatusLineManager().setErrorMessage( null ); 
                 getStatusLineManager().setMessage( null );
+                if (status != Status.OK_STATUS && status.getMessage() != null) {
+                    getStatusLineManager().setMessage( BatikPlugin.instance().imageForName( "resources/icons/ok-status.gif" ), 
+                            status.getMessage() );
+                }
                 break;
             }
             case IStatus.ERROR: {

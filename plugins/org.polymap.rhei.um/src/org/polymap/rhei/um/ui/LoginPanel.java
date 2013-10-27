@@ -159,10 +159,10 @@ public class LoginPanel
 
             try {
                 ISettingStore settings = RWT.getSettingStore();
-                username = settings.getAttribute( getClass().getName() + ".login" );
-                password = settings.getAttribute( getClass().getName() + ".passwd" );
-                settings.removeAttribute( getClass().getName() + ".login" );
-                settings.removeAttribute( getClass().getName() + ".passwd" );
+                username = settings.getAttribute( "org.polymap.rhei.um.LoginForm.login" );
+                password = settings.getAttribute( "org.polymap.rhei.um.LoginForm.passwd" );
+                settings.removeAttribute( "org.polymap.rhei.um.LoginForm.login" );
+                settings.removeAttribute( "org.polymap.rhei.um.LoginForm.passwd" );
                 storeLogin = username != null;
             }
             catch (SettingStoreException e) {
@@ -317,8 +317,8 @@ public class LoginPanel
         protected void storeLogin( final String name, final String passwd ) {
             try {
                 ISettingStore settings = RWT.getSettingStore();
-                settings.setAttribute( getClass().getName() + ".login", name );
-                settings.setAttribute( getClass().getName() + ".passwd", passwd );
+                settings.setAttribute( "org.polymap.rhei.um.LoginForm.login", name );
+                settings.setAttribute( "org.polymap.rhei.um.LoginForm.passwd", passwd );
             }
             catch (SettingStoreException e) {
                 log.warn( "", e );

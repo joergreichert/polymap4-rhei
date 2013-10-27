@@ -21,13 +21,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.jface.action.IContributionItem;
 
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelChangeEvent;
@@ -35,7 +35,7 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 
 /**
- * The mail action bar displayed at the top of the main window.
+ * The main action bar displayed at the top of the main window.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -47,7 +47,8 @@ class DesktopActionBar {
         SEARCH,
         PANEL_TOOLBAR,
         PANEL_NAVI,
-        PANEL_SWITCHER
+        PANEL_SWITCHER,
+        USER_PREFERENCES
     }
 
     // instance *******************************************
@@ -73,42 +74,60 @@ class DesktopActionBar {
 
     public Composite createContents( Composite parent ) {
         Composite contents = tk.createComposite( parent );
-        FormLayout layout = new FormLayout();
-        layout.spacing = 10;
-        contents.setLayout( layout );
+        contents.setLayout( FormLayoutFactory.defaults().spacing( 10 ).create() );
 
+        Composite left = null;
+        Composite right = null;
+        
+        // preferences
+        IContributionItem prefs = items.get( PLACE.USER_PREFERENCES );
+        if (prefs != null) {
+            Composite container = new Composite( contents, SWT.BORDER );
+            prefs.fill( container );
+            container.setLayoutData( FormDataFactory.filled().left( 100, -200 ).right( 100 ).create() );
+            right = container;
+        }
+        
         // search
         IContributionItem search = items.get( PLACE.SEARCH );
-        Composite searchComposite = null;
         if (search != null) {
-            searchComposite = new Composite( contents, SWT.NONE );
-//            search.fill( searchComposite );
-            searchComposite.setLayoutData( FormDataFactory.filled().left( 80 ).right( 100 ).create() );
+            Composite container = new Composite( contents, SWT.NONE );
+            search.fill( container );
+            container.setLayoutData( right != null
+                    ? FormDataFactory.filled().left( right, -300 ).right( right ).create()
+                    : FormDataFactory.filled().left( 100, -300 ).right( 100 ).create() );
+            right = container;
         }
+        
         // panel toolbar
         IContributionItem tb = items.get( PLACE.PANEL_TOOLBAR );
-        Composite tbComposite = null;
         if (tb != null) {
-            tbComposite = new Composite( contents, SWT.NONE );
-//            tb.fill( tbComposite );
-            tbComposite.setLayoutData( searchComposite != null
-                    ? FormDataFactory.filled().left( 60 ).right( searchComposite ).create()
-                    : FormDataFactory.filled().left( 80 ).right( 100 ).create());
+            Composite container = new Composite( contents, SWT.BORDER );
+            tb.fill( container );
+            container.setLayoutData( right != null
+                    ? FormDataFactory.filled().left( right, -150 ).right( right ).create()
+                    : FormDataFactory.filled().left( 100, -150 ).right( 100 ).create() );
+            right = container;
         }
-        // panel switcher
-        IContributionItem switcher = items.get( PLACE.PANEL_SWITCHER );
-        Composite switcherComposite = null;
-        if (switcher != null) {
-            switcherComposite = new Composite( contents, SWT.NONE );
-            switcher.fill( switcherComposite );
-            switcherComposite.setLayoutData( FormDataFactory.filled().left( -1 ).right( tbComposite ).create() );
-        }
+
         // panel navi
         IContributionItem navi = items.get( PLACE.PANEL_NAVI );
         if (navi != null) {
-            Composite naviComposite = new Composite( contents, SWT.NONE );
-            navi.fill( naviComposite );
-            naviComposite.setLayoutData( FormDataFactory.filled().right( switcherComposite ).create() );
+            Composite container = new Composite( contents, SWT.NONE );
+            navi.fill( container );
+            container.setLayoutData( FormDataFactory.filled().right( -1 ).create() );
+            left = container;
+        }
+        
+        // panel switcher
+        IContributionItem switcher = items.get( PLACE.PANEL_SWITCHER );
+        if (switcher != null) {
+            Composite container = new Composite( contents, SWT.NONE );
+            switcher.fill( container );
+            container.setLayoutData( right != null
+                    ? FormDataFactory.filled().left( left ).right( -1 ).create()
+                    : FormDataFactory.filled().left( 0 ).right( -1 ).create());
+            left = container;
         }
 
         return contents;
