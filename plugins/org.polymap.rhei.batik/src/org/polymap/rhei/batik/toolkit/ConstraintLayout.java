@@ -325,8 +325,8 @@ public class ConstraintLayout
                 int index = 0;
                 for (LayoutElement elm : column) {
                     if (prev != null) {
-                        PriorityConstraint prevPrio = prev.constraint( PriorityConstraint.class, new PriorityConstraint( 0, 0 ) );
-                        PriorityConstraint elmPrio = elm.constraint( PriorityConstraint.class, new PriorityConstraint( 0, 0 ) );
+                        PriorityConstraint prevPrio = prev.constraint( PriorityConstraint.class, new PriorityConstraint( 0 ) );
+                        PriorityConstraint elmPrio = elm.constraint( PriorityConstraint.class, new PriorityConstraint( 0 ) );
                         
                         if (prevPrio.getValue() < elmPrio.getValue()) {
                             column.set( index-1, elm );
@@ -369,8 +369,8 @@ public class ConstraintLayout
             LayoutElement prev = null;
             for (LayoutElement elm : heightSortedElms) {
                 if (prev != null) {
-                    PriorityConstraint prevPrio = prev.constraint( PriorityConstraint.class, new PriorityConstraint( 0, 0 ) );
-                    PriorityConstraint elmPrio = elm.constraint( PriorityConstraint.class, new PriorityConstraint( 0, 0 ) );
+                    PriorityConstraint prevPrio = prev.constraint( PriorityConstraint.class, new PriorityConstraint( 0 ) );
+                    PriorityConstraint elmPrio = elm.constraint( PriorityConstraint.class, new PriorityConstraint( 0 ) );
 
                     if (prevPrio.getValue() > elmPrio.getValue()) {
                         result += elmPercent;
