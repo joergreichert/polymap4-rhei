@@ -27,8 +27,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.ContributionItem;
@@ -44,13 +42,14 @@ import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
+import org.polymap.rhei.batik.Panels;
 
 /**
  *
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelNavigator
+class PanelNavigator
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelNavigator.class );
@@ -63,8 +62,6 @@ public class PanelNavigator
 
     private Composite                 breadcrumb;
 
-    private Composite                 panelSwitcher;
-
     private IPanel                    activePanel;
 
 
@@ -73,7 +70,7 @@ public class PanelNavigator
 
         appManager.getContext().addEventHandler( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
-                return input.getType() == TYPE.ACTIVATED;
+                return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.ACTIVATED;
             }
         });
     }
@@ -86,12 +83,8 @@ public class PanelNavigator
 
         // breadcrumb
         breadcrumb = new Composite( parent, SWT.NONE );
-        breadcrumb.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
-        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().fill( false ).create() );
-
-        //
-        panelSwitcher = new Composite( parent, SWT.NONE );
-        panelSwitcher.setLayoutData( FormDataFactory.filled().left( 50 ).create() );
+        breadcrumb.setLayoutData( FormDataFactory.filled().create() );
+        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 0, 0 ).fill( false ).create() );
 
         // fire pending events
         for (PanelChangeEvent ev : pendingStartEvents) {
@@ -102,7 +95,10 @@ public class PanelNavigator
 
 
     protected void updateBreadcrumb() {
-        assert activePanel != null;
+        // when called from DesktopPanelSite
+        if (activePanel == null) {
+            return;
+        }
         // clear
         for (Control control : breadcrumb.getChildren()) {
             control.dispose();
@@ -123,18 +119,13 @@ public class PanelNavigator
         });
         
         // path
-        PanelPath path = activePanel.getSite().getPath(); //.removeLast( 1 );
+        PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
         while (path.size() > 1) {
             final IPanel panel = appManager.getContext().getPanel( path );
 
-            Label separator = new Label( breadcrumb, SWT.VERTICAL );
-            separator.setText( "|" );
-            separator.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-            
             Button btn = new Button( breadcrumb, SWT.PUSH );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-            
             btn.setText( panel.getSite().getTitle() );
             //btn.setToolTipText( "Go to " + path.segment( i ) );
 
@@ -146,9 +137,41 @@ public class PanelNavigator
                     }
                 }
             });
+
+//            Label separator = new Label( breadcrumb, SWT.VERTICAL );
+//            separator.setText( " " );
+//            separator.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            
             path = path.removeLast( 1 );
         }
+        
+        // switcher
+        PanelPath prefix = activePanel.getSite().getPath().removeLast( 1 );
+        for (final IPanel panel : appManager.getContext().findPanels( Panels.withPrefix( prefix ) )) {
+            final Button btn = new Button( breadcrumb, SWT.TOGGLE );
+            btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            btn.setText( "" + panel.getSite().getTitle() + "" );
+            btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+            
+            if (panel.equals( activePanel )) {
+                btn.setSelection( true );
+                btn.addSelectionListener( new SelectionAdapter() {
+                    public void widgetSelected( SelectionEvent ev ) {
+                        btn.setSelection( true );
+                    }
+                });
+            }
+            else {
+                btn.addSelectionListener( new SelectionAdapter() {
+                    public void widgetSelected( SelectionEvent ev ) {
+                        appManager.activatePanel( panel.id() );
+                    }
+                });
+            }
+        }
+        
         breadcrumb.layout( true );
+        contents.layout( true );
     }
 
 

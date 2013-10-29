@@ -93,10 +93,10 @@ public class AddressForm
                 .setValidator( new NotNullValidator() )
                 .create();  //.setLayoutData( FormDataFactory.filled().left( 25 ).create() );
         
-        // 
-        prop = address.country();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create();
+//        // country 
+//        prop = address.country();
+//        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+//                .setValidator( new NotNullValidator() ).create();
     }
 
 }

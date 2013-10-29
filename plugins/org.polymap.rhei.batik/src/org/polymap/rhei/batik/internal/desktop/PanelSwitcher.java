@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
-import static org.polymap.rhei.batik.PanelFilters.withPrefix;
+import static org.polymap.rhei.batik.Panels.withPrefix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelSwitcher
+class PanelSwitcher
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelSwitcher.class );

@@ -34,6 +34,8 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.deferred.DeferredContentProvider;
 import org.eclipse.jface.viewers.deferred.SetModel;
 
+import org.polymap.core.ui.SelectionAdapter;
+
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -65,7 +67,7 @@ public class UsersTableViewer
         getTable().setHeaderVisible( true );
         getTable().setLayout( new TableLayout() );
 
-        TableViewerColumn vcolumn = new TableViewerColumn( this, SWT.LEFT );
+        TableViewerColumn vcolumn = new TableViewerColumn( this, SWT.CENTER );
         vcolumn.getColumn().setResizable( true );
         vcolumn.getColumn().setText( "Name" );
         vcolumn.setLabelProvider( new ColumnLabelProvider() {
@@ -96,4 +98,9 @@ public class UsersTableViewer
         model.addAll( ImmutableList.copyOf( content ) );
     }
 
+    
+    public User getSelectedUser() {
+        return new SelectionAdapter( getSelection() ).first( User.class );
+    }
+    
 }

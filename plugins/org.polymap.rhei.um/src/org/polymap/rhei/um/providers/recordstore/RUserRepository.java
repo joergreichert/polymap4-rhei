@@ -94,6 +94,13 @@ public class RUserRepository
 
 
     @Override
+    public void deleteUser( User user ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+
+    @Override
     public void commit() {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );

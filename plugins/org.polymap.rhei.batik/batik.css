@@ -155,7 +155,7 @@ Button[TOGGLE]:selected:hover {
 Button[TOGGLE]:disabled:hover {
   background-color: #216292;
 }
-Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled {
+Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled, Button[TOGGLE].mosaic-case-toolbar:disabled {
   background-color: #edf3f7;
 }
 /*Submit und Cancel Buttons*/
@@ -202,8 +202,8 @@ Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
   border: none;
 }
 Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH]:hover.atlas-navi {
-  color: #216292;
-  background-color: #ffffff;
+  color: #222222;  /*color: #216292;*/
+  background-color: #d3d3d3;
   background-image: none;
   border: none;
 }

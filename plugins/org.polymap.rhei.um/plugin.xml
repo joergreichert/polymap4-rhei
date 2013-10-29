@@ -11,6 +11,10 @@
             class="org.polymap.rhei.um.ui.LoginPanel"
             id="org.polymap.rhei.um.LoginPanel">
       </panel>
+      <panel
+            class="org.polymap.rhei.um.ui.UserSettingsPanel"
+            id="org.polymap.rhei.um.UserSettingsPanel">
+      </panel>
    </extension>
    <extension
          id="org.polymap.rhei.um.LoginModule"

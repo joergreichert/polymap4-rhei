@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.internal;
 
 import org.eclipse.rwt.RWT;
 
+import org.polymap.core.runtime.IMessages;
 import org.polymap.core.runtime.MessagesImpl;
 
 import org.polymap.rhei.batik.BatikPlugin;
@@ -36,6 +37,10 @@ public class Messages {
         // prevent instantiation
     }
 
+    public static IMessages forPrefix( String prefix ) {
+        return instance.forPrefix( prefix );
+    }
+    
     public static String get( String key, Object... args ) {
         return instance.get( key, args );
     }

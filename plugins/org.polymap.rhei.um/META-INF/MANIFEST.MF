@@ -15,7 +15,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.polymap.rhei.data;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.polymap.rhei.um,
+Export-Package: javax.mail,
+ javax.mail.event,
+ javax.mail.internet,
+ javax.mail.search,
+ javax.mail.util,
+ org.apache.commons.mail,
+ org.polymap.rhei.um,
  org.polymap.rhei.um.email,
  org.polymap.rhei.um.operations,
  org.polymap.rhei.um.ui

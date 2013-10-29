@@ -14,6 +14,11 @@
  */
 package org.polymap.rhei.batik.internal;
 
+import java.util.Arrays;
+
+import com.google.common.base.Predicates;
+
+import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.batik.ContextProperty;
@@ -61,6 +66,23 @@ public class ContextPropertyInstance
     @Override
     public String getScope() {
         return scope;
+    }
+
+    @Override
+    public void addListener( Object annotated, final EventFilter... filters ) {
+        EventManager.instance().subscribe( annotated, new EventFilter<PropertyAccessEvent>() {
+            public boolean apply( PropertyAccessEvent input ) {
+                ContextProperty src = input.getSource();
+                return src.getDeclaredType().equals( getDeclaredType() )
+                        && src.getScope().equals( getScope() )
+                        && Predicates.and( Arrays.asList( (EventFilter<PropertyAccessEvent>[])filters ) ).apply( input );
+            }
+        });
+    }
+
+    @Override
+    public boolean removeListener( Object annotated ) {
+        return EventManager.instance().unsubscribe( annotated );
     }
 
     @Override
