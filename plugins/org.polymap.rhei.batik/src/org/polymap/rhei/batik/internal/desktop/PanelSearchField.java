@@ -38,15 +38,15 @@ import org.polymap.rhei.batik.BatikPlugin;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class SearchField
+class PanelSearchField
         extends ContributionItem {
 
-    private static Log log = LogFactory.getLog( SearchField.class );
+    private static Log log = LogFactory.getLog( PanelSearchField.class );
 
     private Text            text;
 
 
-    public SearchField() {
+    public PanelSearchField() {
         super();
     }
 

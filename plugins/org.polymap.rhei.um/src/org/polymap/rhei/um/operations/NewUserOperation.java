@@ -83,8 +83,9 @@ public class NewUserOperation
         
             String salu = user.salutation().get() != null ? user.salutation().get() : "";
             String header = (salu.equalsIgnoreCase( "Herr" ) ? "r " : " ") + salu + " " + user.name().get();
-            Email email = new SimpleEmail()
-                    .addTo( username )
+            Email email = new SimpleEmail();
+            email.setCharset( "ISO-8859-1" );
+            email.addTo( username )
                     .setSubject( i18n.get( "emailSubject") )
                     .setMsg( i18n.get( "email", header, username, password ) );
             

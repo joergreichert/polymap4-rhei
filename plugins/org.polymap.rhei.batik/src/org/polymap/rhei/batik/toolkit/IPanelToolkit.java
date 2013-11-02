@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.ui.forms.widgets.Section;
@@ -50,6 +51,9 @@ public interface IPanelToolkit {
      * href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>
      * with some <a href="https://github.com/sirthias/pegdown">extensions</a> inside
      * the text.
+     * <p/>
+     * Links can be used as: <pre>[Link text](@command/panelId)</pre> Currently the
+     * command <code>open</code> ist supported which opens the panel for the given panelId.
      * 
      * @param parent
      * @param text
@@ -116,5 +120,7 @@ public interface IPanelToolkit {
      * @see #createPanelSection(Composite, String, int...)
      */
     public IPanelSection createPanelSection( ILayoutContainer parent, String title, int... styles );
+
+    public List createList( Composite parent, int... styles );
 
 }

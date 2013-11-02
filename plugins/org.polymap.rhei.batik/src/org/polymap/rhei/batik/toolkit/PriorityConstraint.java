@@ -17,7 +17,6 @@ package org.polymap.rhei.batik.toolkit;
 import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 
-
 /**
  * The priority of an element inside a container. Higher priorities are displayed
  * more eye-catching. In most cases this means that higher priorities are displayed
@@ -29,8 +28,8 @@ public class PriorityConstraint
     private int         value = -1;
 
 
-    public PriorityConstraint( int value, int priority ) {
-        super( priority );
+    public PriorityConstraint( int value ) {
+        super( 0 );
         this.value = value;
     }
 

@@ -188,9 +188,10 @@ public abstract class DefaultAppContext
 
 
     @Override
-    public void propagate( Object panel ) {
+    public <T> T propagate( T panel ) {
         assert panel != null: "Argument is null";
         new PanelContextInjector( panel, this ).run();
+        return panel;
     }
     
     

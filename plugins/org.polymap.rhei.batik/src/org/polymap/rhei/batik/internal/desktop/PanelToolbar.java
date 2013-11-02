@@ -23,18 +23,17 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.layout.RowDataFactory;
+import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
@@ -59,7 +58,7 @@ class PanelToolbar
     private Composite                   contents;
 
     private List<PanelChangeEvent>      pendingStartEvents = new ArrayList();
-
+    
 
     public PanelToolbar( DesktopAppManager appManager ) {
         this.appManager = appManager;
@@ -75,8 +74,8 @@ class PanelToolbar
     @Override
     public void fill( Composite parent ) {
         contents = parent;
-        contents.setLayout( new FormLayout() );
-        new Label( contents, SWT.NONE ).setText( "Toolbar" );
+        contents.setLayoutData( FormDataFactory.filled().create() );
+        contents.setLayout( RowLayoutFactory.fillDefaults().margins( 0, 0 ).fill( false ).create() );
 
         // fire pending events
         for (PanelChangeEvent ev : pendingStartEvents) {
@@ -100,35 +99,34 @@ class PanelToolbar
         }
         // open
         if (ev.getType() == TYPE.ACTIVATED) {
-            ToolBar tb = new ToolBar( contents, SWT.BORDER /*| SWT.FLAT*/ );
-            tb.setLayoutData( FormDataFactory.filled().height( 28 ).create() );
-
             DesktopPanelSite panelSite = (DesktopPanelSite)ev.getSource().getSite();
             for (Object tool : panelSite.getTools()) {
-                ToolItem item = null;
+                Button btn = null;
 
                 // IAction
                 if (tool instanceof IAction) {
                     final IAction action = (IAction)tool;
                     switch (action.getStyle()) {
                         case IAction.AS_CHECK_BOX:
-                            item = new ToolItem( tb, SWT.CHECK );
+                            btn = new Button( contents, SWT.CHECK );
                             break;
                         default:
-                            item = new ToolItem( tb, SWT.PUSH );
+                            btn = new Button( contents, SWT.PUSH );
                     }
-                    item.setData( "source", tool );
+                    btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+                    btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-toolbar"  );
+                    btn.setData( "source", tool );
                     if (action.getText() != null) {
-                        item.setText( action.getText() );
+                        btn.setText( action.getText() );
                     }
                     if (action.getToolTipText() != null) {
-                        item.setToolTipText( action.getToolTipText() );
+                        btn.setToolTipText( action.getToolTipText() );
                     }
                     ImageDescriptor image = action.getImageDescriptor();
                     if (image != null) {
-                        item.setImage( BatikPlugin.instance().imageForDescriptor( image, action.getText() + "_icon" ) );
+                        btn.setImage( BatikPlugin.instance().imageForDescriptor( image, action.getText() + "_icon" ) );
                     }
-                    item.addSelectionListener( new SelectionAdapter() {
+                    btn.addSelectionListener( new SelectionAdapter() {
                         public void widgetSelected( SelectionEvent se ) {
                             action.run();
                         }
@@ -138,14 +136,14 @@ class PanelToolbar
                     throw new RuntimeException( "Panel toolbar item type: " + tool );
                 }
             }
-            tb.layout( true );
+            contents.layout();
 //            contents.layout( true );
 //            contents.getParent().layout( true );
-            Polymap.getSessionDisplay().asyncExec( new Runnable() {
-                public void run() {
-                    contents.layout( true );
-                }
-            });
+//            Polymap.getSessionDisplay().asyncExec( new Runnable() {
+//                public void run() {
+//                    contents.layout( true );
+//                }
+//            });
 
         }
     }

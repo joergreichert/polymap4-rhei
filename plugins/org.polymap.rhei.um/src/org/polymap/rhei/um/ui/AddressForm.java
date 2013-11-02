@@ -21,6 +21,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.jface.layout.RowDataFactory;
+import org.eclipse.jface.layout.RowLayoutFactory;
+
 import org.polymap.core.runtime.IMessages;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
@@ -67,12 +70,12 @@ public class AddressForm
         
         // street / number
         Composite str = tk.createComposite( body );
-        str.setLayout( new FillLayout( SWT.HORIZONTAL) );
+        str.setLayout( RowLayoutFactory.fillDefaults().pack( true ).create() );  //new FillLayout( SWT.HORIZONTAL) );
 
         Property<String> prop = address.street();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() )
-                .create();  //.setLayoutData( FormDataFactory.filled().right( 75 ).create() );
+                .create().setLayoutData( RowDataFactory.swtDefaults().hint( 380, SWT.DEFAULT ).create() );  //FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )

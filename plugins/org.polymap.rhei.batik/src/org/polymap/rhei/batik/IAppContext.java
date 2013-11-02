@@ -80,6 +80,6 @@ public interface IAppContext {
      *
      * @param panel
      */
-    public void propagate( Object panel );
+    public <T> T propagate( T panel );
     
 }

@@ -19,7 +19,6 @@ import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.internal.cp.Prioritized;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 
-
 /**
  * 
  */
@@ -27,15 +26,9 @@ public abstract class LayoutConstraint
         extends Prioritized
         implements IConstraint<LayoutSolution,PercentScore> {
     
-    private Integer         priority;
-
-    
     public LayoutConstraint( int priority ) {
         super( priority );
     }
-    
-    
-    //protected abstract void layout( Composite composite, List<LayoutConstraint> constraints );
     
 }
 

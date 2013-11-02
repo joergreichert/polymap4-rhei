@@ -63,7 +63,7 @@ public class EmailService {
         if (parts.length < 3 || parts.length > 4) {
             throw new IllegalStateException( "Environment variable wrong: org.polymap.rhei.um.SMTP. Format: <host>|<login>|<passwd>|<from> : " + env );
         }
-        
+
         email.setDebug( true );
         email.setHostName( parts[0] );
         //email.setSmtpPort( 465 );
