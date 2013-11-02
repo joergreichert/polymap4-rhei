@@ -74,7 +74,7 @@ public class PanelContextInjector
                         // set
                         try {
                             f.set( panel, new ContextPropertyInstance( context, (Class<?>)ptype, scope ) );
-                            log.info( "injected: " + f.getName() + " (" + panel.getClass().getSimpleName() + ")" );
+                            log.debug( "injected: " + f.getName() + " (" + panel.getClass().getSimpleName() + ")" );
                             continue;
                         }
                         catch (Exception e) {

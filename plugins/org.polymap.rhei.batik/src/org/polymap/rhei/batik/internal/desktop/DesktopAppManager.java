@@ -98,7 +98,7 @@ public class DesktopAppManager
         
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
-//        actionBar.add( new SearchField( ), PLACE.SEARCH );
+//        actionBar.add( new PanelSearchField( ), PLACE.SEARCH );
         actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
         actionBar.add( panelNavigator = new PanelNavigator( this ), PLACE.PANEL_NAVI );
         actionBar.add( userPrefs = new UserPreferences( this ), PLACE.USER_PREFERENCES );

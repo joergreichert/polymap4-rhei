@@ -36,7 +36,6 @@ import org.eclipse.jface.layout.RowLayoutFactory;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
-
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
@@ -150,7 +149,7 @@ class PanelNavigator
         for (final IPanel panel : appManager.getContext().findPanels( Panels.withPrefix( prefix ) )) {
             final Button btn = new Button( breadcrumb, SWT.TOGGLE );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-            btn.setText( "" + panel.getSite().getTitle() + "" );
+            btn.setText( panel.getSite().getTitle() );
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
             
             if (panel.equals( activePanel )) {

@@ -46,7 +46,7 @@ import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 
 /**
  *
- *
+ * @deprecated
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 class PanelSwitcher

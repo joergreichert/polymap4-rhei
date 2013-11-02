@@ -79,7 +79,7 @@ class DesktopActionBar {
         // preferences
         IContributionItem prefs = items.get( PLACE.USER_PREFERENCES );
         if (prefs != null) {
-            Composite container = new Composite( contents, SWT.BORDER );
+            Composite container = new Composite( contents, SWT.NONE );
             prefs.fill( container );
             container.setLayoutData( FormDataFactory.filled().left( 100, -200 ).right( 100 ).create() );
             right = container;
@@ -102,8 +102,8 @@ class DesktopActionBar {
             Composite container = new Composite( contents, SWT.BORDER );
             tb.fill( container );
             container.setLayoutData( right != null
-                    ? FormDataFactory.filled().left( right, -150 ).right( right ).create()
-                    : FormDataFactory.filled().left( 100, -150 ).right( 100 ).create() );
+                    ? FormDataFactory.filled().left( 50 ).right( 50, 200 ).create()
+                    : FormDataFactory.filled().left( 100, -200 ).right( 100 ).create() );
             right = container;
         }
 
@@ -112,7 +112,7 @@ class DesktopActionBar {
         if (navi != null) {
             Composite container = new Composite( contents, SWT.NONE );
             navi.fill( container );
-            container.setLayoutData( FormDataFactory.filled().right( -1 ).create() );
+            container.setLayoutData( FormDataFactory.filled().right( -1 ).width( 500 ).create() );
             left = container;
         }
         

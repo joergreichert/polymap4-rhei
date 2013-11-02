@@ -16,6 +16,10 @@ package org.polymap.rhei.batik;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.base.Joiner;
+
 /**
  * Identifies an {@link IPanel}. The id can have several parts. Most significant part
  * comes first. This helps to distinguish panels of same type but with different
@@ -25,6 +29,15 @@ import java.util.Arrays;
  */
 public class PanelIdentifier {
 
+    public static final String      SEPARATOR = ".";
+    
+    public static PanelIdentifier parse( String id ) {
+        return new PanelIdentifier( StringUtils.split( id, SEPARATOR ) );
+    }
+    
+    
+    // instance *******************************************
+    
     private String[]            id;
 
 
@@ -63,7 +76,7 @@ public class PanelIdentifier {
 
     @Override
     public String toString() {
-        return Arrays.toString( id );
+        return Joiner.on( SEPARATOR ).join( id );
     }
 
 }

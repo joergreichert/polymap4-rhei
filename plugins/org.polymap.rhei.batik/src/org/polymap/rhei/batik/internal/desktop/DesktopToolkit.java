@@ -35,8 +35,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.rwt.RWT;
@@ -48,6 +50,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import org.polymap.core.runtime.Polymap;
 
+import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
 import org.polymap.rhei.batik.internal.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
@@ -124,22 +127,28 @@ public class DesktopToolkit
             // handle @action/page style links
             if (node.url.startsWith( "@" )) {
                 String id = LinkActionServiceHandler.register( new LinkAction() {
+                    Display display = Polymap.getSessionDisplay();
                     @Override
                     public void linkPressed() throws Exception {
-                        String[] urlParts = StringUtils.split( node.url, "/" );
-                        String command = "open";
-                        String panelId = urlParts[0];
-                        
-                        if (urlParts.length > 1) {
-                            command = urlParts[0].substring( 1 );
-                            panelId = urlParts[1];
-                        }
-                        if ("open".equalsIgnoreCase( command )) {
-                            log.info( command + " : " + panelId );
-                        }
-                        else {
-                            throw new IllegalStateException( "Unknown link command: " + command );
-                        }
+                        display.asyncExec( new Runnable() {
+                            public void run() {
+                                String[] urlParts = StringUtils.split( node.url, "/" );
+                                String command = "open";
+                                String panelId = urlParts[0];
+
+                                if (urlParts.length > 1) {
+                                    command = urlParts[0].substring( 1 );
+                                    panelId = urlParts[1];
+                                }
+                                if ("open".equalsIgnoreCase( command )) {
+                                    log.info( command + " : " + panelId );
+                                    context.openPanel( PanelIdentifier.parse( panelId ) );
+                                }
+                                else {
+                                    throw new IllegalStateException( "Unknown link command: " + command );
+                                }
+                            }
+                        });
                     }
                 });
                 
@@ -265,6 +274,13 @@ public class DesktopToolkit
     @Override
     public IPanelSection createPanelSection( ILayoutContainer parent, String title, int... styles ) {
         return createPanelSection( parent.getBody(), title, styles );
+    }
+
+    
+    @Override
+    public List createList( Composite parent, int... styles ) {
+        List result = adapt( new List( parent, stylebits( styles ) ), false, false );
+        return result;
     }
 
     
