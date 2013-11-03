@@ -50,6 +50,8 @@ public class PersonForm
     private Person                  person;
 
     private IPanelSite              panelSite;
+
+    private Composite               body;
     
             
     public PersonForm( IPanelSite panelSite, Person person ) {
@@ -58,14 +60,18 @@ public class PersonForm
     }
 
 
+    public Composite getBody() {
+        return body;
+    }
+
+
     @Override
     public void createFormContent( IFormEditorPageSite site ) {
-        Composite body = site.getPageBody();
+        body = site.getPageBody();
         if (body.getLayout() == null) {
             body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
         }
 
-        
         // fields
         Composite salu = site.getToolkit().createComposite( body );
         salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
