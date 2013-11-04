@@ -109,7 +109,7 @@ public class RegisterPanel
         // person section
         IPanelSection personSection = tk.createPanelSection( contents, null );
         Composite body = personSection.getBody();
-        body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
+        body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 0, 0 ).create() );
 
         user = UserRepository.instance().newUser();
         
@@ -117,7 +117,7 @@ public class RegisterPanel
         personForm.createContents( personSection );
 
         // btn
-        okBtn = tk.createButton( body, i18n.get( "okBtn" ), SWT.PUSH );
+        okBtn = tk.createButton( personForm.getBody(), i18n.get( "okBtn" ), SWT.PUSH );
         okBtn.setEnabled( false );
         okBtn.addSelectionListener( new SelectionAdapter() {
             public void widgetSelected( SelectionEvent ev ) {
@@ -145,7 +145,8 @@ public class RegisterPanel
     
     @Override
     public void fieldChange( FormFieldEvent ev ) {
-        if (ev.getEventCode() == IFormFieldListener.VALUE_CHANGE) {
+        if (ev.getEventCode() == IFormFieldListener.VALUE_CHANGE
+                && !okBtn.isDisposed()) {
             okBtn.setEnabled( false );            
 
             if (ev.getFieldName().equals( "email" )) {
