@@ -119,7 +119,7 @@ public class UserSettingsPanel
 
         // welcome section
         IPanelSection pwdSection = tk.createPanelSection( contents, i18n.get( "pwdSectionTitle" ) );
-        pwdSection.getBody().setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).columns( 1, 1 ).create() );
+        pwdSection.getBody().setLayout( ColumnLayoutFactory.defaults().spacing( 20 ).columns( 1, 1 ).create() );
         pwdForm = new PasswordForm( getSite(), user );
         pwdForm.createContents( pwdSection );
         pwdForm.addFieldListener( pwdFormListener = new PasswordFormListener() );

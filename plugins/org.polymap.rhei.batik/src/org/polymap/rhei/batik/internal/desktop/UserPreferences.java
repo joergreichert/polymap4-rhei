@@ -25,10 +25,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import org.eclipse.rwt.graphics.Graphics;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.ContributionItem;
@@ -59,7 +60,7 @@ class UserPreferences
 
     private Composite           contents;
     
-    private Link                usernameLnk;
+    private Label               usernameLnk;
 
     private Button              btn;
     
@@ -77,7 +78,11 @@ class UserPreferences
 
     
     public void setUsername( String username ) {
-        usernameLnk.setText( "<a>" + username + "</a>" );
+        usernameLnk.setText( username );
+        if (username.toLowerCase().contains( "admin" )) {
+            usernameLnk.setText( "[Administrator]" );
+            usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
+        }
     }
 
 
@@ -89,7 +94,7 @@ class UserPreferences
     @Override
     public void fill( Composite parent ) {
         contents = parent;
-        contents.setLayout( FormLayoutFactory.defaults().create() );
+        contents.setLayout( FormLayoutFactory.defaults().spacing( 10 ).create() );
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
@@ -103,10 +108,10 @@ class UserPreferences
             }
         });
 
-        usernameLnk = new Link( contents, SWT.RIGHT );
-        usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 2 ).right( btn ).create() );
+        usernameLnk = new Label( contents, SWT.RIGHT );
+        usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 4 ).right( btn ).create() );
         usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-        usernameLnk.setText( "<a>" + i18n.get( "noUser" ) + "</a>" );
+        usernameLnk.setText( "[" + i18n.get( "noUser" ) + "]" );
     }
 
 

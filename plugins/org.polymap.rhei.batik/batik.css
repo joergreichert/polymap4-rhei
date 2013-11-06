@@ -16,7 +16,7 @@
   color: #222222;
   background-color: #fff;
   background-image: none;
-  font: 15px/150%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px/120%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
 }
 *:disabled {
   color: #cdcdcd;
@@ -34,7 +34,7 @@ Display {
   rwt-question-image: url(resources/icons/rap/dialog/question.png );
   rwt-warning-image: url(resources/icons/rap/dialog/warning.png );
   rwt-working-image: url(resources/icons/rap/dialog/information.png );
-  rwt-fontlist: 15px"Open Sans", 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
+  rwt-fontlist: 14px"Open Sans", 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
   background-image: url(resources/icons/rap/display/browser_bg.png );
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
 }
@@ -49,8 +49,8 @@ Display {
 /* Mosaic-UI elements (org.polymap.mosaic.ui) */
  Composite.mosaic-case-action-active {
   animation: slideIn 400ms ease-in;
-  border: 1px dotted #5a9cbd;
-  border-radius: 4px;
+  border: 1px dashed #216292;
+  border-radius: 6px;
 }
 Composite.mosaic-case-action-deactive {
 }
@@ -73,7 +73,7 @@ Composite[BORDER] {
 }
 /* Button default theme */
  Button {
-  font: 15px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   background-image: none;
   border: none;
   border-radius: 4px;
@@ -155,7 +155,11 @@ Button[TOGGLE]:selected:hover {
 Button[TOGGLE]:disabled:hover {
   background-color: #216292;
 }
-Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled, Button[TOGGLE].mosaic-case-toolbar:disabled {
+Button[TOGGLE]:disabled.mosaic-case-submit, 
+Button[TOGGLE]:disabled.mosaic-case-discard, 
+Button[TOGGLE]:disabled, 
+Button[TOGGLE]:selected:disabled, 
+Button[TOGGLE].mosaic-case-toolbar:disabled {
   background-color: #edf3f7;
 }
 /*Submit und Cancel Buttons*/
@@ -164,11 +168,16 @@ Button[TOGGLE].mosaic-case-submit, Button[TOGGLE].mosaic-case-discard {
   background-image: none;
   color: #ffffff;
 }
-Button[TOGGLE].mosaic-case-submit, Button[PUSH].mosaic-case-submit, Button[PUSH]:selected.mosaic-case-submit, Button[TOGGLE]:selected.mosaic-case-submit {
+Button[TOGGLE].mosaic-case-submit, 
+Button[PUSH].mosaic-case-submit, 
+Button[PUSH]:selected.mosaic-case-submit, 
+Button[TOGGLE]:selected.mosaic-case-submit {
   background-color: #6eb02e;
   background-image: none;
 }
-Button[TOGGLE]:hover.mosaic-case-submit, Button[PUSH]:hover.mosaic-case-submit, Button[PUSH]:selected:hover.mosaic-case-submit {
+Button[TOGGLE]:hover.mosaic-case-submit, 
+Button[PUSH]:hover.mosaic-case-submit, 
+Button[PUSH]:selected:hover.mosaic-case-submit {
   background-color: #519028;
   background-image: none;
 }
