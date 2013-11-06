@@ -42,7 +42,7 @@ public class LogoutAction
     
     public LogoutAction() {
         super( i18n.get( "title" ) );
-        setImageDescriptor( BatikPlugin.imageDescriptorFromPlugin( BatikPlugin.PLUGIN_ID, "resources/icons/close.png" ) );
+        setImageDescriptor( BatikPlugin.imageDescriptorFromPlugin( BatikPlugin.PLUGIN_ID, "resources/icons/switch.png" ) );
     }
 
 

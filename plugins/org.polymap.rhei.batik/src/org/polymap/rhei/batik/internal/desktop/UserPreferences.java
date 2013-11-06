@@ -94,7 +94,7 @@ class UserPreferences
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
         btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-        btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/preferences.png" ) );
+        btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/cog.png" ) );
         btn.setToolTipText( i18n.get( "menuTip" ) );
         
         btn.addSelectionListener( new SelectionAdapter() {

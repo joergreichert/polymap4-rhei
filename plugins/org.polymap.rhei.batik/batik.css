@@ -46,17 +46,7 @@ Display {
 *[BORDER] {
   border: 1px solid #cdcdcd;
 }
-/* Mosaic-UI elements (org.polymap.mosaic.ui) */
- Composite.mosaic-case-action-active {
-  animation: slideIn 400ms ease-in;
-  border: 1px dotted #5a9cbd;
-  border-radius: 4px;
-}
-Composite.mosaic-case-action-deactive {
-}
-Composite.mosaic-case-status {
-  animation: fadeIn 600ms linear;
-}
+
 /* Default theme for all composites */
  Composite {
   padding: 0;
@@ -68,7 +58,7 @@ Composite.mosaic-case-status {
   animation: none;
 }
 Composite[BORDER] {
-  border: 1px solid #e9e9e9;
+  border: none;
   border-radius: 2px;
 }
 /* Button default theme */
@@ -87,13 +77,30 @@ Composite[BORDER] {
   text-shadow: none;
   box-shadow: none;
 }
+/* Mosaic-UI elements (org.polymap.mosaic.ui) */
+ Composite.mosaic-case-action-active {
+  animation: slideIn 400ms ease-in;
+  background-color: #d3d3d3;
+  border-radius: 0px 0px 8px 8px;
+  border: none;
+}
+Composite.mosaic-case-action-deactive {
+}
+Composite.mosaic-case-status {
+  animation: fadeIn 600ms linear;
+}
+Composite.mosaic-case-toolbar {
+	background-color: transparent;
+	border-radius: 4px;
+}
+
+
 Button[PUSH], Button[PUSH].formeditor, Button[TOGGLE], Button[PUSH][BORDER], Button[TOGGLE][BORDER], Button[PUSH][FLAT], Button[TOGGLE][FLAT] {
   border: none;
   border-radius: 4px;
   padding: 6px 15px;
   background-color: #5a9cbd;
-  animation: none;
-  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
+  animation: hoverIn 200ms ease-in, hoverOut 400ms ease-out;
   cursor: pointer;
   color: #fff;
 }
@@ -141,6 +148,7 @@ Button[TOGGLE], Button[TOGGLE][BORDER], Button[TOGGLE][FLAT] {
 Button[TOGGLE]:hover {
   color: #216292;
   background-color: #f6f6f6;
+  animation: hoverIn 200ms ease-in, hoverOut 400ms ease-out;
 }
 Button[TOGGLE]:selected, Button[TOGGLE]:pressed {
   color: #216292;
@@ -150,13 +158,13 @@ Button[TOGGLE]:selected, Button[TOGGLE]:pressed {
 Button[TOGGLE]:selected:hover {
   background-color: #ffffff;
   background-image: url(resources/icons/active.png );
-  opacity: 0.7;
+  /*opacity: 0.7;*/
 }
 Button[TOGGLE]:disabled:hover {
   background-color: #216292;
 }
 Button[TOGGLE]:disabled, Button[TOGGLE]:selected:disabled, Button[TOGGLE].mosaic-case-toolbar:disabled {
-  background-color: #edf3f7;
+  background-color: #f6f6f6;
 }
 /*Submit und Cancel Buttons*/
 Button[TOGGLE].mosaic-case-submit, Button[TOGGLE].mosaic-case-discard {
@@ -164,6 +172,7 @@ Button[TOGGLE].mosaic-case-submit, Button[TOGGLE].mosaic-case-discard {
   background-image: none;
   color: #ffffff;
 }
+/*Green Action/Submit Buttons*/
 Button[TOGGLE].mosaic-case-submit, Button[PUSH].mosaic-case-submit, Button[PUSH]:selected.mosaic-case-submit, Button[TOGGLE]:selected.mosaic-case-submit {
   background-color: #6eb02e;
   background-image: none;
@@ -172,27 +181,33 @@ Button[TOGGLE]:hover.mosaic-case-submit, Button[PUSH]:hover.mosaic-case-submit, 
   background-color: #519028;
   background-image: none;
 }
+Button[PUSH]:disabled.mosaic-case-submit, Button[TOGGLE]:disabled.mosaic-case-submit {
+  background-color: #f0f7ea;
+  border: 1px solid #f0f7ea;
+  color: #ffffff;
+}
+/*Red Cancel Buttons*/
 Button[PUSH].mosaic-case-discard, Button[PUSH]:selected.mosaic-case-discard {
   background-color: #d32516;
 }
 Button[PUSH]:hover.mosaic-case-discard {
   background-color: #9c1e13;
 }
-Button[PUSH]:disabled.mosaic-case-submit, Button[TOGGLE]:disabled.mosaic-case-submit {
-  opacity: 0.3;
-}
 /*Toolbar-Button*/
-Button[TOGGLE].mosaic-case-toolbar, Button[TOGGLE].mosaic-case-toolbar:selected:hover {
-  color: #ffffff;
-  background-color: #4a8aaf;
+Button[TOGGLE].mosaic-case-toolbar {
+  color: #4a8aaf;
+  background-color: #e9e9e9;
   border: none;
   background-image: none;
 }
-Button[TOGGLE].mosaic-case-toolbar:hover, Button[TOGGLE].mosaic-case-toolbar:selected {
-  color: #ffffff;
-  background-color: #216292;
-  border: none;
+Button[TOGGLE].mosaic-case-toolbar:hover, Button[TOGGLE].mosaic-case-toolbar:selected, Button[TOGGLE].mosaic-case-toolbar:selected:hover {
+  color: #181818;
+  background-color: #d3d3d3;
+  border-radius: 4px 4px 0px 0px;
   background-image: none;
+}
+Button[TOGGLE]:selected:hover.mosaic-case-toolbar {
+  color: #4a8aaf;
 }
 /*Navigation Buttons*/
 Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
@@ -202,7 +217,7 @@ Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
   border: none;
 }
 Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH]:hover.atlas-navi {
-  color: #222222;  /*color: #216292;*/
+  color: #181818;
   background-color: #d3d3d3;
   background-image: none;
   border: none;
@@ -212,7 +227,7 @@ Button[CHECK], Button[RADIO] {
   padding: 3px 3px 3px 0;
   spacing: 7px;
   background-color: transparent;
-  color: #222222;
+  color: #181818;
 }
 Button[CHECK][BORDER], Button[RADIO][BORDER] {
   cursor: default;
@@ -306,7 +321,6 @@ Combo-Button {
   border: none;
   border-left: 1px solid #cdcdcd;
   border-radius: 0px 2px 2px 0px;
-  /*background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));*/
   background-color: #f6f6f6;
   width: 30px;
 }
@@ -505,10 +519,9 @@ List-Item:even:selected:unfocused {
   padding: 0;
   color: #0059a5;
   background-color: #f9f9f9;
-  background-image: gradient(linear, left top, left bottom, from(#f4f4f4), to(#ffffff));
-  border: 1px solid #eee;
-  border-radius: 2px;
-  box-shadow: 0 0 4px #ababab;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px #ababab;
   opacity: 1;
   animation: none;
 }
@@ -525,11 +538,11 @@ MenuItem[SEPARATOR] {
 }
 MenuItem:hover {
   color: #ffffff;
-  background-image: gradient(linear, left top, left bottom, from(green), to(#416693));
+  background-color: #216292;
 }
 MenuItem:pressed {
   color: #ffffff;
-  background-image: gradient(linear, left top, left bottom, from(#416693), to(#5882b5));
+  background-color: #216292;
 }
 MenuItem:disabled {
   color: #cdcdcd;
@@ -601,10 +614,8 @@ Shell-DisplayOverlay {
 /* Shell titlebar */
  Shell-Titlebar {
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  background-color: #0080c0;
-  background-gradient-color: #0080c0;
+  background-color: #4a8aaf;
   color: #ffffff;
-  background-image: gradient(linear, left top, left bottom, from(#416693), to(#5882b5));
   padding: 0 10px 0 10px;
   margin: 0px;
   height: 38px;
@@ -613,9 +624,8 @@ Shell-DisplayOverlay {
   text-shadow: none;
 }
 Shell-Titlebar:inactive {
-  background-color: #7996a5;
-  background-gradient-color: #7996a5;
-  background-image: gradient(linear, left top, left bottom, from(#818181), to(#b5b5b5));
+  background-color: #f6f6f6;
+  color: #181818
 }
 /* Shell buttons */
 
@@ -779,14 +789,14 @@ Table[BORDER] {
 }
 TableColumn {
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  background-color: #e9e9e9;
+  background-color: #f6f6f6;
   padding: 8px 3px 8px 3px;
   background-image: none;
   border-bottom: 1px solid #f6f6f6;
   text-shadow: 0 1px 0 #ffffff;
 }
 TableColumn:hover {
-  background-color: #f6f6f6;
+  background-color: #ffffff;
 }
 TableItem {
   background-color: transparent;
@@ -919,7 +929,7 @@ Text-Message {
   text-shadow: none;
 }
 Text-Message:disabled {
-  color: #f6f6f6;
+  color: #181818;
   text-shadow: none;
   padding: 0px;
 }
@@ -939,6 +949,10 @@ Composite.atlas-navi, Composite.atlas-status, CLabel.atlas-status {
 /*Forms Fields*/
  Text:focused.formeditor {
   background-color: #fff;
+}
+Label:disabled.formeditor {
+	font: bold;
+	color: #181818;
 }
 
 /* ToolBar default theme */
@@ -1256,7 +1270,6 @@ DateTime-Calendar-NextYearButton:hover {
 DateTime-UpButton {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#efefef));
-  ;
   width: 30px;
   border: none;
   border-left: 1px solid #cdcdcd;
@@ -1625,4 +1638,9 @@ FileUpload-FocusIndicator {
   color: #333;
   border: none;
 }
+Label:disabled.atlas-panel-section-title {
+  opacity: 0.3;
+}
+
+
 /*--------------*/
