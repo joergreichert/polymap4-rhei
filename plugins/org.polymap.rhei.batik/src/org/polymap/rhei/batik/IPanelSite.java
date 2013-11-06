@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik;
 
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 
@@ -63,6 +65,10 @@ public interface IPanelSite {
     public void setTitle( String string );
 
     public String getTitle();
+
+    void setIcon( Image icon );
+
+    public Image getIcon();
 
     public void layout( boolean changed );
 

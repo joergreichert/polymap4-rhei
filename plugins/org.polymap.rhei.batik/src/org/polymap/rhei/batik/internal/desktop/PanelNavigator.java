@@ -36,7 +36,6 @@ import org.eclipse.jface.layout.RowLayoutFactory;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
-import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelPath;
@@ -102,31 +101,33 @@ class PanelNavigator
         for (Control control : breadcrumb.getChildren()) {
             control.dispose();
         }
-        // home
-        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
-        homeBtn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
-        homeBtn.setToolTipText( "Zurück zur Startseite" );
-        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-        homeBtn.addSelectionListener( new SelectionAdapter() {
-            public void widgetSelected( SelectionEvent e ) {
-                while (activePanel.getSite().getPath().size() > 1) {
-                    appManager.closePanel();
-                    activePanel = appManager.getActivePanel();
-                }
-            }
-        });
+//        // home
+//        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
+//        homeBtn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+//        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
+//        homeBtn.setToolTipText( "Zurück zur Startseite" );
+//        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+//        homeBtn.addSelectionListener( new SelectionAdapter() {
+//            public void widgetSelected( SelectionEvent e ) {
+//                while (activePanel.getSite().getPath().size() > 1) {
+//                    appManager.closePanel();
+//                    activePanel = appManager.getActivePanel();
+//                }
+//            }
+//        });
         
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
-        while (path.size() > 1) {
+        while (path.size() >= 1) {
             final IPanel panel = appManager.getContext().getPanel( path );
 
             Button btn = new Button( breadcrumb, SWT.PUSH );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
             btn.setText( panel.getSite().getTitle() );
-            //btn.setToolTipText( "Go to " + path.segment( i ) );
+            if (panel.getSite().getIcon() != null) {
+                btn.setImage( panel.getSite().getIcon() );
+            }
 
             btn.addSelectionListener( new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent e ) {
@@ -150,6 +151,9 @@ class PanelNavigator
             final Button btn = new Button( breadcrumb, SWT.TOGGLE );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
             btn.setText( panel.getSite().getTitle() );
+            if (panel.getSite().getIcon() != null) {
+                btn.setImage( panel.getSite().getIcon() );
+            }
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
             
             if (panel.equals( activePanel )) {

@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import com.google.common.base.Predicate;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -34,6 +35,7 @@ import org.eclipse.rwt.IBrowserHistory;
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.events.BrowserHistoryEvent;
 import org.eclipse.rwt.events.BrowserHistoryListener;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.window.Window;
@@ -325,6 +327,8 @@ public class DesktopAppManager
         private PanelPath           path;
 
         private String              title = "Untitled";
+        
+        private Image               icon;
 
         /** Toolbar tools: {@link IAction} or {@link IContributionItem}. */
         private List                tools = new ArrayList();
@@ -375,6 +379,17 @@ public class DesktopAppManager
         @Override
         public void setTitle( String title ) {
             this.title = title;
+            panelNavigator.updateBreadcrumb();
+        }
+
+        @Override
+        public Image getIcon() {
+            return icon;
+        }
+        
+        @Override
+        public void setIcon( Image icon ) {
+            this.icon = icon;
             panelNavigator.updateBreadcrumb();
         }
 
