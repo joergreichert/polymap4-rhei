@@ -74,12 +74,11 @@ public class PersonForm
         }
 
         // fields
-        Composite salu = site.getToolkit().createComposite( body );
-        salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
-
         Property<String> prop = person.firstname();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
         
+        Composite salu = site.getToolkit().createComposite( body );
+        salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
         prop = person.salutation();
         new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "name" ) )
                 .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
