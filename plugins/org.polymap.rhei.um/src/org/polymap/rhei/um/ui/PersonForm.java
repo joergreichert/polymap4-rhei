@@ -33,6 +33,7 @@ import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Person;
 import org.polymap.rhei.um.Property;
+import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.internal.Messages;
 
 /**
@@ -76,7 +77,10 @@ public class PersonForm
         Composite salu = site.getToolkit().createComposite( body );
         salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
 
-        Property<String> prop = person.salutation();
+        Property<String> prop = person.firstname();
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        
+        prop = person.salutation();
         new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "name" ) )
                 .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
                 .setValidator( new NotNullValidator() ).create().setFocus();
@@ -85,8 +89,10 @@ public class PersonForm
         new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
                 .setValidator( new NotNullValidator() ).create();
 
-        prop = person.firstname();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        if (person instanceof User) {
+            prop = ((User)person).company();
+            new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();            
+        }
         
         prop = person.email();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) )

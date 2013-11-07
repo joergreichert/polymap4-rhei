@@ -51,6 +51,9 @@ public interface QiUser
     @Optional
     Property<String>            _passwordHash();
     
+    @Optional
+    Property<String>            _company();
+    
 //    /**
 //     * Wurde die Identität des Nutzers überprüft?
 //     */
@@ -73,6 +76,12 @@ public interface QiUser
         public org.polymap.rhei.um.Property<String> username() {
             System.out.println( "    property username: " + _username().get() );
             return QiProperty.create( _username() );
+        }
+
+        @Override
+        public org.polymap.rhei.um.Property<String> company() {
+            System.out.println( "    property company: " + _company().get() );
+            return QiProperty.create( _company() );
         }
 
         public String getLabelString( String sep ) {

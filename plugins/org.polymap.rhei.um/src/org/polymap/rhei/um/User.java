@@ -26,4 +26,6 @@ public interface User
 
     Property<String> passwordHash();
 
+    Property<String> company();
+
 }
