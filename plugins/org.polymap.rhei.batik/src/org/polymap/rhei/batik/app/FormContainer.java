@@ -15,6 +15,8 @@
 package org.polymap.rhei.batik.app;
 
 import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -23,11 +25,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.JFaceResources;
 
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -75,11 +81,11 @@ public abstract class FormContainer
     private IFormFieldListener  statusAdapter;
 
 
-    public final void createContents( ILayoutContainer parent ) {
-        createContents( new Composite( parent.getBody(), SWT.NONE ) );
+    public final Composite createContents( ILayoutContainer parent ) {
+        return createContents( new Composite( parent.getBody(), SWT.NONE ) );
     }
 
-    public final void createContents( Composite body ) {
+    public Composite createContents( Composite body ) {
         toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
         pageBody = body;
         pageBody.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-form"  );
@@ -92,6 +98,7 @@ public abstract class FormContainer
         catch (Exception e) {
             BatikApplication.handleError( BatikPlugin.PLUGIN_ID, "An error occured while creating the new page.", e );
         }
+        return pageBody;
     }
 
     public final void createContents( FormContainer parent ) {
@@ -110,6 +117,33 @@ public abstract class FormContainer
         if (pageBody != null && !pageBody.isDisposed()) {
             pageBody.dispose();
             pageBody = null;
+        }
+    }
+    
+    public void setEnabled( boolean enabled ) {
+        pageBody.setEnabled( enabled );
+        if (!enabled) {
+            pageBody.setData( WidgetUtil.CUSTOM_VARIANT, null );
+        }
+        Font font = enabled 
+                ? JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT )
+                : JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT );
+        
+        Deque<Control> deque = new LinkedList();
+        deque.push( pageBody );
+        while (!deque.isEmpty()) {
+            Control control = deque.pop();
+            if (control instanceof Label) {
+                control.setFont( font );
+            }
+            if (!enabled) {
+                control.setData( WidgetUtil.CUSTOM_VARIANT, null );
+            }
+            if (control instanceof Composite) {
+                for (Control child : ((Composite)control).getChildren()) {
+                    deque.push( child );
+                }
+            }
         }
     }
     

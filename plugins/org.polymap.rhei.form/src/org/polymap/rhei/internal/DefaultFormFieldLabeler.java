@@ -79,7 +79,7 @@ public class DefaultFormFieldLabeler
     public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
         label = toolkit.createLabel( parent, 
                 labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ) );
-        
+    
         // focus listener
         site.addChangeListener( this );
         return label;

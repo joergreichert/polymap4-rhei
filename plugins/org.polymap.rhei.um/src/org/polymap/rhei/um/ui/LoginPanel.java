@@ -191,7 +191,7 @@ public class LoginPanel
             formSite = site;
             Composite body = site.getPageBody();
             body.setLayout( ColumnLayoutFactory.defaults()
-                    .spacing( (Integer)panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) )
+                    .spacing( (Integer)panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) / 2 )
                     .margins( (Integer)panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )

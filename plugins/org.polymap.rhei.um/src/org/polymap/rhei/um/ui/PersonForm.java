@@ -69,7 +69,7 @@ public class PersonForm
     public void createFormContent( IFormEditorPageSite site ) {
         body = site.getPageBody();
         if (body.getLayout() == null) {
-            body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
+            body.setLayout( ColumnLayoutFactory.defaults().spacing( 5 ).margins( 20, 20 ).create() );
         }
 
         // fields

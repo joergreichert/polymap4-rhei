@@ -109,7 +109,7 @@ public class RegisterPanel
         // person section
         IPanelSection personSection = tk.createPanelSection( contents, null );
         Composite body = personSection.getBody();
-        body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 0, 0 ).create() );
+        body.setLayout( ColumnLayoutFactory.defaults().spacing( 5 ).margins( 0, 0 ).create() );
 
         user = UserRepository.instance().newUser();
         
