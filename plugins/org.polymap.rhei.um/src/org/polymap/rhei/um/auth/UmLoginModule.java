@@ -172,7 +172,8 @@ public class UmLoginModule
         private User            user;
 
         public UmUserPrincipal( User user ) {
-            super( user.username().get() );
+            // FIXME username
+            super( user.email().get() );
             this.user = user;
         }
 
