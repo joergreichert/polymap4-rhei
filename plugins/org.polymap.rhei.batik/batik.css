@@ -92,7 +92,7 @@ Composite[BORDER] {
  Composite.mosaic-case-action-active {
   animation: slideIn 400ms ease-in;
   background-color: #d3d3d3;
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 0px 8px 8px 8px;
   border: none;
 }
 Composite.mosaic-case-action-deactive {
@@ -102,7 +102,6 @@ Composite.mosaic-case-status {
 }
 Composite.mosaic-case-toolbar {
 	background-color: transparent;
-	border-radius: 4px;
 }
 
 
@@ -810,7 +809,7 @@ Table[BORDER] {
 TableColumn {
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   background-color: #f6f6f6;
-  padding: 8px 3px 8px 3px;
+  padding: 4px 10px 4px 10px;
   background-image: none;
   border-bottom: 1px solid #f6f6f6;
   text-shadow: 0 1px 0 #ffffff;
@@ -840,23 +839,23 @@ TableItem:linesvisible:even {
   background-image: none;
 }
 Table-RowOverlay:hover {
-  color: #216292;
+  color: #181818;
   text-shadow: 0 1px 0 #ffffff;
 }
 Table-RowOverlay:selected {
   color: #ffffff;
-  background-color: #216292;
+  background-color: #d3d3d3;
 }
 Table-RowOverlay:selected:unfocused {
   color: inherit;
   background-color: transparent;
 }
 Table-RowOverlay:linesvisible:even:hover {
-  color: #216292;
+  color: #181818;
 }
 Table-RowOverlay:linesvisible:even:selected {
   color: #ffffff;
-  background-color: #216292;
+  background-color: #d3d3d3;
 }
 Table-RowOverlay:linesvisible:even:selected:unfocused {
   color: inherit;
@@ -874,7 +873,7 @@ TableColumn-SortIndicator:down {
 }
 Table-Cell {
   spacing: 3px;
-  padding: 5px 3px 5px 3px;
+  padding: 4px 10px 4px 10px;
 }
 Table-GridLine {
   color: transparent;
