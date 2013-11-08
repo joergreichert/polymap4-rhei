@@ -150,7 +150,7 @@ public abstract class FormContainer
             }
             
             if (control instanceof Composite) {
-                control.setEnabled( false );
+                control.setEnabled( enabled );
                 
                 String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
                 if (variant.equals( CSS_FORM ) || variant.equals( CSS_FORM_DISABLED )) {
