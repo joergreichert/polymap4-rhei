@@ -78,10 +78,10 @@ class DesktopPanelSection
 //        control.setTitleBarBackground( DesktopToolkit.COLOR_SECTION_TITLE_BG );
 //        control.setTitleBarBorderColor( Graphics.getColor( new RGB( 0x80, 0x80, 0xa0 ) ) );
 
-        control.getTitleControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-section-title"  );
-        //control.getSeparatorControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-section-separator"  );
-        //control.getTextClient().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-section-client"  );
-        //control.getDescriptionControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-section"  );
+        control.getTitleControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
+        //control.getSeparatorControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section-separator"  );
+        //control.getTextClient().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section-client"  );
+        //control.getDescriptionControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section"  );
                 
         Composite client = tk.adapt( new Composite( control, SWT.NO_FOCUS /*| SWT.BORDER*/ | tk.stylebits( styles ) ) );
 
@@ -162,7 +162,7 @@ class DesktopPanelSection
         control.setText( title );
         if (control.getSeparatorControl() == null) {
             Label sep = new Label( control, SWT.SEPARATOR | SWT.HORIZONTAL );
-            sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-section-separator"  );
+            sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_SEPARATOR  );
             control.setSeparatorControl( sep );
         }
         return this;

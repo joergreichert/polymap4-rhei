@@ -14,6 +14,11 @@
  */
 package org.polymap.rhei.batik.app;
 
+import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORM;
+import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORMFIELD;
+import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORMFIELD_DISABLED;
+import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORM_DISABLED;
+
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -46,7 +51,6 @@ import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.internal.desktop.DesktopToolkit;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.DateTimeFormField;
@@ -80,6 +84,8 @@ public abstract class FormContainer
     
     private IFormFieldListener  statusAdapter;
 
+    private boolean             enabled = true;
+
 
     public final Composite createContents( ILayoutContainer parent ) {
         return createContents( new Composite( parent.getBody(), SWT.NONE ) );
@@ -88,11 +94,12 @@ public abstract class FormContainer
     public Composite createContents( Composite body ) {
         toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
         pageBody = body;
-        pageBody.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CUSTOM_VARIANT_VALUE + "-form"  );
+        pageBody.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM  );
         pageSite = new PageContainer( this );
 
         try {
             createFormContent( pageSite );
+            updateEnabled();
             pageSite.doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {
@@ -107,6 +114,7 @@ public abstract class FormContainer
         pageSite = parent.pageSite;
 
         createFormContent( pageSite );
+        updateEnabled();
     }
 
     public void dispose() {
@@ -121,9 +129,13 @@ public abstract class FormContainer
     }
     
     public void setEnabled( boolean enabled ) {
-        pageBody.setEnabled( enabled );
-        if (!enabled) {
-            pageBody.setData( WidgetUtil.CUSTOM_VARIANT, null );
+        this.enabled = enabled;
+        updateEnabled();
+    }
+    
+    protected void updateEnabled() {
+        if (pageBody == null || pageBody.isDisposed()) {
+            return;
         }
         Font font = enabled 
                 ? JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT )
@@ -136,10 +148,18 @@ public abstract class FormContainer
             if (control instanceof Label) {
                 control.setFont( font );
             }
-            if (!enabled) {
-                control.setData( WidgetUtil.CUSTOM_VARIANT, null );
-            }
+            
             if (control instanceof Composite) {
+                control.setEnabled( false );
+                
+                String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
+                if (variant.equals( CSS_FORM ) || variant.equals( CSS_FORM_DISABLED )) {
+                    control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORM : CSS_FORM_DISABLED  );
+                }
+                else if (variant.equals( CSS_FORMFIELD ) || variant.equals( CSS_FORMFIELD_DISABLED )) {
+                    control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
+                }
+                        
                 for (Control child : ((Composite)control).getChildren()) {
                     deque.push( child );
                 }
@@ -237,6 +257,14 @@ public abstract class FormContainer
             page.createFormContent( this );
         }
 
+        @Override
+        public Composite newFormField( Composite parent, Property prop, IFormField field,
+                IFormFieldValidator validator, String label ) {
+            Composite result = super.newFormField( parent, prop, field, validator, label );
+            result.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM );
+            return result;
+        }
+
         public Composite getPageBody() {
             return pageBody;
         }
@@ -282,7 +310,7 @@ public abstract class FormContainer
         
         private IFormFieldValidator validator;
         
-        private boolean             enabled = true;
+        private boolean             fieldEnabled = true;
 
         private Object              layoutData;
 
@@ -344,7 +372,7 @@ public abstract class FormContainer
         }
 
         public FormFieldBuilder setEnabled( boolean enabled ) {
-            this.enabled = enabled;
+            this.fieldEnabled = enabled;
             return this;
         }
         
@@ -396,8 +424,8 @@ public abstract class FormContainer
                 result.setToolTipText( tooltip );
             }
             // editable
-            if (!enabled) {
-                pageSite.setFieldEnabled( prop.getName().getLocalPart(), enabled );
+            if (!fieldEnabled) {
+                pageSite.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
             }
             return result;
         }

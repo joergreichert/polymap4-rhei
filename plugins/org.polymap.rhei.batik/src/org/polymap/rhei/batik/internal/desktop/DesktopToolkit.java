@@ -68,9 +68,17 @@ public class DesktopToolkit
 
     private static Log log = LogFactory.getLog( DesktopToolkit.class );
 
-    public static final String  CUSTOM_VARIANT_VALUE = "atlas-panel";
+    public static final String  CSS_PREFIX = "batik-panel";
+    public static final String  CSS_FORM = CSS_PREFIX + "-form";
+    public static final String  CSS_FORM_DISABLED = CSS_PREFIX + "-form-disabled";
+    public static final String  CSS_FORMFIELD = CSS_PREFIX + "-formfield";
+    public static final String  CSS_FORMFIELD_DISABLED = CSS_PREFIX + "-formfield-disabled";
+    public static final String  CSS_SECTION_TITLE = CSS_PREFIX + "-section-title";
+    public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
+    
     public static final Color   COLOR_SECTION_TITLE_FG = Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) );
     public static final Color   COLOR_SECTION_TITLE_BG = Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) );
+
 
     private FormColors          colors;
     
@@ -285,7 +293,7 @@ public class DesktopToolkit
 
     
     protected <T extends Composite> T adapt( T composite ) {
-        composite.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+        composite.setData( WidgetUtil.CUSTOM_VARIANT, CSS_PREFIX );
 
 //        composite.setBackground( colors.getBackground() );
 //        composite.addMouseListener( new MouseAdapter() {
@@ -318,7 +326,7 @@ public class DesktopToolkit
      *        by the control.
      */
     public <T extends Control> T adapt( T control, boolean trackFocus, boolean trackKeyboard) {
-        control.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+        control.setData( WidgetUtil.CUSTOM_VARIANT, CSS_PREFIX );
 
 //        control.setBackground( colors.getBackground() );
 //        control.setForeground( colors.getForeground() );
