@@ -19,10 +19,11 @@ import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORMFIE
 import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORMFIELD_DISABLED;
 import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.CSS_FORM_DISABLED;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
-
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import org.eclipse.rwt.graphics.Graphics;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.Action;
@@ -92,7 +94,7 @@ public abstract class FormContainer
     }
 
     public Composite createContents( Composite body ) {
-        toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
+        toolkit = new FormContainerToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
         pageBody = body;
         pageBody.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM  );
         pageSite = new PageContainer( this );
@@ -147,17 +149,23 @@ public abstract class FormContainer
             Control control = deque.pop();
             if (control instanceof Label) {
                 control.setFont( font );
+                if (!enabled) {
+                    control.setBackground( Graphics.getColor( 0xED, 0xEF, 0xF1 ) );
+                }
             }
             
+            String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
+            log.info( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
+
+            if (variant == null || variant.equals( "formeditor" ) || variant.equals( CSS_FORMFIELD ) || variant.equals( CSS_FORMFIELD_DISABLED )) {
+                control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
+            }
+
             if (control instanceof Composite) {
                 control.setEnabled( enabled );
                 
-                String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
                 if (variant.equals( CSS_FORM ) || variant.equals( CSS_FORM_DISABLED )) {
                     control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORM : CSS_FORM_DISABLED  );
-                }
-                else if (variant.equals( CSS_FORMFIELD ) || variant.equals( CSS_FORMFIELD_DISABLED )) {
-                    control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
                 }
                         
                 for (Control child : ((Composite)control).getChildren()) {
@@ -261,7 +269,16 @@ public abstract class FormContainer
         public Composite newFormField( Composite parent, Property prop, IFormField field,
                 IFormFieldValidator validator, String label ) {
             Composite result = super.newFormField( parent, prop, field, validator, label );
-            result.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM );
+            ArrayList<Control> stack = new ArrayList( Collections.singleton( result ) );
+            while (!stack.isEmpty()) {
+                Control control = stack.remove( stack.size()-1 );
+                control.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORMFIELD );
+                if (control instanceof Composite) {
+                    for (Control child : ((Composite)control).getChildren()) {
+                        stack.add( child );
+                    }
+                }
+            }
             return result;
         }
 
@@ -286,6 +303,26 @@ public abstract class FormContainer
         }
     }
 
+    
+    /**
+     * 
+     */
+    class FormContainerToolkit
+            extends FormEditorToolkit {
+
+        public FormContainerToolkit( FormToolkit delegate ) {
+            super( delegate );
+        }
+
+        @Override
+        public Composite createComposite( Composite parent, int style ) {
+            Composite result = super.createComposite( parent, style );
+            result.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORMFIELD );
+            return result;
+        }
+
+    }
+    
     
     /**
      * This field builder allows to create a new form field. It provides a simple,
