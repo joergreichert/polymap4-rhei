@@ -155,8 +155,9 @@ public abstract class FormContainer
             }
             
             String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
-            log.info( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
+            log.debug( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
 
+            // XXX formeditor should not come here
             if (variant == null || variant.equals( "formeditor" ) || variant.equals( CSS_FORMFIELD ) || variant.equals( CSS_FORMFIELD_DISABLED )) {
                 control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
             }
@@ -172,6 +173,8 @@ public abstract class FormContainer
                     deque.push( child );
                 }
             }
+            variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
+            log.debug( "    " + variant + " (" + control.getClass().getSimpleName() + ")" );
         }
     }
     
