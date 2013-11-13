@@ -99,7 +99,7 @@ class DesktopActionBar {
         // panel toolbar
         IContributionItem tb = items.get( PLACE.PANEL_TOOLBAR );
         if (tb != null) {
-            Composite container = new Composite( contents, SWT.BORDER );
+            Composite container = new Composite( contents, SWT.NONE );
             tb.fill( container );
             container.setLayoutData( right != null
                     ? FormDataFactory.filled().left( 50 ).right( 50, 200 ).create()
@@ -112,7 +112,7 @@ class DesktopActionBar {
         if (navi != null) {
             Composite container = new Composite( contents, SWT.NONE );
             navi.fill( container );
-            container.setLayoutData( FormDataFactory.filled().right( -1 ).width( 500 ).create() );
+            container.setLayoutData( FormDataFactory.filled().right( -1 ).width( 550 ).create() );
             left = container;
         }
         
