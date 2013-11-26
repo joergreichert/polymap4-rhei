@@ -1679,9 +1679,9 @@ FileUpload-FocusIndicator {
   color: #0f1c23;
   border: none;
 }
- Label.batik-panel-section-separator {
+*/ Label.batik-panel-section-separator {
   opacity: 0;
-}
+}*/
 Label:disabled.batik-panel-section-title {
   opacity: 0.3;
 }

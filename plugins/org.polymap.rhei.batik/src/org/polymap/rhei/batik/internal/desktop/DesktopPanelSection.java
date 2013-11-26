@@ -95,8 +95,8 @@ class DesktopPanelSection
         assert level >=0 && level <= 2 : "Section levels out of range: " + level;
         switch (level) {
             case 0:
-                clientLayout.spacing = 40;
-                clientLayout.marginWidth = 40;
+                clientLayout.spacing = 30;
+                clientLayout.marginWidth = 30;
                 break;
             case 1:
                 clientLayout.spacing = 10;
