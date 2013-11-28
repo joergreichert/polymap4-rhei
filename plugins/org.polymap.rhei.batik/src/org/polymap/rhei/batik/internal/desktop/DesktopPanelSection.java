@@ -29,6 +29,7 @@ import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.ui.forms.widgets.Section;
 
+import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.ILayoutElement;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
@@ -95,8 +96,10 @@ class DesktopPanelSection
         assert level >=0 && level <= 2 : "Section levels out of range: " + level;
         switch (level) {
             case 0:
-                clientLayout.spacing = 30;
-                clientLayout.marginWidth = 30;
+                // 1000 -> 30px margin
+                clientLayout.spacing = (int)( BatikApplication.sessionDisplay().getBounds().width * 0.03 );
+                clientLayout.marginWidth = clientLayout.spacing;
+                log.debug( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + clientLayout.marginWidth );
                 break;
             case 1:
                 clientLayout.spacing = 10;
@@ -104,10 +107,6 @@ class DesktopPanelSection
                 break;
         }
         clientLayout.marginHeight = 0;
-
-//        int spacing = (2 - level) * 20;
-//        clientLayout.marginWidth = level == 0 ? 30 : 0; //spacing;
-//        clientLayout.spacing = spacing;
     }
 
     

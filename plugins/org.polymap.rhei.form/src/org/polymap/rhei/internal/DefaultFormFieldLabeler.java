@@ -43,7 +43,7 @@ public class DefaultFormFieldLabeler
     
     private String              labelStr;
     
-    private int                 maxWidth = 100;
+    private int                 maxWidth;
 
     private Label               label;
     
@@ -77,8 +77,13 @@ public class DefaultFormFieldLabeler
     }
 
     public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
-        label = toolkit.createLabel( parent, 
-                labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ) );
+        if (labelStr != null && labelStr.equals( NO_LABEL )) {
+            label = toolkit.createLabel( parent, "" );            
+        }
+        else {
+            label = toolkit.createLabel( parent, 
+                    labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ) );
+        }
     
         // focus listener
         site.addChangeListener( this );

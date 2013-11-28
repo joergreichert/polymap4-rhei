@@ -49,6 +49,17 @@ public class BatikApplication
 
 
     /**
+     * The {@link Display} of the session of the current thread. Null, if the
+     * current thread has no session. The result is equivalent to
+     * {@link Display#getCurrent()} except that the calling thread does need to
+     * be the UI thread of the session.
+     */
+    public static Display sessionDisplay() {
+        return Polymap.getSessionDisplay();
+    }
+
+
+    /**
      * Return an appropriate shell to parent dialogs on. This will be one of the
      * workbench windows (the active one) should any exist. Otherwise
      * <code>null</code> is returned.
@@ -56,7 +67,7 @@ public class BatikApplication
      * @return The shell to parent on or <code>null</code> if there is no
      *         appropriate shell.
      */
-    public static Shell getShellToParentOn() {
+    public static Shell shellToParentOn() {
         return Polymap.getSessionDisplay().getActiveShell();
     }
 
@@ -91,7 +102,7 @@ public class BatikApplication
         Runnable runnable = new Runnable() {
             public void run() {
                 try {
-                    Shell shell = getShellToParentOn();
+                    Shell shell = shellToParentOn();
                     ErrorDialog dialog = new ErrorDialog(
                             shell,
                             Messages.get( "PolymapWorkbench_errorDialogTitle" ),

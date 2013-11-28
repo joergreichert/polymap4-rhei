@@ -261,7 +261,14 @@ public abstract class FormContainer
 
         public PageContainer( IFormEditorPage page ) {
             super( FormContainer.this, page, "_id_", "_title_" );
-            setLabelWidth( 150 );
+            double displayWidth = BatikApplication.sessionDisplay().getBounds().width;
+            // minimum 110 plus 10px per 100 pixel more display width;
+            double width = 110;
+            if (displayWidth > 1000) {
+                width += (displayWidth - 1000) * 0.1;
+            }
+            log.info( "labelWidth: " + width );
+            setLabelWidth( (int)width );
         }
 
         public void createContent() {

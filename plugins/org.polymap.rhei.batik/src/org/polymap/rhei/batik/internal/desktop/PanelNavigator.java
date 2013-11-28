@@ -118,8 +118,8 @@ class PanelNavigator
         
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
-        while (path.size() >= 1) {
-            final IPanel panel = appManager.getContext().getPanel( path );
+        for (int i=1; i<=path.size(); i++) {
+            final IPanel panel = appManager.getContext().getPanel( path.prefix( i ) );
 
             Button btn = new Button( breadcrumb, SWT.PUSH );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
@@ -141,8 +141,6 @@ class PanelNavigator
 //            Label separator = new Label( breadcrumb, SWT.VERTICAL );
 //            separator.setText( " " );
 //            separator.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-            
-            path = path.removeLast( 1 );
         }
         
         // switcher

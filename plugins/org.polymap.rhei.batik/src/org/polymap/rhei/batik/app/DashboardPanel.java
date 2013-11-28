@@ -62,7 +62,7 @@ public class DashboardPanel
         Image icon = JFaceResources.getImage( Dialog.DLG_IMG_MESSAGE_INFO );
         Action infoAction = new Action( "Info" ) {
             public void run() {
-                MessageDialog.openInformation( BatikApplication.getShellToParentOn(),
+                MessageDialog.openInformation( BatikApplication.shellToParentOn(),
                         "Information", "Atlas Client Version: " + BatikPlugin.instance().getBundle().getVersion() );
             }
         };

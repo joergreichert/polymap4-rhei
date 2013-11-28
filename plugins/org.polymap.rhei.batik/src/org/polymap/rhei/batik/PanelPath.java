@@ -73,6 +73,17 @@ public class PanelPath
         return result;
     }
 
+    public PanelPath prefix( int count ) {
+        assert count >= 0 : "Parameter 'count' must not be <= 0: " + count;
+        assert count <= segments.size() : "Parameter count must not be >= segments.size(): " + count;
+
+        PanelPath result = new PanelPath();
+        for (int i=0; i<count; i++) {
+            result.segments.add( segments.get( i ) );
+        }
+        return result;
+    }
+
     public int size() {
         return segments.size();
     }
