@@ -14,9 +14,6 @@
  */
 package org.polymap.rhei.batik.internal.desktop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,11 +22,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.rhei.batik.app.BatikApplication;
+import org.polymap.rhei.batik.toolkit.ConstraintData;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.ILayoutElement;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
@@ -50,23 +48,9 @@ class DesktopPanelSection
     
     private int                     level;
 
-    private List<LayoutConstraint>  constraints = new ArrayList( 3 );        
-    
-    
-    public void dispose() {
-        control.dispose();
-    }
-
-    
-    @Override
-    public ILayoutElement addConstraint( LayoutConstraint constraint ) {
-        constraints.add( constraint );
-        return this;
-    }
-
     
     public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
-        control = new PanelSection( parent, SWT.NO_FOCUS | SWT.BORDER );
+        control = new PanelSection( parent, SWT.NO_FOCUS );
         control.setData( "panelSection", this );
         control.setExpanded( true );
         control.setMenu( parent.getMenu() );
@@ -86,30 +70,48 @@ class DesktopPanelSection
                 
         Composite client = tk.adapt( new Composite( control, SWT.NO_FOCUS /*| SWT.BORDER*/ | tk.stylebits( styles ) ) );
 
+//        ColumnLayout clientLayout = ColumnLayoutFactory.defaults()
+//                .columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 
         ConstraintLayout clientLayout = new ConstraintLayout();
+        clientLayout.spacing = 10;
+        clientLayout.marginWidth = clientLayout.marginHeight = 0;
         client.setLayout( clientLayout );
-        //client.setLayout( new PanelSectionLayout() );
         control.setClient( client );
         
         level = getParentPanel() != null ? getParentPanel().getLevel()+1 : 0;
 
-        assert level >=0 && level <= 2 : "Section levels out of range: " + level;
-        switch (level) {
-            case 0:
-                // 1000 -> 30px margin
-                clientLayout.spacing = (int)( BatikApplication.sessionDisplay().getBounds().width * 0.03 );
-                clientLayout.marginWidth = clientLayout.spacing;
-                log.debug( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + clientLayout.marginWidth );
-                break;
-            case 1:
-                clientLayout.spacing = 10;
-                clientLayout.marginWidth = 0;
-                break;
-        }
-        clientLayout.marginHeight = 0;
+//        assert level >=0 && level <= 2 : "Section levels out of range: " + level;
+//        switch (level) {
+//            case 0:
+//                // 1000 -> 30px margin
+//                clientLayout.spacing = (int)( BatikApplication.sessionDisplay().getBounds().width * 0.03 );
+//                clientLayout.marginWidth = clientLayout.spacing;
+//                log.debug( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + clientLayout.marginWidth );
+//                break;
+//            case 1:
+//                clientLayout.spacing = 10;
+//                clientLayout.marginWidth = 0;
+//                break;
+//        }
+//        clientLayout.marginHeight = 0;
     }
 
     
+    public void dispose() {
+        control.dispose();
+    }
+
+
+    @Override
+    public ILayoutElement addConstraint( LayoutConstraint... constraints ) {
+        if (control.getLayoutData() == null) {
+            control.setLayoutData( new ConstraintData() );
+        }
+        ((ConstraintData)control.getLayoutData()).add( constraints );
+        return this;
+    }
+
+
     /**
      * Do the layout of this newly added children. 
      */
@@ -186,7 +188,7 @@ class DesktopPanelSection
             extends Section {
         
         public PanelSection( Composite parent, int style ) {
-            super( parent, style );
+            super( parent, style /*| Section.EXPANDED*/ );
         }
 
         public Control getTitleControl() {

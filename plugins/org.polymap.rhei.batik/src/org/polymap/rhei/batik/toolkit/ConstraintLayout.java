@@ -65,9 +65,11 @@ public class ConstraintLayout
         
         if (solution == null || flushCache) {
             clientArea = composite.getClientArea();
-            if (clientArea.width <= 0 || clientArea.width > 1800
-                    || clientArea.height < 0) {
-                //log.info( "Invalid client area: " + clientArea );
+            if (clientArea.width <= 0 || clientArea.height < 0) {
+                return false;
+            }
+            if (clientArea.width > composite.getDisplay().getBounds().width) {
+                log.warn( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
                 return false;
             }
             

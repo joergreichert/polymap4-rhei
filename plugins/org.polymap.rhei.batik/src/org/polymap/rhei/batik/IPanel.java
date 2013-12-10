@@ -14,8 +14,9 @@
  */
 package org.polymap.rhei.batik;
 
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 
 /**
  * The panel is the main visual component of the Atlas UI. It typically provides a
@@ -48,11 +49,13 @@ public interface IPanel {
 
     public PanelIdentifier id();
 
+    
     /**
-     * Creates the UI elements of this panel. 
+     * Creates the UI elements of this panel.
      * <p/>
-     * By default {@link FillLayout} is set for the <code>panelBody</code>. This can
-     * be changed as needed.
+     * {@link ConstraintLayout} is set for the <code>panelBody</code> by default.
+     * Margin width/height are set according the space available in the panel. This
+     * can be changed as needed.
      * 
      * @param panelBody The parent of the UI elements to create.
      */

@@ -43,15 +43,16 @@ public class ConstraintData {
 
     protected int                   currentWhint, currentHhint, currentWidth = -1, currentHeight = -1;
     
-    protected ArrayList<LayoutConstraint> constraints;
+    protected ArrayList<LayoutConstraint> constraints = new ArrayList( 3 );
 
     
     public ConstraintData( LayoutConstraint... constraints ) {
-        this.constraints = new ArrayList( Arrays.asList( constraints ) );
+        this.constraints.addAll( Arrays.asList( constraints ) );
     }
     
     
-//    public ConstraintData addConstraint( LayoutConstraint constraint ) {
+    @SuppressWarnings("hiding")
+    public ConstraintData add( LayoutConstraint... constraints ) {
 //        // already exists?
 //        for (ListIterator<LayoutConstraint> it=constraints.listIterator(); it.hasNext(); ) {
 //            if (it.next().getClass().equals( constraint.getClass() )) {
@@ -60,9 +61,9 @@ public class ConstraintData {
 //            }
 //        }
 //        // no? -> add
-//        constraints.add( constraint );
-//        return this;
-//    }
+        this.constraints.addAll( Arrays.asList( constraints ) );
+        return this;
+    }
     
     
     public void fillSolver( ISolver solver ) {

@@ -112,13 +112,12 @@ public class UserSettingsPanel
 
 
     @Override
-    public void createContents( Composite panelBody ) {
+    public void createContents( Composite parent ) {
         assert user != null;
         getSite().setTitle( i18n.get( "title" ) );
-        IPanelSection contents = tk.createPanelSection( panelBody, null );
 
         // welcome section
-        IPanelSection pwdSection = tk.createPanelSection( contents, i18n.get( "pwdSectionTitle" ) );
+        IPanelSection pwdSection = tk.createPanelSection( parent, i18n.get( "pwdSectionTitle" ) );
         pwdSection.getBody().setLayout( ColumnLayoutFactory.defaults().spacing( 20 ).columns( 1, 1 ).create() );
         pwdForm = new PasswordForm( getSite(), user );
         pwdForm.createContents( pwdSection );
@@ -148,7 +147,7 @@ public class UserSettingsPanel
         });
 
         // person section
-        IPanelSection personSection = tk.createPanelSection( contents, i18n.get( "settingsSectionTitle" ) );
+        IPanelSection personSection = tk.createPanelSection( parent, i18n.get( "settingsSectionTitle" ) );
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).columns( 1, 1 ).create() );
 

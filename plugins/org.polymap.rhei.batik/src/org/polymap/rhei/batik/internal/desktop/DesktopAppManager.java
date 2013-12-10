@@ -27,9 +27,9 @@ import com.google.common.base.Predicate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Layout;
 
 import org.eclipse.rwt.IBrowserHistory;
 import org.eclipse.rwt.RWT;
@@ -54,10 +54,12 @@ import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.internal.BatikComponentFactory;
 import org.polymap.rhei.batik.internal.DefaultAppContext;
 import org.polymap.rhei.batik.internal.PanelContextInjector;
 import org.polymap.rhei.batik.internal.desktop.DesktopActionBar.PLACE;
+import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
@@ -200,8 +202,8 @@ public class DesktopAppManager
         EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATING ) );
         
         final Composite page = scrolledPanelContainer.createPage( panel.id() );
-        page.setLayout( new FillLayout( SWT.VERTICAL ) );
-//        ((FillLayout)page.getLayout()).marginWidth = 8;
+        page.setLayout( newPanelLayout() );
+
         panel.createContents( page );
         scrolledPanelContainer.showPage( panel.id() );
 
@@ -217,6 +219,17 @@ public class DesktopAppManager
         return activePanel;
     }
 
+    
+    protected Layout newPanelLayout() {
+        ConstraintLayout result = new ConstraintLayout();
+        // 1000 -> 30px margin
+        result.marginWidth = result.spacing = 
+                (int)(BatikApplication.sessionDisplay().getBounds().width * 0.03 );
+        result.marginHeight = result.marginWidth / 2;
+        log.info( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + result.marginWidth );
+        return result;
+    }
+    
     
     protected void closePanel() {
         assert activePanel != null;
@@ -265,7 +278,8 @@ public class DesktopAppManager
         else {
             EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
             Composite page = scrolledPanelContainer.createPage( activePanel.id() );
-            page.setLayout( new FillLayout() );
+            page.setLayout( newPanelLayout() );
+
             activePanel.createContents( page );
             page.layout( true );
             scrolledPanelContainer.showPage( activePanel.id() );

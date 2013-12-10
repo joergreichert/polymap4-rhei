@@ -177,15 +177,21 @@ abstract class DesktopAppWindow
     
     public void delayedRefresh( final Shell shell ) {
         final Shell s = shell != null ? shell : getShell();
-        UICallBack.activate( "layout" );
+        
+        // FIXME HACK! force re-layout after font sizes are known (?)
+        UICallBack.activate( getClass().getName() );
         Job job = new Job( "Layout" ) {
             protected IStatus run( IProgressMonitor monitor ) {
                 s.getDisplay().asyncExec( new Runnable() {
                     public void run() {
                         log.info( "layout..." );
+                        s.layout();
+                        ((ScrolledPageBook)panels).reflow( true );
+
                         Rectangle bounds = Display.getCurrent().getBounds();
-                        int random = refreshCount++ % 3;
+                        int random = (refreshCount++ % 3);
                         s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
+                        UICallBack.deactivate( getClass().getName() );
                     }
                 });
                 return Status.OK_STATUS;
@@ -221,6 +227,8 @@ abstract class DesktopAppWindow
             getShell().setBounds( 0, 60, bounds.width, bounds.height - 60 );
             getShell().layout();
             ((ScrolledPageBook)panels).reflow( true );
+            
+            delayedRefresh( null );
         }
     }
     

@@ -17,7 +17,6 @@ package org.polymap.rhei.batik.toolkit;
 import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 
-
 /**
  * 
  */
