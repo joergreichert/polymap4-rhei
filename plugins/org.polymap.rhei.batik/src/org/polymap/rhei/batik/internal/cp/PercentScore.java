@@ -44,9 +44,9 @@ public class PercentScore
     }
     
     @Override
-    public IScore add( IScore o ) {
+    public <T extends IScore> T add( T o ) {
         PercentScore other = (PercentScore)o;
-        return other != INVALID ? new PercentScore( (Math.min(100, value + other.value) / 2 ) ) : INVALID;
+        return (T)(other != INVALID ? new PercentScore( (value + other.value) / 2 ) : INVALID);
     }
 
     @Override

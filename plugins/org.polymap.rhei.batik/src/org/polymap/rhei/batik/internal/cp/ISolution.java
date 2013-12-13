@@ -15,16 +15,16 @@
 package org.polymap.rhei.batik.internal.cp;
 
 /**
- * 
+ * Represents a valid solution for a given problem.
  * <p/>
- * Note that a solution implementation MUST provide a {@link #hashCode()} method.
+ * Implementations MUST provide a {@link #hashCode()} method.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface ISolution {
-        //extends Cloneable {
+public interface ISolution
+        extends Cloneable {
 
-    public <S extends ISolution> S copy();
+    public ISolution clone();
     
     
     /**

@@ -89,8 +89,6 @@ public class LinkActionServiceHandler
         HttpServletRequest request = RWT.getRequest();
         HttpServletResponse response = RWT.getResponse();
         
-        String pathInfo = request.getPathInfo();
-        
         String id = request.getParameter( ID_REQUEST_PARAM );
         log.info( "Request: id=" + id );
         if (id == null) {

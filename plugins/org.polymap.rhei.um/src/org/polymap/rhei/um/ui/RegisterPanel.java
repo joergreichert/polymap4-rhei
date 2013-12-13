@@ -40,6 +40,8 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.MinWidthConstraint;
+import org.polymap.rhei.batik.toolkit.PriorityConstraint;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.um.UmPlugin;
@@ -98,16 +100,16 @@ public class RegisterPanel
 
 
     @Override
-    public void createContents( Composite panelBody ) {
+    public void createContents( Composite parent ) {
         getSite().setTitle( i18n.get( "title" ) );
-        IPanelSection contents = tk.createPanelSection( panelBody, null );
 
         // welcome section
-        IPanelSection welcomeSection = tk.createPanelSection( contents, i18n.get( "sectionTitle" ) );
+        IPanelSection welcomeSection = tk.createPanelSection( parent, i18n.get( "sectionTitle" ) );
+        welcomeSection.addConstraint( new PriorityConstraint( 10 ), new MinWidthConstraint( 450, 0 ) );
         tk.createFlowText( welcomeSection.getBody(), i18n.get( "welcomeText" ) );
 
         // person section
-        IPanelSection personSection = tk.createPanelSection( contents, null );
+        IPanelSection personSection = tk.createPanelSection( parent, null );
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 5 ).margins( 0, 0 ).create() );
 

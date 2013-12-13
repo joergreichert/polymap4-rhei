@@ -20,13 +20,13 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 /**
  * 
  */
-public class MinWidthConstraint
+public class MinHeightConstraint
         extends LayoutConstraint {
     
     private int         value = -1;
 
 
-    public MinWidthConstraint( int value, int priority ) {
+    public MinHeightConstraint( int value, int priority ) {
         super( priority );
         this.value = value;
     }

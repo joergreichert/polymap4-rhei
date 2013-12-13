@@ -15,14 +15,24 @@
 package org.polymap.rhei.batik.internal.cp;
 
 /**
- * 
+ * The score of a {@link ISolution}.
+ * <p/>
+ * Score instances are immutable.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IScore
         extends Comparable<IScore> {
 
-    public IScore add( IScore s );
+    /**
+     * Adds the given
+     * <p/>
+     * XXX The method name "add" is maybe neither intuitive nor correct.
+     *
+     * @param o
+     * @return A newly created instance representing the result.
+     */
+    public <T extends IScore> T add( T o );
     
     public IScore prioritize( int priority );
 

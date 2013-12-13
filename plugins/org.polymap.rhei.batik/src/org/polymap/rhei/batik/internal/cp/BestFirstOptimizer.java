@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.batik.internal.cp;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -28,7 +27,7 @@ import org.polymap.core.runtime.Timer;
 /**
  * 
  * <p>
- * This optimizer finds also invalid solutions that fail on one or more given
+ * This optimizer does find also invalid solutions that fail on one or more given
  * constraints.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
@@ -63,26 +62,27 @@ public class BestFirstOptimizer
         //assert goals().size() > 0;
         
         Timer timer = new Timer();
-        ArrayList<IOptimizationGoal> goals = Prioritized.sort( goals() );
-        List<IConstraint> constraints = constraints();
+        List<IOptimizationGoal> goals = Prioritized.sort( goals() );
+//        List<IConstraint> constraints = constraints();
 
         // start solution
         queue.add( new ExScoredSolution( start, PercentScore.NULL ) );
         
         //
         int loops = 0; 
-        for ( ;!queue.isEmpty() && timer.elapsedTime() < timeoutMillis; loops++) {
+        for (;!queue.isEmpty() && timer.elapsedTime() < timeoutMillis; loops++) {
             // current best solution
             ExScoredSolution best = queue.getLast();
             
             // find next optimization step
             ISolution optimized = null;
+            String surrogate = null;
             while (optimized == null && best.goalsIndex < goals.size()) {
                 IOptimizationGoal goal = goals.get( best.goalsIndex );
 
-                optimized = best.solution.copy();
-                if (!goal.optimize( optimized )
-                        || seen.contains( optimized.surrogate() )) {
+                optimized = goal.optimize( best.solution.clone() );
+                surrogate = optimized != null ? optimized.surrogate() : null;
+                if (optimized != null && seen.contains( surrogate )) {
                     optimized = null;
                 }
                 best.goalsIndex ++;
@@ -99,19 +99,19 @@ public class BestFirstOptimizer
                     IScore s = goal.score( optimized );
                     optimizedScore = optimizedScore != null ? optimizedScore.add( s ) : s;
                 }
-                for (IConstraint constraint : constraints) {
-                    IScore s = constraint.score( optimized );
-                    optimizedScore = optimizedScore.add( s );
-                }
+//                for (IConstraint constraint : constraints) {
+//                    IScore s = constraint.score( optimized );
+//                    optimizedScore = optimizedScore.add( s );
+//                }
                 queue.add( new ExScoredSolution( optimized, optimizedScore ) );
-                seen.add( optimized.surrogate() );
+                seen.add( surrogate );
             }            
         }
         
         SolutionQueue<ScoredSolution> result = new SolutionQueue( queue.maxSize );
         result.addAll( queue );
         result.addAll( terminals );
-        log.debug( "queue=" + queue.size() + ", terminals=" + terminals.size() 
+        log.info( "queue=" + queue.size() + ", terminals=" + terminals.size() 
                 + ", maxScore=" + result.getLast().score
                 + ", loops=" + loops + ", seen=" + seen.size()
                 + " (" + timer.elapsedTime() + "ms)" );
@@ -122,7 +122,7 @@ public class BestFirstOptimizer
     /**
      * Bound priority queue. 
      */
-    class SolutionQueue<T extends ScoredSolution>
+    static class SolutionQueue<T extends ScoredSolution>
             extends LinkedList<T> {
     
         protected int         maxSize;

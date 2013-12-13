@@ -43,6 +43,8 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.MinWidthConstraint;
+import org.polymap.rhei.batik.toolkit.PriorityConstraint;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.um.UmPlugin;
@@ -148,6 +150,7 @@ public class UserSettingsPanel
 
         // person section
         IPanelSection personSection = tk.createPanelSection( parent, i18n.get( "settingsSectionTitle" ) );
+        personSection.addConstraint( new PriorityConstraint( 10 ), new MinWidthConstraint( 450, 1 ) );
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).columns( 1, 1 ).create() );
 

@@ -21,7 +21,13 @@ package org.polymap.rhei.batik.internal.cp;
  */
 public interface IOptimizationGoal<S extends ISolution, SC extends IScore> {
 
-    public abstract boolean optimize( S solution );
+    /**
+     * Try to optimze the given solution. The given instance is changed in-place.
+     *
+     * @param solution The solution to optimze.
+     * @return The optimized solution, or null if this goal does not find a better solution.
+     */
+    public abstract S optimize( S solution );
     
     public abstract SC score( S solution );
 
