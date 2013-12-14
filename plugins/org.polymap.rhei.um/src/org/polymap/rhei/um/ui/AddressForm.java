@@ -17,14 +17,12 @@ package org.polymap.rhei.um.ui;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.jface.layout.RowDataFactory;
-import org.eclipse.jface.layout.RowLayoutFactory;
-
 import org.polymap.core.runtime.IMessages;
+import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.FormLayoutFactory;
+
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
@@ -70,36 +68,44 @@ public class AddressForm
         
         // street / number
         Composite str = tk.createComposite( body );
-        str.setLayout( RowLayoutFactory.fillDefaults().pack( true ).create() );  //new FillLayout( SWT.HORIZONTAL) );
+        str.setLayout( FormLayoutFactory.defaults().spacing( 5 ).create() );
+        //str.setLayout( new FillLayout( SWT.HORIZONTAL) );
 
+        Composite field = null;
         Property<String> prop = address.street();
-        new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+        field = new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() )
-                .create().setLayoutData( RowDataFactory.swtDefaults().hint( 380, SWT.DEFAULT ).create() );  //FormDataFactory.filled().right( 75 ).create() );
+                .create();
+        field.setLayoutData( FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
                 .setValidator( new NotNullValidator() )
-                .create();  //.setLayoutData( FormDataFactory.filled().left( 75 ).create() );
+                .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
 
         // postalCode / city
         Composite city = tk.createComposite( body );
-        city.setLayout( new FillLayout( SWT.HORIZONTAL) );
+        //city.setLayout( new FillLayout( SWT.HORIZONTAL) );
+        city.setLayout( FormLayoutFactory.defaults().spacing( 5 ).create() );
+        //city.setLayout( RowLayoutFactory.fillDefaults().spacing( 5 ).pack( false ).create() );
         
         prop = address.postalCode();
-        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
+        field = new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() )
-                .create();  //.setLayoutData( FormDataFactory.filled().right( 25 ).create() );
+                .create();
+        field.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
 
         prop = address.city();
         new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
                 .setValidator( new NotNullValidator() )
-                .create();  //.setLayoutData( FormDataFactory.filled().left( 25 ).create() );
+                .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
         
 //        // country 
 //        prop = address.country();
 //        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
 //                .setValidator( new NotNullValidator() ).create();
+        
+        body.layout();
     }
 
 }
