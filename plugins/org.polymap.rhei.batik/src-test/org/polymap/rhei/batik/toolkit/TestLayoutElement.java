@@ -14,13 +14,7 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
-import java.util.List;
-
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutElement;
 
 /**
@@ -31,34 +25,33 @@ public class TestLayoutElement
 
     public String                   title;
     
-    private List<LayoutConstraint>  constraints;
+    private ConstraintData          constraints;
     
     public TestLayoutElement( String title, int y, int height, LayoutConstraint... constraints ) {
         this.title = title;
         this.y = y;
         this.height = height;
-        this.constraints = Lists.newArrayList( constraints );
+        this.constraints = new ConstraintData( constraints );
     }
 
     
     @Override
     protected TestLayoutElement clone() {
         TestLayoutElement result = (TestLayoutElement)super.clone();
-        result.constraints = Lists.newArrayList( constraints );
         return result;
     }
 
 
     @Override
     public <T extends LayoutConstraint> T constraint( Class<T> type, T defaultValue ) {
-        return (T)Iterables.find( constraints, Predicates.instanceOf( type ), defaultValue );
+        return constraints.constraint( type, defaultValue );
     }
 
-    @Override
-    public int computeWidth( int wHint ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
-    }
+//    @Override
+//    public int computeWidth( int wHint ) {
+//        // XXX Auto-generated method stub
+//        throw new RuntimeException( "not yet implemented." );
+//    }
 
     @Override
     public int hashCode() {

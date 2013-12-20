@@ -14,11 +14,11 @@
  */
 package org.polymap.rhei.batik.internal.cp;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,28 +37,65 @@ public class BestFirstOptimizer
 
     private static Log log = LogFactory.getLog( BestFirstOptimizer.class );
 
-    private int                             timeoutMillis;
+    private int                     timeoutMillis;
 
     /** The surrogates of the seen solutions so far. */
-    private Set<String>                     seen = new HashSet();
+    private Set<String>             seen = new HashSet();
     
-    private SolutionQueue<ExScoredSolution> queue, terminals;
+    private Queue<ExScoredSolution> queue;
+
+    private Queue<ExScoredSolution> terminals;
+
+    private int                     loops;
     
     
     /**
      * 
-     * @param timeoutMillis Max time in milliseconds to spent in optimizer.
-     * @param maxQueueSize
+     * @param timeoutMillis Max time in milliseconds to spent in optimizer. -1
+     *        specifies no limit.
+     * @param maxQueueSize The max number of elements hold in the queue of solutions.
+     *        -1 specifies that queues should be unbound.
      */
     public BestFirstOptimizer( int timeoutMillis, int maxQueueSize ) {
         this.timeoutMillis = timeoutMillis;
-        this.queue = new SolutionQueue( maxQueueSize );
-        this.terminals = new SolutionQueue( maxQueueSize );
+        this.queue = SolutionQueueBuilder.create( maxQueueSize );
+        this.terminals = SolutionQueueBuilder.create( maxQueueSize );
     }
 
+    /**
+     * Provides runtime information after {@link #solve(ISolution)} has been run.
+     * @return The number of 'seen' solutions.
+     */
+    public Set<String> getSeen() {
+        return seen;
+    }
     
+    /**
+     * Provides runtime information after {@link #solve(ISolution)} has been run.
+     * @return The remaining queue.
+     */
+    public Queue<? extends ScoredSolution> getQueue() {
+        return queue;
+    }
+    
+    /**
+     * Provides runtime information after {@link #solve(ISolution)} has been run.
+     * @return The found solutions that cannot optimized any further.
+     */
+    public Queue<? extends ScoredSolution> getTerminals() {
+        return terminals;
+    }
+    
+    /**
+     * Provides runtime information after {@link #solve(ISolution)} has been run.
+     * @return The number of optimization steps.
+     */
+    public int getLoops() {
+        return loops;
+    }
+
     @Override
-    public List<ScoredSolution> solve( ISolution start ) {
+    public ScoredSolution solve( ISolution start ) {
         //assert goals().size() > 0;
         
         Timer timer = new Timer();
@@ -69,10 +106,12 @@ public class BestFirstOptimizer
         queue.add( new ExScoredSolution( start, PercentScore.NULL ) );
         
         //
-        int loops = 0; 
-        for (;!queue.isEmpty() && timer.elapsedTime() < timeoutMillis; loops++) {
+        loops = 0; 
+        while (!queue.isEmpty() && 
+                (timeoutMillis < 0 || timer.elapsedTime() < timeoutMillis)) {
+            loops ++;
             // current best solution
-            ExScoredSolution best = queue.getLast();
+            ExScoredSolution best = queue.peek();
             
             // find next optimization step
             ISolution optimized = null;
@@ -89,7 +128,7 @@ public class BestFirstOptimizer
             }
             // no optimization found -> terminal
             if (optimized == null) {
-                queue.removeLast();
+                queue.remove();
                 terminals.add( best );
             }
             // score optimized solution -> queue
@@ -97,53 +136,33 @@ public class BestFirstOptimizer
                 IScore optimizedScore = null;
                 for (IOptimizationGoal goal : goals) {
                     IScore s = goal.score( optimized );
-                    optimizedScore = optimizedScore != null ? optimizedScore.add( s ) : s;
+                    if (s == IScore.INVALID) {
+                        optimizedScore = IScore.INVALID;
+                        break;
+                    }
+                    else {
+                        optimizedScore = optimizedScore != null ? optimizedScore.add( s ) : s;
+                    }
                 }
 //                for (IConstraint constraint : constraints) {
 //                    IScore s = constraint.score( optimized );
 //                    optimizedScore = optimizedScore.add( s );
 //                }
-                queue.add( new ExScoredSolution( optimized, optimizedScore ) );
+                if (optimizedScore != IScore.INVALID) {
+                    queue.add( new ExScoredSolution( optimized, optimizedScore ) );
+                }
                 seen.add( surrogate );
             }            
         }
         
-        SolutionQueue<ScoredSolution> result = new SolutionQueue( queue.maxSize );
-        result.addAll( queue );
-        result.addAll( terminals );
-        log.info( "queue=" + queue.size() + ", terminals=" + terminals.size() 
-                + ", maxScore=" + result.getLast().score
-                + ", loops=" + loops + ", seen=" + seen.size()
-                + " (" + timer.elapsedTime() + "ms)" );
+        ExScoredSolution result = terminals.isEmpty() ? queue.peek() : terminals.peek();
+        if (timer.elapsedTime() > 10) {
+            log.info( "queue=" + queue.size() + ", terminals=" + terminals.size() 
+                    + ", maxScore=" + result.score
+                    + ", loops=" + loops + ", seen=" + seen.size()
+                    + " (" + timer.elapsedTime() + "ms)" );
+        }
         return result;
-    }
-
-
-    /**
-     * Bound priority queue. 
-     */
-    static class SolutionQueue<T extends ScoredSolution>
-            extends LinkedList<T> {
-    
-        protected int         maxSize;
-    
-        public SolutionQueue( int maxSize ) {
-            this.maxSize = maxSize;
-        }
-    
-        @Override
-        public boolean add( T elm ) {
-            int index = Collections.binarySearch( this, elm );
-            if (index >= 0) {
-                super.add( index, elm );
-            } else {
-                super.add( ~index, elm );                
-            }
-            if (size() > maxSize) {
-                remove( 0 );
-            }
-            return true;
-        }
     }
 
 

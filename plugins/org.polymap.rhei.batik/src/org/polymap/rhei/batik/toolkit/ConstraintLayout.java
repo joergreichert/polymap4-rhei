@@ -114,10 +114,10 @@ public class ConstraintLayout
 
             log.debug( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
 
-            ISolver solver = new BestFirstOptimizer( 250, 10 );
+            ISolver solver = new BestFirstOptimizer( 250, 100 );
             solver.addGoal( new PriorityOnTopGoal( 1 ) );
             solver.addGoal( new MinOverallHeightGoal( 0 ) );
-            //            solver.addGoal( new ElementRelationGoal( this ), 1 );
+            solver.addGoal( new NeighborhoodGoal( 0 ) );
 
             for (Control child : composite.getChildren()) {
                 ConstraintData data = (ConstraintData)child.getLayoutData();
@@ -128,8 +128,8 @@ public class ConstraintLayout
             LayoutSolution start = new LayoutSolution( composite, clientArea, marginWidth, marginHeight, spacing );
             start.justifyElements();
 
-            List<ScoredSolution> results = solver.solve( start );
-            solution = (LayoutSolution)results.get( results.size()-1 ).solution;
+            ScoredSolution result = solver.solve( start );
+            solution = (LayoutSolution)result.solution;
         }
         return solution != null;
     }
@@ -186,11 +186,11 @@ public class ConstraintLayout
         
         @Override
         public String surrogate() {
-            int result = 1;
+            long result = 1;
             for (LayoutColumn column : columns) {
-                result = 31 * result + column.width;
+                result = 31l * result + column.width;
                 for (LayoutElement elm : column) {
-                    result = 31 * result + elm.hashCode();
+                    result = 31l * result + elm.hashCode();
                 }
             }
             return String.valueOf( result );
@@ -297,7 +297,8 @@ public class ConstraintLayout
             for (LayoutElement elm : this) {
                 MinHeightConstraint minHeight = elm.constraint( MinHeightConstraint.class, 
                         new MinHeightConstraint( SWT.DEFAULT, -1 ) );
-                elm.height = elm.control.computeSize( width, minHeight.getValue() ).y;
+
+                elm.height = elm.control.computeSize( width, minHeight.getValue(), false ).y;
                 elm.y = height;
                 
                 height += elm.height;
@@ -347,16 +348,16 @@ public class ConstraintLayout
             return data != null ? data.constraint( type, defaultValue ) : defaultValue;
         }
 
-        public int computeWidth( int wHint ) {
-            int width = control.computeSize( wHint, SWT.DEFAULT ).x;
-            // min constraint
-            MinWidthConstraint minConstraint = constraint( MinWidthConstraint.class, null );
-            width = minConstraint != null ? Math.max( minConstraint.getValue(), width ) : width;
-            // max constraint
-            MaxWidthConstraint maxConstraint = constraint( MaxWidthConstraint.class, null );
-            width = maxConstraint != null ? Math.min( maxConstraint.getValue(), width ) : width;
-            return width;
-        }
+//        public int computeWidth( int wHint ) {
+//            int width = control.computeSize( wHint, SWT.DEFAULT, false ).x;
+//            // min constraint
+//            MinWidthConstraint minConstraint = constraint( MinWidthConstraint.class, null );
+//            width = minConstraint != null ? Math.max( minConstraint.getValue(), width ) : width;
+//            // max constraint
+//            MaxWidthConstraint maxConstraint = constraint( MaxWidthConstraint.class, null );
+//            width = maxConstraint != null ? Math.min( maxConstraint.getValue(), width ) : width;
+//            return width;
+//        }
         
         @Override
         public int hashCode() {

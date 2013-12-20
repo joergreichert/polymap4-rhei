@@ -18,28 +18,34 @@ import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 
 /**
- * The priority of an element inside a container. Higher priorities are displayed
- * more eye-catching. In most cases this means that higher priorities are displayed
- * on top of the panel.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PriorityConstraint
+public class NeighborhoodConstraint
         extends LayoutConstraint {
     
-    private int         value = -1;
-
-
-    public PriorityConstraint( int value ) {
-        super( 0 );
-        this.value = value;
+    public enum Neighborhood {
+        TOP, BOTTOM;
     }
-
     
-    public int getValue() {
-        return value;
+    private Object       control;
+    
+    private Neighborhood    type;
+
+
+    public NeighborhoodConstraint( Object control, Neighborhood type, int prio ) {
+        super( prio );
+        this.control = control;
+        this.type = type;
     }
 
+    public Object getControl() {
+        return control;
+    }
+    
+    public Neighborhood getType() {
+        return type;
+    }
 
     @Override
     public PercentScore score( LayoutSolution solution ) {

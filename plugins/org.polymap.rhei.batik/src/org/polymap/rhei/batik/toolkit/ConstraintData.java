@@ -14,17 +14,11 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
 
 import org.polymap.rhei.batik.internal.cp.ISolver;
 
@@ -43,67 +37,65 @@ public class ConstraintData {
 
     protected int                   currentWhint, currentHhint, currentWidth = -1, currentHeight = -1;
     
-    protected ArrayList<LayoutConstraint> constraints = new ArrayList( 3 );
+    protected Map<Class,LayoutConstraint> constraints = new HashMap( 8 );
 
     
     public ConstraintData( LayoutConstraint... constraints ) {
-        this.constraints.addAll( Arrays.asList( constraints ) );
+        add( constraints );
     }
     
     
     @SuppressWarnings("hiding")
     public ConstraintData add( LayoutConstraint... constraints ) {
-//        // already exists?
-//        for (ListIterator<LayoutConstraint> it=constraints.listIterator(); it.hasNext(); ) {
-//            if (it.next().getClass().equals( constraint.getClass() )) {
-//                it.set( constraint );
-//                return this;
-//            }
-//        }
-//        // no? -> add
-        this.constraints.addAll( Arrays.asList( constraints ) );
+        for (LayoutConstraint constraint : constraints) {
+            LayoutConstraint prev = this.constraints.put( constraint.getClass(), constraint );
+            if (prev != null) {
+                throw new IllegalArgumentException( "Constraint of type already added: " +  constraint );
+            }
+        }
         return this;
     }
     
     
     public void fillSolver( ISolver solver ) {
-        for (LayoutConstraint constraint : constraints) {
+        for (LayoutConstraint constraint : constraints.values()) {
             solver.addConstraint( constraint );
         }
     }
 
     
     public <T extends LayoutConstraint> T constraint( Class<T> type, T defaultValue ) {
-        return (T)Iterables.find( constraints, Predicates.instanceOf( type ), defaultValue );
+        LayoutConstraint result = constraints.get( type );
+        return (T)(result != null ? result : defaultValue);
     }
     
     
-    public Point computeSize( Control control, int wHint, int hHint, boolean flushCache ) {
-        if (flushCache) {
-            flushCache();
-        }
-        if (wHint == SWT.DEFAULT && hHint == SWT.DEFAULT) {
-            if (defaultWidth == -1 || defaultHeight == -1) {
-                Point size = control.computeSize( wHint, hHint, flushCache );
-                defaultWidth = size.x;
-                defaultHeight = size.y;
-            }
-            return new Point( defaultWidth, defaultHeight );
-        }
-        if (currentWidth == -1 || currentHeight == -1 || wHint != currentWhint || hHint != currentHhint) {
-            Point size = control.computeSize( wHint, hHint, flushCache );
-            currentWhint = wHint;
-            currentHhint = hHint;
-            currentWidth = size.x;
-            currentHeight = size.y;
-        }
-        return new Point( currentWidth, currentHeight );
-    }
-    
-    
-    protected void flushCache () {
-        defaultWidth = defaultHeight = -1;
-        currentWidth = currentHeight = -1;
-    }
+//    public Point computeSize( Control control, int wHint, int hHint, boolean flushCache ) {
+//        if (flushCache) {
+//            flushCache();
+//        }
+//        if (wHint == SWT.DEFAULT && hHint == SWT.DEFAULT) {
+//            if (defaultWidth == -1 || defaultHeight == -1) {
+//                Point size = control.computeSize( wHint, hHint, flushCache );
+//                defaultWidth = size.x;
+//                defaultHeight = size.y;
+//            }
+//            return new Point( defaultWidth, defaultHeight );
+//        }
+//        if (currentWidth == -1 || currentHeight == -1 || wHint != currentWhint || hHint != currentHhint) {
+//            Point size = control.computeSize( wHint, hHint, flushCache );
+//            currentWhint = wHint;
+//            currentHhint = hHint;
+//            currentWidth = size.x;
+//            currentHeight = size.y;
+//        }
+//        return new Point( currentWidth, currentHeight );
+//    }
+//    
+//    
+//    protected void flushCache () {
+//        defaultWidth = defaultHeight = -1;
+//        currentWidth = currentHeight = -1;
+//    }
 
 }

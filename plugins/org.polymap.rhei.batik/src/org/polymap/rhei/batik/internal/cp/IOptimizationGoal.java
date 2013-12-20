@@ -19,7 +19,7 @@ package org.polymap.rhei.batik.internal.cp;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IOptimizationGoal<S extends ISolution, SC extends IScore> {
+public interface IOptimizationGoal<S extends ISolution> {
 
     /**
      * Try to optimze the given solution. The given instance is changed in-place.
@@ -29,16 +29,16 @@ public interface IOptimizationGoal<S extends ISolution, SC extends IScore> {
      */
     public abstract S optimize( S solution );
     
-    public abstract SC score( S solution );
+    public abstract <SC extends IScore> SC score( S solution );
 
     
-    /**
-     * 
-     */
-    public interface Step {
-    
-        public abstract void revoke();
-        
-    }
+//    /**
+//     * 
+//     */
+//    public interface Step {
+//    
+//        public abstract void revoke();
+//        
+//    }
     
 }

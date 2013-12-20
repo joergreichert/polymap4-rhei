@@ -14,8 +14,6 @@
  */
 package org.polymap.rhei.batik.internal.cp;
 
-import java.util.List;
-
 /**
  * 
  *
@@ -27,7 +25,7 @@ public interface ISolver {
 
     public void addConstraint( IConstraint constraint );
     
-    public List<ScoredSolution> solve( ISolution start );
+    public ScoredSolution solve( ISolution start );
     
     
     /**

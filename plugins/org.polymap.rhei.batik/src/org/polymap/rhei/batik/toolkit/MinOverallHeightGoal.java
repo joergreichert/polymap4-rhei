@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.polymap.rhei.batik.internal.cp.IOptimizationGoal;
+import org.polymap.rhei.batik.internal.cp.IScore;
 import org.polymap.rhei.batik.internal.cp.PercentScore;
 import org.polymap.rhei.batik.internal.cp.Prioritized;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutColumn;
@@ -33,7 +34,7 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
  */
 class MinOverallHeightGoal
         extends Prioritized
-        implements IOptimizationGoal<LayoutSolution,PercentScore> {
+        implements IOptimizationGoal<LayoutSolution> {
 
     private static Log log = LogFactory.getLog( MinOverallHeightGoal.class );
 
@@ -84,7 +85,7 @@ class MinOverallHeightGoal
 
     
     @Override
-    public PercentScore score( LayoutSolution solution ) {
+    public IScore score( LayoutSolution solution ) {
         int maxColumnHeight = 0, minColumnHeight = Integer.MAX_VALUE;
         int columnWidth = solution.defaultColumnWidth();
 
@@ -92,13 +93,13 @@ class MinOverallHeightGoal
             // avoid empty column produced by the random optimization
             if (column.size() == 0) {
                 log.debug( "        score=-1 - " + solution );
-                return PercentScore.INVALID;
+                return IScore.INVALID;
             }
             // avoid columns to small for columnWidth
             int preferredWidth = column.computeMinWidth( columnWidth );
             if (preferredWidth > columnWidth) {
                 log.debug( "        score=" + preferredWidth + ">" + columnWidth + " - " + solution );
-                return PercentScore.INVALID;
+                return IScore.INVALID;
             }
 
             assert column.height >= 0;

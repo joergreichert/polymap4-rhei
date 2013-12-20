@@ -36,19 +36,9 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
  */
 class PriorityOnTopGoal
         extends Prioritized
-        implements IOptimizationGoal<LayoutSolution,PercentScore> {
+        implements IOptimizationGoal<LayoutSolution> {
 
     private static Log log = LogFactory.getLog( PriorityOnTopGoal.class );
-
-//    /**
-//     * Sort ascending y position of the elements.
-//     */
-//    public static final Ordering<LayoutElement> yOrdering = new Ordering<LayoutElement>() {
-//        public int compare( LayoutElement left, LayoutElement right ) {
-//            assert left.y >= 0 && right.y >= 0;
-//            return left.y - right.y;
-//        }
-//    };
 
     
     public PriorityOnTopGoal( int priority ) {
@@ -62,8 +52,9 @@ class PriorityOnTopGoal
         for (LayoutColumn column : solution.columns) {
             for (LayoutElement elm : column) {
                 assert elm.y >= 0;
-                if (result.put( elm.y + columnOffset, elm ) != null) {
-                    throw new RuntimeException( "" );
+                LayoutElement prev = result.put( elm.y + columnOffset, elm );
+                if (prev != null) {
+                    throw new RuntimeException( "Element found: prev=" + prev + ", key=" + elm.y + columnOffset + ", elm=" + elm );
                 }
             }
             columnOffset ++;

@@ -22,9 +22,16 @@ package org.polymap.rhei.batik.internal.cp;
 public class PercentScore
         implements IScore {
 
-    public static final PercentScore NULL = new PercentScore( 0 );
+    /** The neutral value for the {@link #add(IScore)} operation. */
+    public static final PercentScore NULL = new PercentScore( 0 ) {
+        @Override
+        public <T extends IScore> T add( T o ) {
+            return o;
+        }
+    };
     
-    public static final PercentScore INVALID = new PercentScore( -1 );
+    
+    // instance *******************************************
     
     private int             value;
     
@@ -46,7 +53,16 @@ public class PercentScore
     @Override
     public <T extends IScore> T add( T o ) {
         PercentScore other = (PercentScore)o;
-        return (T)(other != INVALID ? new PercentScore( (value + other.value) / 2 ) : INVALID);
+        if (other == NULL) {
+            return (T)this;
+        }
+        else if (other == INVALID) {
+            // XXX ???
+            return (T)INVALID;
+        }
+        else {
+            return (T)new PercentScore( (value + other.value) / 2 );
+        }
     }
 
     @Override

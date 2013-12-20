@@ -15,12 +15,13 @@
 package org.polymap.rhei.batik.internal.cp;
 
 import static org.junit.Assert.*;
+
+import java.util.Queue;
+
 import org.junit.Test;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.polymap.rhei.batik.internal.cp.BestFirstOptimizer.SolutionQueue;
 
 /**
  * 
@@ -33,41 +34,67 @@ public class BestFirstOptimizerTest {
 
 
     @Test
-    public void testSolutionQueue() {
-        SolutionQueue<TestScoredSolution> queue = new BestFirstOptimizer.SolutionQueue( 3 );
+    public void unboundSolutionQueue() {
+        Queue<TestScoredSolution> queue = SolutionQueueBuilder.create( -1 );
         queue.add( new TestScoredSolution( PercentScore.NULL ) );
         queue.add( new TestScoredSolution( new PercentScore( 10 ) ) );
         
         assertEquals( 2, queue.size() );
-        assertEquals( PercentScore.NULL, queue.getFirst().score );
-        assertEquals( new PercentScore( 10 ), queue.getLast().score );
+//        assertEquals( PercentScore.NULL, queue.getFirst().score );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
 
         queue.add( new TestScoredSolution( new PercentScore( 5 ) ) );
         assertEquals( 3, queue.size() );
-        assertEquals( new PercentScore( 10 ), queue.getLast().score );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
 
         queue.add( new TestScoredSolution( new PercentScore( 5 ) ) );
-        assertEquals( 3, queue.size() );
-        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
-        assertEquals( new PercentScore( 10 ), queue.getLast().score );
+//        assertEquals( 3, queue.size() );
+//        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
 
         queue.add( new TestScoredSolution( new PercentScore( 20 ) ) );
-        assertEquals( 3, queue.size() );
-        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
-        assertEquals( new PercentScore( 20 ), queue.getLast().score );
+//        assertEquals( 3, queue.size() );
+//        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
+        assertEquals( new PercentScore( 20 ), queue.peek().score );
     }
 
     
     @Test
-    public void testPercentScore() {
+    public void boundSolutionQueue() {
+        Queue<TestScoredSolution> queue = SolutionQueueBuilder.create( 3 );
+        queue.add( new TestScoredSolution( PercentScore.NULL ) );
+        queue.add( new TestScoredSolution( new PercentScore( 10 ) ) );
+        
+        assertEquals( 2, queue.size() );
+//        assertEquals( PercentScore.NULL, queue.getFirst().score );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
+
+        queue.add( new TestScoredSolution( new PercentScore( 5 ) ) );
+        assertEquals( 3, queue.size() );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
+
+        queue.add( new TestScoredSolution( new PercentScore( 5 ) ) );
+        assertEquals( 3, queue.size() );
+//        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
+        assertEquals( new PercentScore( 10 ), queue.peek().score );
+
+        queue.add( new TestScoredSolution( new PercentScore( 20 ) ) );
+        assertEquals( 3, queue.size() );
+//        assertEquals( new PercentScore( 5 ), queue.getFirst().score );
+        assertEquals( new PercentScore( 20 ), queue.peek().score );
+    }
+
+    
+    @Test
+    public void percentScore() {
         PercentScore score = PercentScore.NULL;
         assertEquals( 0, score.getValue() );
         
         score = score.add( PercentScore.NULL );
-        assertNotSame( PercentScore.NULL, score );
+        assertSame( PercentScore.NULL, score );
         assertEquals( 0, score.getValue() );
 
-        score = score.add( new PercentScore( 100 ) );
+        score = score.add( new PercentScore( 50 ) );
         assertEquals( 50, score.getValue() );
 
         score = score.add( new PercentScore( 50 ) );

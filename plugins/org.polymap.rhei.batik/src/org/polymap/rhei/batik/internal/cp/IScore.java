@@ -24,6 +24,24 @@ package org.polymap.rhei.batik.internal.cp;
 public interface IScore
         extends Comparable<IScore> {
 
+    public static final IScore INVALID = new IScore() {
+        @Override
+        public int compareTo( IScore o ) {
+            // XXX Auto-generated method stub
+            throw new RuntimeException( "not yet implemented." );
+        }
+        @Override
+        public <T extends IScore> T add( T o ) {
+            // XXX Auto-generated method stub
+            throw new RuntimeException( "not yet implemented." );
+        }
+        @Override
+        public IScore prioritize( int priority ) {
+            // XXX Auto-generated method stub
+            throw new RuntimeException( "not yet implemented." );
+        }
+    };
+
     /**
      * Adds the given
      * <p/>
