@@ -29,7 +29,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import org.polymap.core.CorePlugin;
 import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.batik.BatikPlugin;
@@ -91,7 +90,8 @@ public class BatikApplication
         log.error( msg, e );
 
         final Status status = new Status( IStatus.ERROR, pluginId, e.getLocalizedMessage(), e );
-        CorePlugin.getDefault().getLog().log( status );
+        // XXX causes Exception; don't know why doing this anyway
+        //CorePlugin.getDefault().getLog().log( status );
 
         final Display display = Polymap.getSessionDisplay();
         if (display == null) {
