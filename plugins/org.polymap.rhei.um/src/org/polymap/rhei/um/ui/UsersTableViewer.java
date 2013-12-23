@@ -20,8 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -34,6 +32,9 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.deferred.DeferredContentProvider;
 import org.eclipse.jface.viewers.deferred.SetModel;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
+import org.polymap.core.runtime.UIJob;
 import org.polymap.core.ui.SelectionAdapter;
 
 import org.polymap.rhei.um.Address;
@@ -57,8 +58,7 @@ public class UsersTableViewer
     private SetModel            model;
     
     
-    public UsersTableViewer( Composite parent, Iterable<User> content, int style ) {
-        super( parent, SWT.VIRTUAL /*| SWT.V_SCROLL | SWT.FULL_SELECTION |*/ | style );
+    public UsersTableViewer( Composite parent, final Iterable<User> content, int style ) { super( parent, SWT.VIRTUAL /*| SWT.V_SCROLL | SWT.FULL_SELECTION |*/ | style );
         this.repo = UserRepository.instance();
         this.content = content;
 
@@ -72,10 +72,16 @@ public class UsersTableViewer
         vcolumn.getColumn().setText( "Name" );
         vcolumn.setLabelProvider( new ColumnLabelProvider() {
             public String getText( Object elm ) {
-                return Joiner.on( ' ' ).skipNulls().join( ((User)elm).firstname().get(), ((User)elm).name().get() );
+                log.info( "getText(): ..." );
+                User user = (User)elm;
+                String firstname = user.firstname().get();
+                return firstname != null && firstname.length() > 0 
+                        ? user.name().get() + ", " + firstname
+                        : user.name().get();
             }
         });
         ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            
+        getTable().setSortColumn( vcolumn.getColumn() );
 
         vcolumn = new TableViewerColumn( this, SWT.LEFT );
         vcolumn.getColumn().setResizable( true );
@@ -90,12 +96,21 @@ public class UsersTableViewer
         ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            
 
         setContentProvider( new DeferredContentProvider( new Comparator<User>() {
-            public int compare( User o1, User o2 ) {
-                return 0;
+            public int compare( User left, User right ) {
+                return left.name().get().compareToIgnoreCase( right.name().get() );
             }
         }));
         setInput( model = new SetModel() );
-        model.addAll( ImmutableList.copyOf( content ) );
+        
+        // content loader
+        new UIJob( "Nutzer laden" ) {
+            protected void runWithException( IProgressMonitor monitor ) throws Exception {
+                for (User user : content) {
+                    model.addAll( new Object[] { user } );
+                }
+            }
+        }.schedule();
+//        model.addAll( ImmutableList.copyOf( content ) );
     }
 
     
