@@ -157,7 +157,7 @@ public class BestFirstOptimizer
         
         ExScoredSolution result = terminals.isEmpty() ? queue.peek() : terminals.peek();
         if (timer.elapsedTime() > 10) {
-            log.info( "queue=" + queue.size() + ", terminals=" + terminals.size() 
+            log.debug( "queue=" + queue.size() + ", terminals=" + terminals.size() 
                     + ", maxScore=" + result.score
                     + ", loops=" + loops + ", seen=" + seen.size()
                     + " (" + timer.elapsedTime() + "ms)" );

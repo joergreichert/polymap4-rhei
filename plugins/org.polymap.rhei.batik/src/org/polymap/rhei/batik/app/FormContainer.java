@@ -32,7 +32,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -79,10 +78,6 @@ public abstract class FormContainer
         implements IFormEditorPage {
 
     private static Log log = LogFactory.getLog( FormContainer.class );
-
-    public static final Font    FONT_DEFAULT = JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT );
-    
-    public static final Font    FONT_BOLD = JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT );
     
     private FormEditorToolkit   toolkit;
 
@@ -184,7 +179,10 @@ public abstract class FormContainer
         while (!deque.isEmpty()) {
             Control control = deque.pop();
             if (control instanceof Label) {
-                control.setFont( enabled ? FONT_DEFAULT : FONT_BOLD );
+                control.setFont( enabled 
+                        ? JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT )
+                        : JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT ) );
+
                 if (!enabled) {
                     control.setBackground( Graphics.getColor( 0xED, 0xEF, 0xF1 ) );
                 }

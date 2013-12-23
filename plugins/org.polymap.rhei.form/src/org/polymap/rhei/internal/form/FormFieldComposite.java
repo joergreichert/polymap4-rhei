@@ -17,9 +17,6 @@ package org.polymap.rhei.internal.form;
 
 import org.opengis.feature.Property;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -50,8 +47,6 @@ import org.polymap.rhei.form.IFormEditorToolkit;
  */
 public class FormFieldComposite
         implements IFormFieldSite {
-
-    private static Log log = LogFactory.getLog( FormFieldComposite.class );
 
     /** Identifies the editor that events belong to. */
     private Object                  editor;
@@ -141,7 +136,6 @@ public class FormFieldComposite
 
 
     public void dispose() {
-        log.debug( "dispose(): ..." );
         if (field != null) {
             field.dispose();
             field = null;
@@ -168,14 +162,12 @@ public class FormFieldComposite
         return errorMsg == null;
     }
     
-    public void load()
-    throws Exception {
+    public void load() throws Exception {
         field.load();
         //isDirty = false;
     }
 
-    public Object store()
-    throws Exception {
+    public Object store() throws Exception {
         field.store();
         
         // set isDirty and inform decorator
@@ -198,13 +190,11 @@ public class FormFieldComposite
         return prop.getName().getLocalPart();
     }
 
-    public Object getFieldValue()
-    throws Exception {
+    public Object getFieldValue() throws Exception {
         return validator.transform2Field( prop.getValue() );
     }
 
-    public void setFieldValue( Object value )
-    throws Exception {
+    public void setFieldValue( Object value ) throws Exception {
         prop.setValue( validator.transform2Model( value ) );
     }
 
@@ -227,10 +217,9 @@ public class FormFieldComposite
     public void fireEvent( Object source, int eventCode, Object newValue ) {
         Object validatedNewValue = null;
 
-        errorMsg = externalErrorMsg;
-        
         // check isDirty / validator
-        if (eventCode == IFormFieldListener.VALUE_CHANGE && errorMsg == null) {
+        if (eventCode == IFormFieldListener.VALUE_CHANGE) {
+            errorMsg = externalErrorMsg;
             if (validator != null) {
                 errorMsg = validator.validate( newValue );
             }

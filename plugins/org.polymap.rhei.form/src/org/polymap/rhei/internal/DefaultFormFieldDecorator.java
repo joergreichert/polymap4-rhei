@@ -97,14 +97,21 @@ public class DefaultFormFieldDecorator
         if (label.isDisposed()) {
             return;
         }
+        // reset
         label.setImage( null );
+        label.setToolTipText( "" );
 //        if (focus) {
 //            label.setImage( focusImage );            
 //        }
         if (dirty) {
             label.setImage( dirtyImage );
             try {
-                label.setToolTipText( dirty ? "Dieser Wert wurde geändert. Originalwert: " + site.getFieldValue() : "" );
+                String tooltip = "Eingabe ist korrekt.";
+                Object origValue = site.getFieldValue();
+                if (origValue != null) {
+                    tooltip += " Originalwert: '" + origValue + "'";
+                }
+                label.setToolTipText( tooltip );
             }
             catch (Exception e) {
                 log.warn( e );
@@ -127,8 +134,7 @@ public class DefaultFormFieldDecorator
         }
         else if (ev.getEventCode() == VALUE_CHANGE) {
             dirty = site.isDirty();
-
-            invalid = site.getErrorMessage() != null;
+            invalid = !site.isValid();
 
             log.debug( "fieldChange(): dirty= " + dirty + ", focus= " + focus + ", invalid=" + invalid );
             updateUI();

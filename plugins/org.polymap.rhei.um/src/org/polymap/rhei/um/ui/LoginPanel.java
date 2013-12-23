@@ -187,7 +187,7 @@ public class LoginPanel
 
 
         @Override
-        public void createFormContent( IFormEditorPageSite site ) {
+        public void createFormContent( final IFormEditorPageSite site ) {
             formSite = site;
             Composite body = site.getPageBody();
             body.setLayout( ColumnLayoutFactory.defaults()
@@ -195,12 +195,13 @@ public class LoginPanel
                     .margins( (Integer)panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
-                    .setField( new StringFormField() )
+                    .setField( new StringFormField() ).setValidator( new NotNullValidator() )
                     .setLabel( i18n.get( "username" ) ).setToolTipText( i18n.get( "usernameTip" ) )
                     .create().setFocus();
             // password
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "password", password ) )
-                    .setField( new StringFormField( Style.PASSWORD ) ).setLabel( i18n.get( "password" ) )
+                    .setField( new StringFormField( Style.PASSWORD ) ).setValidator( new NotNullValidator() )
+                    .setLabel( i18n.get( "password" ) )
                     .create();
 
             // store login
@@ -250,18 +251,20 @@ public class LoginPanel
             // listener
             site.addFieldListener( fieldListener = new IFormFieldListener() {
                 public void fieldChange( FormFieldEvent ev ) {
-                    if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "store" ) ) {
+                    if (ev.getEventCode() != VALUE_CHANGE) {
+                        return;
+                    }
+                    else if (ev.getFieldName().equals( "store" ) ) {
                         storeLogin = ev.getNewValue();
                     }
-                    else if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "username" ) ) {
+                    else if (ev.getFieldName().equals( "username" ) ) {
                         username = ev.getNewValue();
                     }
-                    else if (ev.getEventCode() == VALUE_CHANGE && ev.getFieldName().equals( "password" ) ) {
+                    else if (ev.getFieldName().equals( "password" ) ) {
                         password = ev.getNewValue();
                     }
                     if (loginBtn != null && !loginBtn.isDisposed()) {
-                        loginBtn.setEnabled( username != null && username.length() > 0 
-                                && password != null && password.length() > 0 );
+                        loginBtn.setEnabled( site.isDirty() && site.isValid() );
                     }
                 }
             });
