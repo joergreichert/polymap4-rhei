@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
+
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 
@@ -63,13 +64,14 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
 import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the
- * create forms that are connected to features or entities.
+ * create forms that are connected to a feature or entity.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -78,31 +80,64 @@ public abstract class FormContainer
 
     private static Log log = LogFactory.getLog( FormContainer.class );
 
+    public static final Font    FONT_DEFAULT = JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT );
+    
+    public static final Font    FONT_BOLD = JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT );
+    
     private FormEditorToolkit   toolkit;
 
     private Composite           pageBody;
 
-    private PageContainer       pageSite;
+    private PageContainer       pageContainer;
     
     private IFormFieldListener  statusAdapter;
 
     private boolean             enabled = true;
 
 
+    /**
+     * Creates the user interface fields and controls of this form page.
+     * <p>
+     * <b>Example code:</b>
+     * <pre>
+     *    site.setFormTitle( "Title" );
+     *    site.getPageBody().setLayout( ColumnLayoutFactory.defaults().create() );
+     *    
+     *    new FormFieldBuilder( city, feature.getProperty( "name" ) ).setLabel( "Name" ).create();
+     * </pre>
+     *
+     * @param site The API to create fields and interact with the framework.
+     */
+    public abstract void createFormContent( IFormEditorPageSite site );
+
+    
+    /**
+     * Creates the UI of this form by calling
+     * {@link #createFormContent(org.polymap.rhei.form.IFormEditorPageSite)}.
+     * 
+     * @param parent The parent under which to create the form UI controls.
+     */
     public final Composite createContents( ILayoutContainer parent ) {
         return createContents( new Composite( parent.getBody(), SWT.NONE ) );
     }
 
-    public Composite createContents( Composite body ) {
+    
+    /**
+     * Creates the UI of this form by calling
+     * {@link #createFormContent(org.polymap.rhei.form.IFormEditorPageSite)}.
+     * 
+     * @param parent The parent under which to create the form UI controls.
+     */
+    public final Composite createContents( Composite body ) {
         toolkit = new FormContainerToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
         pageBody = body;
         pageBody.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM  );
-        pageSite = new PageContainer( this );
+        pageContainer = new PageContainer( this );
 
         try {
-            createFormContent( pageSite );
+            createFormContent( pageContainer );
             updateEnabled();
-            pageSite.doLoad( new NullProgressMonitor() );
+            pageContainer.doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {
             BatikApplication.handleError( BatikPlugin.PLUGIN_ID, "An error occured while creating the new page.", e );
@@ -110,19 +145,21 @@ public abstract class FormContainer
         return pageBody;
     }
 
+    
     public final void createContents( FormContainer parent ) {
         toolkit = parent.toolkit;
         pageBody = parent.pageBody;
-        pageSite = parent.pageSite;
+        pageContainer = parent.pageContainer;
 
-        createFormContent( pageSite );
+        createFormContent( pageContainer );
         updateEnabled();
     }
 
+    
     public void dispose() {
-        if (pageSite != null) {
-            pageSite.dispose();
-            pageSite = null;
+        if (pageContainer != null) {
+            pageContainer.dispose();
+            pageContainer = null;
         }
         if (pageBody != null && !pageBody.isDisposed()) {
             pageBody.dispose();
@@ -130,25 +167,24 @@ public abstract class FormContainer
         }
     }
     
+    
     public void setEnabled( boolean enabled ) {
         this.enabled = enabled;
         updateEnabled();
     }
     
+    
     protected void updateEnabled() {
         if (pageBody == null || pageBody.isDisposed()) {
             return;
         }
-        Font font = enabled 
-                ? JFaceResources.getFontRegistry().get( JFaceResources.DEFAULT_FONT )
-                : JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT );
-        
+
         Deque<Control> deque = new LinkedList();
         deque.push( pageBody );
         while (!deque.isEmpty()) {
             Control control = deque.pop();
             if (control instanceof Label) {
-                control.setFont( font );
+                control.setFont( enabled ? FONT_DEFAULT : FONT_BOLD );
                 if (!enabled) {
                     control.setBackground( Graphics.getColor( 0xED, 0xEF, 0xF1 ) );
                 }
@@ -164,11 +200,9 @@ public abstract class FormContainer
 
             if (control instanceof Composite) {
                 control.setEnabled( enabled );
-                
                 if (variant.equals( CSS_FORM ) || variant.equals( CSS_FORM_DISABLED )) {
                     control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORM : CSS_FORM_DISABLED  );
                 }
-                        
                 for (Control child : ((Composite)control).getChildren()) {
                     deque.push( child );
                 }
@@ -178,49 +212,52 @@ public abstract class FormContainer
         }
     }
     
+    
     public void submit() throws Exception {
-        pageSite.submitEditor();
+        pageContainer.submitEditor();
     }
     
     public void addFieldListener( IFormFieldListener l ) {
-        pageSite.addFieldListener( l );
+        pageContainer.addFieldListener( l );
     }
 
     public void removeFieldListener( IFormFieldListener l ) {
-        pageSite.removeFieldListener( l );
+        pageContainer.removeFieldListener( l );
     }
 
+    
     public boolean isDirty() {
-        return pageSite.isDirty();
+        return pageContainer.isDirty();
     }
 
     public boolean isValid() {
-        return pageSite.isValid();
+        return pageContainer.isValid();
     }
 
     public void reloadEditor() throws Exception {
-        pageSite.reloadEditor();
+        pageContainer.reloadEditor();
     }
 
     public void submitEditor() throws Exception {
-        pageSite.submitEditor();
+        pageContainer.submitEditor();
     }
 
     public void clearFields() {
-        pageSite.clearFields();
+        pageContainer.clearFields();
     }
 
+    
     /**
      * Activates an adapter that routes form valid status to the given panel and its
      * status line.
      */
     public void activateStatusAdapter( final IPanelSite panelSite ) {
         assert statusAdapter == null;
-        pageSite.addFieldListener( statusAdapter = new IFormFieldListener() {
+        pageContainer.addFieldListener( statusAdapter = new IFormFieldListener() {
             @Override
             public void fieldChange( FormFieldEvent ev ) {
                 if (ev.getEventCode() == VALUE_CHANGE) {
-                    panelSite.setStatus( pageSite.isValid() ? Status.OK_STATUS 
+                    panelSite.setStatus( pageContainer.isValid() ? Status.OK_STATUS 
                             : new Status( IStatus.ERROR, BatikPlugin.PLUGIN_ID, "Eingaben noch nicht vollständig/korrekt." ));
                 }
             }
@@ -269,10 +306,6 @@ public abstract class FormContainer
             }
             log.info( "labelWidth: " + width );
             setLabelWidth( (int)width );
-        }
-
-        public void createContent() {
-            page.createFormContent( this );
         }
 
         @Override
@@ -336,8 +369,8 @@ public abstract class FormContainer
     
     /**
      * This field builder allows to create a new form field. It provides a simple,
-     * chainable API that allows to set several aspects of the result. If an aspect
-     * is not set then a default is computed.
+     * fluent API that allows to set several aspects of the result. If one aspect
+     * (title, field, validator, etc.) is not set then a default is computed.
      */
     public class FormFieldBuilder {
         
@@ -430,7 +463,7 @@ public abstract class FormContainer
         
         public Composite create() {
             if (parent == null) {
-                parent = pageSite.getPageBody();
+                parent = pageContainer.getPageBody();
             }
             if (prop == null) {
                 prop = builderFeature.getProperty( propName );
@@ -458,7 +491,7 @@ public abstract class FormContainer
                     field = new StringFormField();
                 }
             }
-            Composite result = pageSite.newFormField( parent, prop, field, validator, label );
+            Composite result = pageContainer.newFormField( parent, prop, field, validator, label );
             // layoutData
             if (layoutData != null) {
                 result.setLayoutData( layoutData );
@@ -472,7 +505,7 @@ public abstract class FormContainer
             }
             // editable
             if (!fieldEnabled) {
-                pageSite.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
+                pageContainer.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
             }
             return result;
         }

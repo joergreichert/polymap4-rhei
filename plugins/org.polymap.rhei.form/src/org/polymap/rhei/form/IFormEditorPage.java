@@ -67,7 +67,7 @@ public interface IFormEditorPage {
      *    site.setFormTitle( "Title" );
      *    site.getPageBody().setLayout( new FormLayout() );
      *
-     *    Composite field = site.newFormFiel( null, "", new TextFormField(), null );
+     *    Composite field = site.newFormField( null, "", new TextFormField(), null );
      *    field.setLayoutData( layoutData );
      * </pre>
      *

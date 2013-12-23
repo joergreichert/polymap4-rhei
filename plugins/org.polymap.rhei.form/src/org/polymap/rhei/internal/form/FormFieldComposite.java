@@ -106,7 +106,7 @@ public class FormFieldComposite
         // decorator
         decorator.init( this );
         Control decoControl = decorator.createControl( result, toolkit );
-        layoutData = new FormData( 30, SWT.DEFAULT );
+        layoutData = new FormData( 19, SWT.DEFAULT );
         layoutData.left = new FormAttachment( 100, -19 );
         layoutData.right = new FormAttachment( 100 );
         layoutData.top = new FormAttachment( 0, 0 );
