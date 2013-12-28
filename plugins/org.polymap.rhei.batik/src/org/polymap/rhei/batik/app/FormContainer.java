@@ -256,7 +256,7 @@ public abstract class FormContainer
             public void fieldChange( FormFieldEvent ev ) {
                 if (ev.getEventCode() == VALUE_CHANGE) {
                     panelSite.setStatus( pageContainer.isValid() ? Status.OK_STATUS 
-                            : new Status( IStatus.ERROR, BatikPlugin.PLUGIN_ID, "Eingaben noch nicht vollständig/korrekt." ));
+                            : new Status( IStatus.WARNING, BatikPlugin.PLUGIN_ID, "Eingaben sind noch nicht vollständig/korrekt." ));
                 }
             }
         });

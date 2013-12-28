@@ -167,7 +167,7 @@ public class RegisterPanel
                     okBtn.setEnabled( true );
                 }
                 else {
-                    getSite().setStatus( new Status( IStatus.ERROR, UmPlugin.ID, "Der Nutzername existiert bereits: " + email ) );
+                    getSite().setStatus( new Status( IStatus.WARNING, UmPlugin.ID, "Der Nutzername existiert bereits: " + email ) );
                 }
             }
         }

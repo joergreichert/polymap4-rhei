@@ -33,7 +33,8 @@ public class PanelChangeEvent
         ACTIVATING,
         ACTIVATED,
         DEACTIVATING,
-        DEACTIVATED
+        DEACTIVATED,
+        STATUS
     }
     
     // instance *******************************************

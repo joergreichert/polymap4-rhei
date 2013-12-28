@@ -92,6 +92,8 @@ public class DesktopAppManager
     private UserPreferences             userPrefs;
 
     private PanelNavigator              panelNavigator;
+
+    private StatusManager               statusManager;
     
 
     @Override
@@ -102,10 +104,10 @@ public class DesktopAppManager
         
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
-//        actionBar.add( new PanelSearchField( ), PLACE.SEARCH );
         actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
         actionBar.add( panelNavigator = new PanelNavigator( this ), PLACE.PANEL_NAVI );
         actionBar.add( userPrefs = new UserPreferences( this ), PLACE.USER_PREFERENCES );
+        actionBar.add( statusManager = new StatusManager( this ), PLACE.STATUS );
 
         // mainWindow
         mainWindow = new DesktopAppWindow( this ) {
@@ -123,6 +125,10 @@ public class DesktopAppManager
 //                panelArea.setLayout( new FillLayout( SWT.VERTICAL ) );
 //                tk.createLabel( panelArea, "Panels..." );
                 return scrolledPanelContainer;
+            }
+            @Override
+            protected StatusManager getStatusManager() {
+                return statusManager;
             }
         };
         // open root panel / after main window is created
@@ -363,7 +369,8 @@ public class DesktopAppManager
         @Override
         public void setStatus( IStatus status ) {
             this.status = status;
-            mainWindow.setStatus( status );
+            IPanel panel = context.getPanel( path );
+            EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.STATUS ) );
         }
 
         @Override

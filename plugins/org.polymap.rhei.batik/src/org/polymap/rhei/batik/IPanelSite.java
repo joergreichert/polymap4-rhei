@@ -46,6 +46,14 @@ public interface IPanelSite {
      * Changes the status of the panel. {@link Status#OK_STATUS} signals that the
      * panel has valid state. If status is not valid then the given message is
      * displayed.
+     * <p/>
+     * Use status severity as follows:
+     * <ul>
+     * <li>{@link IStatus#OK} : An action has been complete sucessfully.</li>
+     * <li>{@link IStatus#INFO} : ...</li>
+     * <li>{@link IStatus#WARNING} : The user's attention is needed.</li>
+     * <li>{@link IStatus#ERROR} : An error/exception occured. An</li>
+     * </ul>
      *
      * @param status The current status of the panel. {@link Status#OK_STATUS}
      *        signals that the panel has valid state.

@@ -46,7 +46,8 @@ class DesktopActionBar {
         PANEL_TOOLBAR,
         PANEL_NAVI,
         PANEL_SWITCHER,
-        USER_PREFERENCES
+        USER_PREFERENCES,
+        STATUS
     }
 
     // instance *******************************************
@@ -93,6 +94,17 @@ class DesktopActionBar {
             container.setLayoutData( right != null
                     ? FormDataFactory.filled().left( right, -300 ).right( right ).create()
                     : FormDataFactory.filled().left( 100, -300 ).right( 100 ).create() );
+            right = container;
+        }
+        
+        // status
+        IContributionItem status = items.get( PLACE.STATUS );
+        if (status != null) {
+            Composite container = new Composite( contents, SWT.BORDER );
+            status.fill( container );
+            container.setLayoutData( right != null
+                    ? FormDataFactory.filled().left( -1 ).width( 35 ).right( right ).create()
+                    : FormDataFactory.filled().left( 100, -200 ).right( 100 ).create() );
             right = container;
         }
         

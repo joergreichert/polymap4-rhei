@@ -993,9 +993,23 @@ Text.batik-panel-formfield-disabled {
   background-color: #fff;
 }*/
 /* Navigation*/
-Composite.atlas-navi, Composite.atlas-status, CLabel.atlas-status {
+Composite.atlas-navi/*, Composite.atlas-status, CLabel.atlas-status*/ {
   background-color: #e5e9ec;
 }
+Composite.atlas-status {
+  cursor: default;
+  border: 0px solid #cdcdcd;
+  border-radius: 4px;
+  padding: 2px 4px;
+  opacity: 1;
+  color: #0f1c23;
+  background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));
+  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  background-color: #fffae5;
+  animation: fadeIn 200ms linear, fadeOut 200ms ease-out;
+  box-shadow: 0px 1px 4px #999;
+}
+
 /* ToolBar default theme */
  ToolBar {
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
@@ -1474,16 +1488,16 @@ Slider-DownButton-Icon[VERTICAL] {
 /* ToolTip default theme */
  ToolTip {
   cursor: default;
-  border: 0px solid #cdcdcd;
+  border: 1px solid #cdcdcd;
   border-radius: 4px;
   padding: 2px 4px;
   opacity: 1;
   color: #0f1c23;
-  background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));
+  /*background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));*/
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  background-color: #fffae5;
-  animation: fadeIn 200ms linear, fadeOut 50ms ease-out;
-  box-shadow: 1px 1px 4px #181881;
+  background-color: #FFF3C3;
+  animation: fadeIn 200ms linear, fadeOut 500ms ease-out;
+  box-shadow: 1px 1px 3px #cdcdcd;
 }
 ToolTip-Image[ICON_ERROR] {
   background-image: url(resources/icons/rap/tooltip/error.png );
@@ -1513,7 +1527,7 @@ Widget-ToolTip {
   background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   animation: fadeIn 100ms linear, fadeOut 50ms ease-out;
-  box-shadow: 2px 2px 3px #cdcdcd;
+  box-shadow: 1px 1px 3px #cdcdcd;
 }
 /* CCombo default theme */
  CCombo {

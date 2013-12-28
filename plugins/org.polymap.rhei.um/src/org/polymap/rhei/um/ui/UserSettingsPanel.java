@@ -133,7 +133,7 @@ public class UserSettingsPanel
                     pwdForm.submit();
 
                     IUndoableOperation op = new ChangePasswordOperation( user, pwdFormListener.pwd1 );
-                    OperationSupport.instance().execute( op, true, false );
+                    OperationSupport.instance().execute( op, false, false );
                     
                     pwdBtn.setEnabled( false );
                     getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "passwordChanged" ) ) );
@@ -168,8 +168,13 @@ public class UserSettingsPanel
                     personForm.submit();
                     UserRepository.instance().commitChanges();
                     
-                    okBtn.setEnabled( false );
-                    getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "settingsChanged" ) ) );
+                    // XXX this delay is needed to disable in first try; don't know why
+                    okBtn.getDisplay().asyncExec( new Runnable() {
+                        public void run() {
+                            okBtn.setEnabled( false );
+                            getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "settingsChanged" ) ) );
+                        }
+                    });
                 }
                 catch (Exception e) {
                     UserRepository.instance().revertChanges();
@@ -203,7 +208,7 @@ public class UserSettingsPanel
                 }
                 else if (!pwd1.equals( pwd2 )) {
                     pwdBtn.setEnabled( false );
-                    getSite().setStatus( new Status( IStatus.ERROR, UmPlugin.ID, i18n.get( "passwordsNotEqual" ) ) );
+                    getSite().setStatus( new Status( IStatus.WARNING, UmPlugin.ID, i18n.get( "passwordsNotEqual" ) ) );
                 }
 //                else if (pwd1.length() < 8) {
 //                    pwdBtn.setEnabled( false );

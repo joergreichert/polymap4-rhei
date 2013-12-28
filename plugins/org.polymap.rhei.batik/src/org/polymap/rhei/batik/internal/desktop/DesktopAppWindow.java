@@ -42,7 +42,6 @@ import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.FormDataFactory;
 
-import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.internal.ApplicationResizeEvent;
@@ -62,16 +61,17 @@ abstract class DesktopAppWindow
     
     private ResizeHandler           resizeHandler = new ResizeHandler();
 
-    private Composite panels;
+    private Composite               panels;
 
-    private Composite contents;
+    private Composite               contents;
+
+    private StatusManager           statusManager;
 
 
     public DesktopAppWindow( DesktopAppManager appManager ) {
         super( null );
         this.appManager = appManager;
-        addStatusLine();
-        //addCoolBar( SWT.HORIZONTAL );
+        statusManager = getStatusManager();
     }
 
 
@@ -79,21 +79,13 @@ abstract class DesktopAppWindow
 
     protected abstract Composite fillPanelArea( Composite parent );
 
+    protected abstract StatusManager getStatusManager();
+    
 
     @Override
     protected Control createContents( Composite parent ) {
         contents = (Composite)super.createContents( parent );
         contents.setLayout( new FormLayout() );
-
-        // statusLine
-        setStatus( "Status..." );
-        Composite statusLine = (Composite)getStatusLineManager().getControl();
-        statusLine.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-status"  );
-        statusLine.setBackground( null );
-        for (Control child : statusLine.getChildren()) {
-            child.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-status"  );
-            child.setBackground( null );
-        }
 
         // navi
         Composite navi = fillNavigationArea( contents );
@@ -129,35 +121,6 @@ abstract class DesktopAppWindow
         DesktopPanelSite panelSite = (DesktopPanelSite)ev.getSource().getSite();
         getShell().setText( "Mosaic - " + panelSite.getTitle() );
         getShell().layout();
-    }
-
-
-    public void setStatus( IStatus status ) {
-        assert status != null;
-        switch (status.getSeverity()) {
-            case IStatus.OK: {
-                getStatusLineManager().setErrorMessage( null ); 
-                getStatusLineManager().setMessage( null );
-                if (status != Status.OK_STATUS && status.getMessage() != null) {
-                    getStatusLineManager().setMessage( BatikPlugin.instance().imageForName( "resources/icons/ok-status.gif" ), 
-                            status.getMessage() );
-                }
-                break;
-            }
-            case IStatus.ERROR: {
-                getStatusLineManager().setErrorMessage( 
-                        BatikPlugin.instance().imageForName( "resources/icons/errorstate.gif" ), status.getMessage() );
-                break;
-            }
-            case IStatus.WARNING: {
-                getStatusLineManager().setMessage( 
-                        BatikPlugin.instance().imageForName( "resources/icons/warningstate.gif" ), status.getMessage() );
-                break;
-            }
-            default: {
-                getStatusLineManager().setMessage( status.getMessage() );
-            }
-        }
     }
 
 
@@ -231,5 +194,5 @@ abstract class DesktopAppWindow
             delayedRefresh( null );
         }
     }
-    
+
 }
