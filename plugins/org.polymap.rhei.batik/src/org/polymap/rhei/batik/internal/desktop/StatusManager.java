@@ -165,6 +165,11 @@ class StatusManager
                     tip.setText( "Achtung" );
                     break;
                 }
+                case IStatus.INFO: {
+                    iconLabel.setImage( BatikPlugin.instance().imageForName( "resources/icons/info.png" ) );
+                    tip.setText( "Hinweis" );
+                    break;
+                }
             }
 
             if (popup) {
