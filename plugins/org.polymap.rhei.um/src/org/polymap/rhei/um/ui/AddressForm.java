@@ -91,7 +91,18 @@ public class AddressForm
         
         prop = address.postalCode();
         field = new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotNullValidator() {
+                    public String validate( Object value ) {
+                        String result = super.validate( value );
+                        if (result != null) {
+                            return result;
+                        }
+                        else if (((String)value).length() < 5) {
+                            return "Geben Sie die Postleitzahl mit 5 Stellen an.";
+                        }
+                        return null;
+                    }
+                })
                 .create();
         field.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
 
