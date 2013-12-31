@@ -90,7 +90,7 @@ public interface IPanelSite {
      * @param key
      * @return The value for the given key, or null.
      */
-    public <T> T getLayoutPreference( String key );
+    public int getLayoutPreference( String key );
     
 //    /**
 //     * Registers the given {@link EventHandler event handler}.

@@ -100,7 +100,7 @@ class DesktopActionBar {
         // status
         IContributionItem status = items.get( PLACE.STATUS );
         if (status != null) {
-            Composite container = new Composite( contents, SWT.BORDER );
+            Composite container = new Composite( contents, SWT.NONE );
             status.fill( container );
             container.setLayoutData( right != null
                     ? FormDataFactory.filled().left( -1 ).width( 35 ).right( right ).create()

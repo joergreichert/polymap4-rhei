@@ -72,8 +72,8 @@ public class DesktopAppManager
 
     private static Log log = LogFactory.getLog( DesktopAppManager.class );
     
-    static final int                    DEFAULT_LAYOUT_SPACING = 10;
-    static final int                    DEFAULT_LAYOUT_MARGINS = 20;
+//    static final int                    DEFAULT_LAYOUT_SPACING = 10;
+//    static final int                    DEFAULT_LAYOUT_MARGINS = 20;
 
     private DesktopAppContext           context = new DesktopAppContext();
 
@@ -227,11 +227,9 @@ public class DesktopAppManager
 
     
     protected Layout newPanelLayout() {
-        ConstraintLayout result = new ConstraintLayout();
-        // 1000 -> 30px margin
-        result.marginWidth = result.spacing = 
-                (int)(BatikApplication.sessionDisplay().getBounds().width * 0.03 );
-        result.marginHeight = result.marginWidth / 2;
+        // 1000px display width -> 30px margin
+        int margins = (int)(BatikApplication.sessionDisplay().getBounds().width * 0.03 );
+        ConstraintLayout result = new ConstraintLayout( margins, margins, margins );
         log.info( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + result.marginWidth );
         return result;
     }
@@ -431,14 +429,18 @@ public class DesktopAppManager
         }
 
         @Override
-        public <T> T getLayoutPreference( String key ) {
+        public int getLayoutPreference( String key ) {
             if (LAYOUT_SPACING_KEY.equals( key )) {
-                return (T)Integer.valueOf( DEFAULT_LAYOUT_SPACING );
+                // 1000px display width -> 20px spacing
+                return (int)(BatikApplication.sessionDisplay().getBounds().width * 0.02);
             }
             else if (LAYOUT_MARGINS_KEY.equals( key )) {
-                return (T)Integer.valueOf( DEFAULT_LAYOUT_MARGINS );
+                // 1000px display width -> 20px margins
+                return (int)(BatikApplication.sessionDisplay().getBounds().width * 0.02);
             }
-            return null;
+            else {
+                throw new RuntimeException( "Unknown layout key: " + key );
+            }
         }
 
     }

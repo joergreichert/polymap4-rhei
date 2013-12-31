@@ -55,12 +55,18 @@ public class ConstraintLayout
     
     private LayoutSolution      solution;
     
-    private Rectangle           clientArea;
-
     
+    public ConstraintLayout( int marginWidth, int marginHeight, int spacing ) {
+        this.marginWidth = marginWidth;
+        this.marginHeight = marginHeight;
+        this.spacing = spacing;
+    }
+
+
     @Override
     protected void layout( Composite composite, boolean flushCache ) {
-        if (computeSolution( composite, flushCache )) {
+        Rectangle clientArea = composite.getClientArea();
+        if (computeSolution( composite, clientArea, flushCache )) {
             // layout elements
             int colX = marginWidth;
             for (LayoutColumn column : solution.columns) {
@@ -82,7 +88,11 @@ public class ConstraintLayout
     protected Point computeSize( Composite composite, int wHint, int hHint, boolean flushCache ) {
         Point result = null;
 
-        if (computeSolution( composite, flushCache )) {
+        Rectangle clientArea = composite.getClientArea();
+        clientArea.width = wHint != SWT.DEFAULT ? wHint : clientArea.width;
+        clientArea.height = hHint != SWT.DEFAULT ? hHint : clientArea.height;
+
+        if (computeSolution( composite, clientArea, flushCache )) {
             // find heighest column
             LayoutColumn maxColumn = null;
             for (LayoutColumn column : solution.columns) {
@@ -99,11 +109,10 @@ public class ConstraintLayout
     }
 
     
-    private boolean computeSolution( Composite composite, boolean flushCache ) {
+    private boolean computeSolution( Composite composite, Rectangle clientArea, boolean flushCache ) {
         assert solution == null || solution.composite == composite;
 
-        if (solution == null || flushCache) {
-            clientArea = composite.getClientArea();
+        if (solution == null || !solution.clientArea.equals( clientArea ) || flushCache) {
             if (clientArea.width <= 0 || clientArea.height < 0) {
                 return false;
             }
