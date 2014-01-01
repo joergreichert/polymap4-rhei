@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
 import org.polymap.core.operation.OperationSupport;
 import org.polymap.core.runtime.IMessages;
@@ -128,9 +130,18 @@ public class RegisterPanel
                     personForm.submit();
 
                     IUndoableOperation op = new NewUserOperation( user );
-                    OperationSupport.instance().execute( op, true, false );
-                    
-                    getContext().closePanel();
+                    OperationSupport.instance().execute( op, true, false, new JobChangeAdapter() {
+
+                        public void done( IJobChangeEvent ev2 ) {
+                            if (ev2.getResult().isOK()) {
+                                getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "okText" ) ) );
+                                getContext().closePanel();
+                            }
+                            else {
+                                getSite().setStatus( new Status( IStatus.ERROR, UmPlugin.ID, i18n.get( "errorText", ev2.getResult().getMessage() ) ) );                                
+                            }
+                        }
+                    });                    
                 }
                 catch (Exception e) {
                     UserRepository.instance().revertChanges();

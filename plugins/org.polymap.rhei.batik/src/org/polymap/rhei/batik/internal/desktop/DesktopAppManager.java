@@ -18,6 +18,7 @@ import static org.polymap.rhei.batik.Panels.withPrefix;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -309,6 +310,50 @@ public class DesktopAppManager
 
 
     /**
+     * 
+     */
+    static class UIThreadRunnable
+            implements Runnable {
+        
+        static <T> T exec( boolean async, Callable<T> task ) {
+            UIThreadRunnable runnable = new UIThreadRunnable( task );
+            if (async) {
+                BatikApplication.sessionDisplay().asyncExec( runnable );
+                return null;
+            }
+            else if (Display.getCurrent() == null) {
+                BatikApplication.sessionDisplay().syncExec( runnable );
+                return (T)runnable.result;
+            }            
+            else {
+                runnable.run();
+                return (T)runnable.result;
+            }            
+        }
+        
+        public Callable         delegate;
+        public Object           result;
+
+        public UIThreadRunnable( Callable delegate ) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void run() {
+            try {
+                result = delegate.call();
+            }
+            catch (RuntimeException e) {
+                throw e;
+            }
+            catch (Exception e) {
+                throw new RuntimeException( e );
+            }
+        }
+    }
+    
+
+    /**
      *
      */
     class DesktopAppContext
@@ -325,13 +370,22 @@ public class DesktopAppManager
         }
 
         @Override
-        public IPanel openPanel( PanelIdentifier panelId ) {
-            return DesktopAppManager.this.openPanel( panelId );
+        public IPanel openPanel( final PanelIdentifier panelId ) {
+            return UIThreadRunnable.exec( false, new Callable<IPanel>() {
+                public IPanel call() throws Exception {
+                    return DesktopAppManager.this.openPanel( panelId );
+                }
+            });
         }
 
         @Override
         public void closePanel() {
-            DesktopAppManager.this.closePanel();
+            UIThreadRunnable.exec( false, new Callable() {
+                public Object call() throws Exception {
+                    DesktopAppManager.this.closePanel();
+                    return false;
+                }
+            });
         }
     }
 

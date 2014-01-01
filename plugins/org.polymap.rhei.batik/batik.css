@@ -56,10 +56,10 @@ Display {
   box-shadow: none;
   animation: none;
 }
-Composite[BORDER] {
+/*Composite[BORDER] {
   border: none;
   border-radius: 2px;
-}
+}*/
 /* Mosaic-UI elements (org.polymap.mosaic.ui) */
  Composite.mosaic-case-action-active {
   animation: slideIn 400ms ease-in;
@@ -72,6 +72,10 @@ Composite.mosaic-case-action-deactive {
 }
 Composite.mosaic-case-status {
   animation: fadeIn 600ms linear;
+  background-color: #f9f9f9;
+  border-radius: 2px;
+  box-shadow: 0px 1px 3px #cdcdcd;
+  border: 1px solid #e2e2e0;
 }
 Composite.mosaic-case-toolbar {
   background-color: transparent;
@@ -1486,18 +1490,18 @@ Slider-DownButton-Icon[VERTICAL] {
   background-image: url(resources/icons/rap/slider/up.png );
 }
 /* ToolTip default theme */
- ToolTip {
+ToolTip, Shell.batik-status-tooltip {
   cursor: default;
-  border: 1px solid #cdcdcd;
-  border-radius: 4px;
-  padding: 2px 4px;
+  border: none;
+  border-radius: 2px;
+  padding: 8px 8px;
   opacity: 1;
-  color: #0f1c23;
+  color: #f0f0f0;
   /*background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));*/
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  background-color: #FFF3C3;
+  background-color: #363532;
   animation: fadeIn 200ms linear, fadeOut 500ms ease-out;
-  box-shadow: 1px 1px 3px #cdcdcd;
+  box-shadow: 1px 1px 4px #808080;
 }
 ToolTip-Image[ICON_ERROR] {
   background-image: url(resources/icons/rap/tooltip/error.png );
@@ -1508,26 +1512,26 @@ ToolTip-Image[ICON_INFORMATION] {
 ToolTip-Image[ICON_WARNING] {
   background-image: url(resources/icons/rap/tooltip/warning.png );
 }
-ToolTip-Text {
-  color: #4a4a4a;
+ToolTip-Text, Label.batik-status-tooltip-text {
+  color: #f8f8f8;
   font: bold 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   text-shadow: none;
 }
-ToolTip-Message {
-  color: #4a4a4a;
+ToolTip-Message, Label.batik-status-tooltip-message {
+  color: #e8e8e8;
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   text-shadow: none;
 }
 Widget-ToolTip {
-  border: 1px solid #cdcdcd;
-  border-radius: 4px;
-  padding: 2px 4px;
+  /*border: 1px solid #cdcdcd;*/
+  border-radius: 2px;
+  padding: 6px 8px;
   opacity: 1;
-  color: #0f1c23;
-  background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));
+  color: #e8e8e8;
+  background-color: #363532;
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  animation: fadeIn 100ms linear, fadeOut 50ms ease-out;
-  box-shadow: 1px 1px 3px #cdcdcd;
+  animation: fadeIn 100ms linear, fadeOut 150ms ease-out;
+  box-shadow: 1px 1px 4px #808080;
 }
 /* CCombo default theme */
  CCombo {
@@ -1687,9 +1691,14 @@ FileUpload-FocusIndicator {
 
 /* Mosaic CSS-Pseudoklassen */
 
-/*Section Heading*/
- Label.batik-panel-section-title {
-  font: 22px/150%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+/* Batik Section*/
+Composite.batik-panel-section, Composite[BORDER].batik-panel-section {
+  border-radius: 8px 8px 8px 8px;
+  box-shadow: 1px 1px 3px #cdcdcd;
+  border: 1px solid #cdcdcd;
+}
+Label.batik-panel-section-title {
+  font: 22px/100%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   color: #0f1c23;
   border: none;
 }
