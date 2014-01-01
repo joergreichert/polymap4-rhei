@@ -14,27 +14,24 @@
  */
 package org.polymap.rhei.um.ui;
 
-import java.util.Comparator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.deferred.DeferredContentProvider;
 import org.eclipse.jface.viewers.deferred.SetModel;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import org.polymap.core.runtime.UIJob;
 import org.polymap.core.ui.SelectionAdapter;
 
 import org.polymap.rhei.um.Address;
@@ -95,25 +92,35 @@ public class UsersTableViewer
         });
         ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            
 
-        setContentProvider( new DeferredContentProvider( new Comparator<User>() {
-            public int compare( User left, User right ) {
-                return left.name().get().compareToIgnoreCase( right.name().get() );
-            }
-        }));
-        setInput( model = new SetModel() );
-        
-        // content loader
-        new UIJob( "Nutzer laden" ) {
-            protected void runWithException( IProgressMonitor monitor ) throws Exception {
-                for (User user : content) {
-                    model.addAll( new Object[] { user } );
-                }
-            }
-        }.schedule();
+        setContentProvider( new ArrayContentProvider() );
+        setInput( Iterables.toArray( content, User.class ) );
+
+//        setContentProvider( new DeferredContentProvider( new Comparator<User>() {
+//            public int compare( User left, User right ) {
+//                return left.name().get().compareToIgnoreCase( right.name().get() );
+//            }
+//        }));
+//        setInput( model = new SetModel() );
+//        
+//        // content loader
+//        new UIJob( "Nutzer laden" ) {
+//            protected void runWithException( IProgressMonitor monitor ) throws Exception {
+//                for (User user : content) {
+//                    Thread.sleep( 1000 );
+//                    model.addAll( new Object[] { user } );
+//                }
+//            }
+//        }.schedule();
 //        model.addAll( ImmutableList.copyOf( content ) );
     }
 
     
+    public void reload() {
+//        super.remove( elements );
+        setInput( Iterables.toArray( content, User.class ) );
+    }
+
+
     public User getSelectedUser() {
         return new SelectionAdapter( getSelection() ).first( User.class );
     }
