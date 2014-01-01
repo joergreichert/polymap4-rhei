@@ -23,7 +23,6 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
-import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.IFormFieldLabel;
@@ -64,7 +63,7 @@ public class AddressForm
         Composite body = site.getPageBody();
         //body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
 
-        int spacing = panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY );
+        //int spacing = panelSite.getLayoutPreference( IPanel.LAYOUT_SPACING_KEY );
         
         // street / number
         Composite str = tk.createComposite( body );

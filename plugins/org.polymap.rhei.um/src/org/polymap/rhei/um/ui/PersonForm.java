@@ -74,18 +74,18 @@ public class PersonForm
         }
 
         // fields
-        Property<String> prop = person.firstname();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
-        
         Composite salu = site.getToolkit().createComposite( body );
         salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
-        prop = person.salutation();
-        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "name" ) )
+        Property<String> prop = person.salutation();
+        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "firstname" ) )
                 .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
                 .setValidator( new NotNullValidator() ).create().setFocus();
 
+        prop = person.firstname();
+        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL ).create();
+        
         prop = person.name();
-        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
+        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
                 .setValidator( new NotNullValidator() ).create();
 
         if (person instanceof User) {
