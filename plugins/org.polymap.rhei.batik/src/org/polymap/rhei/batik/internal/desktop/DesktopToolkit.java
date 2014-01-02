@@ -29,7 +29,6 @@ import com.google.common.base.Joiner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -73,6 +72,7 @@ public class DesktopToolkit
     public static final String  CSS_FORM_DISABLED = CSS_PREFIX + "-form-disabled";
     public static final String  CSS_FORMFIELD = CSS_PREFIX + "-formfield";
     public static final String  CSS_FORMFIELD_DISABLED = CSS_PREFIX + "-formfield-disabled";
+    public static final String  CSS_SECTION = CSS_PREFIX + "-section";
     public static final String  CSS_SECTION_TITLE = CSS_PREFIX + "-section-title";
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
     
@@ -249,9 +249,9 @@ public class DesktopToolkit
         // call setTitleBarForeground regardless as it also sets the label color
 //        result.setTitleBarForeground( colors.getColor( IFormColors.TB_TOGGLE ) );
 
-        FontData[] defaultFont = parent.getFont().getFontData();
-        FontData bold = new FontData(defaultFont[0].getName(), defaultFont[0].getHeight(), SWT.BOLD);
-        result.setFont( Graphics.getFont( bold ) );
+//        FontData[] defaultFont = parent.getFont().getFontData();
+//        FontData bold = new FontData(defaultFont[0].getName(), defaultFont[0].getHeight(), SWT.BOLD);
+//        result.setFont( Graphics.getFont( bold ) );
         result.setTitleBarForeground( COLOR_SECTION_TITLE_FG );
         result.setTitleBarBackground( COLOR_SECTION_TITLE_BG );
         result.setTitleBarBorderColor( Graphics.getColor( new RGB( 0x80, 0x80, 0xa0 ) ) );

@@ -74,16 +74,5 @@
             id="org.polymap.rhei.batik.statusHandler">
       </statusHandler>
    </extension>
-   <extension
-         point="org.eclipse.ui.statusHandlers">
-      <statusHandler
-            class="org.polymap.rhei.batik.app.PanelStatusHandler"
-            id="org.polymap.rhei.batik.statusHandler">
-      </statusHandler>
-      <statusHandlerProductBinding
-            handlerId="org.polymap.rhei.batik.statusHandlerProductBinding1"
-            productId="org.polymap.rhei.batik.statusHandlerProductBinding1">
-      </statusHandlerProductBinding>
-   </extension>
 
 </plugin>

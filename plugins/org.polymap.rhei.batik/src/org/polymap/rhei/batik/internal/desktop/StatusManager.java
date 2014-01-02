@@ -187,7 +187,7 @@ class StatusManager
             Point txtSize = tooltip.computeSize( 320, SWT.DEFAULT );
             Point iconLocation = iconLabel.getParent().getLocation();
             int displayWidth = tooltip.getDisplay().getClientArea().width;
-            tooltip.setBounds( displayWidth - 325, iconLocation.y + 98, 320, txtSize.y );
+            tooltip.setBounds( displayWidth - 325, iconLocation.y + 98, 320, txtSize.y + 5 );
             tooltip.setVisible( true );
             
             tooltip.getDisplay().timerExec( 10000, new Runnable() {

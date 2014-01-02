@@ -28,7 +28,6 @@ import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
-
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldDecorator;
@@ -48,6 +47,8 @@ import org.polymap.rhei.form.IFormEditorToolkit;
 public class FormFieldComposite
         implements IFormFieldSite {
 
+    public static final String      CUSTOM_VARIANT_VALUE = "formeditor-field";
+    
     /** Identifies the editor that events belong to. */
     private Object                  editor;
     
@@ -87,32 +88,36 @@ public class FormFieldComposite
     
     public Composite createComposite( Composite parent, int style ) {
         final Composite result = toolkit.createComposite( parent, style );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor-field" );
+        result.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
         result.setLayout( new FormLayout() );
         
-        // label
         labeler.init( this );
         Control labelControl = labeler.createControl( result, toolkit );
-        FormData layoutData = new FormData( labeler.getMaxWidth(), SWT.DEFAULT );
+        decorator.init( this );
+        Control decoControl = decorator.createControl( result, toolkit );
+        field.init( this );
+        Control fieldControl = field.createControl( result, toolkit );
+        int height = SWT.DEFAULT; //fieldControl.computeSize( SWT.DEFAULT, SWT.DEFAULT ).y;
+        
+        // label
+        FormData layoutData = new FormData( labeler.getMaxWidth(), height );
         layoutData.left = new FormAttachment( 0 );
-        layoutData.top = new FormAttachment( 0, 3 );
+        layoutData.bottom = new FormAttachment( 100 );
+        layoutData.top = new FormAttachment( 0 );
         labelControl.setLayoutData( layoutData );
         
         // decorator
-        decorator.init( this );
-        Control decoControl = decorator.createControl( result, toolkit );
-        layoutData = new FormData( 19, SWT.DEFAULT );
+        layoutData = new FormData( 19, 20 );
         layoutData.left = new FormAttachment( 100, -19 );
         layoutData.right = new FormAttachment( 100 );
         layoutData.top = new FormAttachment( 0, 0 );
         decoControl.setLayoutData( layoutData );
         
         // field
-        field.init( this );
-        Control fieldControl = field.createControl( result, toolkit );
         layoutData = fieldControl.getLayoutData() != null
                 ? (FormData)fieldControl.getLayoutData()
-                : new FormData( 50, SWT.DEFAULT );
+                : new FormData( 50, height );
+        layoutData.top = new FormAttachment( 0 );
         layoutData.left = new FormAttachment( labelControl, 5 );
         layoutData.right = new FormAttachment( decoControl, -1 );
         fieldControl.setLayoutData( layoutData );

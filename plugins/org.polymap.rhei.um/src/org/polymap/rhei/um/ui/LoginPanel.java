@@ -101,7 +101,7 @@ public class LoginPanel
     public void createContents( Composite panelBody ) {
         getSite().setTitle( "Login" );
         panelBody.setLayout( FormLayoutFactory.defaults()
-                .margins( (Integer)getSite().getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
+                .margins( getSite().getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
         
         IPanelSection section = tk.createPanelSection( panelBody, "Anmelden" );
         
@@ -191,8 +191,8 @@ public class LoginPanel
             formSite = site;
             Composite body = site.getPageBody();
             body.setLayout( ColumnLayoutFactory.defaults()
-                    .spacing( (Integer)panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) / 2 )
-                    .margins( (Integer)panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
+                    .spacing( 5 /*panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) / 4*/ )
+                    .margins( panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
                     .setField( new StringFormField() ).setValidator( new NotNullValidator() )

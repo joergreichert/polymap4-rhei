@@ -19,10 +19,16 @@ package org.polymap.rhei.internal;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.rwt.lifecycle.WidgetUtil;
+
+import org.polymap.core.ui.FormDataFactory;
 
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldLabel;
@@ -38,6 +44,8 @@ import org.polymap.rhei.internal.form.FormEditorToolkit;
  */
 public class DefaultFormFieldLabeler
         implements IFormFieldLabel, IFormFieldListener {
+
+    public static final String      CUSTOM_VARIANT_VALUE = "formeditor-label";
 
     private IFormFieldSite      site;
     
@@ -77,17 +85,27 @@ public class DefaultFormFieldLabeler
     }
 
     public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+        Control result = null;
         if (labelStr != null && labelStr.equals( NO_LABEL )) {
-            label = toolkit.createLabel( parent, "" );            
+            result = label = toolkit.createLabel( parent, "" );            
         }
         else {
-            label = toolkit.createLabel( parent, 
+            result = new Composite( parent, SWT.NO_FOCUS ) {
+                public void setEnabled( boolean enabled ) {
+                    setData( WidgetUtil.CUSTOM_VARIANT, 
+                            enabled ? CUSTOM_VARIANT_VALUE : CUSTOM_VARIANT_VALUE+"-disabled" );
+                }
+            };
+            ((Composite)result).setLayout( new FormLayout() );
+            result.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+            label = toolkit.createLabel( (Composite)result, 
                     labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ) );
+            label.setLayoutData( FormDataFactory.filled().top( 0, 4 ).create() );
         }
     
         // focus listener
         site.addChangeListener( this );
-        return label;
+        return result;
     }
 
     public void fieldChange( FormFieldEvent ev ) {

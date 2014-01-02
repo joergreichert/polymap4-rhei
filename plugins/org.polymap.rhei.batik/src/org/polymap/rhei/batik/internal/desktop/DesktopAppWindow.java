@@ -30,8 +30,6 @@ import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.window.ApplicationWindow;
 
-import org.eclipse.ui.forms.widgets.ScrolledPageBook;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -148,8 +146,8 @@ abstract class DesktopAppWindow
                 s.getDisplay().asyncExec( new Runnable() {
                     public void run() {
                         log.info( "layout..." );
-                        s.layout();
-                        ((ScrolledPageBook)panels).reflow( true );
+                        //s.layout();
+                        //((ScrolledPageBook)panels).reflow( true );
 
                         Rectangle bounds = Display.getCurrent().getBounds();
                         int random = (refreshCount++ % 3);
@@ -188,8 +186,8 @@ abstract class DesktopAppWindow
             Rectangle bounds = Display.getCurrent().getBounds();
             log.info( "layout: " + bounds );
             getShell().setBounds( 0, 60, bounds.width, bounds.height - 60 );
-            getShell().layout();
-            ((ScrolledPageBook)panels).reflow( true );
+            //getShell().layout();
+            //((ScrolledPageBook)panels).reflow( true );
             
             delayedRefresh( null );
         }
