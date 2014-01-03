@@ -192,7 +192,7 @@ public abstract class FormContainer
             Control control = deque.pop();
             
             String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
-            log.info( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
+            log.debug( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
 
             // form fields
             if (variant == null 
@@ -225,7 +225,7 @@ public abstract class FormContainer
                 }
             }
             variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
-            log.info( "      -> " + variant + " (" + control.getClass().getSimpleName() + ")" );
+            log.debug( "      -> " + variant + " (" + control.getClass().getSimpleName() + ")" );
         }
     }
     

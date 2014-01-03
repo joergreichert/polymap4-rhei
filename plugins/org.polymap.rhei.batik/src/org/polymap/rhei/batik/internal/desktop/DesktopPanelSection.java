@@ -18,21 +18,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
-import org.eclipse.ui.forms.widgets.Section;
+import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.toolkit.ConstraintData;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.ILayoutElement;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;
-
 
 /**
  * 
@@ -44,55 +43,46 @@ class DesktopPanelSection
 
     private static Log log = LogFactory.getLog( DesktopPanelSection.class );
     
-    private PanelSection            control;
-    
     private int                     level;
+
+    private Composite               control;
+    
+    private Label                   title;
+
+    private Composite               client;
+
+    private Label                   sep;
 
     
     public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
-        control = new PanelSection( parent, SWT.NO_FOCUS );
+        control = new Composite( parent, SWT.NO_FOCUS );
         control.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION  );
         control.setData( "panelSection", this );
-        control.setExpanded( true );
         control.setMenu( parent.getMenu() );
-        control.setLayout( new FillLayout() );
+        control.setLayout( FormLayoutFactory.defaults().spacing( 3 ).create() );
 
-//        FontData[] defaultFont = parent.getFont().getFontData();
-//        FontData bold = new FontData(defaultFont[0].getName(), defaultFont[0].getHeight(), SWT.BOLD);
-//        control.setFont( Graphics.getFont( bold ) );
-//        control.setTitleBarForeground( DesktopToolkit.COLOR_SECTION_TITLE_FG );
-//        control.setTitleBarBackground( DesktopToolkit.COLOR_SECTION_TITLE_BG );
-//        control.setTitleBarBorderColor( Graphics.getColor( new RGB( 0x80, 0x80, 0xa0 ) ) );
+        // title
+        title = new Label( control, SWT.NO_FOCUS );
+        title.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
+        FormDataFactory.filled().bottom( -1 ).height( 25 ).applyTo( title );
+        title.setVisible( false );
+        
+        // separator
+        sep = new Label( control, SWT.NO_FOCUS | SWT.SEPARATOR | SWT.HORIZONTAL );
+        sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_SEPARATOR );
+        FormDataFactory.filled().top( this.title ).bottom( -1 ).applyTo( sep );
+        sep.setVisible( false );
 
-        control.getTitleControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
-        //control.getSeparatorControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section-separator"  );
-        //control.getTextClient().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section-client"  );
-        //control.getDescriptionControl().setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_PREFIX + "-section"  );
-                
-        Composite client = tk.adapt( new Composite( control, SWT.NO_FOCUS /*| SWT.BORDER*/ | tk.stylebits( styles ) ) );
+        // client
+        client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.stylebits( styles ) ) );
+        client.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_CLIENT );
+        FormDataFactory.filled().top( sep ).applyTo( client );
 
-//        ColumnLayout clientLayout = ColumnLayoutFactory.defaults()
-//                .columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 
+//        ColumnLayout clientLayout = ColumnLayoutFactory.defaults().columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 
         ConstraintLayout clientLayout = new ConstraintLayout( 0, 0, 10 );
         client.setLayout( clientLayout );
-        control.setClient( client );
         
         level = getParentPanel() != null ? getParentPanel().getLevel()+1 : 0;
-
-//        assert level >=0 && level <= 2 : "Section levels out of range: " + level;
-//        switch (level) {
-//            case 0:
-//                // 1000 -> 30px margin
-//                clientLayout.spacing = (int)( BatikApplication.sessionDisplay().getBounds().width * 0.03 );
-//                clientLayout.marginWidth = clientLayout.spacing;
-//                log.debug( "display width: " + BatikApplication.sessionDisplay().getBounds().width + " -> margin: " + clientLayout.marginWidth );
-//                break;
-//            case 1:
-//                clientLayout.spacing = 10;
-//                clientLayout.marginWidth = 0;
-//                break;
-//        }
-//        clientLayout.marginHeight = 0;
     }
 
     
@@ -121,17 +111,15 @@ class DesktopPanelSection
     protected void controlRemoved( Control c ) {
         log.info( "control removed: " + c );
     }
-
     
     @Override
     public Composite getControl() {
         return control;
     }
 
-    
     @Override
     public Composite getBody() {
-        return (Composite)control.getClient();
+        return client;
     }
 
 
@@ -154,45 +142,27 @@ class DesktopPanelSection
 
     @Override
     public String getTitle() {
-        return control.getText();
+        return title.getText();
     }
 
     @Override
     public IPanelSection setTitle( String title ) {
-        control.setText( title );
-        if (control.getSeparatorControl() == null) {
-            Label sep = new Label( control, SWT.SEPARATOR | SWT.HORIZONTAL );
-            sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_SEPARATOR  );
-            control.setSeparatorControl( sep );
+        if (title != null) {
+            this.title.setText( title );
         }
+        this.title.setVisible( title != null );
+        this.sep.setVisible( title != null );
         return this;
     }
 
     @Override
     public boolean isExpanded() {
-        return control.isExpanded();
+        return true;
     }
 
     @Override
     public IPanelSection setExpanded( boolean expanded ) {
-        control.setExpanded( expanded );
         return this;
-    }
-
-    
-    /**
-     * 
-     */
-    static class PanelSection
-            extends Section {
-        
-        public PanelSection( Composite parent, int style ) {
-            super( parent, style /*| Section.EXPANDED*/ );
-        }
-
-        public Control getTitleControl() {
-            return textLabel;
-        }
     }
     
 }

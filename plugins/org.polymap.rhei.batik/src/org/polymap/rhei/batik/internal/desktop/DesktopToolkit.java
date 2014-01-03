@@ -75,6 +75,7 @@ public class DesktopToolkit
     public static final String  CSS_SECTION = CSS_PREFIX + "-section";
     public static final String  CSS_SECTION_TITLE = CSS_PREFIX + "-section-title";
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
+    public static final String  CSS_SECTION_CLIENT = CSS_PREFIX + "-section-client";
     
     public static final Color   COLOR_SECTION_TITLE_FG = Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) );
     public static final Color   COLOR_SECTION_TITLE_BG = Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) );

@@ -942,8 +942,8 @@ Text[BORDER]:disabled, Text[MULTI][BORDER]:disabled, Text[BORDER]:read-only, Tex
   box-shadow: none;
   border: none;
   color: #0f1c23;
-  background-color: #f8f7f5;
-  /*padding: 0px;*/
+  background-color: #faf9f7;
+  padding: 1px 3px 3px 3px;
 }
 Text-Message {
   color: #f1f4f6;
@@ -1702,20 +1702,25 @@ FileUpload-FocusIndicator {
 /* Mosaic CSS-Pseudoklassen */
 
 /* Batik Section*/
-Composite.batik-panel-section, Composite[BORDER].batik-panel-section {
-  border-radius: 8px 8px 8px 8px;
-  box-shadow: 1px 1px 3px #cdcdcd;
+Composite[BORDER].batik-panel-section-client {
+  border-radius: 4px;
+  box-shadow: 0px 1px 4px #a0a0a0;
+  /*border: 1px solid #cdcdcd;*/
+}
+Composite[BORDER].batik-panel-section {
+  border-radius: 4px;
+  box-shadow: 0px 1px 4px #a0a0a0;
   border: 1px solid #cdcdcd;
 }
 Label.batik-panel-section-title {
-  font: 22px/150%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 20px/100%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   color: #0f1c23;
   border: none;
+}
+Label:disabled.batik-panel-section-title {
+  opacity: 0.3;
 }
 /* Label.batik-panel-section-separator {
   opacity: 0;
 }*/
-Label:disabled.batik-panel-section-title {
-  opacity: 0.3;
-}
 /*--------------*/
