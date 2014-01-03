@@ -98,7 +98,7 @@ public class QiUserRepository
     @Override
     public boolean resignGroup( Groupable user, String group ) {
         Collection<String> groups = ((QiGroupable)user)._groups().get();
-        if (!Iterables.contains( groups, group )) {
+        if (Iterables.contains( groups, group )) {
             groups.remove( group );
             ((QiGroupable)user)._groups().set( groups );
             return true;
