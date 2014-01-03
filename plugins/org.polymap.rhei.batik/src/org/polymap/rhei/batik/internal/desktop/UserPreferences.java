@@ -21,11 +21,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
@@ -60,7 +60,7 @@ class UserPreferences
 
     private Composite           contents;
     
-    private Label               usernameLnk;
+    private CLabel              usernameLnk;
 
     private Button              btn;
     
@@ -79,6 +79,7 @@ class UserPreferences
     
     public void setUsername( String username ) {
         usernameLnk.setText( username );
+        usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
         if (username.toLowerCase().contains( "admin" )) {
             usernameLnk.setText( "[Administrator]" );
             usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
@@ -94,7 +95,7 @@ class UserPreferences
     @Override
     public void fill( Composite parent ) {
         contents = parent;
-        contents.setLayout( FormLayoutFactory.defaults().spacing( 10 ).create() );
+        contents.setLayout( FormLayoutFactory.defaults().spacing( 0 ).create() );
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
@@ -108,10 +109,11 @@ class UserPreferences
             }
         });
 
-        usernameLnk = new Label( contents, SWT.RIGHT );
-        usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 4 ).right( btn ).create() );
+        usernameLnk = new CLabel( contents, SWT.LEFT );
+        usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( btn ).create() );
         usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
         usernameLnk.setText( "[" + i18n.get( "noUser" ) + "]" );
+        usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
     }
 
 

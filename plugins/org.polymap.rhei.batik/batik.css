@@ -430,7 +430,7 @@ Group-Label {
   text-shadow: none;
 }
 /* Label default theme */
- Label {
+Label, CLabel {
   font: 15px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   color: #4a4a4a;
   background-color: transparent;
@@ -442,7 +442,7 @@ Group-Label {
   opacity: 1;
   text-shadow: none;
 }
-Label[BORDER] {
+Label[BORDER], CLabel[BORDER] {
   border: 1px solid #cdcdcd;
   border-radius: 2px;
 }
@@ -1600,7 +1600,7 @@ CCombo-FocusIndicator {
   opacity: 0;
 }
 /* CLabel default theme */
- CLabel {
+/* CLabel {
   font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
@@ -1615,7 +1615,7 @@ CCombo-FocusIndicator {
 CLabel[BORDER] {
   border: 1px solid #cdcdcd;
   border-radius: 2px;
-}
+}*/
 /* Browser default theme */
  Browser {
   border: none;

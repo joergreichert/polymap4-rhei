@@ -82,7 +82,7 @@ class DesktopActionBar {
         if (prefs != null) {
             Composite container = new Composite( contents, SWT.NONE );
             prefs.fill( container );
-            container.setLayoutData( FormDataFactory.filled().left( 100, -200 ).right( 100 ).create() );
+            container.setLayoutData( FormDataFactory.filled().left( 100, -210 ).right( 100 ).create() );
             right = container;
         }
         
