@@ -50,7 +50,13 @@ public interface IAppContext {
      */
     public IPanel openPanel( PanelIdentifier panelId );
 
-    public void closePanel();
+    /**
+     * Closes the panel with the given path. This panel must be the current top/active
+     * panel.
+     * 
+     * @param panelPath
+     */
+    public void closePanel( final PanelPath panelPath );
 
     /**
      * All direct children of the given path.

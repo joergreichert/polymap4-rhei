@@ -157,7 +157,7 @@ public class DesktopAppManager
         
         // go to start panel (no matter what)
         while (activePanel.getSite().getPath().size() > 1) {
-            closePanel();
+            closePanel( activePanel.getSite().getPath() );
             activePanel = getActivePanel();
         }
 
@@ -236,10 +236,14 @@ public class DesktopAppManager
     }
     
     
-    protected void closePanel() {
+    protected void closePanel( PanelPath panelPath ) {
         assert activePanel != null;
         
         PanelPath activePath = activePanel.getSite().getPath();
+        if (panelPath != null && !activePath.equals( panelPath )) {
+            log.warn( "Active panel is not the requested panel to close. Check your usage of IPanelSite#closePanel()!" );
+            return;
+        }
         // remove/dispose activePanel and siblings
         for (IPanel panel : context.findPanels( withPrefix( activePath.removeLast( 1 ) ) )) {
             EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.DISPOSING ) );
@@ -379,10 +383,10 @@ public class DesktopAppManager
         }
 
         @Override
-        public void closePanel() {
+        public void closePanel( final PanelPath panelPath ) {
             UIThreadRunnable.exec( false, new Callable() {
                 public Object call() throws Exception {
-                    DesktopAppManager.this.closePanel();
+                    DesktopAppManager.this.closePanel( panelPath );
                     return false;
                 }
             });

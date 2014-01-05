@@ -132,7 +132,7 @@ class PanelNavigator
             btn.addSelectionListener( new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent e ) {
                     while (!activePanel.equals( panel )) {
-                        appManager.closePanel();
+                        appManager.closePanel( null );
                         activePanel = appManager.getActivePanel();
                     }
                 }

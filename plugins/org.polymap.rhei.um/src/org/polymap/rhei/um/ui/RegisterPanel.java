@@ -135,7 +135,7 @@ public class RegisterPanel
                         public void done( IJobChangeEvent ev2 ) {
                             if (ev2.getResult().isOK()) {
                                 getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "okText" ) ) );
-                                getContext().closePanel();
+                                getContext().closePanel( getSite().getPath() );
                             }
                             else {
                                 getSite().setStatus( new Status( IStatus.ERROR, UmPlugin.ID, i18n.get( "errorText", ev2.getResult().getMessage() ) ) );                                

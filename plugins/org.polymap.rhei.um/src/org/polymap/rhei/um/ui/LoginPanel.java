@@ -108,7 +108,7 @@ public class LoginPanel
         new LoginForm( getContext(), getSite(), user ) {
             protected boolean login( String name, String passwd ) {
                 if (super.login( name, passwd )) {
-                    getContext().closePanel();
+                    getContext().closePanel( getSite().getPath() );
                     return true;
                 }
                 else {
