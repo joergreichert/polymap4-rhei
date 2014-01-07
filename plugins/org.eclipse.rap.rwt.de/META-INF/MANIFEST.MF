@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: German translation
+Bundle-SymbolicName: org.eclipse.rap.rwt.de
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: polymap.org
+Fragment-Host: org.eclipse.rap.rwt;bundle-version="1.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipse.rwt.internal
