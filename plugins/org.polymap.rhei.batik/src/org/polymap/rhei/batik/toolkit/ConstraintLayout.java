@@ -117,7 +117,7 @@ public class ConstraintLayout
                 return false;
             }
             if (clientArea.width > composite.getDisplay().getBounds().width) {
-                log.warn( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
+                log.debug( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
                 return false;
             }
 

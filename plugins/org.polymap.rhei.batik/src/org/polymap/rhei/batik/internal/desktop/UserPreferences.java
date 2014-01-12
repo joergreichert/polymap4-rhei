@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.rwt.graphics.Graphics;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -41,6 +42,7 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.app.LogoutAction;
 import org.polymap.rhei.batik.internal.Messages;
 
@@ -60,6 +62,9 @@ class UserPreferences
 
     private Composite           contents;
     
+    private String              username;
+    
+    /** Shows user name in the top bar. Only initialized if wide enough.*/
     private CLabel              usernameLnk;
 
     private Button              btn;
@@ -73,16 +78,19 @@ class UserPreferences
 
     
     public String getUsername() {
-        return usernameLnk.getText();
+        return username;
     }
 
     
     public void setUsername( String username ) {
-        usernameLnk.setText( username );
-        usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
-        if (username.toLowerCase().contains( "admin" )) {
-            usernameLnk.setText( "[Administrator]" );
-            usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
+        this.username = username;
+        if (usernameLnk != null) {
+            usernameLnk.setText( username );
+            usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
+            if (username.toLowerCase().contains( "admin" )) {
+                usernameLnk.setText( "[Administrator]" );
+                usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
+            }
         }
     }
 
@@ -95,7 +103,7 @@ class UserPreferences
     @Override
     public void fill( Composite parent ) {
         contents = parent;
-        contents.setLayout( FormLayoutFactory.defaults().spacing( 0 ).create() );
+        contents.setLayout( FormLayoutFactory.defaults().create() );
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
@@ -109,17 +117,22 @@ class UserPreferences
             }
         });
 
-        usernameLnk = new CLabel( contents, SWT.LEFT );
-        usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( btn ).create() );
-        usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-        usernameLnk.setText( "[" + i18n.get( "noUser" ) + "]" );
-        usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
+        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
+            usernameLnk = new CLabel( contents, SWT.LEFT );
+            usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( btn ).width( 160 ).create() );
+            usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            usernameLnk.setText( "[" + i18n.get( "noUser" ) + "]" );
+            usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
+        }
     }
 
 
     protected void openMenu( SelectionEvent ev ) {
         Menu menu = new Menu( contents );
 
+        if (usernameLnk == null && username != null) {
+            addAction( menu, new UsernameAction() );
+        }
         for (final IAction action : menuContributions) {
             addAction( menu, action );
         }
@@ -142,6 +155,26 @@ class UserPreferences
                 action.run();
             }
         });
+    }
+
+
+    /**
+     * 
+     */
+    public class UsernameAction
+            extends Action {
+
+        public UsernameAction() {
+            super( username );
+            setToolTipText( i18n.get( "userTip", username ) );
+            setImageDescriptor( BatikPlugin.imageDescriptorFromPlugin( BatikPlugin.PLUGIN_ID, "resources/icons/user.png" ) );
+        }
+
+
+        @Override
+        public void run() {
+        }
+        
     }
 
 }

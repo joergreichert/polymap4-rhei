@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -57,7 +57,18 @@ public class BatikApplication
         return Polymap.getSessionDisplay();
     }
 
-
+//    public Point displayDPI() {
+//        return sessionDisplay().getDPI();
+//    }
+//
+//    public static Point toPixel() {
+//        PixelConverter pc = new PixelConverter( JFaceResources.getDefaultFont() );
+//        int width100 = pc.convertWidthInCharsToPixels( 100 );
+//        int height100 = pc.convertHeightInCharsToPixels( 100 );
+//        return new Point( width100, height100 );
+//    }
+    
+    
     /**
      * Return an appropriate shell to parent dialogs on. This will be one of the
      * workbench windows (the active one) should any exist. Otherwise

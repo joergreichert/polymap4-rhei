@@ -23,10 +23,12 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.ContributionItem;
@@ -36,11 +38,13 @@ import org.eclipse.jface.layout.RowLayoutFactory;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
+
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
-import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
+import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.Panels;
+import org.polymap.rhei.batik.app.BatikApplication;
 
 /**
  *
@@ -116,6 +120,8 @@ class PanelNavigator
 //            }
 //        });
         
+        boolean showText = BatikApplication.sessionDisplay().getClientArea().width > 900;
+
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
         for (int i=1; i<=path.size(); i++) {
@@ -124,9 +130,15 @@ class PanelNavigator
             Button btn = new Button( breadcrumb, SWT.PUSH );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-            btn.setText( panel.getSite().getTitle() );
-            if (panel.getSite().getIcon() != null) {
-                btn.setImage( panel.getSite().getIcon() );
+            Image icon = panel.getSite().getIcon();
+            if (showText || icon == null) {
+                btn.setText( panel.getSite().getTitle() );
+            }
+            else {
+                btn.setToolTipText( panel.getSite().getTitle() );
+            }
+            if (icon != null) {
+                btn.setImage( icon );
             }
 
             btn.addSelectionListener( new SelectionAdapter() {
@@ -148,9 +160,15 @@ class PanelNavigator
         for (final IPanel panel : appManager.getContext().findPanels( Panels.withPrefix( prefix ) )) {
             final Button btn = new Button( breadcrumb, SWT.TOGGLE );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-            btn.setText( panel.getSite().getTitle() );
-            if (panel.getSite().getIcon() != null) {
-                btn.setImage( panel.getSite().getIcon() );
+            Image icon = panel.getSite().getIcon();
+            if (showText || icon == null) {
+                btn.setText( panel.getSite().getTitle() );
+            }
+            else {
+                btn.setToolTipText( panel.getSite().getTitle() );
+            }
+            if (icon != null) {
+                btn.setImage( icon );
             }
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
             
