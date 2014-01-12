@@ -1,5 +1,6 @@
 /*
- * polymap.org Copyright 2013 Polymap GmbH. All rights reserved.
+ * polymap.org 
+ * Copyright (C) 2013-2014 Polymap GmbH. All rights reserved.
  * 
  * This is free software; you can redistribute it and/or modify it under the terms of
  * the GNU Lesser General Public License as published by the Free Software
@@ -10,23 +11,32 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.um.ui;
+package org.polymap.rhei.field;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.polymap.rhei.field.IFormFieldValidator;
 
 /**
+ * Checks if the value id null or empty if instance of String.
  * 
  * @author <a href="http://www.polymap.de">Steffen Stundzig</a>
+ * @author <a href="http://www.polymap.de">Falko Br‰utigam</a>
  */
-class NotNullValidator
+public class NotEmptyValidator
         implements IFormFieldValidator {
 
-     public String validate( Object value ) {
-        if (value == null ||
-                // wird auch f√ºr TextField verwendet, mit der Bedeutung: "nicht leer"
-                (value instanceof String && ((String)value).length() == 0)) {
-            return "Dieses Feld darf nicht leer sein";
-        }
+     public String validate( Object fieldValue ) {
+         if (fieldValue == null) {
+             return "Dieses Feld darf nicht leer sein";
+         }
+         // used for
+         else if (fieldValue instanceof String) {
+             String str = (String)fieldValue;
+             if (str.length() == 0 || StringUtils.containsOnly( str, " \t\n\r" )) {
+                 return "Dieses Feld darf nicht leer sein";
+             }
+         }
         return null;
     }
 
@@ -41,4 +51,5 @@ class NotNullValidator
     public Object transform2Field( Object modelValue ) throws Exception {
         return modelValue;
     }
+    
 }

@@ -24,6 +24,7 @@ import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
+import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
@@ -64,13 +65,13 @@ public class PasswordForm
         new FormFieldBuilder( body, new PlainValuePropertyAdapter( "pwd1", "" ) ).setLabel( i18n.get( "password1" ) )
                 .setField( new StringFormField( Style.PASSWORD ) )
 //                .setValidator( new PasswordValidator() )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotEmptyValidator() )
                 .create();
 
         new FormFieldBuilder( body, new PlainValuePropertyAdapter( "pwd2", "" ) ).setLabel( i18n.get( "password2" ) )
                 .setField( new StringFormField( Style.PASSWORD ) )
 //                .setValidator( new PasswordValidator() )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotEmptyValidator() )
                 .create();
     }
 

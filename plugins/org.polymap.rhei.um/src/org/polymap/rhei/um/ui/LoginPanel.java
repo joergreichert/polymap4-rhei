@@ -53,6 +53,7 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
@@ -195,12 +196,12 @@ public class LoginPanel
                     .margins( panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
-                    .setField( new StringFormField() ).setValidator( new NotNullValidator() )
+                    .setField( new StringFormField() ).setValidator( new NotEmptyValidator() )
                     .setLabel( i18n.get( "username" ) ).setToolTipText( i18n.get( "usernameTip" ) )
                     .create().setFocus();
             // password
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "password", password ) )
-                    .setField( new StringFormField( Style.PASSWORD ) ).setValidator( new NotNullValidator() )
+                    .setField( new StringFormField( Style.PASSWORD ) ).setValidator( new NotEmptyValidator() )
                     .setLabel( i18n.get( "password" ) )
                     .create();
 

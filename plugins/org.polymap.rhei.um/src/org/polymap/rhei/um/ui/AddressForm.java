@@ -26,6 +26,7 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.IFormFieldLabel;
+import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
 import org.polymap.rhei.um.Address;
@@ -73,13 +74,13 @@ public class AddressForm
         Composite field = null;
         Property<String> prop = address.street();
         field = new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotEmptyValidator() )
                 .create();
         field.setLayoutData( FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
         new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotEmptyValidator() )
                 .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
 
         // postalCode / city
@@ -90,24 +91,13 @@ public class AddressForm
         
         prop = address.postalCode();
         field = new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() {
-                    public String validate( Object value ) {
-                        String result = super.validate( value );
-                        if (result != null) {
-                            return result;
-                        }
-                        else if (((String)value).length() < 5) {
-                            return "Geben Sie die Postleitzahl mit 5 Stellen an.";
-                        }
-                        return null;
-                    }
-                })
+                .setValidator( new PlzValidator())
                 .create();
         field.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
 
         prop = address.city();
         new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
-                .setValidator( new NotNullValidator() )
+                .setValidator( new NotEmptyValidator() )
                 .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
         
 //        // country 

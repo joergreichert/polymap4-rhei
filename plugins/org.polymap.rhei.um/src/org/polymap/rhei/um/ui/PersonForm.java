@@ -28,6 +28,7 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.EMailAddressValidator;
 import org.polymap.rhei.field.IFormFieldLabel;
+import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PicklistFormField;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.um.Address;
@@ -79,14 +80,14 @@ public class PersonForm
         Property<String> prop = person.salutation();
         new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "firstname" ) )
                 .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
-                .setValidator( new NotNullValidator() ).create().setFocus();
+                .setValidator( new NotEmptyValidator() ).create().setFocus();
 
         prop = person.firstname();
         new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL ).create();
         
         prop = person.name();
         new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotNullValidator() ).create();
+                .setValidator( new NotEmptyValidator() ).create();
 
         if (person instanceof User) {
             prop = ((User)person).company();
