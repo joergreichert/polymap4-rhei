@@ -30,6 +30,8 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.deferred.SetModel;
 
 import org.polymap.core.ui.SelectionAdapter;
@@ -55,7 +57,8 @@ public class UsersTableViewer
     private SetModel            model;
     
     
-    public UsersTableViewer( Composite parent, final Iterable<User> content, int style ) { super( parent, SWT.VIRTUAL /*| SWT.V_SCROLL | SWT.FULL_SELECTION |*/ | style );
+    public UsersTableViewer( Composite parent, final Iterable<User> content, int style ) { 
+        super( parent, SWT.VIRTUAL /*| SWT.V_SCROLL | SWT.FULL_SELECTION |*/ | style );
         this.repo = UserRepository.instance();
         this.content = content;
 
@@ -67,18 +70,26 @@ public class UsersTableViewer
         TableViewerColumn vcolumn = new TableViewerColumn( this, SWT.CENTER );
         vcolumn.getColumn().setResizable( true );
         vcolumn.getColumn().setText( "Name" );
-        vcolumn.setLabelProvider( new ColumnLabelProvider() {
+        final ColumnLabelProvider nameLabelProvider = new ColumnLabelProvider() {
             public String getText( Object elm ) {
-                log.info( "getText(): ..." );
                 User user = (User)elm;
                 String firstname = user.firstname().get();
                 return firstname != null && firstname.length() > 0 
                         ? user.name().get() + ", " + firstname
                         : user.name().get();
             }
-        });
+        };
+        vcolumn.setLabelProvider( nameLabelProvider );
         ((TableLayout)getTable().getLayout()).addColumnData( new ColumnWeightData( 2, 100, true ) );            
+        setComparator( new ViewerComparator() {
+            public int compare( Viewer viewer, Object e1, Object e2 ) {
+                String name1 = nameLabelProvider.getText( e1 );
+                String name2 = nameLabelProvider.getText( e2 );
+                return name1.compareToIgnoreCase( name2 );
+            }
+        });
         getTable().setSortColumn( vcolumn.getColumn() );
+        getTable().setSortDirection( SWT.UP );
 
         vcolumn = new TableViewerColumn( this, SWT.LEFT );
         vcolumn.getColumn().setResizable( true );

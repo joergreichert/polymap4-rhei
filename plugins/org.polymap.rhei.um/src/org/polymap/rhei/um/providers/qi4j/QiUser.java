@@ -74,13 +74,13 @@ public interface QiUser
 
         @Override
         public org.polymap.rhei.um.Property<String> username() {
-            System.out.println( "    property username: " + _username().get() );
+            //System.out.println( "    property username: " + _username().get() );
             return QiProperty.create( _username() );
         }
 
         @Override
         public org.polymap.rhei.um.Property<String> company() {
-            System.out.println( "    property company: " + _company().get() );
+            //System.out.println( "    property company: " + _company().get() );
             return QiProperty.create( _company() );
         }
 
