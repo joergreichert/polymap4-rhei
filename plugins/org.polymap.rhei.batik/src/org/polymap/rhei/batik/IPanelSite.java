@@ -70,7 +70,14 @@ public interface IPanelSite {
 
     public IPanelToolkit toolkit();
 
-    public void setTitle( String string );
+    
+    /**
+     * Sets the title of the page. Null specifies that the panel does not show up in
+     * the panel navigator bar.
+     * 
+     * @param title The title of the page, or null.
+     */
+    public void setTitle( String title );
 
     public String getTitle();
 

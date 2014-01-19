@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.polymap.core.ui.FormDataFactory;
@@ -64,6 +65,7 @@ class DesktopPanelSection
         // title
         title = new Label( control, SWT.NO_FOCUS );
         title.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
+        title.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
         FormDataFactory.filled().bottom( -1 ).height( 25 ).applyTo( title );
         title.setVisible( false );
         

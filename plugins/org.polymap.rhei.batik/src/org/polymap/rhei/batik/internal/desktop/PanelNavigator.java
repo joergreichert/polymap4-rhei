@@ -161,7 +161,12 @@ class PanelNavigator
             final Button btn = new Button( breadcrumb, SWT.TOGGLE );
             btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
             Image icon = panel.getSite().getIcon();
-            if (showText || icon == null) {
+            String title = panel.getSite().getTitle();
+            
+            if (icon == null && title == null) {
+                btn.setVisible( false );
+            }
+            else if (showText || icon == null) {
                 btn.setText( panel.getSite().getTitle() );
             }
             else {
