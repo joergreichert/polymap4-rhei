@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +41,14 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
-import org.polymap.rhei.batik.internal.desktop.DesktopAppManager.DesktopPanelSite;
+import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopPanelSite;
 
 /**
  *
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class PanelToolbar
+public class PanelToolbar
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelToolbar.class );

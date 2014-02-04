@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -42,6 +41,7 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.app.LogoutAction;
 import org.polymap.rhei.batik.internal.Messages;
@@ -65,7 +65,7 @@ class UserPreferences
     private String              username;
     
     /** Shows user name in the top bar. Only initialized if wide enough.*/
-    private CLabel              usernameLnk;
+    private Button              usernameLnk;
 
     private Button              btn;
     
@@ -85,7 +85,7 @@ class UserPreferences
     public void setUsername( String username ) {
         this.username = username;
         if (usernameLnk != null) {
-            usernameLnk.setText( username );
+            usernameLnk.setText( " [" + username + "]" );
             usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
             if (username.toLowerCase().contains( "admin" )) {
                 usernameLnk.setText( "[Administrator]" );
@@ -118,11 +118,17 @@ class UserPreferences
         });
 
         if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
-            usernameLnk = new CLabel( contents, SWT.LEFT );
-            usernameLnk.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( btn ).width( 160 ).create() );
+            usernameLnk = new Button( contents, SWT.PUSH | SWT.LEFT );
+            usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
             usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-            usernameLnk.setText( "[" + i18n.get( "noUser" ) + "]" );
+            usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
+            
+            usernameLnk.addSelectionListener( new SelectionAdapter() {
+                public void widgetSelected( SelectionEvent e ) {
+                    appManager.getContext().openPanel( new PanelIdentifier( "azvlogin" ) );
+                }
+            });
         }
     }
 

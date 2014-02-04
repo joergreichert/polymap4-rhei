@@ -32,10 +32,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
-import org.polymap.rhei.batik.internal.cp.BestFirstOptimizer;
-import org.polymap.rhei.batik.internal.cp.ISolution;
-import org.polymap.rhei.batik.internal.cp.ISolver;
-import org.polymap.rhei.batik.internal.cp.ISolver.ScoredSolution;
+import org.polymap.rhei.batik.layout.cp.BestFirstOptimizer;
+import org.polymap.rhei.batik.layout.cp.ISolution;
+import org.polymap.rhei.batik.layout.cp.ISolver;
+import org.polymap.rhei.batik.layout.cp.ISolver.ScoredSolution;
 
 /**
  * 

@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.graphics.Rectangle;
 
-import org.polymap.rhei.batik.internal.cp.PercentScore;
+import org.polymap.rhei.batik.layout.cp.PercentScore;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutElement;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 

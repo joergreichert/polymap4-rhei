@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -32,7 +33,13 @@ import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.ContributionItem;
+import org.eclipse.jface.action.ContributionManager;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IContributionManagerOverrides;
+import org.eclipse.jface.action.IStatusLineManager;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -51,9 +58,9 @@ import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class StatusManager
-        extends ContributionItem {
-        //implements IStatusLineManager {
+public class StatusManager
+        extends ContributionItem
+        implements IStatusLineManager {
 
     private static Log log = LogFactory.getLog( StatusManager.class );
     
@@ -74,6 +81,13 @@ class StatusManager
     private Label                   tooltipTxt;
 
     private Label                   tooltipIcon;
+    
+    private ContributionManager     contribManager = new ContributionManager() {
+        public void update( boolean force ) {
+            // XXX Auto-generated method stub
+            throw new RuntimeException( "not yet implemented." );
+        }
+    };
 
 
     public StatusManager( DesktopAppManager appManager ) {
@@ -86,6 +100,52 @@ class StatusManager
         });
     }
 
+    // IStatusLineManager *********************************
+    
+    @Override
+    public IProgressMonitor getProgressMonitor() {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public boolean isCancelEnabled() {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public void setCancelEnabled( boolean enabled ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public void setErrorMessage( String message ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public void setErrorMessage( Image image, String message ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public void setMessage( String message ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    @Override
+    public void setMessage( Image image, String message ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    
+    // Status handling (ContributionItem) *****************
     
     @Override
     public void fill( Composite parent ) {
@@ -124,22 +184,6 @@ class StatusManager
             update( activePanel.getSite().getStatus(), true );
         }
     }
-
-
-//    public IProgressMonitor getProgressMonitor() {
-//        // XXX Auto-generated method stub
-//        throw new RuntimeException( "not yet implemented." );
-//    }
-//
-//    public boolean isCancelEnabled() {
-//        // XXX Auto-generated method stub
-//        throw new RuntimeException( "not yet implemented." );
-//    }
-//
-//    public void setCancelEnabled( boolean enabled ) {
-//        // XXX Auto-generated method stub
-//        throw new RuntimeException( "not yet implemented." );
-//    }
 
 
     protected void update( IStatus status, boolean popup ) {
@@ -192,8 +236,10 @@ class StatusManager
             
             tooltip.getDisplay().timerExec( 10000, new Runnable() {
                 public void run() {
-                    tooltip.dispose(); 
-                    tooltip = null;
+                    if (tooltip != null && !tooltip.isDisposed()) {
+                        tooltip.dispose(); 
+                        tooltip = null;
+                    }
                 }
             });
 
@@ -237,6 +283,109 @@ class StatusManager
                 tooltip.setVisible( true );
             }
         }
+    }
+
+    
+    // ContributionManager ********************************
+    
+    public void add( IAction action ) {
+        contribManager.add( action );
+    }
+
+    public void add( IContributionItem item ) {
+        contribManager.add( item );
+    }
+
+    public void appendToGroup( String groupName, IAction action ) {
+        contribManager.appendToGroup( groupName, action );
+    }
+
+    public void appendToGroup( String groupName, IContributionItem item ) {
+        contribManager.appendToGroup( groupName, item );
+    }
+
+    public IContributionItem find( String id ) {
+        return contribManager.find( id );
+    }
+
+    public IContributionItem[] getItems() {
+        return contribManager.getItems();
+    }
+
+    public int getSize() {
+        return contribManager.getSize();
+    }
+
+    public IContributionManagerOverrides getOverrides() {
+        return contribManager.getOverrides();
+    }
+
+    public void update( boolean force ) {
+        contribManager.update( force );
+    }
+
+    public int indexOf( String id ) {
+        return contribManager.indexOf( id );
+    }
+
+    public void insert( int index, IContributionItem item ) {
+        contribManager.insert( index, item );
+    }
+
+    public void insertAfter( String ID, IAction action ) {
+        contribManager.insertAfter( ID, action );
+    }
+
+    public void insertAfter( String ID, IContributionItem item ) {
+        contribManager.insertAfter( ID, item );
+    }
+
+    public void insertBefore( String ID, IAction action ) {
+        contribManager.insertBefore( ID, action );
+    }
+
+    public void insertBefore( String ID, IContributionItem item ) {
+        contribManager.insertBefore( ID, item );
+    }
+
+    public boolean isDirty() {
+        return contribManager.isDirty();
+    }
+
+    public boolean isEmpty() {
+        return contribManager.isEmpty();
+    }
+
+    public void markDirty() {
+        contribManager.markDirty();
+    }
+
+    public void prependToGroup( String groupName, IAction action ) {
+        contribManager.prependToGroup( groupName, action );
+    }
+
+    public void prependToGroup( String groupName, IContributionItem item ) {
+        contribManager.prependToGroup( groupName, item );
+    }
+
+    public IContributionItem remove( String ID ) {
+        return contribManager.remove( ID );
+    }
+
+    public IContributionItem remove( IContributionItem item ) {
+        return contribManager.remove( item );
+    }
+
+    public void removeAll() {
+        contribManager.removeAll();
+    }
+
+    public boolean replaceItem( String identifier, IContributionItem replacementItem ) {
+        return contribManager.replaceItem( identifier, replacementItem );
+    }
+
+    public void setOverrides( IContributionManagerOverrides newOverrides ) {
+        contribManager.setOverrides( newOverrides );
     }
 
 }

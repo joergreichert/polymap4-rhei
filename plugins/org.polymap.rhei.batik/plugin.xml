@@ -40,8 +40,9 @@
    <extension
          point="org.polymap.rhei.batik.applicationLayouters">
       <applicationLayouter
-            class="org.polymap.rhei.batik.internal.desktop.DesktopAppManager"
-            id="org.polymap.rhei.batik.DesktopApplicationLayouter">
+            class="org.polymap.rhei.batik.layout.desktop.DesktopAppManager"
+            id="org.polymap.rhei.batik.DesktopApplicationLayouter"
+            servletNameMatcher="*">
       </applicationLayouter>
    </extension>
    <extension

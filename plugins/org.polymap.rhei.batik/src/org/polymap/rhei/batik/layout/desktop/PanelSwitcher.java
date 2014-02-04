@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import static org.polymap.rhei.batik.Panels.withPrefix;
 

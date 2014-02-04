@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ import org.polymap.rhei.batik.app.BatikApplication;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class PanelNavigator
+public class PanelNavigator
         extends ContributionItem {
 
     private static Log log = LogFactory.getLog( PanelNavigator.class );

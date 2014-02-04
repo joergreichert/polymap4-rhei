@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.cp;
+package org.polymap.rhei.batik.layout.cp;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +22,12 @@ import org.junit.Test;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.polymap.rhei.batik.layout.cp.IScore;
+import org.polymap.rhei.batik.layout.cp.ISolution;
+import org.polymap.rhei.batik.layout.cp.ISolver;
+import org.polymap.rhei.batik.layout.cp.PercentScore;
+import org.polymap.rhei.batik.layout.cp.SolutionQueueBuilder;
 
 /**
  * 

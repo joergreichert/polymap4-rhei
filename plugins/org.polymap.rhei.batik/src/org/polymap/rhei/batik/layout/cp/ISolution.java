@@ -12,33 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.cp;
+package org.polymap.rhei.batik.layout.cp;
 
 /**
- * 
+ * Represents a valid solution for a given problem.
+ * <p/>
+ * Implementations MUST provide a {@link #hashCode()} method.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IOptimizationGoal<S extends ISolution> {
+public interface ISolution
+        extends Cloneable {
 
+    public ISolution clone();
+    
+    
     /**
-     * Try to optimze the given solution. The given instance is changed in-place.
-     *
-     * @param solution The solution to optimze.
-     * @return The optimized solution, or null if this goal does not find a better solution.
+     * The surrogate (hash) code of a solution is used to identify this solution for
+     * backtracking. Sub-classes MUST provide an implementation.
      */
-    public abstract S optimize( S solution );
-    
-    public abstract <SC extends IScore> SC score( S solution );
-
-    
-//    /**
-//     * 
-//     */
-//    public interface Step {
-//    
-//        public abstract void revoke();
-//        
-//    }
+    public String surrogate();
     
 }

@@ -17,10 +17,13 @@ package org.polymap.rhei.batik.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Predicate;
+
+import org.eclipse.rwt.RWT;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -68,9 +71,20 @@ public class BatikComponentFactory
         try {
             IConfigurationElement[] elms = Platform.getExtensionRegistry()
                     .getConfigurationElementsFor( BatikPlugin.PLUGIN_ID, APPLICATION_LAYOUTER_EXTENSION_POINT );
-            assert elms.length == 1;
 
-            return (IApplicationLayouter)elms[0].createExecutableExtension( "class" );
+            String path = RWT.getRequest().getServletPath();
+            IConfigurationElement bestMatch = null;
+            String bestMatcher = null;
+            for (IConfigurationElement elm : elms) {
+                String matcher = elm.getAttribute( "servletNameMatcher" );
+                if (FilenameUtils.wildcardMatch( path, matcher )) {
+                    if (bestMatcher == null || bestMatcher.length() < matcher.length()) {
+                        bestMatch = elm;
+                        bestMatcher = matcher;
+                    }
+                }
+            }
+            return (IApplicationLayouter)bestMatch.createExecutableExtension( "class" );
         }
         catch (CoreException e) {
             throw new RuntimeException( e );

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import org.pegdown.FastEncoder;
 import org.pegdown.LinkRenderer;
@@ -51,7 +51,7 @@ import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
-import org.polymap.rhei.batik.internal.desktop.DesktopAppManager.DesktopAppContext;
+import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;

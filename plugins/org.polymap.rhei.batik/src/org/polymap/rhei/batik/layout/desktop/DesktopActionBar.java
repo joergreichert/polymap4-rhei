@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +37,11 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class DesktopActionBar {
+public class DesktopActionBar {
 
     private static Log log = LogFactory.getLog( DesktopActionBar.class );
 
-    enum PLACE {
+    public enum PLACE {
         SEARCH,
         PANEL_TOOLBAR,
         PANEL_NAVI,

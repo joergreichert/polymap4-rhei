@@ -14,17 +14,17 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.batik.internal.cp.IOptimizationGoal;
-import org.polymap.rhei.batik.internal.cp.PercentScore;
-import org.polymap.rhei.batik.internal.cp.Prioritized;
+import com.google.common.collect.Lists;
+
+import org.polymap.rhei.batik.layout.cp.IOptimizationGoal;
+import org.polymap.rhei.batik.layout.cp.PercentScore;
+import org.polymap.rhei.batik.layout.cp.Prioritized;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutColumn;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutElement;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
@@ -47,19 +47,30 @@ class PriorityOnTopGoal
 
     
     protected List<LayoutElement> sort( LayoutSolution solution ) {
-        Map<Integer,LayoutElement> result = new TreeMap();
-        int columnOffset = 0;
-        for (LayoutColumn column : solution.columns) {
-            for (LayoutElement elm : column) {
-                assert elm.y >= 0;
-                LayoutElement prev = result.put( elm.y + columnOffset, elm );
-                if (prev != null) {
-                    throw new RuntimeException( "Element found: prev=" + prev + ", key=" + elm.y + columnOffset + ", elm=" + elm );
-                }
+        List<LayoutElement> result = Lists.newArrayList( solution.elements() );
+
+        // stable sort, allows same key
+        Collections.sort( result, new Comparator<LayoutElement>() {
+            public int compare( LayoutElement e1, LayoutElement e2 ) {
+                assert e1.y >= 0 && e2.y >= 0;
+                return e1.y - e2.y;
             }
-            columnOffset ++;
-        }
-        return new ArrayList( result.values() );
+        });
+        return result;
+        
+//        Multimap<Integer,LayoutElement> result = TreeMultimap.create();
+//        int columnOffset = 0;
+//        for (LayoutColumn column : solution.columns) {
+//            for (LayoutElement elm : column) {
+//                assert elm.y >= 0;
+//                LayoutElement prev = result.put( elm.y + columnOffset, elm );
+//                if (prev != null) {
+//                    throw new RuntimeException( "Element found: prev=" + prev + ", key=" + elm.y + columnOffset + ", elm=" + elm );
+//                }
+//            }
+//            columnOffset ++;
+//        }
+//        return new ArrayList( result.values() );
     }
     
     

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,10 +30,7 @@ import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.window.ApplicationWindow;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
@@ -43,27 +40,27 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.internal.ApplicationResizeEvent;
-import org.polymap.rhei.batik.internal.desktop.DesktopAppManager.DesktopPanelSite;
+import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopPanelSite;
 
 /**
  * The main application window for the desktop.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-abstract class DesktopAppWindow
+public abstract class DesktopAppWindow
         extends ApplicationWindow {
 
     private static Log log = LogFactory.getLog( DesktopAppWindow.class );
 
-    private DesktopAppManager       appManager;
+    protected DesktopAppManager       appManager;
     
-    private ResizeHandler           resizeHandler = new ResizeHandler();
+    protected ResizeHandler           resizeHandler = new ResizeHandler();
 
-    private Composite               panels;
+    protected Composite               panels;
 
-    private Composite               contents;
+    protected Composite               contents;
 
-    private StatusManager           statusManager;
+    protected StatusManager           statusManager;
 
 
     public DesktopAppWindow( DesktopAppManager appManager ) {
@@ -82,8 +79,10 @@ abstract class DesktopAppWindow
 
     @Override
     protected Control createContents( Composite parent ) {
-        contents = (Composite)super.createContents( parent );
-        contents.setLayout( new FormLayout() );
+        if (contents == null) {
+            contents = (Composite)super.createContents( parent );
+            contents.setLayout( new FormLayout() );
+        }
 
         // navi
         Composite navi = fillNavigationArea( contents );
@@ -134,32 +133,56 @@ abstract class DesktopAppWindow
     }
 
 
-    private int refreshCount = 1;
+    private int refreshCount = (int)System.currentTimeMillis();
     
     public void delayedRefresh( final Shell shell ) {
         final Shell s = shell != null ? shell : getShell();
+
+        s.layout( true );
+        ScrolledPageBook scrolled = (ScrolledPageBook)panels;
+        //scrolled.layout();
+        scrolled.reflow( true );
         
         // FIXME HACK! force re-layout after font sizes are known (?)
         UICallBack.activate( getClass().getName() );
-        Job job = new Job( "Layout" ) {
-            protected IStatus run( IProgressMonitor monitor ) {
-                s.getDisplay().asyncExec( new Runnable() {
-                    public void run() {
-                        log.info( "layout..." );
-                        //s.layout();
-                        //((ScrolledPageBook)panels).reflow( true );
+        s.getDisplay().timerExec( 1000, new Runnable() {
+            public void run() {
+                log.info( "layout..." );
 
-                        Rectangle bounds = Display.getCurrent().getBounds();
-                        int random = (refreshCount++ % 3);
-                        s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
-                        UICallBack.deactivate( getClass().getName() );
-                    }
-                });
-                return Status.OK_STATUS;
+//                Rectangle bounds = Display.getCurrent().getBounds();
+//                int random = (refreshCount++ % 3);
+//                s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
+
+                s.layout( true );
+                ScrolledPageBook scrolled = (ScrolledPageBook)panels;
+                //scrolled.layout();
+                scrolled.reflow( true );
+                //((Composite)scrolled.getCurrentPage()).layout();
+                
+                UICallBack.deactivate( getClass().getName() );
             }
-        };
-        //job.setUser( true );
-        job.schedule( 1000 );
+        });
+
+//        UICallBack.activate( getClass().getName() );
+//        Job job = new Job( "Layout" ) {
+//            protected IStatus run( IProgressMonitor monitor ) {
+//                s.getDisplay().asyncExec( new Runnable() {
+//                    public void run() {
+//                        log.info( "layout..." );
+//                        s.layout();
+//                        ((ScrolledPageBook)panels).reflow( true );
+//
+//                        Rectangle bounds = Display.getCurrent().getBounds();
+//                        int random = (refreshCount++ % 3);
+//                        s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
+//                        UICallBack.deactivate( getClass().getName() );
+//                    }
+//                });
+//                return Status.OK_STATUS;
+//            }
+//        };
+//        //job.setUser( true );
+//        job.schedule( 1000 );
     }
 
     

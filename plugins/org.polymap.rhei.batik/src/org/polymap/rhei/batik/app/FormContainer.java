@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.app;
 
-import static org.polymap.rhei.batik.internal.desktop.DesktopToolkit.*;
+import static org.polymap.rhei.batik.layout.desktop.DesktopToolkit.*;
 
 import java.util.Collections;
 import java.util.Date;

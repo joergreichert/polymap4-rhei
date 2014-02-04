@@ -12,25 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.cp;
+package org.polymap.rhei.batik.layout.cp;
 
 /**
- * Represents a valid solution for a given problem.
- * <p/>
- * Implementations MUST provide a {@link #hashCode()} method.
+ * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface ISolution
-        extends Cloneable {
-
-    public ISolution clone();
+public interface IConstraint<S extends ISolution, SC extends IScore> {
     
-    
-    /**
-     * The surrogate (hash) code of a solution is used to identify this solution for
-     * backtracking. Sub-classes MUST provide an implementation.
-     */
-    public String surrogate();
+    public SC score( S solution );
     
 }

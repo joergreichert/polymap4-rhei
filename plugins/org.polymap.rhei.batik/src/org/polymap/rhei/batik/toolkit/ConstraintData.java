@@ -20,7 +20,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.batik.internal.cp.ISolver;
+import org.polymap.rhei.batik.layout.cp.ISolver;
 
 
 /**

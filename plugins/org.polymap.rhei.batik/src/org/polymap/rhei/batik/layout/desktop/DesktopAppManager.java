@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal.desktop;
+package org.polymap.rhei.batik.layout.desktop;
 
 import static org.polymap.rhei.batik.Panels.withPrefix;
 
@@ -59,7 +59,7 @@ import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.internal.BatikComponentFactory;
 import org.polymap.rhei.batik.internal.DefaultAppContext;
 import org.polymap.rhei.batik.internal.PanelContextInjector;
-import org.polymap.rhei.batik.internal.desktop.DesktopActionBar.PLACE;
+import org.polymap.rhei.batik.layout.desktop.DesktopActionBar.PLACE;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
@@ -73,28 +73,25 @@ public class DesktopAppManager
 
     private static Log log = LogFactory.getLog( DesktopAppManager.class );
     
-//    static final int                    DEFAULT_LAYOUT_SPACING = 10;
-//    static final int                    DEFAULT_LAYOUT_MARGINS = 20;
+    protected DesktopAppContext         context = new DesktopAppContext();
 
-    private DesktopAppContext           context = new DesktopAppContext();
+    protected DesktopToolkit            tk = new DesktopToolkit( context );
 
-    private DesktopToolkit              tk = new DesktopToolkit( context );
+    protected DesktopAppWindow          mainWindow;
 
-    private DesktopAppWindow            mainWindow;
+    protected DesktopActionBar          actionBar;
 
-    private DesktopActionBar            actionBar;
+    protected ScrolledPageBook          scrolledPanelContainer;
 
-    private ScrolledPageBook            scrolledPanelContainer;
+    protected IPanel                    activePanel;
 
-    private IPanel                      activePanel;
+    protected IBrowserHistory           browserHistory;
 
-    private IBrowserHistory             browserHistory;
+    protected UserPreferences           userPrefs;
 
-    private UserPreferences             userPrefs;
+    protected PanelNavigator            panelNavigator;
 
-    private PanelNavigator              panelNavigator;
-
-    private StatusManager               statusManager;
+    protected StatusManager             statusManager;
     
 
     @Override
