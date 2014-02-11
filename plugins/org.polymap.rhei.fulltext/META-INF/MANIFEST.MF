@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Full-Text Search Capabilities
+Bundle-SymbolicName: org.polymap.rhei.fulltext
+Bundle-Version: 2.1.0.qualifier
+Bundle-Activator: org.polymap.rhei.fulltext.FullTextPlugin
+Bundle-Vendor: polymap.org
+Require-Bundle: org.eclipse.core.runtime,
+ org.polymap.core;bundle-version="3.2.0",
+ org.polymap.core.project;bundle-version="3.2.0",
+ org.polymap.core.data;bundle-version="3.2.0",
+ org.polymap.core.model;bundle-version="3.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.polymap.rhei.fulltext,
+ org.polymap.rhei.fulltext.indexing,
+ org.polymap.rhei.fulltext.lucene,
+ org.polymap.rhei.fulltext.servlet,
+ org.polymap.rhei.fulltext.update
+Bundle-ClassPath: lib/jdom-1.0.jar,
+ lib/rome-0.9.jar,
+ lib/georss-rome-0.9.8.jar,
+ .
