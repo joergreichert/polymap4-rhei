@@ -14,14 +14,18 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.LowerCaseFilter;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.QueryDecorator;
 
 /**
- * Provides a {@link FullTextTokenFilter} and {@link QueryDecorator} to
- * normalize proposal and query strings to lower case.
+ * Provides a {@link FullTextTokenFilter} and {@link QueryDecorator} to normalize
+ * proposal and query strings to lower case. The proposal results are capitalized.
  * 
  * @see LowerCaseFilter
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
@@ -47,7 +51,13 @@ public class LowerCaseTokenFilter
 
     @Override
     public Iterable<String> propose( String query, int maxResults ) throws Exception {
-        return next.propose( query.toLowerCase(), maxResults );
+        Iterable<String> results = next.propose( query.toLowerCase(), maxResults );
+        
+        return Iterables.transform( results, new Function<String,String>() {
+            public String apply( String input ) {
+                return StringUtils.capitalize( input );
+            }
+        });
     }
 
 

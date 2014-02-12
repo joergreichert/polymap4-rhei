@@ -31,15 +31,15 @@ import org.polymap.core.data.util.Geometries;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class TransformCrsDecorator
+public class CrsTransformDecorator
         extends QueryDecorator {
 
-    private static Log log = LogFactory.getLog( TransformCrsDecorator.class );
+    private static Log log = LogFactory.getLog( CrsTransformDecorator.class );
     
     private CoordinateReferenceSystem       targetCrs;
 
 
-    public TransformCrsDecorator( FullTextIndex next, CoordinateReferenceSystem targetCrs ) {
+    public CrsTransformDecorator( FullTextIndex next, CoordinateReferenceSystem targetCrs ) {
         super( next );
         assert targetCrs != null;
         this.targetCrs = targetCrs;

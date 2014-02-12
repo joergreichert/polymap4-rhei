@@ -42,8 +42,9 @@ public class LogQueryDecorator
     @Override
     public Iterable<String> propose( String query, int maxResults ) throws Exception {
         Timer timer = new Timer();
+        log.info( "Propose: " + query );
         Iterable<String> results = next.propose( query, maxResults );
-        log.info( "Proposals: " + FluentIterable.from( results ).size() + " (" + timer.elapsedTime() + "ms)" );
+        log.info( "Propose: " + FluentIterable.from( results ).size() + " (" + timer.elapsedTime() + "ms)" );
         return results;
     }
 
@@ -51,6 +52,7 @@ public class LogQueryDecorator
     @Override
     public Iterable<JSONObject> search( String query, int maxResults ) throws Exception {
         Timer timer = new Timer();
+        log.info( "Search: " + query );
         Iterable<JSONObject> results = next.search( query, maxResults );
         log.info( "Search: " + FluentIterable.from( results ).size() + " (" + timer.elapsedTime() + "ms)" );
         return results;

@@ -126,21 +126,23 @@ public class LuceneFullTextIndex
                 }
             });
             // sort
-            for (int i=0; i<maxResults*3 && terms.next(); i++) {
+            for (int i=0; i<maxResults*3; i++) {
                 String proposalTerm = terms.term().text();
                 int docFreq = terms.docFreq();
                 if (!proposalTerm.startsWith( term )) {
                     break;
                 }
-                log.info( "   Term: " + proposalTerm + ", docFreq: " + docFreq );
+                log.info( "Proposal: term: " + proposalTerm + ", docFreq: " + docFreq );
                 result.put( docFreq, proposalTerm );
+                if (!terms.next()) {
+                    break;
+                }
             }
             // take first maxResults
             return limit( result.values(), maxResults );
         }
-        //
         catch (Exception e) {
-            log.warn( e );
+            log.warn( "", e );
             return ListUtils.EMPTY_LIST;
         }
         finally {
