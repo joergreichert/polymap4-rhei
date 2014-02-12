@@ -100,7 +100,7 @@ public class SearchServlet
 	        try {
 	            JSONArray result = new JSONArray();
 
-	            for (String record : dispatcher.autocomplete( searchStr, 7, worldCRS )) {
+	            for (String record : dispatcher.propose( searchStr, 7 )) {
 	                //result.put( StringEscapeUtils.escapeHtml( record ) );
 	                result.put( record );
 	            }
@@ -173,7 +173,7 @@ public class SearchServlet
 
                 // make sure that empty searchStr *always* results in empty reponse 
                 if (searchStr != null && searchStr.length() > 0) {
-                    for (JSONObject feature : dispatcher.search( searchStr, maxResults, worldCRS )) {
+                    for (JSONObject feature : dispatcher.search( searchStr, maxResults )) {
                         try {
                             out.writeObject( feature );
                         }

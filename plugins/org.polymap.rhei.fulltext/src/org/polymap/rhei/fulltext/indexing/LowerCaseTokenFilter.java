@@ -14,19 +14,42 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.LowerCaseFilter;
 
+import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.QueryDecorator;
+
 /**
+ * Provides a {@link FullTextTokenFilter} and {@link QueryDecorator} to
+ * normalize proposal and query strings to lower case.
  * 
  * @see LowerCaseFilter
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class LowerCaseTokenFilter
+        extends QueryDecorator
         implements FullTextTokenFilter {
 
-    private static Log log = LogFactory.getLog( LowerCaseTokenFilter.class );
+    /**
+     * Ctor for {@link FullTextTokenFilter}.
+     */
+    public LowerCaseTokenFilter() {
+        super( null );
+    }
+
+    /**
+     * Ctor for {@link QueryDecorator}.
+     */
+    public LowerCaseTokenFilter( FullTextIndex next ) {
+        super( next );
+    }
+
+
+    @Override
+    public Iterable<String> propose( String query, int maxResults ) throws Exception {
+        return next.propose( query.toLowerCase(), maxResults );
+    }
+
 
     @Override
     public String apply( String term ) {

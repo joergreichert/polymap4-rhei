@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.json.JSONObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -83,8 +82,7 @@ public class SearchDispatcher
 
 
     @Override
-    public Iterable<String> autocomplete( final String term, final int maxResults, 
-            final CoordinateReferenceSystem worldCRS ) throws Exception {
+    public Iterable<String> propose( final String term, final int maxResults ) throws Exception {
         // call searches in separate threads
         // XXX score results
         List<Future<List<String>>> results = new ArrayList();
@@ -93,7 +91,7 @@ public class SearchDispatcher
                 @Override
                 public List<String> call() throws Exception {
                     log.info( "Searcher started: " + searcher.getClass().getSimpleName() );
-                    Iterable<String> records = searcher.autocomplete( term, maxResults, null );
+                    Iterable<String> records = searcher.propose( term, maxResults );
                     
                     // use real list (not Iterables) in order to make sure
                     // this processing is done inside the thread
@@ -103,7 +101,7 @@ public class SearchDispatcher
                         String record = it.next();
                         // has the record any result anyway?
                         if (StringUtils.containsNone( term, SEPARATOR_CHARS ) 
-                                || !search( record, 1, worldCRS ).iterator().hasNext()) {
+                                || !search( record, 1 ).iterator().hasNext()) {
                             result.add( record );
                         }
                     }
@@ -128,8 +126,7 @@ public class SearchDispatcher
 
 
     @Override
-    public Iterable<JSONObject> search( final String term, final int maxResults, 
-            final CoordinateReferenceSystem worldCRS ) throws Exception {
+    public Iterable<JSONObject> search( final String term, final int maxResults ) throws Exception {
         // call searches in separate threads
         // XXX score results
         List<Future<Iterable<JSONObject>>> results = new ArrayList();
@@ -138,7 +135,7 @@ public class SearchDispatcher
                 @Override
                 public Iterable<JSONObject> call() throws Exception {
                     log.debug( "Searcher started: " + searcher.getClass().getSimpleName() );
-                    return searcher.search( term, maxResults, worldCRS );
+                    return searcher.search( term, maxResults );
                 }                
             }));
         }
@@ -155,14 +152,6 @@ public class SearchDispatcher
                 }
             }
         })), maxResults );
-    }
-
-
-    @Override
-    public void addQueryDecorator( QueryDecorator decorator ) {
-        for (FullTextIndex searcher : searchers) {
-            searcher.addQueryDecorator( decorator );
-        }
     }
 
 }

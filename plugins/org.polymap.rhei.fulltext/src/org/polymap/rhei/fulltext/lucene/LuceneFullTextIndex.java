@@ -18,9 +18,7 @@ import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
 import static java.util.Arrays.asList;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -28,10 +26,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.json.JSONObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.Term;
@@ -50,7 +46,6 @@ import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
 import org.polymap.core.runtime.recordstore.lucene.StringValueCoder;
 
 import org.polymap.rhei.fulltext.FullTextIndex;
-import org.polymap.rhei.fulltext.QueryDecorator;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
 
 /**
@@ -72,8 +67,6 @@ public class LuceneFullTextIndex
     protected LuceneRecordStore     store;
 
     private LuceneAnalyzer          analyzer;
-    
-    private List<QueryDecorator>    queryDecorators = new ArrayList();
     
 
     public LuceneFullTextIndex( File dir ) throws IOException {
@@ -101,6 +94,12 @@ public class LuceneFullTextIndex
 
 
     @Override
+    protected void finalize() throws Throwable {
+        close();
+    }
+
+
+    @Override
     public boolean isClosed() {
         return store != null;
     }
@@ -115,30 +114,10 @@ public class LuceneFullTextIndex
 
 
     @Override
-    public void addQueryDecorator( QueryDecorator decorator ) {
-        assert !queryDecorators.contains( decorator );
-        queryDecorators.add( decorator );
-    }
-
-
-    @Override
-    public Iterable<String> autocomplete( String term, int maxResults, CoordinateReferenceSystem worldCRS )
+    public Iterable<String> propose( String term, int maxResults )
             throws Exception {
-        // search for the last term in the search
-        String searchStr = term.toLowerCase();
-        @SuppressWarnings("unused")
-        String prefix = "";
-        if (StringUtils.contains( searchStr, " " )) { 
-            prefix = StringUtils.substringBeforeLast( term, " " ) + " ";
-            searchStr = StringUtils.substringAfterLast( term, " " ).toLowerCase();
-        }
-        
-//        if (searchStr.length() < 3 ) {
-//            return new String[0];
-//        }
-
         IndexSearcher searcher = store.getIndexSearcher();
-        TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALZED, searchStr ) );
+        TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALZED, term ) );
         try {
             // sort descending; accept equal keys
             TreeMap<Integer,String> result = new TreeMap( new Comparator<Integer>() {
@@ -147,17 +126,14 @@ public class LuceneFullTextIndex
                 }
             });
             // sort
-            for (int i=0; i<maxResults*3; i++) {
-                String text = terms.term().text();
+            for (int i=0; i<maxResults*3 && terms.next(); i++) {
+                String proposalTerm = terms.term().text();
                 int docFreq = terms.docFreq();
-                if (!text.startsWith( searchStr )) {
+                if (!proposalTerm.startsWith( term )) {
                     break;
                 }
-                log.info( "   Term: " + text + ", docFreq: " + docFreq );
-                result.put( docFreq, StringUtils.capitalize( text ) );
-                if (!terms.next()) {
-                    break;
-                }
+                log.info( "   Term: " + proposalTerm + ", docFreq: " + docFreq );
+                result.put( docFreq, proposalTerm );
             }
             // take first maxResults
             return limit( result.values(), maxResults );
@@ -174,13 +150,13 @@ public class LuceneFullTextIndex
 
 
     @Override
-    public Iterable<JSONObject> search( String searchStr, int maxResults, CoordinateReferenceSystem worldCRS )
+    public Iterable<JSONObject> search( String queryStr, int maxResults )
             throws Exception {
-
+        // parse query
         QueryParser parser = new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, analyzer );
         parser.setAllowLeadingWildcard( true );
         parser.setDefaultOperator( QueryParser.AND_OPERATOR );
-        Query query = parser.parse( decorateSearch( searchStr ) );
+        Query query = parser.parse( queryStr );
         log.info( "    ===> Lucene query: " + query );
 
 //        Sort asc = new Sort( new SortField( FIELD_TITLE, SortField.STRING ) );
@@ -203,14 +179,6 @@ public class LuceneFullTextIndex
                 }
             }
         });
-    }
-
-
-    protected String decorateSearch( String searchStr ) {
-        for (QueryDecorator decorator : queryDecorators) {
-            searchStr = decorator.apply( searchStr );
-        }
-        return searchStr;
     }
 
 

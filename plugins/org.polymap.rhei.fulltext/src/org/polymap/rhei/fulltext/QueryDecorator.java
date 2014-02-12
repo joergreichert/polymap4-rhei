@@ -14,14 +14,48 @@
  */
 package org.polymap.rhei.fulltext;
 
-import com.google.common.base.Function;
+import org.json.JSONObject;
 
 /**
- * 
+ * Allows to decorate/transform search queries and results.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface QueryDecorator
-        extends Function<String,String> {
+public abstract class QueryDecorator
+        implements FullTextIndex {
+
+    protected FullTextIndex         next;
+    
+    
+    public QueryDecorator( FullTextIndex next ) {
+        this.next = next;
+    }
+
+
+    public Iterable<String> propose( String query, int maxResults )
+            throws Exception {
+        return next.propose( query, maxResults );
+    }
+
+
+    public Iterable<JSONObject> search( String query, int maxResults )
+            throws Exception {
+        return next.search( query, maxResults );
+    }
+
+
+    public void close() {
+        next.close();
+    }
+
+
+    public boolean isClosed() {
+        return next.isClosed();
+    }
+
+
+    public boolean isEmpty() {
+        return next.isEmpty();
+    }
 
 }

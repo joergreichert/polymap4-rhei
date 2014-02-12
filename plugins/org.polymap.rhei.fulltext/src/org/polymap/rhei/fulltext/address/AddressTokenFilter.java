@@ -12,11 +12,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.fulltext.indexing;
+package org.polymap.rhei.fulltext.address;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
 
 /**
  * Normalizes address fields.

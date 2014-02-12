@@ -31,8 +31,8 @@ import org.apache.commons.logging.LogFactory;
 import com.google.common.collect.Iterables;
 import com.vividsolutions.jts.geom.MultiLineString;
 
-import org.polymap.rhei.fulltext.indexing.AddressFeatureTransformer;
-import org.polymap.rhei.fulltext.indexing.AddressTokenFilter;
+import org.polymap.rhei.fulltext.address.AddressFeatureTransformer;
+import org.polymap.rhei.fulltext.address.AddressTokenFilter;
 import org.polymap.rhei.fulltext.indexing.Feature2JsonTransformer;
 import org.polymap.rhei.fulltext.indexing.LowerCaseTokenFilter;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
@@ -103,15 +103,15 @@ public class FeatureTests {
 
     @Test
     public void simpleQueryTest() throws Exception {
-        Iterable<JSONObject> results = index.search( "feature", 100, null );
+        Iterable<JSONObject> results = index.search( "feature", 100 );
         log.info( "Result: " + Iterables.toString( results ) );
         Assert.assertFalse( Iterables.isEmpty( results ) );
 
-        results = index.search( "feature 100", 100, null );
+        results = index.search( "feature 100", 100 );
         log.info( "Results: " + Iterables.size( results ) );
         Assert.assertFalse( Iterables.isEmpty( results ) );
 
-        results = index.search( "feature 101", 100, null );
+        results = index.search( "feature 101", 100 );
         log.info( "Results: " + Iterables.size( results ) );
         Assert.assertTrue( Iterables.isEmpty( results ) );
     }
@@ -119,7 +119,7 @@ public class FeatureTests {
 
     @Test
     public void simpleAutocompleteTest() throws Exception {
-        Iterable<String> results = index.autocomplete( "featur", 100, null );
+        Iterable<String> results = index.propose( "featur", 100 );
         log.info( "Autocomplete: " + Iterables.toString( results ) );
         Assert.assertFalse( Iterables.isEmpty( results ) );
     }
