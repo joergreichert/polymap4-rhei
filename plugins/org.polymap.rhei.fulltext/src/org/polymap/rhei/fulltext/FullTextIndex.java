@@ -58,7 +58,7 @@ public interface FullTextIndex {
      * 
      * 
      * @param query
-     * @param maxResults
+     * @param maxResults The maximum number of results. -1 specifies that there is no limit.
      * @return JSONObjects containing the following special fields: {@link #FIELD_ID}
      *         , {@link #FIELD_TITLE}, {@value #FIELD_CATEGORIES},
      *         {@value #FIELD_GEOM} and {@link #FIELD_SRS}. These fields and the

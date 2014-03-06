@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.queryParser.QueryParser;
@@ -41,6 +42,7 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.Function;
 import org.polymap.core.runtime.recordstore.lucene.GeometryValueCoder;
+import org.polymap.core.runtime.recordstore.lucene.LuceneRecordQuery;
 import org.polymap.core.runtime.recordstore.lucene.LuceneRecordState;
 import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
 import org.polymap.core.runtime.recordstore.lucene.StringValueCoder;
@@ -116,6 +118,10 @@ public class LuceneFullTextIndex
     @Override
     public Iterable<String> propose( String term, int maxResults )
             throws Exception {
+        // no proposals for empty term
+        if (term.length() == 0) {
+            return ListUtils.EMPTY_LIST;
+        }
         IndexSearcher searcher = store.getIndexSearcher();
         TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALZED, term ) );
         try {
@@ -154,13 +160,21 @@ public class LuceneFullTextIndex
     @Override
     public Iterable<JSONObject> search( String queryStr, int maxResults )
             throws Exception {
-        // parse query
-        QueryParser parser = new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, analyzer );
+        // parse query;
+        // for queries containing ":" use no/simple analyzer as ordinary fields
+        // are not analyzed for before storing (see StringValueCoder for example) 
+        QueryParser parser = queryStr.contains( ":" )
+                ? new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, new WhitespaceAnalyzer( LUCENE_VERSION ) )
+                : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, analyzer );
+                
         parser.setAllowLeadingWildcard( true );
         parser.setDefaultOperator( QueryParser.AND_OPERATOR );
         Query query = parser.parse( queryStr );
         log.info( "    ===> Lucene query: " + query );
 
+        maxResults = maxResults == -1 || maxResults > LuceneRecordQuery.BIG_BUT_NOT_MAX_VALUE 
+                ? LuceneRecordQuery.BIG_BUT_NOT_MAX_VALUE : maxResults;
+        
 //        Sort asc = new Sort( new SortField( FIELD_TITLE, SortField.STRING ) );
         IndexSearcher searcher = store.getIndexSearcher();
         ScoreDoc[] hits = searcher.search( query, null, maxResults ).scoreDocs;

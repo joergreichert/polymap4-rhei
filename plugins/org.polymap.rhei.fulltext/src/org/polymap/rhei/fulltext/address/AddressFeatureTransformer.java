@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.fulltext.address;
 
+import static org.polymap.rhei.fulltext.address.Address.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,14 +38,6 @@ public class AddressFeatureTransformer
         implements FeatureTransformer<JSONObject,JSONObject> {
 
     private static Log log = LogFactory.getLog( AddressFeatureTransformer.class );
-
-    public static final String FIELD_STREET = "strasse";
-    public static final String FIELD_NUMBER = "nummer";
-    public static final String FIELD_NUMBER_X = "nummerx";
-    public static final String FIELD_CITY = "ort";
-    public static final String FIELD_CITY_X = "ortx";
-    public static final String FIELD_POSTALCODE = "plz";
-    public static final String FIELD_DISTRICT = "district";
 
     protected static Set<String> newSet( String... elms ) {
         return Sets.newHashSet( elms );
