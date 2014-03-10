@@ -35,6 +35,7 @@ import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
+import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
 
 /**
@@ -51,6 +52,8 @@ public class FormFieldComposite
     
     /** Identifies the editor that events belong to. */
     private Object                  editor;
+    
+    private IFormEditorPageSite     pageSite;
     
     private Property                prop;
     
@@ -71,12 +74,13 @@ public class FormFieldComposite
     
     /** Error message set by {@link #setErrorMessage(String)} */
     private String                  externalErrorMsg;
-    
 
-    public FormFieldComposite( Object editor, IFormEditorToolkit toolkit,
-            Property prop, IFormField field,
+
+    public FormFieldComposite( Object editor, IFormEditorPageSite pageSite, 
+            IFormEditorToolkit toolkit, Property prop, IFormField field,
             IFormFieldLabel labeler, IFormFieldDecorator decorator, IFormFieldValidator validator ) {
         this.editor = editor;
+        this.pageSite = pageSite;
         this.prop = prop;
         this.toolkit = toolkit;
         this.field = field;
@@ -191,6 +195,11 @@ public class FormFieldComposite
 
     // IFormFieldSite *************************************
         
+    public IFormField getField() {
+        return field;
+    }
+
+
     public String getFieldName() {
         return prop.getName().getLocalPart();
     }
@@ -248,10 +257,10 @@ public class FormFieldComposite
             }
         }
         // propagate;
-        // syncPublish() helps to avoid to much UICallbacks browser which slows
-        // down form performance
-        FormFieldEvent ev = new FormFieldEvent( editor, source, getFieldName(), field, eventCode, null, validatedNewValue );
-        EventManager.instance().syncPublish( ev );
+        pageSite.fireEvent( source, getFieldName(), eventCode, validatedNewValue );
+        
+//        FormFieldEvent ev = new FormFieldEvent( editor, source, getFieldName(), field, eventCode, null, validatedNewValue );
+//        EventManager.instance().syncPublish( ev );
     }
 
     public String getErrorMessage() {

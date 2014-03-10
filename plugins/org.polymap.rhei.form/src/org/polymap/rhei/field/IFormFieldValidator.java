@@ -26,14 +26,13 @@ package org.polymap.rhei.field;
  * {@link StringFormField} can be used or an {@link PicklistFormField}. A
  * {@link NumberValidator} can be combined with a string field in order to check
  * user input and transform the string to a float value.
- * 
+ *
+ * @see Validators
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @version ($Revision$)
  */
 public interface IFormFieldValidator {
 
     public static final Object          INVALID = new Object();
-
 
     /**
      * Check the given user provided value for validity.

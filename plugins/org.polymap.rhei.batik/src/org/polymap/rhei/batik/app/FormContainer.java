@@ -80,7 +80,7 @@ public abstract class FormContainer
 
     private boolean             enabled = true;
 
-    private IFormFieldFactory fieldFactory;
+    private IFormFieldFactory   fieldFactory;
 
 
     /**

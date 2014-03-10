@@ -108,6 +108,8 @@ public interface IFormEditorPageSite {
 
     public void setFieldValue( String fieldName, Object value );
 
+    public <T> T getFieldValue( String fieldName );
+
     public void setFieldEnabled( String fieldName, boolean enabled );
 
     /**

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.polymap.rhei.ide.feature"
-      label="Rhei Scripting IDE"
+      label="Rhei Framework"
       version="2.1.0.qualifier"
       provider-name="polymap.org">
 
    <description url="http://polymap.org/polymap3/wiki/Rhei/Start.de">
-      The Rhei scripting IDE for java.
+      Provides an Integrated Development Environment inside the Polymap3 Workbench that allows to develop domain specific application for the Rhei framework.
    </description>
 
    <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+      Copyright (C) 2009-2014  by the programmers of the Rhei Framework as tagged in the code. All rights reserved.
    </copyright>
 
    <license>

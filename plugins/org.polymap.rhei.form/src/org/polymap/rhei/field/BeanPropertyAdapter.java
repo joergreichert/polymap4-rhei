@@ -32,7 +32,7 @@ import com.google.common.base.Joiner;
 import org.polymap.rhei.form.IFormPageProvider;
 
 /**
- * Adapter between a PoJo Bean and and an OGC {@link Property}. Used by
+ * Adapter between a POJO Bean and and an OGC {@link Property}. Used by
  * {@link IFormPageProvider} instances to handle complex attributes.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>

@@ -307,7 +307,7 @@ public class FormEditorPageContainer
     }
 
     public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label ) {
-        FormFieldComposite result = new FormFieldComposite( getEditor(), getToolkit(), prop, field,
+        FormFieldComposite result = new FormFieldComposite( getEditor(), this, getToolkit(), prop, field,
                 new DefaultFormFieldLabeler( labelWidth, label ), new DefaultFormFieldDecorator(),
                 validator != null ? validator : new NullValidator() );
         fields.add( result );
@@ -324,6 +324,13 @@ public class FormEditorPageContainer
         }
         throw new RuntimeException( "No such field: " + fieldName );
     }
+
+    @Override
+    public <T> T getFieldValue( String fieldName ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
 
     public void setFieldEnabled( String fieldName, boolean enabled ) {
         for (FormFieldComposite field : fields) {

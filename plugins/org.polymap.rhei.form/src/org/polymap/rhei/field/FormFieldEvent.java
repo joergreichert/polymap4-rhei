@@ -38,7 +38,7 @@ public class FormFieldEvent
     private Object      newValue;
 
     private String      fieldName;
-    
+
 
     public FormFieldEvent( Object editor, Object source, String fieldName, IFormField field, int eventCode, Object oldValue, Object newValue ) {
         super( source );

@@ -14,9 +14,7 @@
  */
 package org.polymap.rhei.internal.form;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.opengis.feature.Property;
@@ -49,15 +47,17 @@ import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 public abstract class AbstractFormEditorPageContainer
         implements IFormEditorPageSite {
     
-    private Object                      editor;
+    private Object                          editor;
     
-    protected IFormEditorPage           page;
+    protected IFormEditorPage               page;
     
-    private List<FormFieldComposite>    fields = new ArrayList();
+    private Map<String,FormFieldComposite>  fields = new HashMap( 64 );
+    
+    private Map<String,Object>              values = new HashMap( 64 );
 
-    private volatile boolean            blockEvents;
+    private volatile boolean                blockEvents;
     
-    private int                         labelWidth = 100;
+    private int                             labelWidth = 100;
 
     
     public AbstractFormEditorPageContainer( Object editor, IFormEditorPage page, String id, String title ) {
@@ -70,7 +70,7 @@ public abstract class AbstractFormEditorPageContainer
         if (page != null && page instanceof IFormEditorPage2) {
             ((IFormEditorPage2)page).dispose();
         }
-        for (FormFieldComposite field : fields) {
+        for (FormFieldComposite field : fields.values()) {
             field.dispose();
         }
         fields.clear();
@@ -104,9 +104,21 @@ public abstract class AbstractFormEditorPageContainer
      * Called from page provider client code.
      */
     public void fireEvent( Object source, String fieldName, int eventCode, Object newValue ) {
+        if (newValue == null) {
+            values.remove( fieldName );
+        } else {
+            values.put( fieldName, newValue );
+        }
+        
         if (!blockEvents) {
-            FormFieldEvent ev = new FormFieldEvent( editor, source, fieldName, null, eventCode, null, newValue );
-            EventManager.instance().publish( ev );
+            // syncPublish() helps to avoid to much UICallbacks browser which slows
+            // down form performance
+            FormFieldEvent ev = new FormFieldEvent( editor, source, 
+                    fieldName, fields.get( fieldName ).getField(), eventCode, null, newValue );
+            EventManager.instance().syncPublish( ev );
+
+//            FormFieldEvent ev = new FormFieldEvent( editor, source, fieldName, null, eventCode, null, newValue );
+//            EventManager.instance().publish( ev );
         }
     }
     
@@ -118,7 +130,7 @@ public abstract class AbstractFormEditorPageContainer
                 return true;
             }
         }
-        for (FormFieldComposite field : fields) {
+        for (FormFieldComposite field : fields.values()) {
             if (field.isDirty()) {
                 return true;
             }
@@ -134,7 +146,7 @@ public abstract class AbstractFormEditorPageContainer
                 return false;
             }
         }
-        for (FormFieldComposite field : fields) {
+        for (FormFieldComposite field : fields.values()) {
             if (!field.isValid()) {
                 return false;
             }
@@ -147,7 +159,7 @@ public abstract class AbstractFormEditorPageContainer
     throws Exception {
         Map<Property,Object> result = new HashMap();
         
-        for (FormFieldComposite field : fields) {
+        for (FormFieldComposite field : fields.values()) {
             if (field.isDirty()) {
                 Object newValue = field.store();
                 Object old = result.put( field.getProperty(), newValue );
@@ -177,7 +189,7 @@ public abstract class AbstractFormEditorPageContainer
             // do not dispatch events while loading
             blockEvents = true;
 
-            for (FormFieldComposite field : fields) {
+            for (FormFieldComposite field : fields.values()) {
                 field.load();
             }
         }
@@ -195,35 +207,40 @@ public abstract class AbstractFormEditorPageContainer
 
 
     public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label ) {
-        FormFieldComposite result = new FormFieldComposite( editor, getToolkit(), prop, field,
+        FormFieldComposite result = new FormFieldComposite( editor, this, getToolkit(), prop, field,
                 new DefaultFormFieldLabeler( labelWidth, label ), new DefaultFormFieldDecorator(), 
                 validator != null ? validator : new NullValidator() );
-        fields.add( result );
+        fields.put( result.getFieldName(), result );
         
         return result.createComposite( parent != null ? parent : getPageBody(), SWT.NONE );
     }
 
     
     public void setFieldValue( String fieldName, Object value ) {
-        for (FormFieldComposite field : fields) {
-            if (field.getFieldName().equals( fieldName )) {
-                field.setFormFieldValue( value );
-                return;
-            }
+        FormFieldComposite field = fields.get( fieldName );
+        if (field != null) {
+            field.setFormFieldValue( value );            
         }
-        throw new RuntimeException( "No such field: " + fieldName );
+        else {
+            throw new RuntimeException( "No such field: " + fieldName );
+        }
     }
 
     
+    @Override
+    public <T> T getFieldValue( String fieldName ) {
+        return (T)values.get( fieldName );
+    }
+
+
     public void setFieldEnabled( String fieldName, boolean enabled ) {
-        for (FormFieldComposite field : fields) {
-            if (field.getFieldName().equals( fieldName )) {
-                field.setEnabled( enabled );
-                return;
-            }
+        FormFieldComposite field = fields.get( fieldName );
+        if (field != null) {
+            field.setEnabled( enabled );            
         }
-        throw new RuntimeException( "No such field: " + fieldName );
-        
+        else {
+            throw new RuntimeException( "No such field: " + fieldName );
+        }
     }
 
     

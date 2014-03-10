@@ -40,10 +40,10 @@ public class PlzValidator
     }
 
     public String doValidate( Object value ) {
-        if (value == null) {
+        String str = (String)value;
+        if (value == null || str.length() == 0) {
             return null;
         }
-        String str = (String)value;
         if (str.length() < 5 || str.length() > 5) {
             return "Geben Sie die Postleitzahl mit 5 Stellen an.";
         }
