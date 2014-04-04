@@ -25,8 +25,7 @@ import org.eclipse.core.runtime.Status;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
- * The interface an {@link IPanel} implementation can use to interact with the Batik
- * UI framework.
+ * The primary interface between an {@link IPanel} and the Batik framework.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */

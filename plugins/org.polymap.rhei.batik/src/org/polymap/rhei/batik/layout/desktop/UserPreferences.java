@@ -85,10 +85,10 @@ class UserPreferences
     public void setUsername( String username ) {
         this.username = username;
         if (usernameLnk != null) {
-            usernameLnk.setText( " [" + username + "]" );
+            usernameLnk.setText( " " + username );
             usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
             if (username.toLowerCase().contains( "admin" )) {
-                usernameLnk.setText( "[Administrator]" );
+                usernameLnk.setText( "Administrator" );
                 usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
             }
         }
@@ -124,6 +124,7 @@ class UserPreferences
             usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
             
+            // FIXME
             usernameLnk.addSelectionListener( new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent e ) {
                     appManager.getContext().openPanel( new PanelIdentifier( "azvlogin" ) );

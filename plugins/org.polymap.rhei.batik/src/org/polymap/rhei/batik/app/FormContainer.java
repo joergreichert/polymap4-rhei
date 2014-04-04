@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.app;
 
 import static org.polymap.rhei.batik.layout.desktop.DesktopToolkit.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
@@ -220,9 +221,8 @@ public abstract class FormContainer
             // Composite
             if (control instanceof Composite) {
                 control.setEnabled( enabled );
-                for (Control child : ((Composite)control).getChildren()) {
-                    deque.push( child );
-                }
+                
+                deque.addAll( Arrays.asList( ((Composite)control).getChildren() ) );                
             }
             variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
             log.debug( "      -> " + variant + " (" + control.getClass().getSimpleName() + ")" );

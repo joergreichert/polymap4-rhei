@@ -167,10 +167,10 @@ public class PanelNavigator
                 btn.setVisible( false );
             }
             else if (showText || icon == null) {
-                btn.setText( panel.getSite().getTitle() );
+                btn.setText( title );
             }
             else {
-                btn.setToolTipText( panel.getSite().getTitle() );
+                btn.setToolTipText( title );
             }
             if (icon != null) {
                 btn.setImage( icon );
