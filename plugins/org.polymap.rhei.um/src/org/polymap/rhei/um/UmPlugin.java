@@ -14,8 +14,16 @@
  */
 package org.polymap.rhei.um;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import java.net.URL;
+
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -30,6 +38,11 @@ public class UmPlugin
 	private static UmPlugin            plugin;
 	
 
+    public static UmPlugin instance() {
+        return plugin;
+    }
+
+
     public void start( BundleContext context ) throws Exception {
         super.start( context );
         plugin = this;
@@ -42,8 +55,16 @@ public class UmPlugin
     }
 
 
-    public static UmPlugin getDefault() {
-        return plugin;
+    public Image imageForName( String resName ) {
+        ImageRegistry images = getImageRegistry();
+        Image image = images.get( resName );
+        if (image == null || image.isDisposed()) {
+            URL res = getBundle().getResource( resName );
+            assert res != null : "Image resource not found: " + resName;
+            images.put( resName, ImageDescriptor.createFromURL( res ) );
+            image = images.get( resName );
+        }
+        return image;
     }
 
 }

@@ -85,7 +85,7 @@ class UserPreferences
     public void setUsername( String username ) {
         this.username = username;
         if (usernameLnk != null) {
-            usernameLnk.setText( " " + username );
+            usernameLnk.setText( username + "*" );
             usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
             if (username.toLowerCase().contains( "admin" )) {
                 usernameLnk.setText( "Administrator" );

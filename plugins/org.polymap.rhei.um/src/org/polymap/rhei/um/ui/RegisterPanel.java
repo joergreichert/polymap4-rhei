@@ -34,6 +34,7 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
+import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.ContextProperty;
 import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IAppContext;
@@ -104,6 +105,7 @@ public class RegisterPanel
     @Override
     public void createContents( Composite parent ) {
         getSite().setTitle( i18n.get( "title" ) );
+        getSite().setIcon( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
 
         // welcome section
         IPanelSection welcomeSection = tk.createPanelSection( parent, i18n.get( "sectionTitle" ) );
