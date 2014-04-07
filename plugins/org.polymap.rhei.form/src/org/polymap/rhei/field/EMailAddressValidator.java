@@ -31,7 +31,7 @@ public class EMailAddressValidator
     @Override
     public String validate( Object fieldValue ) {
         Matcher matcher = pattern.matcher( fieldValue != null ? fieldValue.toString() : "_dontMatch_" );
-        return !matcher.matches() ? "Keine gültige EMail-Adresse: " + fieldValue : null; 
+        return !matcher.matches() ? "Keine gültige E-Mail-Adresse: " + fieldValue : null; 
     }
 
     @Override

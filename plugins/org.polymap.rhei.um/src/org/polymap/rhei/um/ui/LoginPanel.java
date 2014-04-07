@@ -265,7 +265,8 @@ public class LoginPanel
                         password = ev.getNewValue();
                     }
                     if (loginBtn != null && !loginBtn.isDisposed()) {
-                        loginBtn.setEnabled( site.isDirty() && site.isValid() );
+                        // don't check dirty to allow login with stored credentials
+                        loginBtn.setEnabled( /*site.isDirty() &&*/ site.isValid() );
                     }
                 }
             });

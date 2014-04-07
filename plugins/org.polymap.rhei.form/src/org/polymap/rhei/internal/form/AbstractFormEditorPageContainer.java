@@ -187,7 +187,7 @@ public abstract class AbstractFormEditorPageContainer
 
         try {
             // do not dispatch events while loading
-            blockEvents = true;
+//            blockEvents = true;
 
             for (FormFieldComposite field : fields.values()) {
                 field.load();

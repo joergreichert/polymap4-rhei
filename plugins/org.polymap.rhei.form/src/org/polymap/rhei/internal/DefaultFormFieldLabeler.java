@@ -99,7 +99,7 @@ public class DefaultFormFieldLabeler
             ((Composite)result).setLayout( new FormLayout() );
             result.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
             label = toolkit.createLabel( (Composite)result, 
-                    labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ) );
+                    labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ), SWT.WRAP );
             label.setLayoutData( FormDataFactory.filled().top( 0, 4 ).create() );
         }
     
