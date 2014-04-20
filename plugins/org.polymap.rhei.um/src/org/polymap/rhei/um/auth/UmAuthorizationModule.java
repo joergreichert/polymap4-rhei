@@ -15,10 +15,12 @@
 package org.polymap.rhei.um.auth;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import java.security.Principal;
 import javax.security.auth.Subject;
+import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.logging.Log;
@@ -44,9 +46,16 @@ public class UmAuthorizationModule
 
     private UmLoginModule       loginModule;
 
+    
     @Override
     public void init( @SuppressWarnings("hiding") LoginModule loginModule ) {
         this.loginModule = (UmLoginModule)loginModule;
+    }
+
+
+    @Override
+    public void initialize( Subject subject, CallbackHandler callbackHandler, 
+            Map<String, ?> sharedState, Map<String, ?> options ) {
     }
 
 

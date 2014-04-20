@@ -39,6 +39,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import org.polymap.core.project.ui.util.SimpleFormData;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.FormDataFactory;
 
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.DateTimeFormField;
@@ -183,7 +184,7 @@ public abstract class DefaultFormEditorPage
         else if (field.getParent().getLayout() instanceof FormLayout) {
             // width defines the minimum width of the entire form
             // before horiz. scrollbar starts to appear
-            SimpleFormData formData = new SimpleFormData().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
+            FormDataFactory formData = new SimpleFormData().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
             if (lastLayoutElm != null) {
                 formData.top( lastLayoutElm, 3 );
             }
@@ -386,10 +387,10 @@ public abstract class DefaultFormEditorPage
             else if (!ignoreCase && typeName.contains( name )) {
                 return true;
             }
-            else if (considerNameSpace && ignoreCase && ns.toLowerCase().contains( name )) {
+            else if (considerNameSpace && ignoreCase && ns != null && ns.toLowerCase().contains( name )) {
                 return true;
             }
-            else if (considerNameSpace && !ignoreCase && ns.contains( name )) {
+            else if (considerNameSpace && !ignoreCase && ns != null && ns.contains( name )) {
                 return true;
             }
         }
