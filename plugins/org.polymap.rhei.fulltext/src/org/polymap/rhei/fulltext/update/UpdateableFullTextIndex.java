@@ -91,7 +91,7 @@ public abstract class UpdateableFullTextIndex
 
         /**
          * Close this updater and dispose all associated resources. Without
-         * {@link #apply()} this rools back any modifications.
+         * {@link #apply()} this rolls back any modifications.
          */
         public abstract void close();
         

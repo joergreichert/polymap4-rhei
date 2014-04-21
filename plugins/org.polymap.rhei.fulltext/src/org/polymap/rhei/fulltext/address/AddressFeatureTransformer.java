@@ -63,7 +63,7 @@ public class AddressFeatureTransformer
         for (String key : (Set<String>)input.keySet()) {
             boolean found = false;
             for (Entry<String,Set<String>> synonyms : mapping.entrySet()) {
-                if (synonyms.getValue().contains( key )) {
+                if (synonyms.getValue().contains( key.toLowerCase() )) {
                     result.put( synonyms.getKey(), input.get( key ) );
                     found = true;
                     break;

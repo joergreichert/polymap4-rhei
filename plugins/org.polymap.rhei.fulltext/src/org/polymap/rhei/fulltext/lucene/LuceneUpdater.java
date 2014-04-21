@@ -83,7 +83,7 @@ class LuceneUpdater
                 throw new RuntimeException( "Feature is not simple. Property: " + key + " = " + value );
             }
         }
-        record.put( LuceneFullTextIndex.FIELD_ANALZED, buf.toString() );
+        record.put( LuceneFullTextIndex.FIELD_ANALYZED, buf.toString() );
         
         updator.store( record );
     }

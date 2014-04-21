@@ -31,7 +31,7 @@ class AnalyzedStringValueCoder
         extends StringValueCoder {
 
     public boolean encode( Document doc, String key, Object value, boolean indexed ) {
-        if (key.equals( LuceneFullTextIndex.FIELD_ANALZED )) {
+        if (key.equals( LuceneFullTextIndex.FIELD_ANALYZED )) {
             Field field = (Field)doc.getFieldable( key );
             if (field != null) {
                 field.setValue( (String)value );

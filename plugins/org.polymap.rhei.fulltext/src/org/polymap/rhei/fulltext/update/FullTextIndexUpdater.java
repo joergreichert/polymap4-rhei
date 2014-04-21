@@ -30,12 +30,15 @@ import org.polymap.core.runtime.FutureJobAdapter;
 import org.polymap.core.runtime.SessionContext;
 import org.polymap.core.runtime.UIJob;
 
+import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
 
 /**
+ * Helper for {@link FullTextIndex} updates. Handles {@link FeatureTransformer
+ * feature transformation} and proper creating/closing the underlying {@link Updater}
+ * . The update runs inside a newly created {@link UIJob}.
  * 
- *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class FullTextIndexUpdater {
@@ -44,9 +47,21 @@ public abstract class FullTextIndexUpdater {
 
     private List<FeatureTransformer>    transformers = new ArrayList();
     
+    private boolean                     commitOnException = false;
+    
     
     public void addTransformer( FeatureTransformer transformer ) {
         this.transformers.add( transformer );
+    }
+    
+    
+    public FullTextIndexUpdater setCommitOnException( boolean commitOnException ) {
+        this.commitOnException = commitOnException;
+        return this;
+    }
+
+    public boolean isCommitOnException() {
+        return commitOnException;
     }
     
     
@@ -76,6 +91,12 @@ public abstract class FullTextIndexUpdater {
                             try {
                                 doUpdateIndex( updater, monitor );
                                 updater.apply();
+                            }
+                            catch (Throwable e) {
+                                if (commitOnException) {
+                                    updater.apply();
+                                }
+                                throw e;
                             }
                             finally {
                                 updater.close();

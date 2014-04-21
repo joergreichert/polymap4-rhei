@@ -64,7 +64,7 @@ public class LuceneFullTextIndex
     /** The Lucene version we are using, current 3.4 from core.libs. */
     public final static Version     LUCENE_VERSION = Version.LUCENE_34;
 
-    public final static String      FIELD_ANALZED = "_analyzed_";
+    public final static String      FIELD_ANALYZED = "_analyzed_";
     
     protected LuceneRecordStore     store;
 
@@ -123,7 +123,7 @@ public class LuceneFullTextIndex
             return ListUtils.EMPTY_LIST;
         }
         IndexSearcher searcher = store.getIndexSearcher();
-        TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALZED, term ) );
+        TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALYZED, term ) );
         try {
             // sort descending; accept equal keys
             TreeMap<Integer,String> result = new TreeMap( new Comparator<Integer>() {
@@ -164,8 +164,8 @@ public class LuceneFullTextIndex
         // for queries containing ":" use no/simple analyzer as ordinary fields
         // are not analyzed for before storing (see StringValueCoder for example) 
         QueryParser parser = queryStr.contains( ":" )
-                ? new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, new WhitespaceAnalyzer( LUCENE_VERSION ) )
-                : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALZED, analyzer );
+                ? new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, new WhitespaceAnalyzer( LUCENE_VERSION ) )
+                : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, analyzer );
                 
         parser.setAllowLeadingWildcard( true );
         parser.setDefaultOperator( QueryParser.AND_OPERATOR );
