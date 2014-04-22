@@ -14,9 +14,14 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
+import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+
 /**
+ * A Tokenizer extracts index terms (tokens) from input text. Tokenizers are used to
+ * build searchable tokens when updating an {@link UpdateableFullTextIndex} and to
+ * transform a search query in searchable tokens.
  * 
- *
+ * @see UpdateableFullTextIndex
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface FullTextTokenizer {

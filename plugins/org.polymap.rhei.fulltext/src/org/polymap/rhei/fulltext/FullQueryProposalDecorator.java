@@ -14,10 +14,15 @@
  */
 package org.polymap.rhei.fulltext;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.limit;
+import static com.google.common.collect.Iterables.transform;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
@@ -38,22 +43,38 @@ public class FullQueryProposalDecorator
     @Override
     public Iterable<String> propose( String query, int maxResults )
             throws Exception {
-        // search for the last term in the search
+        // search just for the last term in the search
         String term = query;
         String prefix = null;
         if (StringUtils.contains( query, SEP )) { 
             prefix = StringUtils.substringBeforeLast( term, SEP );
             term = StringUtils.substringAfterLast( term, SEP );
         }
-        // next
-        Iterable<String> results = next.propose( term, maxResults );
-        //
+        
+        // next;
+        // request more than maxResults proposals if prefix present, as we later
+        // filter proposals that are not correct for the given prefix
+        Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3  );
+        
+        // join prefix and proposal
         final String finalPrefix = prefix;
-        return Iterables.transform( results, new Function<String,String>() {
+        results = transform( results, new Function<String,String>() {
             public String apply( String input ) {
                 return Joiner.on( SEP ).skipNulls().join( finalPrefix, input );
             }
         });
+
+        // check if joined proposal actually finds something
+        return limit( filter( results, new Predicate<String>() {
+            public boolean apply( String input ) {
+                try {
+                    return finalPrefix == null || !Iterables.isEmpty( next.search( input, 1 ) );
+                }
+                catch (Exception e) {
+                    throw new RuntimeException( e );
+                }
+            }
+        }), maxResults );
     }
 
 }

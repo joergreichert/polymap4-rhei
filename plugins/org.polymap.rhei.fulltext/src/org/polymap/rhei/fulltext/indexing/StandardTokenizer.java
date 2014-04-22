@@ -14,10 +14,12 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
+import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
 
 /**
+ * Use whitespace and special chars (.,;:-\\/@"'()[]{}) as token delimiter.
  * 
- *
+ * @see UpdateableFullTextIndex
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class StandardTokenizer
