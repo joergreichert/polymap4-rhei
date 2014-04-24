@@ -70,7 +70,7 @@ public class PanelNavigator
     public PanelNavigator( DesktopAppManager appManager ) {
         this.appManager = appManager;
 
-        appManager.getContext().addEventHandler( this, new EventFilter<PanelChangeEvent>() {
+        appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.ACTIVATED;
             }

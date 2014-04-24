@@ -63,7 +63,7 @@ public class PanelToolbar
     public PanelToolbar( DesktopAppManager appManager ) {
         this.appManager = appManager;
 
-        appManager.getContext().addEventHandler( this, new EventFilter<PanelChangeEvent>() {
+        appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return true; //input.getType() == TYPE.ACTIVATED;
             }

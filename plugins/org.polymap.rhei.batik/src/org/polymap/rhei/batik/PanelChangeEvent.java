@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013-2014, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -51,8 +51,19 @@ public class PanelChangeEvent
         return (IPanel)super.getSource();
     }
 
+    /**
+     * Convenience helper that cast the result of {@link #getSource()} to a concrete type.
+     */
+    public <T extends IPanel> T getPanel() {
+        return (T)super.getSource();
+    }
+
     public TYPE getType() {
         return type;
     }
     
+    public String toString() {
+        return getClass().getSimpleName() + "[source=" + source.getClass().getSimpleName() + ", type=" + type + "]";
+    }
+
 }

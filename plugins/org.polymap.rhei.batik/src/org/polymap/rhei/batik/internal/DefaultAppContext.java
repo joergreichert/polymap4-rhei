@@ -134,13 +134,13 @@ public abstract class DefaultAppContext
 
 
     @Override
-    public void addEventHandler( Object handler, EventFilter<PanelChangeEvent>... filters ) {
+    public void addListener( Object handler, EventFilter<PanelChangeEvent>... filters ) {
         EventManager.instance().subscribe( handler, filters );
     }
 
 
     @Override
-    public void removeEventHandler( Object handler ) {
+    public void removeListener( Object handler ) {
         EventManager.instance().unsubscribe( handler );
     }
 

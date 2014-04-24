@@ -19,6 +19,7 @@ import com.google.common.base.Predicate;
 import org.eclipse.jface.action.IAction;
 
 import org.polymap.core.runtime.event.EventFilter;
+import org.polymap.core.runtime.event.EventManager;
 
 /**
  * An app context is shared by all {@link IPanel} instances in the same panel
@@ -67,18 +68,19 @@ public interface IAppContext {
     public Iterable<IPanel> findPanels( Predicate<IPanel> filter );
 
     /**
-     * Registers the given {@link EventHandler event handler} for event types:
+     * Registers the given {@link EventHandler annotated event handler} for event types:
      * <ul>
      * <li>{@link PanelChangeEvent}</li>
      * </ul>
+     * This delegates to the global {@link EventManager}.
      *
      * @see EventHandler
      * @see EventManager
-     * @param handler
+     * @param annotated The annotated event handler instane.
      */
-    public void addEventHandler( Object handler, EventFilter<PanelChangeEvent>... filters );
+    public void addListener( Object annotated, EventFilter<PanelChangeEvent>... filters );
 
-    public void removeEventHandler( Object handler );
+    public void removeListener( Object handler );
 
     /**
      * Propagates this context to the given object by injecting {@link ContextProperty}

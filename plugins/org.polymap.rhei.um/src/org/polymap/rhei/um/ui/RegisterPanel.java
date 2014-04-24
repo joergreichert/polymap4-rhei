@@ -77,6 +77,12 @@ public class RegisterPanel
     private PersonForm                  personForm;
 
     private User                        user;
+
+    private Composite                   panelContainer;
+
+    private IPanelSection welcomeSection;
+
+    private IPanelSection personSection;
     
 
     @Override
@@ -100,20 +106,33 @@ public class RegisterPanel
     public PanelIdentifier id() {
         return ID;
     }
+    
+    public Composite getPanelContainer() {
+        return panelContainer;
+    }
+    
+    public IPanelSection getWelcomeSection() {
+        return welcomeSection;
+    }
+    
+    public IPanelSection getPersonSection() {
+        return personSection;
+    }
 
 
     @Override
     public void createContents( Composite parent ) {
+        this.panelContainer = parent;
         getSite().setTitle( i18n.get( "title" ) );
         getSite().setIcon( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
 
         // welcome section
-        IPanelSection welcomeSection = tk.createPanelSection( parent, i18n.get( "sectionTitle" ) );
+        welcomeSection = tk.createPanelSection( parent, i18n.get( "sectionTitle" ) );
         welcomeSection.addConstraint( new PriorityConstraint( 10 ), new MinWidthConstraint( 450, 0 ) );
         tk.createFlowText( welcomeSection.getBody(), i18n.get( "welcomeText" ) );
 
         // person section
-        IPanelSection personSection = tk.createPanelSection( parent, null );
+        personSection = tk.createPanelSection( parent, null );
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 5 ).margins( 0, 0 ).create() );
 

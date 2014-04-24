@@ -93,7 +93,7 @@ public abstract class DesktopAppWindow
         panels.setLayoutData( FormDataFactory.filled().top( navi, 10 ).create() );
         panels.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-panels"  );
 
-        appManager.getContext().addEventHandler( this, new EventFilter<PanelChangeEvent>() {
+        appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return input.getType() == TYPE.ACTIVATED;
             }
