@@ -46,6 +46,7 @@ public class ContextPropertyInstance
         this.scope = scope;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Object get() {
         EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.GET ) );

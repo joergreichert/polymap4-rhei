@@ -75,7 +75,7 @@ public class UsersTableSearchField
 
     protected String                filterText;
     
-    private Cache<String,PropertyAccessor>  accessors = CacheConfig.DEFAULT.defaultElementSize( 1024 ).create();
+    private Cache<String,PropertyAccessor>  accessors = CacheConfig.DEFAULT.defaultElementSize( 1024 ).createCache();
 
     
     public UsersTableSearchField( UsersTableViewer _viewer, Composite _parent, Iterable<String> _searchPropNames ) {

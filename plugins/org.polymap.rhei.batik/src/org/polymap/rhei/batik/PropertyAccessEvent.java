@@ -26,6 +26,7 @@ public class PropertyAccessEvent
 
     /** The types of {@link PropertyAccessEvent}. */
     public enum TYPE {
+        /** @deprecated Do we really need events on get? */
         GET,
         SET
     }
