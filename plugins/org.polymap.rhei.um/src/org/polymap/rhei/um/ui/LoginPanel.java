@@ -308,6 +308,7 @@ public class LoginPanel
                 try {
                     IUndoableOperation op = new NewPasswordOperation( umuser );
                     OperationSupport.instance().execute( op, true, false );
+                    panelSite.setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "passwordSent", name ) ) );
                 }
                 catch (ExecutionException e) {
                     log.warn( "", e );
