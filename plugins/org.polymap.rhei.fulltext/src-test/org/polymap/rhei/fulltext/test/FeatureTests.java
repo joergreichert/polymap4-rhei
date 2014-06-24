@@ -119,7 +119,7 @@ public class FeatureTests {
 
     @Test
     public void simpleAutocompleteTest() throws Exception {
-        Iterable<String> results = index.propose( "featur", 100 );
+        Iterable<String> results = index.propose( "featur", 100, null );
         log.info( "Autocomplete: " + Iterables.toString( results ) );
         Assert.assertFalse( Iterables.isEmpty( results ) );
     }

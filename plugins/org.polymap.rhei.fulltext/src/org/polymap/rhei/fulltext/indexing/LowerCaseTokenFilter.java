@@ -50,8 +50,12 @@ public class LowerCaseTokenFilter
 
 
     @Override
-    public Iterable<String> propose( String query, int maxResults ) throws Exception {
-        Iterable<String> results = next.propose( query.toLowerCase(), maxResults );
+    public Iterable<String> propose( String query, int maxResults, String field ) throws Exception {
+        // XXX just the "_analyzed_" field ist analyzed by Lucene -> just
+        // this field gets lowered
+        query = field == null ? query.toLowerCase() : query;
+        
+        Iterable<String> results = next.propose( query, maxResults, field );
         
         return Iterables.transform( results, new Function<String,String>() {
             public String apply( String input ) {

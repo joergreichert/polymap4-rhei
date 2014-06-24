@@ -41,7 +41,7 @@ public class FullQueryProposalDecorator
     }
 
     @Override
-    public Iterable<String> propose( String query, int maxResults )
+    public Iterable<String> propose( String query, int maxResults, String field )
             throws Exception {
         // search just for the last term in the search
         String term = query;
@@ -54,7 +54,7 @@ public class FullQueryProposalDecorator
         // next;
         // request more than maxResults proposals if prefix present, as we later
         // filter proposals that are not correct for the given prefix
-        Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3  );
+        Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3, field );
         
         // join prefix and proposal
         final String finalPrefix = prefix;

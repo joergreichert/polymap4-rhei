@@ -29,4 +29,6 @@ public interface Address {
     public static final String FIELD_POSTALCODE = "plz";
     public static final String FIELD_DISTRICT = "district";
 
+    public static final String[] ALL_FIELDS = {FIELD_STREET, FIELD_CITY, FIELD_CITY_X, FIELD_NUMBER, FIELD_NUMBER_X, FIELD_POSTALCODE, FIELD_DISTRICT};
+
 }

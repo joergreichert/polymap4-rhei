@@ -16,6 +16,8 @@ package org.polymap.rhei.fulltext;
 
 import org.json.JSONObject;
 
+import org.polymap.rhei.fulltext.address.Address;
+
 /**
  * API of a full-text index capable of indexing/searching/storing
  * {@link JSONObject features}.
@@ -45,13 +47,16 @@ public interface FullTextIndex {
      * Returns possible completions or other meaningful proposals for the given
      * (incomplete) search query. The actual content of the result depends on the
      * configuration of the index.
-     *
+     * 
      * @param query Incomplete query string.
-     * @param maxResults
-     * @return Search queries that are possible proposals/completions for the given query.
+     * @param maxResults The maximum returned number of results.
+     * @param field The {@link Address} field to make a proposal for. Null specifies
+     *        that all field are to be searched for proposals.
+     * @return Search queries that are possible proposals/completions for the given
+     *         query.
      * @throws Exception
      */
-    public abstract Iterable<String> propose( String query, int maxResults ) throws Exception;
+    public abstract Iterable<String> propose( String query, int maxResults, String field ) throws Exception;
 
     
     /**

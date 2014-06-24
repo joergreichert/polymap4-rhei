@@ -51,7 +51,7 @@ public class SearchDispatcher
         searchers.addAll( Arrays.asList( indexes ) );
     }
 
-    
+    @Override
     public void close() {
         assert !isClosed() : "FullTextIndex is closed already.";
         for (FullTextIndex index : searchers) {
@@ -59,8 +59,8 @@ public class SearchDispatcher
         }
         searchers = null;
     }
-    
-    
+        
+    @Override
     public boolean isClosed() {
         return searchers == null;
     }
@@ -73,16 +73,15 @@ public class SearchDispatcher
         }
     }
 
-
+    @Override
     public boolean isEmpty() {
         return all( searchers, new Predicate<FullTextIndex>() {
             public boolean apply( FullTextIndex input ) { return input.isEmpty(); }
         });
     }
 
-
     @Override
-    public Iterable<String> propose( final String term, final int maxResults ) throws Exception {
+    public Iterable<String> propose( final String term, final int maxResults, final String field ) throws Exception {
         // call searches in separate threads
         // XXX score results
         List<Future<List<String>>> results = new ArrayList();
@@ -91,7 +90,7 @@ public class SearchDispatcher
                 @Override
                 public List<String> call() throws Exception {
                     log.info( "Searcher started: " + searcher.getClass().getSimpleName() );
-                    Iterable<String> records = searcher.propose( term, maxResults );
+                    Iterable<String> records = searcher.propose( term, maxResults, field );
                     
                     // use real list (not Iterables) in order to make sure
                     // this processing is done inside the thread

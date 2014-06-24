@@ -40,10 +40,10 @@ public class LogQueryDecorator
 
     
     @Override
-    public Iterable<String> propose( String query, int maxResults ) throws Exception {
+    public Iterable<String> propose( String query, int maxResults, String field ) throws Exception {
         Timer timer = new Timer();
-        log.info( "Propose: " + query );
-        Iterable<String> results = next.propose( query, maxResults );
+        log.info( "Propose: " + query + " (field=" + field + ")" );
+        Iterable<String> results = next.propose( query, maxResults, field );
         log.info( "Propose: " + FluentIterable.from( results ).size() + " (" + timer.elapsedTime() + "ms)" );
         return results;
     }

@@ -48,7 +48,7 @@ public class AddressFeatureTransformer
     static {
         mapping.put( FIELD_STREET, newSet( "street", "strasse", "straße" ) );
         mapping.put( FIELD_NUMBER, newSet( "number", "nummer", "hnr", "nr" ) );
-        mapping.put( FIELD_NUMBER_X, newSet( "number_ext", "nummer_ext", "hnr_zusatz", "nr_zusatz" ) );
+        mapping.put( FIELD_NUMBER_X, newSet( "number_ext", "nummer_ext", "hnr_zusatz", "nr_zusatz", "nummer_zusatz" ) );
         mapping.put( FIELD_CITY, newSet( "city", "stadt", "ort" ) );
         mapping.put( FIELD_CITY_X, newSet( "city_ext", "stadt_zusatz", "ort_zusatz" ) );
         mapping.put( FIELD_DISTRICT, newSet( "district", "urban_district", "ortsteil" ) );

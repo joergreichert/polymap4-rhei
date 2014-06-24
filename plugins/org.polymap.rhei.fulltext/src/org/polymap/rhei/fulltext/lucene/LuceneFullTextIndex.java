@@ -116,14 +116,15 @@ public class LuceneFullTextIndex
 
 
     @Override
-    public Iterable<String> propose( String term, int maxResults )
+    public Iterable<String> propose( String term, int maxResults, String field )
             throws Exception {
         // no proposals for empty term
         if (term.length() == 0) {
             return ListUtils.EMPTY_LIST;
         }
         IndexSearcher searcher = store.getIndexSearcher();
-        TermEnum terms = searcher.getIndexReader().terms( new Term( FIELD_ANALYZED, term ) );
+        TermEnum terms = searcher.getIndexReader().terms( 
+                new Term( field != null ? field : FIELD_ANALYZED, term ) );
         try {
             // sort descending; accept equal keys
             TreeMap<Integer,String> result = new TreeMap( new Comparator<Integer>() {

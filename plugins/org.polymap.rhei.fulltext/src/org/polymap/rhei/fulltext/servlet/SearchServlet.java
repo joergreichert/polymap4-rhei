@@ -100,7 +100,7 @@ public class SearchServlet
 	        try {
 	            JSONArray result = new JSONArray();
 
-	            for (String record : dispatcher.propose( searchStr, 7 )) {
+	            for (String record : dispatcher.propose( searchStr, 7, null )) {
 	                //result.put( StringEscapeUtils.escapeHtml( record ) );
 	                result.put( record );
 	            }
