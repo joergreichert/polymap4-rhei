@@ -14,10 +14,17 @@
  */
 package org.polymap.rhei.batik.layout.desktop;
 
+import java.util.ArrayList;
+
 import org.pegdown.FastEncoder;
 import org.pegdown.LinkRenderer;
+import org.pegdown.LinkRenderer.Rendering;
 import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.AutoLinkNode;
+import org.pegdown.ast.ExpImageNode;
 import org.pegdown.ast.ExpLinkNode;
+import org.pegdown.ast.RefLinkNode;
+import org.pegdown.ast.WikiLinkNode;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -34,7 +42,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
@@ -47,15 +54,14 @@ import org.eclipse.rwt.lifecycle.WidgetUtil;
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.Section;
 
+import org.polymap.core.runtime.Lazy;
+import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
 
-import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
 import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
-
 
 /**
  *
@@ -77,10 +83,26 @@ public class DesktopToolkit
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
     public static final String  CSS_SECTION_CLIENT = CSS_PREFIX + "-section-client";
     
-    public static final Color   COLOR_SECTION_TITLE_FG = Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) );
-    public static final Color   COLOR_SECTION_TITLE_BG = Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) );
+    public static final Lazy<Color> COLOR_SECTION_TITLE_FG = new LockedLazyInit( new Supplier<Color>() {
+        public Color get() { return Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) ); }
+    });
+    public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( new Supplier<Color>() {
+        public Color get() { return Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) ); }
+    });
 
+    private static ArrayList<MarkdownRenderer> renderers = new ArrayList();
+    
+    static {
+        registerMarkdownRenderer( new PageLinkRenderer() );
+    }
+    
+    public static void registerMarkdownRenderer( MarkdownRenderer renderer ) {
+        renderers.add( renderer );
+    }
 
+    
+    // instance *******************************************
+    
     private FormColors          colors;
     
     private DesktopAppContext   context;
@@ -104,7 +126,7 @@ public class DesktopToolkit
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
             // process markdown
-            LinkRenderer linkRenderer = new PageLinkRenderer();
+            LinkRenderer linkRenderer = new DelegatingLinkRenderer();
             String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
             result.setText( processed );
         }
@@ -117,7 +139,7 @@ public class DesktopToolkit
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
             // process markdown
-            LinkRenderer linkRenderer = new PageLinkRenderer();
+            LinkRenderer linkRenderer = new DelegatingLinkRenderer();
             String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
             result.setText( processed );
         }
@@ -128,46 +150,113 @@ public class DesktopToolkit
     /**
      * 
      */
-    protected class PageLinkRenderer
-            extends LinkRenderer {
+    protected static class PegDownRenderOutput
+            implements RenderOutput {
+
+        private String      url, text, title;
         
         @Override
-        public Rendering render( final ExpLinkNode node, String linktext ) {
-            // handle @action/page style links
-            if (node.url.startsWith( "@" )) {
-                String id = LinkActionServiceHandler.register( new LinkAction() {
-                    Display display = Polymap.getSessionDisplay();
-                    @Override
-                    public void linkPressed() throws Exception {
-                        display.asyncExec( new Runnable() {
-                            public void run() {
-                                String[] urlParts = StringUtils.split( node.url, "/" );
-                                String command = "open";
-                                String panelId = urlParts[0];
+        public void setUrl( String linkUrl ) {
+            this.url = linkUrl;
+        }
 
-                                if (urlParts.length > 1) {
-                                    command = urlParts[0].substring( 1 );
-                                    panelId = urlParts[1];
-                                }
-                                if ("open".equalsIgnoreCase( command )) {
-                                    log.info( command + " : " + panelId );
-                                    context.openPanel( PanelIdentifier.parse( panelId ) );
-                                }
-                                else {
-                                    throw new IllegalStateException( "Unknown link command: " + command );
-                                }
-                            }
-                        });
-                    }
-                });
-                
-                String linkUrl = "javascript:sendServiceHandlerRequest('" + LinkActionServiceHandler.SERVICE_HANDLER_ID + "','" + id + "');";
-                Rendering rendering = new Rendering( linkUrl, linktext );
-                return StringUtils.isEmpty( node.title ) ? rendering : rendering.withAttribute( "title", FastEncoder.encode( node.title ) );
+        @Override
+        public void setTitle( String title ) {
+            this.title = title;
+        }
+
+        @Override
+        public void setText( String text ) {
+            this.text = text;
+        }
+        
+        public Rendering createRendering() {
+            Rendering rendering = new Rendering( url, text );
+            if (!StringUtils.isEmpty( title )) {
+                rendering.withAttribute( "title", FastEncoder.encode( title ) );
             }
-            else {
-                return super.render( node, linktext );
+            return rendering;
+        }
+    }
+    
+    
+    /**
+     * Delegates link and image rendering to the
+     * {@link DesktopToolkit#registerMarkdownRenderer(IPanelToolkit.MarkdownRenderer)
+     * registered} {@link MarkdownRenderer}s.
+     */
+    protected class DelegatingLinkRenderer
+            extends LinkRenderer {
+        
+        protected Rendering render( MarkdownNode node ) {
+            for (MarkdownRenderer renderer : renderers) {
+                PegDownRenderOutput out = new PegDownRenderOutput();
+                if (renderer.render( node, out, context )) {
+                    return out.createRendering();
+                }
             }
+            return null;
+        }
+        
+        @Override
+        public Rendering render( final ExpImageNode imageNode, final String text ) {
+            Rendering result = render( new MarkdownNode() {
+                @Override
+                public MarkdownNodeType type() {
+                    return MarkdownNodeType.ExpImage;
+                }
+                @Override
+                public String url() {
+                    return imageNode.url;
+                }
+                @Override
+                public String title() {
+                    return imageNode.title;
+                }
+                @Override
+                public String text() {
+                    return text;
+                }
+            });
+            return result != null ? result : super.render( imageNode, text );
+        }
+
+        @Override
+        public Rendering render( final ExpLinkNode linkNode, final String linktext ) {
+            Rendering result = render( new MarkdownNode() {
+                @Override
+                public MarkdownNodeType type() {
+                    return MarkdownNodeType.ExpLink;
+                }
+                @Override
+                public String url() {
+                    return linkNode.url;
+                }
+                @Override
+                public String title() {
+                    return linkNode.title;
+                }
+                @Override
+                public String text() {
+                    return linktext;
+                }
+            });
+            return result != null ? result : super.render( linkNode, linktext );
+        }
+
+        @Override
+        public Rendering render( AutoLinkNode node ) {
+            return super.render( node );
+        }
+
+        @Override
+        public Rendering render( RefLinkNode node, String url, String title, String text ) {
+            return super.render( node, url, title, text );
+        }
+
+        @Override
+        public Rendering render( WikiLinkNode node ) {
+            return super.render( node );
         }
     };
 
@@ -253,8 +342,8 @@ public class DesktopToolkit
 //        FontData[] defaultFont = parent.getFont().getFontData();
 //        FontData bold = new FontData(defaultFont[0].getName(), defaultFont[0].getHeight(), SWT.BOLD);
 //        result.setFont( Graphics.getFont( bold ) );
-        result.setTitleBarForeground( COLOR_SECTION_TITLE_FG );
-        result.setTitleBarBackground( COLOR_SECTION_TITLE_BG );
+        result.setTitleBarForeground( COLOR_SECTION_TITLE_FG.get() );
+        result.setTitleBarBackground( COLOR_SECTION_TITLE_BG.get() );
         result.setTitleBarBorderColor( Graphics.getColor( new RGB( 0x80, 0x80, 0xa0 ) ) );
 
         Composite client = createComposite( result );

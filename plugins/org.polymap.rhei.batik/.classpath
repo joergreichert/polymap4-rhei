@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/parboiled-core-1.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/parboiled-java-1.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/pegdown-1.4.2.jar" sourcepath="lib/sources/pegdown-1.4.2-sources.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-analysis-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-tree-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-util-4.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/parboiled-core-1.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/parboiled-java-1.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/pegdown-1.4.1.jar" sourcepath="lib/sources/pegdown-1.4.1-sources.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>

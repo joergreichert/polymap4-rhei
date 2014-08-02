@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.ui.forms.widgets.Section;
 
+import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 
 /**
@@ -80,6 +81,55 @@ public interface IPanelToolkit {
         
         public void linkPressed() throws Exception;
         
+    }
+
+    /**
+     * Allows to render links and images and later maybe other special nodes. 
+     */
+    public static interface MarkdownRenderer {
+
+        /**
+         * @param node The Markdown node to render.
+         * @param out
+         * @return True if this renderer was able to render the given node.
+         */
+        public boolean render( MarkdownNode node, RenderOutput out, IAppContext context );
+    }
+
+    /**
+     * 
+     */
+    public static enum MarkdownNodeType {
+        ExpLink,
+        RefLink,
+        ExpImage,
+        RefImage
+    }
+    
+    /**
+     * 
+     */
+    public static interface MarkdownNode {
+        
+        public MarkdownNodeType type();
+
+        public String url();
+
+        public String title();
+        
+        public String text();
+    }
+    
+    /**
+     * 
+     */
+    public static interface RenderOutput {
+
+        public void setUrl( String linkUrl );
+
+        public void setTitle( String title );
+
+        public void setText( String text );
     }
     
     

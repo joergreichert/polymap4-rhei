@@ -34,7 +34,7 @@
 			<localRepository refid="local.repository" />
             <remoteRepository refid="central.repository" />
 
-            <dependency groupId="org.pegdown" artifactId="pegdown" version="1.4.1"/>
+            <dependency groupId="org.pegdown" artifactId="pegdown" version="1.4.2"/>
 		</artifact:dependencies>
 	</target>
 

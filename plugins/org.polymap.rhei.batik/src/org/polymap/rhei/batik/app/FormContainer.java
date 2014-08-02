@@ -234,6 +234,17 @@ public abstract class FormContainer
         pageContainer.submitEditor();
     }
     
+    /**
+     * Registers the given listener that is notified about changes of an {@link IFormField}.
+     * <p/>
+     * The listener is handled by the global {@link EventManager}. The caller has to make
+     * sure that there is a (strong) reference as long as the listener is active.
+     *
+     * @param listener
+     * @throws IllegalStateException If the given listener is registered already.
+     * @see IFormEditorPageSite#addFieldListener(IFormFieldListener)
+     * @see EventManager#subscribe(Object, org.polymap.core.runtime.event.EventFilter...)
+     */
     public void addFieldListener( IFormFieldListener l ) {
         pageContainer.addFieldListener( l );
     }
