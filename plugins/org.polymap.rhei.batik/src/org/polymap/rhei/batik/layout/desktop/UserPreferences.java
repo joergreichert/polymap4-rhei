@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -42,7 +43,6 @@ import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.app.LogoutAction;
 import org.polymap.rhei.batik.internal.Messages;
 
@@ -71,6 +71,8 @@ class UserPreferences
     
     private Set<IAction>        menuContributions = new HashSet();
 
+    private SelectionListener   usernameLnkListener;
+
     
     public UserPreferences( DesktopAppManager appManager ) {
         this.appManager = appManager;
@@ -84,9 +86,16 @@ class UserPreferences
     
     public void setUsername( String username ) {
         this.username = username;
+        
         if (usernameLnk != null) {
             usernameLnk.setText( username + "*" );
             usernameLnk.setToolTipText( i18n.get( "userTip", username ) );
+            
+            // #128: Link Benutzername entfernen? (https://polymap.org/mosaic/ticket/128)
+            // XXX allow the app to controll the username link appearance and function
+            usernameLnk.removeSelectionListener( usernameLnkListener );
+            usernameLnk.setForeground( Graphics.getColor( 0x30, 0x30, 0x30 ) );
+
             if (username.toLowerCase().contains( "admin" )) {
                 usernameLnk.setText( "Administrator" );
                 usernameLnk.setForeground( Graphics.getColor( 0xff, 0x30, 0x30 ) );
@@ -117,7 +126,7 @@ class UserPreferences
             }
         });
 
-        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
+//        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
             usernameLnk = new Button( contents, SWT.PUSH | SWT.LEFT );
             usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
             usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
@@ -125,12 +134,12 @@ class UserPreferences
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
             
             // FIXME
-            usernameLnk.addSelectionListener( new SelectionAdapter() {
+            usernameLnk.addSelectionListener( usernameLnkListener = new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent e ) {
                     appManager.getContext().openPanel( new PanelIdentifier( "azvlogin" ) );
                 }
             });
-        }
+//        }
     }
 
 
