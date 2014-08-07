@@ -183,7 +183,7 @@ public class UploadFormField
         // uploadlistener
         upload.setHandler( new IUploadHandler() {
             @Override
-            public void uploadStarted( String name, String contentType, InputStream in ) throws Exception {
+            public void uploadStarted( String name, String contentType, int contentLength, InputStream in ) throws Exception {
                 try {
                     log.debug( "Uploaded: " + name );
 
