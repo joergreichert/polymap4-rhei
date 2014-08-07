@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.um.operations;
 
+import java.text.MessageFormat;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.Email;
@@ -29,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.IMessages;
+import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -51,13 +54,33 @@ public class NewUserOperation
 
     private User            user;
 
+    private String          emailContent = i18n.get( "email" );
+    
+    private String          emailSubject = i18n.get( "emailSubject" );
+    
     
     public NewUserOperation( User user ) {
         super( i18n.get( "title" ) );
         this.user = user;
     }
 
+    public String getEmailContent() {
+        return emailContent;
+    }
     
+    public void setEmailContent( String emailContent ) {
+        this.emailContent = emailContent;
+    }
+    
+    public String getEmailSubject() {
+        return emailSubject;
+    }
+    
+    public void setEmailSubject( String emailSubject ) {
+        this.emailSubject = emailSubject;
+    }
+
+
     public User getUser() {
         return user;
     }
@@ -86,8 +109,10 @@ public class NewUserOperation
             Email email = new SimpleEmail();
             email.setCharset( "ISO-8859-1" );
             email.addTo( username )
-                    .setSubject( i18n.get( "emailSubject") )
-                    .setMsg( i18n.get( "email", header, username, password ) );
+                    .setSubject( emailSubject )
+                    .setMsg( new MessageFormat( emailContent, Polymap.getSessionLocale() )
+                            .format( new Object[] {header, username, password} ) );
+//                    .setMsg( i18n.get( "email", header, username, password ) );
             
             EmailService.instance().send( email );
 
