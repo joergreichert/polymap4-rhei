@@ -30,7 +30,6 @@ import org.json.JSONObject;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.queryParser.QueryParser;
@@ -164,8 +163,8 @@ public class LuceneFullTextIndex
         // parse query;
         // for queries containing ":" use no/simple analyzer as ordinary fields
         // are not analyzed for before storing (see StringValueCoder for example) 
-        QueryParser parser = queryStr.contains( ":" )
-                ? new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, new WhitespaceAnalyzer( LUCENE_VERSION ) )
+        QueryParser parser = isComplexQuery( queryStr )
+                ? new QueryParser( LUCENE_VERSION, FIELD_ANALYZED, new NoobAnalyzer( this ) )
                 : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, analyzer );
                 
         parser.setAllowLeadingWildcard( true );
@@ -196,6 +195,12 @@ public class LuceneFullTextIndex
                 }
             }
         });
+    }
+
+
+    public boolean isComplexQuery( String query ) {
+        // XXX ':' might occur inside a "term" 
+        return query.contains( ":" );
     }
 
 

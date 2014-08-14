@@ -102,12 +102,20 @@ public interface IFormEditorPageSite {
      *
      * @param source XXX
      * @param eventCode One of the constants in {@link IFormFieldListener}.
-     * @param newValue
+     * @param validatedNewValue
      */
-    public void fireEvent( Object source, String fieldName, int eventCode, Object newValue );
+    public void fireEvent( Object source, String fieldName, int eventCode, Object validNewValue );
 
     public void setFieldValue( String fieldName, Object value );
 
+    
+    /**
+     * Returns the validated and transformed value of the given field. This is not
+     * necessarily the value shown in the UI but the value that is send to backend on
+     * next store.
+     * 
+     * @param fieldName
+     */
     public <T> T getFieldValue( String fieldName );
 
     public void setFieldEnabled( String fieldName, boolean enabled );

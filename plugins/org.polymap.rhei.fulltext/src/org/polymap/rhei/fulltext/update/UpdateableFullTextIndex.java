@@ -28,6 +28,11 @@ import org.polymap.rhei.fulltext.indexing.StandardTokenizer;
 
 /**
  * Update SPI of a full-text index.
+ * <p>
+ * The {@link #tokenizer()} and filters are used to build the full text index. The
+ * raw content of the fields is stored in the index too but the content is not
+ * tokenized/analysed/filterd but stored as single term. The behaviour depends on the
+ * particular implementation.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */

@@ -133,9 +133,9 @@ public class FormEditorPageContainer
     /*
      * Called from page provider client code.
      */
-    public void fireEvent( Object source, String fieldName, int eventCode, Object newValue ) {
+    public void fireEvent( Object source, String fieldName, int eventCode, Object validNewValue ) {
         if (!blockEvents) {
-            FormFieldEvent ev = new FormFieldEvent( getEditor(), source, fieldName, null, eventCode, null, newValue );
+            FormFieldEvent ev = new FormFieldEvent( getEditor(), source, fieldName, null, eventCode, null, validNewValue );
             EventManager.instance().publish( ev );
         }
     }

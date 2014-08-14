@@ -103,18 +103,21 @@ public abstract class AbstractFormEditorPageContainer
     /*
      * Called from page provider client code.
      */
-    public void fireEvent( Object source, String fieldName, int eventCode, Object newValue ) {
-        if (newValue == null) {
-            values.remove( fieldName );
-        } else {
-            values.put( fieldName, newValue );
+    @Override
+    public void fireEvent( Object source, String fieldName, int eventCode, Object validNewValue ) {
+        if (eventCode == IFormFieldListener.VALUE_CHANGE) {
+            if (validNewValue == null) {
+                values.remove( fieldName );
+            } else {
+                values.put( fieldName, validNewValue );
+            }
         }
         
         if (!blockEvents) {
             // syncPublish() helps to avoid to much UICallbacks browser which slows
             // down form performance
             FormFieldEvent ev = new FormFieldEvent( editor, source, 
-                    fieldName, fields.get( fieldName ).getField(), eventCode, null, newValue );
+                    fieldName, fields.get( fieldName ).getField(), eventCode, null, validNewValue );
             EventManager.instance().syncPublish( ev );
 
 //            FormFieldEvent ev = new FormFieldEvent( editor, source, fieldName, null, eventCode, null, newValue );
@@ -216,6 +219,7 @@ public abstract class AbstractFormEditorPageContainer
     }
 
     
+    @Override
     public void setFieldValue( String fieldName, Object value ) {
         FormFieldComposite field = fields.get( fieldName );
         if (field != null) {

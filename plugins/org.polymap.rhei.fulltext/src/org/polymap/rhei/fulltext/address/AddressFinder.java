@@ -73,7 +73,7 @@ public class AddressFinder {
             Object value = search.opt( propName );
             if (value != null && ((String)value).length() > 0) {
                 query.append( query.length() > 0 ? " AND " : "" );
-                query.append( propName ).append( ":" ).append( value.toString() );
+                query.append( propName ).append( ":\"" ).append( value.toString() ).append( "\"" );
             }
         }
         try {

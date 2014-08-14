@@ -60,10 +60,12 @@ public interface FullTextIndex {
 
     
     /**
+     * Query this index.
      * 
-     * 
-     * @param query
-     * @param maxResults The maximum number of results. -1 specifies that there is no limit.
+     * @param query The query. If this {@link #isComplexQuery(String)} then no
+     *        analyser/tokenizer/filter is applied.
+     * @param maxResults The maximum number of results. -1 specifies that there is no
+     *        limit.
      * @return JSONObjects containing the following special fields: {@link #FIELD_ID}
      *         , {@link #FIELD_TITLE}, {@value #FIELD_CATEGORIES},
      *         {@value #FIELD_GEOM} and {@link #FIELD_SRS}. These fields and the
