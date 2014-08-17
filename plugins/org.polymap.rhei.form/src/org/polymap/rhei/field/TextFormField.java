@@ -39,11 +39,16 @@ public class TextFormField
         super.init( _site );
     }
     
+    @Override
     protected Control createControl( Composite parent, IFormEditorToolkit toolkit, int style ) {
         Text text = (Text)super.createControl( parent, toolkit, style | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL );
         
 //        layoutData.height = 75;
-        text.setLayoutData( FormDataFactory.filled().bottom( 100, -3 ).create() );
+        text.setLayoutData( FormDataFactory.filled()
+                // prevent cut of bottom border
+                .bottom( 100, -3 )
+                // helps the Text control to properly wrap text
+                .width( 30 ).create() );
 
 //        text.setSize( SWT.DEFAULT, minHeight );
         return text;

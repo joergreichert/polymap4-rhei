@@ -200,7 +200,7 @@ public class LuceneFullTextIndex
 
     public boolean isComplexQuery( String query ) {
         // XXX ':' might occur inside a "term" 
-        return query.contains( ":" );
+        return query != null && query.contains( ":" );
     }
 
 
