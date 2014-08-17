@@ -33,7 +33,7 @@ import com.google.common.collect.Iterables;
 public class FullQueryProposalDecorator
         extends QueryDecorator {
 
-    public final static String      SEP = " ";
+    public final static String      SEPARATOR = " ";
     
     
     public FullQueryProposalDecorator( FullTextIndex next ) {
@@ -43,38 +43,44 @@ public class FullQueryProposalDecorator
     @Override
     public Iterable<String> propose( String query, int maxResults, String field )
             throws Exception {
-        // search just for the last term in the search
-        String term = query;
-        String prefix = null;
-        if (StringUtils.contains( query, SEP )) { 
-            prefix = StringUtils.substringBeforeLast( term, SEP );
-            term = StringUtils.substringAfterLast( term, SEP );
+        // fields (other than the _analyzed_ field) are stored as single term
+        if (field != null) {
+            return next.propose( query, maxResults, field );
         }
-        
-        // next;
-        // request more than maxResults proposals if prefix present, as we later
-        // filter proposals that are not correct for the given prefix
-        Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3, field );
-        
-        // join prefix and proposal
-        final String finalPrefix = prefix;
-        results = transform( results, new Function<String,String>() {
-            public String apply( String input ) {
-                return Joiner.on( SEP ).skipNulls().join( finalPrefix, input );
+        else {
+            // search just for the last term in the search
+            String term = query;
+            String prefix = null;
+            if (StringUtils.contains( query, SEPARATOR )) { 
+                prefix = StringUtils.substringBeforeLast( term, SEPARATOR );
+                term = StringUtils.substringAfterLast( term, SEPARATOR );
             }
-        });
 
-        // check if joined proposal actually finds something
-        return limit( filter( results, new Predicate<String>() {
-            public boolean apply( String input ) {
-                try {
-                    return finalPrefix == null || !Iterables.isEmpty( next.search( input, 1 ) );
+            // next;
+            // request more than maxResults proposals if prefix present, as we later
+            // filter proposals that are not correct for the given prefix
+            Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3, field );
+
+            // join prefix and proposal
+            final String finalPrefix = prefix;
+            results = transform( results, new Function<String,String>() {
+                public String apply( String input ) {
+                    return Joiner.on( SEPARATOR ).skipNulls().join( finalPrefix, input );
                 }
-                catch (Exception e) {
-                    throw new RuntimeException( e );
+            });
+
+            // check if joined proposal actually finds something
+            return limit( filter( results, new Predicate<String>() {
+                public boolean apply( String input ) {
+                    try {
+                        return finalPrefix == null || !Iterables.isEmpty( next.search( input, 1 ) );
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException( e );
+                    }
                 }
-            }
-        }), maxResults );
+            }), maxResults );
+        }
     }
 
 }

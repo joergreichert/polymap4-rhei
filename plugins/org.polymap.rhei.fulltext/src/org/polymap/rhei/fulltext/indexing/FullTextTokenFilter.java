@@ -29,7 +29,9 @@ public interface FullTextTokenFilter
         extends Function<String,String> {
     
     /**
-     * @return The filtered token
+     * 
+     * 
+     * @return The filtered token.
      */
     @Override
     public String apply( String term );
