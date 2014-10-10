@@ -35,10 +35,16 @@ public interface IPanel {
     /** See {@link IPanelSite#LAYOUT_MARGINS_KEY}. */
     public static final String      LAYOUT_MARGINS_KEY = IPanelSite.LAYOUT_MARGINS_KEY;
 
+    
     /**
      * Initializes the panel and checks if it is valid for the given site and
      * context.
-     *
+     * <p/>
+     * This method is *not* usually called when the panel is activated. The init
+     * method might be called even if the panel is never activated and displayed
+     * actually. Register for {@link PanelChangeEvent}s to get notified when the
+     * panel is activated.
+     * 
      * @param site
      * @param context
      * @return True if the panel is valid for the given site and context.

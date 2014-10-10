@@ -16,6 +16,7 @@ Export-Package: org.polymap.rhei.fulltext,
  org.polymap.rhei.fulltext.address,
  org.polymap.rhei.fulltext.indexing,
  org.polymap.rhei.fulltext.lucene,
+ org.polymap.rhei.fulltext.model2,
  org.polymap.rhei.fulltext.servlet,
  org.polymap.rhei.fulltext.update
 Bundle-ClassPath: lib/jdom-1.0.jar,

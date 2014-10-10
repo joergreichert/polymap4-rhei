@@ -16,7 +16,6 @@
 package org.polymap.rhei.internal.forms;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -105,11 +104,9 @@ public class StandardPageProvider
                 FeatureType schema = feature.getType();
                 for (PropertyDescriptor prop : schema.getDescriptors()) {
                     
-                    String propName = prop.getName().getLocalPart();
                     Class binding = prop.getType().getBinding();
 
-                    Collection<Property> values = feature.getProperties( prop.getName() );
-                    for (Property value : values) {
+                    for (Property value : feature.getProperties( prop.getName() )) {
                         IFormField formField = null;
                         IFormFieldValidator validator = null;
                         

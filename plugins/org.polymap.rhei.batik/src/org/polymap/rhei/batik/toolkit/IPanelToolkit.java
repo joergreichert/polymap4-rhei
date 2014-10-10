@@ -173,4 +173,6 @@ public interface IPanelToolkit {
 
     public List createList( Composite parent, int... styles );
 
+    public IBusyIndicator busyIndicator( Composite parent );
+
 }

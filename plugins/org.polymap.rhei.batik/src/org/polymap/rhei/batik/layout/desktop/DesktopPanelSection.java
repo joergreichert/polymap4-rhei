@@ -74,6 +74,7 @@ class DesktopPanelSection
         sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_SEPARATOR );
         FormDataFactory.filled().top( this.title ).bottom( -1 ).applyTo( sep );
         sep.setVisible( false );
+        sep.moveBelow( title );
 
         // client
         client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.stylebits( styles ) ) );
@@ -83,6 +84,7 @@ class DesktopPanelSection
 //        ColumnLayout clientLayout = ColumnLayoutFactory.defaults().columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 
         ConstraintLayout clientLayout = new ConstraintLayout( 0, 0, 10 );
         client.setLayout( clientLayout );
+        client.moveBelow( title );
         
         level = getParentPanel() != null ? getParentPanel().getLevel()+1 : 0;
     }
@@ -148,12 +150,14 @@ class DesktopPanelSection
     }
 
     @Override
-    public IPanelSection setTitle( String title ) {
-        if (title != null) {
-            this.title.setText( title );
+    public IPanelSection setTitle( String txt ) {
+        if (txt != null) {
+            title.setText( txt );
         }
-        this.title.setVisible( title != null );
-        this.sep.setVisible( title != null );
+        title.setVisible( txt != null );
+        if (sep != null) {
+            sep.setVisible( txt != null );
+        }
         return this;
     }
 

@@ -18,11 +18,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
@@ -61,6 +66,8 @@ public abstract class DefaultAppContext
     
     /** The property suppliers. */
     private List<ScopedPropertyValue>       properties = new ArrayList();
+    
+    protected ReadWriteLock                 propertiesLock = new ReentrantReadWriteLock();
 
     /** The panel hierarchy. */
     private Map<PanelPath,IPanel>           panels = new HashMap();
@@ -145,32 +152,65 @@ public abstract class DefaultAppContext
     }
 
 
-    public Object getPropertyValue( ContextProperty prop ) {
-        ScopedPropertyValue result = findPropertyValue( prop );
-        return result != null ? result.value : null;
+    public <T> T getPropertyValue( ContextProperty<T> prop ) {
+        try {
+            propertiesLock.readLock().lock();
+            
+            ScopedPropertyValue result = findPropertyValue( prop );
+            return result != null ? (T)result.value : null;
+        }
+        finally {
+            propertiesLock.readLock().unlock();
+        }
     }
     
 
-    public Object setPropertyValue( ContextProperty prop, Object value ) {
-        ScopedPropertyValue found = findPropertyValue( prop );
-        if (value == null) {
-            if (found != null) {
-                properties.remove( found );
-                return found.value;
+    public <T> T setPropertyValue( ContextProperty<T> prop, T value ) {
+        try {
+            propertiesLock.writeLock().lock();
+
+            ScopedPropertyValue found = findPropertyValue( prop );
+            if (value == null) {
+                if (found != null) {
+                    properties.remove( found );
+                    return (T)found.value;
+                }
+                return null;
             }
-            return null;
+            else if (found != null) {
+                Object result = found.value;
+                found.value = value;
+                return (T)result;
+            }
+            else {
+                properties.add( new ScopedPropertyValue( value, prop.getScope() ) );
+                return null;
+            }
         }
-        else if (found != null) {
-            Object result = found.value;
-            found.value = value;
-            return result;
-        }
-        else {
-            properties.add( new ScopedPropertyValue( value, prop.getScope() ) );
-            return null;
+        finally {
+            propertiesLock.writeLock().unlock();
         }
     }
 
+    
+    public <T> boolean compareAndSetPropertyValue( ContextProperty<T> prop, T expect, T update ) {
+        try {
+            propertiesLock.writeLock().lock();
+         
+            T value = getPropertyValue( prop );
+            if (Objects.equals( value, expect )) {
+                setPropertyValue( prop, update );
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        finally {
+            propertiesLock.writeLock().unlock();
+        }        
+    }
+    
     
     protected ScopedPropertyValue findPropertyValue( ContextProperty prop ) {
         ScopedPropertyValue result = null;

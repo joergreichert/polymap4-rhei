@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2013-2014, Polymap GmbH. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -15,9 +15,11 @@
 package org.polymap.rhei.batik.internal;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Predicates;
 
+import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
@@ -30,8 +32,8 @@ import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class ContextPropertyInstance
-        implements ContextProperty {
+public class ContextPropertyInstance<T>
+        implements ContextProperty<T> {
 
     private DefaultAppContext       context;
     
@@ -46,29 +48,64 @@ public class ContextPropertyInstance
         this.scope = scope;
     }
 
-    @SuppressWarnings("deprecation")
+    
+//    @SuppressWarnings("deprecation")
     @Override
-    public Object get() {
-        EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.GET ) );
-        return context.getPropertyValue( this );
+    public T get() {
+        T result = context.getPropertyValue( this );
+        //EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.GET ) );
+        return result;
     }
 
+    
     @Override
-    public Object set( Object value ) {
-        EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.SET ) );
-        return context.setPropertyValue( this, value );
+    public T getOrWait( int timeout, TimeUnit unit ) {
+        // static reference that is not changed by concurrent thread
+        T result = null;
+        Timer timer = new Timer();
+        while ((result = get()) == null && timer.elapsedTime() < unit.toMillis( timeout )) {
+            synchronized (this) {
+                // XXX notify
+                try { wait( 100 ); } catch (InterruptedException e) {}
+            }
+        }
+        return result;
     }
+
+    
+    @Override
+    public T set( T value ) {
+        T result = context.setPropertyValue( this, value );
+        EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.SET ) );
+        return result;
+    }
+
+    
+    @Override
+    public boolean compareAndSet( T expect, T update ) {
+        boolean updated = context.compareAndSetPropertyValue( this, expect, update );
+        if (updated) {
+            EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.SET ) );
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
     @Override
     public Class getDeclaredType() {
         return declaredType;
     }
 
+    
     @Override
     public String getScope() {
         return scope;
     }
 
+    
     @Override
     public void addListener( Object annotated, final EventFilter... filters ) {
         EventManager.instance().subscribe( annotated, new EventFilter<PropertyAccessEvent>() {

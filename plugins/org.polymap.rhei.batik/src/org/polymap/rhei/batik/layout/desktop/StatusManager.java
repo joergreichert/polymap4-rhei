@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013-2014, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -15,7 +15,10 @@
 package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +29,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
@@ -41,8 +45,12 @@ import org.eclipse.jface.action.IStatusLineManager;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.ProgressProvider;
 
+import org.polymap.core.runtime.UIJob;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
@@ -52,6 +60,7 @@ import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
+import org.polymap.rhei.batik.app.BatikApplication;
 
 /**
  * 
@@ -63,6 +72,39 @@ public class StatusManager
         implements IStatusLineManager {
 
     private static Log log = LogFactory.getLog( StatusManager.class );
+    
+    private static Map<Display,StatusManager>  managers = Collections.synchronizedMap( new WeakHashMap() );
+    
+    static {
+        Job.getJobManager().setProgressProvider( new ProgressProvider() {
+            @Override
+            public IProgressMonitor createMonitor( Job job ) {
+                if (job instanceof UIJob) {
+                    Display display = ((UIJob)job).getDisplay();
+                    StatusManager manager = managers.get( display );
+                    return manager.getProgressMonitor();
+                }
+                else {
+                    return new NullProgressMonitor() {
+                        @Override
+                        public void beginTask( String name, int totalWork ) {
+                            log.info( "TASK: " + name + "..." );
+                        }
+                        @Override
+                        public void subTask( String name ) {
+                            log.info( "SUB TASK: " + name + "..." );
+                        }
+                        @Override
+                        public void worked( int work ) {
+                            System.out.print( "." );
+                        }
+                    };
+                }
+            }
+        });
+    }
+    
+    // instance *******************************************
     
     private DesktopAppManager       appManager;
 
@@ -93,6 +135,8 @@ public class StatusManager
     public StatusManager( DesktopAppManager appManager ) {
         this.appManager = appManager;
 
+        managers.put( BatikApplication.sessionDisplay(), this );
+        
         appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.STATUS;
@@ -100,12 +144,25 @@ public class StatusManager
         });
     }
 
+    
     // IStatusLineManager *********************************
     
     @Override
     public IProgressMonitor getProgressMonitor() {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+        return new NullProgressMonitor() {
+            @Override
+            public void beginTask( String name, int totalWork ) {
+                log.info( "TASK: " + name + "..." );
+            }
+            @Override
+            public void subTask( String name ) {
+                log.info( "SUB TASK: " + name + "..." );
+            }
+            @Override
+            public void worked( int work ) {
+                System.out.print( "." );
+            }
+        };
     }
 
     @Override

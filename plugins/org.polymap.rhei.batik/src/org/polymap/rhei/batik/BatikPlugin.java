@@ -1,3 +1,17 @@
+/* 
+ * polymap.org
+ * Copyright (C) 2013-2014, Polymap GmbH. All rights reserved.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3.0 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
 package org.polymap.rhei.batik;
 
 import java.net.URL;
@@ -25,6 +39,8 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class BatikPlugin extends AbstractUIPlugin {
 
@@ -41,18 +57,19 @@ public class BatikPlugin extends AbstractUIPlugin {
         return plugin;
     }
 
+    
     // instance *******************************************
 
     private ServiceTracker              httpServiceTracker;
 
-    public BatikPlugin() {
-    }
     
     @Override
     public void start( BundleContext context ) throws Exception {
         super.start( context );
         plugin = this;
 
+        // StatusManager of the desktop layout registers itself as ProgressProvider
+        
         // status
         StatusManager.getManager().addListener( new INotificationListener() {
             public void statusManagerNotified( int type, StatusAdapter[] adapters ) {

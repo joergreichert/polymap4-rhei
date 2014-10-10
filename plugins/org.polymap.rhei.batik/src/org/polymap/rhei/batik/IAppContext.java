@@ -82,12 +82,13 @@ public interface IAppContext {
 
     public void removeListener( Object handler );
 
+    
     /**
-     * Propagates this context to the given object by injecting {@link ContextProperty}
-     * instances.
-     *
+     * Propagates this context by injecting {@link ContextProperty} instances into
+     * the given target instance.
+     * 
      * @param panel
      */
-    public <T> T propagate( T panel );
+    public <T> T propagate( T target );
     
 }

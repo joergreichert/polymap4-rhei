@@ -33,14 +33,25 @@ public class Panels {
     }
 
     /**
-     *
-     */
-    public static final Predicate<IPanel> withPrefix( final PanelPath prefix ) {
-        return new Predicate<IPanel>() {
-            public boolean apply( IPanel input ) {
-                return prefix.isPrefixOf( input.getSite().getPath() );
-            }
-        };
-    }
+    *
+    */
+   public static final Predicate<IPanel> withPrefix( final PanelPath prefix ) {
+       return new Predicate<IPanel>() {
+           public boolean apply( IPanel input ) {
+               return prefix.isPrefixOf( input.getSite().getPath() );
+           }
+       };
+   }
+
+   /**
+    *
+    */
+   public static final Predicate<IPanel> is( final PanelPath path ) {
+       return new Predicate<IPanel>() {
+           public boolean apply( IPanel input ) {
+               return path.equals( input.getSite().getPath() );
+           }
+       };
+   }
 
 }

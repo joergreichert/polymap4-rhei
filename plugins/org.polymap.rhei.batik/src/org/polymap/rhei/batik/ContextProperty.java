@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2013-2014, Polymap GmbH. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -14,15 +14,20 @@
  */
 package org.polymap.rhei.batik;
 
+import java.util.concurrent.TimeUnit;
+
 import org.polymap.core.runtime.event.EventFilter;
 
 /**
- * This interface allows to access an {@link IAppContext} property. Instances are
- * automatically injected into objects of type {@link IPanel} when initialized.
+ * This interface allows to access an {@link IAppContext} property. Instances of
+ * {@link IPanel} are automatically injected with context properties instances.
+ * Client code can do this for other objects using
+ * {@link IAppContext#propagate(Object)}.
  * <p/>
+ * The value of a context property is shared by all instances within the same scope!
  * By default the <b>scope</b> of the property is the <b>package</b> of the
- * {@link IPanel} class. The {@link Context} annotation can be used to explicitly set
- * the scope.
+ * {@link IPanel} class. The {@link Context} annotation can be used to set/change the
+ * scope.
  * 
  * @see Context
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
@@ -31,7 +36,21 @@ public interface ContextProperty<T> {
 
     public T get();
     
+    public T getOrWait( int time, TimeUnit unit );
+    
     public T set( T value );
+    
+    
+    /**
+     * Atomically sets the value to the given updated value if the current value
+     * {@link Object#equals(Object)} the expected value.
+     * 
+     * @param expect the expected value
+     * @param update the new value
+     * @return true if successful. False return indicates that the actual value was
+     *         not equal to the expected value.
+     */
+    public boolean compareAndSet( T expect , T update );
     
     public Class<T> getDeclaredType();
     

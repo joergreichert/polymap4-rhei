@@ -59,6 +59,7 @@ import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
+import org.polymap.rhei.batik.toolkit.IBusyIndicator;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -379,6 +380,12 @@ public class DesktopToolkit
     public List createList( Composite parent, int... styles ) {
         List result = adapt( new List( parent, stylebits( styles ) ), false, false );
         return result;
+    }
+
+    
+    @Override
+    public IBusyIndicator busyIndicator( Composite parent ) {
+        return new BusyIndicator( parent );
     }
 
     

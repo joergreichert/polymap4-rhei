@@ -37,7 +37,6 @@ import org.eclipse.jface.action.Action;
 
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.core.project.ui.util.SimpleFormData;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.FormDataFactory;
 
@@ -157,14 +156,14 @@ public abstract class DefaultFormEditorPage
         section.setClient( client );
         
         if (relative == null) {
-            section.setLayoutData( new SimpleFormData( SECTION_SPACING )
+            section.setLayoutData( new FormDataFactory( SECTION_SPACING )
                     .left( 0 ).right( 100 ).top( 0, 0 ).create() );
         }
         else if (rightOf) {
             FormData data = (FormData)relative.getLayoutData();
             data.right = new FormAttachment( section );
             
-            section.setLayoutData( new SimpleFormData( SECTION_SPACING )
+            section.setLayoutData( new FormDataFactory( SECTION_SPACING )
                     .left( 50 ).right( 100 ).top( 0, 0 ).create() );
         }
         return section;
@@ -184,7 +183,7 @@ public abstract class DefaultFormEditorPage
         else if (field.getParent().getLayout() instanceof FormLayout) {
             // width defines the minimum width of the entire form
             // before horiz. scrollbar starts to appear
-            FormDataFactory formData = new SimpleFormData().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
+            FormDataFactory formData = new FormDataFactory().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
             if (lastLayoutElm != null) {
                 formData.top( lastLayoutElm, 3 );
             }

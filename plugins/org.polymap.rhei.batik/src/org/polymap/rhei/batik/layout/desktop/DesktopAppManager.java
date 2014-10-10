@@ -183,6 +183,10 @@ public class DesktopAppManager
                 PanelPath path = prefix.append( panel.id() );
                 boolean wantsToBeShown = panel.init( new DesktopPanelSite( path ), context );
                 
+                if (panel.getSite() == null) {
+                    throw new IllegalStateException( "Panel must not return null for getSite(). (Did you call super.init()?)");
+                }
+                
                 if (panel.id().equals( panelId ) || wantsToBeShown) {
                     EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.INITIALIZED ) );
                     return true;

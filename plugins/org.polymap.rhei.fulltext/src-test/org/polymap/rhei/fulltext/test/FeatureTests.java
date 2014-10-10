@@ -55,7 +55,7 @@ public class FeatureTests {
     
     static {
         System.setProperty( "org.apache.commons.logging.simplelog.defaultlog", "debug" );
-        System.setProperty( "org.apache.commons.logging.simplelog.log.org.polymap.core.runtime.recordstore", "debug" );
+        System.setProperty( "org.apache.commons.logging.simplelog.log.org.polymap.core.runtime.recordstore", "trace" );
     }
 
     

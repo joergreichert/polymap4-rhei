@@ -101,6 +101,15 @@ class MinOverallHeightGoal
                 log.debug( "        score=" + preferredWidth + ">" + columnWidth + " - " + solution );
                 return IScore.INVALID;
             }
+            // avoid columns to wide for MaxWidthConstraint
+            int columnMaxWidth = Integer.MAX_VALUE;
+            for (LayoutElement elm : column) {
+                MaxWidthConstraint maxWidth = elm.constraint( MaxWidthConstraint.class, new MaxWidthConstraint( Integer.MAX_VALUE, -1 ) );
+                columnMaxWidth = Math.min( maxWidth.getValue(), columnMaxWidth );
+            }
+            if (columnWidth > columnMaxWidth /*&& solution.columns.size() > 1*/) {
+                return IScore.INVALID;                
+            }
 
             assert column.height >= 0;
             maxColumnHeight = Math.max( column.height, maxColumnHeight );

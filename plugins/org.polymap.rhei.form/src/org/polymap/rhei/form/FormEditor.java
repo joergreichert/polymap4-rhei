@@ -1,7 +1,6 @@
 /*
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright (C) 2010-2014, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,8 +11,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.form;
 
@@ -100,11 +97,14 @@ public class FormEditor
 
 
     /**
-     *
+     * 
      * @param fs
      * @param feature
-     * @param layer Hint this editor about the layer of the edited feature. Might be null.
-     * @param activate XXX
+     * @param layer Hint this editor about the layer of the edited feature. Might be
+     *        null.
+     * @param activate Call
+     *        {@link IWorkbenchPage#activate(org.eclipse.ui.IWorkbenchPart)} if a
+     *        corresponding editor is already open.
      * @return The editor of the given feature, or null.
      */
     public static FormEditor open( FeatureStore fs, Feature feature, ILayer layer, boolean activate ) {
@@ -121,7 +121,6 @@ public class FormEditor
                     log.debug( "        editor: feature= " + ((FormEditorInput)cursor).getFeature().getIdentifier().getID() );
                 }
                 if (cursor.equals( input )) {
-                    Object previous = page.getActiveEditor();
                     if (activate) {
                         page.activate( reference.getPart( true ) );
                     }
