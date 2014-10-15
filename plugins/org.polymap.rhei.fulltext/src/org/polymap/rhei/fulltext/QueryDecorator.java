@@ -17,8 +17,10 @@ package org.polymap.rhei.fulltext;
 import org.json.JSONObject;
 
 /**
- * Allows to decorate/transform search/proposal queries and results.
- *
+ * Allows to decorate/transform search/proposal queries and results. Query decorators
+ * can be applied to existing {@link FullTextIndex} instances on demand when it is
+ * needed.
+ * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class QueryDecorator

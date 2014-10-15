@@ -25,6 +25,8 @@ import org.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 import org.polymap.core.model2.Entity;
@@ -51,17 +53,89 @@ public class FulltextIndexer
 
     private static Log log = LogFactory.getLog( FulltextIndexer.class );
     
+    /** Alwasy true: allow all Entity types to be indexed. */
+    public static final Predicate<Entity>   ALL = Predicates.alwaysTrue();
+    
+    
+    /**
+     * An {@link FulltextIndexer#setEntityFilter(Predicate) Entity filter} that filters
+     * entities via a given list of class names. 
+     */
+    public static class NameFilter
+            implements Predicate<Entity> {
+        
+        private String[]        classNames;
+
+        public NameFilter( String... classNames ) {
+            assert classNames != null && classNames.length > 0;
+            this.classNames = classNames;
+        }
+
+        @Override
+        public boolean apply( Entity input ) {
+            for (String className : classNames) {
+                if (input.getClass().getName().endsWith( className )) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    
+    /**
+     * An {@link FulltextIndexer#setEntityFilter(Predicate) Entity filter} that filters
+     * entities via a given list of class names. 
+     */
+    public static class TypeFilter
+            implements Predicate<Entity> {
+        
+        private Class<? extends Entity>[]   types;
+
+        public TypeFilter( Class<? extends Entity>... types ) {
+            assert types != null && types.length > 0;
+            this.types = types;
+        }
+
+        @Override
+        public boolean apply( Entity input ) {
+            for (Class<? extends Entity> type : types) {
+                if (type.equals( input.getClass() )) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    
+    // instance *******************************************
+    
     private UpdateableFullTextIndex             index;
     
-    private List<? extends FeatureTransformer>  transformers = Lists.newArrayList( new EntityFeatureTransformer(), new ToStringTransformer() ); 
+    private List<? extends FeatureTransformer>  transformers = Lists.newArrayList( new EntityFeatureTransformer(), new ToStringTransformer() );
+    
+    private Predicate<Entity>                   entityFilter;
     
     
     public FulltextIndexer( UpdateableFullTextIndex index, StoreSPI store ) {
-        super( store );
-        this.index = index;
+        this( index, ALL, store );
     }
 
+    
+    public FulltextIndexer( UpdateableFullTextIndex index, Predicate<Entity> entityFilter, StoreSPI store ) {
+        super( store );
+        this.index = index;
+        setEntityFilter( entityFilter );
+    }
 
+    
+    public FulltextIndexer setEntityFilter( Predicate<Entity> filter ) {
+        this.entityFilter = filter;
+        return this;
+    }
+
+    
     @Override
     public StoreUnitOfWork createUnitOfWork() {
         StoreUnitOfWork suow = store.createUnitOfWork();
@@ -101,14 +175,16 @@ public class FulltextIndexer
             // update fulltext index
             updater = index.prepareUpdate();
             for (Entity entity : loaded) {
-                if (entity.status() == CREATED) {
-                    updater.store( transform( entity ), false );
-                }
-                else if (entity.status() == MODIFIED) {
-                    updater.store( transform( entity ), true );
-                }
-                else if (entity.status() == REMOVED) {
-                    updater.remove( entity.id().toString() );
+                if (entityFilter.apply( entity )) {
+                    if (entity.status() == CREATED) {
+                        updater.store( transform( entity ), false );
+                    }
+                    else if (entity.status() == MODIFIED) {
+                        updater.store( transform( entity ), true );
+                    }
+                    else if (entity.status() == REMOVED) {
+                        updater.remove( entity.id().toString() );
+                    }
                 }
             }
             // call delegate

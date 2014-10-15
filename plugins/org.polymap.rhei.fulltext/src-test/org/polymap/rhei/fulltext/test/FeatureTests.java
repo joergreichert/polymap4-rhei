@@ -36,7 +36,7 @@ import org.polymap.rhei.fulltext.address.AddressTokenFilter;
 import org.polymap.rhei.fulltext.indexing.Feature2JsonTransformer;
 import org.polymap.rhei.fulltext.indexing.LowerCaseTokenFilter;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
-import org.polymap.rhei.fulltext.lucene.LuceneFullTextIndex;
+import org.polymap.rhei.fulltext.store.lucene.LuceneFullTextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
 

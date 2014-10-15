@@ -36,8 +36,8 @@ import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
 
 import org.polymap.rhei.fulltext.address.AddressTokenFilter;
 import org.polymap.rhei.fulltext.indexing.LowerCaseTokenFilter;
-import org.polymap.rhei.fulltext.lucene.LuceneFullTextIndex;
 import org.polymap.rhei.fulltext.model2.FulltextIndexer;
+import org.polymap.rhei.fulltext.store.lucene.LuceneFullTextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
 
 /**

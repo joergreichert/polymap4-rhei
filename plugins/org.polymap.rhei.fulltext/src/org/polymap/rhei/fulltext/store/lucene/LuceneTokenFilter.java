@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.fulltext.lucene;
+package org.polymap.rhei.fulltext.store.lucene;
 
 import java.io.IOException;
 

@@ -17,6 +17,8 @@ package org.polymap.rhei.fulltext;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
+import static org.apache.commons.lang.StringUtils.substringAfterLast;
+import static org.apache.commons.lang.StringUtils.substringBeforeLast;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -26,8 +28,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 /**
+ * Allows for proposals for query strings consisting of multiple terms. For example:
+ * "Renate Bies" is transformed into proposal request "Bies", the results are joined
+ * with the prefix and checked to see if the proposal actually finds something.
  * 
- *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class FullQueryProposalDecorator
@@ -48,38 +52,39 @@ public class FullQueryProposalDecorator
             return next.propose( query, maxResults, field );
         }
         else {
-            // search just for the last term in the search
-            String term = query;
-            String prefix = null;
-            if (StringUtils.contains( query, SEPARATOR )) { 
-                prefix = StringUtils.substringBeforeLast( term, SEPARATOR );
-                term = StringUtils.substringAfterLast( term, SEPARATOR );
+            String prefix = substringBeforeLast( query, SEPARATOR );
+            String term = substringAfterLast( query, SEPARATOR );
+
+            // no separator found -> just pass through 
+            if (StringUtils.isEmpty( term )) { 
+                return next.propose( query, maxResults, field );
             }
+            // search just for the last term in the search
+            else {
+                // request more than maxResults proposals if prefix present, as we later
+                // filter proposals that are not correct for the given prefix
+                Iterable<String> results = next.propose( term, maxResults*3, field );
 
-            // next;
-            // request more than maxResults proposals if prefix present, as we later
-            // filter proposals that are not correct for the given prefix
-            Iterable<String> results = next.propose( term, prefix == null ? maxResults : maxResults*3, field );
-
-            // join prefix and proposal
-            final String finalPrefix = prefix;
-            results = transform( results, new Function<String,String>() {
-                public String apply( String input ) {
-                    return Joiner.on( SEPARATOR ).skipNulls().join( finalPrefix, input );
-                }
-            });
-
-            // check if joined proposal actually finds something
-            return limit( filter( results, new Predicate<String>() {
-                public boolean apply( String input ) {
-                    try {
-                        return finalPrefix == null || !Iterables.isEmpty( next.search( input, 1 ) );
+                // join prefix and proposal
+                final String finalPrefix = prefix;
+                results = transform( results, new Function<String,String>() {
+                    public String apply( String input ) {
+                        return Joiner.on( SEPARATOR ).skipNulls().join( finalPrefix, input );
                     }
-                    catch (Exception e) {
-                        throw new RuntimeException( e );
+                });
+
+                // check if joined proposal actually finds something
+                return limit( filter( results, new Predicate<String>() {
+                    public boolean apply( String input ) {
+                        try {
+                            return !Iterables.isEmpty( next.search( input, 1 ) );
+                        }
+                        catch (Exception e) {
+                            throw new RuntimeException( e );
+                        }
                     }
-                }
-            }), maxResults );
+                }), maxResults );
+            }
         }
     }
 

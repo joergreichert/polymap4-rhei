@@ -18,6 +18,8 @@ import org.osgi.framework.BundleContext;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import org.polymap.core.workbench.PolymapWorkbench;
+
 /**
  * 
  *
@@ -35,18 +37,48 @@ public class FullTextPlugin
     	return instance;
     }
 
-
+	
 	// instance *******************************************
 
+    private ErrorHandler                errorHandler;
+
+    
     public void start( final BundleContext context ) throws Exception {
         super.start( context );
         instance = this;
+
+        errorHandler = new ErrorHandler() {
+            @Override
+            public void handleError( String msg, Throwable e ) {
+                PolymapWorkbench.handleError( FullTextPlugin.PLUGIN_ID, FullTextPlugin.this, msg, e );
+            }
+        };
     }
 	
 
     public void stop( BundleContext context ) throws Exception {
+        errorHandler = null;
         instance = null;
         super.stop( context );
     }
 
+
+    public void handleError( final String msg, Throwable e ) {
+        errorHandler.handleError( msg, e );        
+    }
+
+    
+    public void setErrorHandler( ErrorHandler errorHandler ) {
+        this.errorHandler = errorHandler;    
+    }
+
+    
+    // ErrorHandler ***************************************
+    
+    public interface ErrorHandler {
+    
+        public void handleError( final String msg, Throwable e );
+
+    }
+    
 }

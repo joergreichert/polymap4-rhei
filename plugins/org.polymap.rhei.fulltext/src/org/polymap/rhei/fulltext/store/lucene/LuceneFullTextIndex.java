@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.fulltext.lucene;
+package org.polymap.rhei.fulltext.store.lucene;
 
 import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
