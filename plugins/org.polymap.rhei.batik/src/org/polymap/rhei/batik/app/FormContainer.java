@@ -476,7 +476,7 @@ public abstract class FormContainer
                     field = new DateTimeFormField();
                 }
                 // Boolean
-                else if (Date.class.isAssignableFrom( binding )) {
+                else if (Boolean.class.isAssignableFrom( binding )) {
                     field = new CheckboxFormField();
                 }
                 // default: String

@@ -57,7 +57,17 @@ class EntityFeatureTransformer
                 if (info.getType() == String.class || info.getType() == Date.class) {
                     // the hierarchy of propeties may contain properties with same simple name
                     String key = prop.getInfo().getName() + "-" + propCount++;
-                    result.put( key, prop.get() );
+                    Class type = prop.getInfo().getType();
+                    // Boolean -> if true add prop name instead of 'true|false'
+                    if (type.equals( Boolean.class )) {
+                        if (((Boolean)prop.get()).booleanValue()) {
+                            result.put( key, key );
+                        }
+                    }
+                    // other types
+                    else {
+                        result.put( key, prop.get() );
+                    }
                 }
             }
         }.process( entity );

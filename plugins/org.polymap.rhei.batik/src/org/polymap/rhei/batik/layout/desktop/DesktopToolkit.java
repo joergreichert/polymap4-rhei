@@ -85,10 +85,10 @@ public class DesktopToolkit
     public static final String  CSS_SECTION_CLIENT = CSS_PREFIX + "-section-client";
     
     public static final Lazy<Color> COLOR_SECTION_TITLE_FG = new LockedLazyInit( new Supplier<Color>() {
-        public Color get() { return Graphics.getColor( new RGB( 0x54, 0x82, 0xb4 ) ); }
+        public Color get() { return Graphics.getColor( new RGB( 0x41, 0x83, 0xa6 ) ); }  //0x4a, 0x8a, 0xaf
     });
     public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( new Supplier<Color>() {
-        public Color get() { return Graphics.getColor( new RGB( 0xd7, 0xeb, 0xff ) ); }
+        public Color get() { return Graphics.getColor( new RGB( 0xbc, 0xe1, 0xf4 ) ); }
     });
 
     private static ArrayList<MarkdownRenderer> renderers = new ArrayList();
@@ -318,6 +318,7 @@ public class DesktopToolkit
     @Override
     public Section createSection( Composite parent, String title, int... styles ) {
         Section result = adapt( new Section( parent, stylebits( styles ) | SWT.NO_FOCUS ) );
+        result.setBackgroundMode( SWT.INHERIT_NONE );
         result.setText( title );
         result.setExpanded( true );
 

@@ -35,6 +35,8 @@ public interface IPanelSite {
     public static final String      LAYOUT_SPACING_KEY = "spacing";
     /** Constant to be used as param for {@link #getLayoutPreference(String)}. */
     public static final String      LAYOUT_MARGINS_KEY = "margins";
+    /** Signals that an action or item should have 'submit' style. */
+    public static final String      SUBMIT = "__submit__";
 
     /**
      * The whole path of the panel including the name of the panel as last segment.
@@ -61,6 +63,15 @@ public interface IPanelSite {
 
     public IStatus getStatus();
     
+    
+    /**
+     * Adds the given action to the toolbar of this panel.
+     * <p/>
+     * The description of the action can be set to {@link #SUBMIT} in order to hint
+     * the layout engine to style the GUI element accordingly.
+     * 
+     * @param action
+     */
     public void addToolbarAction( IAction action );
 
     public void addToolbarItem( IContributionItem item );

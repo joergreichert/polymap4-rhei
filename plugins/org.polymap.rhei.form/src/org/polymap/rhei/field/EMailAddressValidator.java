@@ -18,8 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Validates against a regex pattern that ensures email addresses like: a@pl.de.
+ * An empty field value is valid too.
  * 
- *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class EMailAddressValidator
@@ -30,8 +31,13 @@ public class EMailAddressValidator
     
     @Override
     public String validate( Object fieldValue ) {
-        Matcher matcher = pattern.matcher( fieldValue != null ? fieldValue.toString() : "_dontMatch_" );
-        return !matcher.matches() ? "Keine gültige E-Mail-Adresse: " + fieldValue : null; 
+        if (fieldValue == null || fieldValue.toString().length() == 0) {
+            return null;
+        }
+        else {
+            Matcher matcher = pattern.matcher( fieldValue.toString() );
+            return !matcher.matches() ? "Keine gültige E-Mail-Adresse: " + fieldValue : null;
+        }
     }
 
     @Override

@@ -191,18 +191,22 @@ public class PicklistFormField
      * <p>
      * This method can be called only while initializing before the widget has
      * been created.
+     * @return this
      */
-    public void setTextEditable( boolean textEditable ) {
+    public PicklistFormField setTextEditable( boolean textEditable ) {
         this.textEditable = textEditable;
+        return this;
     }
 
     
     /**
      * If true, then the current text of the {@link #combo} is returned only if
      * it matches one of the labels. Otherwise the text is returned as is.
+     * @return this
      */
-    public void setForceTextMatch( boolean forceTextMatch ) {
-        this.forceTextMatch = forceTextMatch;    
+    public PicklistFormField setForceTextMatch( boolean forceTextMatch ) {
+        this.forceTextMatch = forceTextMatch;
+        return this;
     }
     
     
