@@ -130,12 +130,25 @@ public class FulltextIndexer
     }
 
     
+    public FulltextIndexer( UpdateableFullTextIndex index, Predicate<Entity> entityFilter,
+            List<? extends FeatureTransformer> transformers, StoreSPI store ) {
+        this( index, entityFilter, store );
+        setTransformers( transformers );
+    }
+
+    
     public FulltextIndexer setEntityFilter( Predicate<Entity> filter ) {
         this.entityFilter = filter;
         return this;
     }
-
     
+    
+    public FulltextIndexer setTransformers( List<? extends FeatureTransformer> transformers ) {
+        this.transformers = transformers;
+        return this;
+    }
+
+
     @Override
     public StoreUnitOfWork createUnitOfWork() {
         StoreUnitOfWork suow = store.createUnitOfWork();

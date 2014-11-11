@@ -15,16 +15,20 @@
 package org.polymap.rhei.fulltext.model2;
 
 import java.util.Date;
+import java.text.NumberFormat;
 
 import org.json.JSONObject;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.polymap.core.model2.Entity;
 import org.polymap.core.model2.Property;
+import org.polymap.core.model2.Queryable;
 import org.polymap.core.model2.runtime.CompositeStateVisitor;
 import org.polymap.core.model2.runtime.PropertyInfo;
+import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
@@ -34,45 +38,94 @@ import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class EntityFeatureTransformer
+public class EntityFeatureTransformer
+        extends CompositeStateVisitor
         implements FeatureTransformer<Entity,JSONObject> {
 
     private static Log log = LogFactory.getLog( EntityFeatureTransformer.class );
 
+    private NumberFormat        nf = NumberFormat.getInstance( Polymap.getSessionLocale() );
     
+    private FastDateFormat      df = FastDateFormat.getDateInstance( FastDateFormat.FULL, Polymap.getSessionLocale() );
+
+    private int                 propCount;
+
+    private volatile JSONObject result;
+    
+    private boolean             honorQueryableAnnotation = false;
+    
+    
+    /**
+     * True specifies that only Properties annotated as {@link Queryable} are
+     * indexed. (default: false)
+     * 
+     * @return this
+     */
+    public EntityFeatureTransformer setHonorQueryableAnnotation( boolean honorQueryableAnnotation ) {
+        this.honorQueryableAnnotation = honorQueryableAnnotation;
+        return this;
+    }
+
+
     @Override
     public JSONObject apply( Entity entity ) {
-        final JSONObject result = new JSONObject();
+        assert result == null : "Implementation is not multi-threaded currently.";
+        result = new JSONObject();
+        propCount = 0;
         
-        result.put( FullTextIndex.FIELD_ID, entity.id().toString() );
-        result.put( "_type_", entity.getClass().getName() );
+        try {
+            result.put( FullTextIndex.FIELD_ID, entity.id().toString() );
+            //result.put( "_type_", entity.getClass().getName() );
+
+            // visit all simple properties
+            process( entity );
+
+            log.info( "   " + result.toString( 2 ) );
+            return result;
+        }
+        finally {
+            assert result != null : "Implementation is not multi-threaded currently.";
+            result = null;
+        }
+    }
+
+    
+    @Override
+    protected void visitProperty( Property prop ) {        
+        PropertyInfo info = prop.getInfo();
+        if (honorQueryableAnnotation && !info.isQueryable()) {
+            return;
+        }
         
-        // visit all simple properties
-        new CompositeStateVisitor() {
-            int propCount = 0;
-            
-            @Override
-            protected void visitProperty( Property prop ) {
-                PropertyInfo info = prop.getInfo();
-                if (info.getType() == String.class || info.getType() == Date.class) {
-                    // the hierarchy of propeties may contain properties with same simple name
-                    String key = prop.getInfo().getName() + "-" + propCount++;
-                    Class type = prop.getInfo().getType();
-                    // Boolean -> if true add prop name instead of 'true|false'
-                    if (type.equals( Boolean.class )) {
-                        if (((Boolean)prop.get()).booleanValue()) {
-                            result.put( key, key );
-                        }
-                    }
-                    // other types
-                    else {
-                        result.put( key, prop.get() );
-                    }
-                }
+        // the hierarchy of propeties may contain properties with same simple name
+        String key = info.getName() + "-" + propCount++;
+        Object value = prop.get();
+
+        // null
+        if (value == null) {
+        }
+        // Enum
+        else if (value.getClass().isEnum()) {
+            result.put( key, value.toString() );
+        }
+        // Date
+        else if (Date.class.isAssignableFrom( value.getClass() )) {
+            result.put( key, df.format( value ) );                    
+        }
+        // Number
+        else if (Number.class.isAssignableFrom( value.getClass() )) {
+            result.put( key, nf.format( value ) );                    
+        }
+        // Boolean -> if true add prop name instead of 'true|false'
+        else if (value.getClass().equals( Boolean.class )) {
+            if (((Boolean)value).booleanValue()) {
+                result.put( key, key );
             }
-        }.process( entity );
-        
-        return result;
+        }
+        // String and other types
+        else {
+            result.put( key, value );
+        }
     }
     
 }
