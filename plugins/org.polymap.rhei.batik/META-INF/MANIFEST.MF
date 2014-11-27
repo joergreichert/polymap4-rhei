@@ -5,11 +5,15 @@ Bundle-SymbolicName: org.polymap.rhei.batik;singleton:=true
 Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.polymap.rhei.batik.BatikPlugin
 Bundle-Vendor: polymap.org
-Require-Bundle: org.polymap.core;bundle-version="3.2.0",
+Require-Bundle: org.polymap.core;bundle-version="3.2.0";visibility:=reexport,
  org.eclipse.osgi.services;bundle-version="3.3.100",
  org.polymap.rhei.form;bundle-version="2.1.0",
  org.polymap.openlayers.rap.widget;bundle-version="1.0.0";resolution:=optional;visibility:=reexport,
- org.polymap.core.data;bundle-version="3.2.0";resolution:=optional;visibility:=reexport
+ org.polymap.core.data;bundle-version="3.2.0";resolution:=optional;visibility:=reexport,
+ org.polymap.core.project;bundle-version="3.2.0";resolution:=optional;visibility:=reexport,
+ qi4j-core;bundle-version="1.0.1";resolution:=optional;visibility:=reexport,
+ org.polymap.core.model;bundle-version="3.2.0";resolution:=optional;visibility:=reexport,
+ org.polymap.core.catalog;bundle-version="3.1.0";resolution:=optional;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.batik,

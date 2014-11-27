@@ -16,7 +16,7 @@
   color: #222222;
   background-color: #fff;
   background-image: none;
-  font: 14px/120%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px/120%"Open Sans", Arial, sans-serif;
 }
 *:disabled {
   color: #cdcdcd;
@@ -36,7 +36,7 @@ Display {
   rwt-working-image: url(resources/icons/rap/dialog/information.png );
   rwt-fontlist: 14px"Open Sans", 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode';
   /*background-image: url(resources/icons/rap/display/browser_bg.png );*/
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
 }
 /* Default theme for all controls */
  * {
@@ -83,11 +83,11 @@ Composite.mosaic-case-toolbar {
 }
 /* Button default theme */
  Button {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-image: none;
   border: none;
   border-radius: 4px;
-  padding: 6px 15px;
+  padding: 5px 15px;
   spacing: 2px;
   cursor: default;
   animation: none;
@@ -101,7 +101,7 @@ Composite.mosaic-case-toolbar {
 Button[PUSH], Button[PUSH].formeditor, Button[TOGGLE], Button[PUSH][BORDER], Button[TOGGLE][BORDER], Button[PUSH][FLAT], Button[TOGGLE][FLAT] {
   border: none;
   border-radius: 4px;
-  padding: 6px 15px;
+  /*padding: 6px 15px;*/
   background-color: #5a9cbd;
   animation: hoverOut 400ms ease-out;
   cursor: pointer;
@@ -217,7 +217,6 @@ Button[TOGGLE].mosaic-case-toolbar:hover, Button[TOGGLE].mosaic-case-toolbar:sel
   border-radius: 4px 4px 0px 0px;
   background-image: none;
   background-image: url(resources/images/bg-noise-grey.png);
-  border-radius: 4px 4px 0px 0px;
 }
 Button[TOGGLE].mosaic-case-toolbar:hover {
   border-radius: 4px;
@@ -314,7 +313,7 @@ Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
 }
 /* Combo default theme */
  Combo, Combo[BORDER] {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   /*color: #4a4a4a;*/
   background-color: #ffffff;
   border: 1px solid #cfcfcf;
@@ -386,7 +385,7 @@ CoolItem-Handle {
   border-radius: 2px;
 }
 CTabItem {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   background-color: #f0f0f0;
   background-image: none;
@@ -410,7 +409,7 @@ CTabFolder-DropDownButton-Icon:hover {
 }
 /* Group default theme */
  Group {
-  font: 10px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 10px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
@@ -432,7 +431,7 @@ Group-Label {
 }
 /* Label default theme */
 Label, CLabel {
-  font: 15px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   background-color: transparent;
   background-image: none;
@@ -465,7 +464,7 @@ Label-SeparatorLine[SHADOW_OUT] {
 }
 /* Link default theme */
  Link {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a8aaf;
   text-shadow: none;
   text-decoration: none;
@@ -488,7 +487,7 @@ Link-Hyperlink:disabled {
 }
 /* List default theme */
  List {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
@@ -498,7 +497,7 @@ List[BORDER] {
 }
 List-Item {
   padding: 5px 10px 5px 10px;
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #ffffff;
   background-image: url(resources/images/list-border.png);
   color: inherit;
@@ -632,7 +631,7 @@ Shell-DisplayOverlay {
 }
 /* Shell titlebar */
  Shell-Titlebar {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #4a8aaf;
   color: #ffffff;
   padding: 0 10px 0 10px;
@@ -708,7 +707,7 @@ Shell-CloseButton:inactive:hover {
 }
 /* Spinner default theme */
  Spinner {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   border: none;
   border-radius: 0 2px 2px 0;
   color: #464a4e;
@@ -772,7 +771,7 @@ Spinner-DownButton-Icon:hover {
 }
 /* TabFolder default theme */
  TabFolder {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   border: none;
 }
 TabFolder[BORDER] {
@@ -796,7 +795,7 @@ TabItem:selected {
 }
 /* Table default theme */
  Table {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #ffffff;
   background-image: none;
   color: #4a4a4a;
@@ -806,7 +805,7 @@ Table[BORDER] {
   border: none;
 }
 TableColumn {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #f1f4f6;
   padding: 4px 10px 4px 10px;
   background-image: none;
@@ -911,7 +910,7 @@ Table-Checkbox:checked:grayed:hover {
 }
 /* Text default theme - style formfields*/
 Text {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   border: none;
   border-radius: 3px;
   padding: 3px 6px 3px 6px;
@@ -941,9 +940,10 @@ Text[BORDER]:focused, Text[MULTI][BORDER]:focused {
 }
 Text[BORDER]:disabled, Text[MULTI][BORDER]:disabled, Text[BORDER]:read-only, Text[MULTI][BORDER]:read-only {
   box-shadow: none;
-  border: none;
+  border-radius: 3px;
+  border: 1px solid #D5D9DB;
   color: #0f1c23;
-  background-color: #faf9f7;
+  background-color: #DDE0E3;
   padding: 1px 3px 3px 3px;
 }
 Text-Message {
@@ -1019,7 +1019,7 @@ Composite.atlas-status {
   opacity: 1;
   color: #0f1c23;
   background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-color: #fffae5;
   animation: fadeIn 200ms linear, fadeOut 200ms ease-out;
   box-shadow: 0px 1px 4px #999;
@@ -1027,7 +1027,7 @@ Composite.atlas-status {
 
 /* ToolBar default theme */
  ToolBar {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   padding: 0;
   spacing: 0;
@@ -1132,7 +1132,7 @@ Tree-RowOverlay:linesvisible:even:selected:unfocused {
   background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
 }
 TreeColumn {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: inherit;
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
@@ -1260,7 +1260,7 @@ Scale-Thumb:focused {
 }
 /* DateTime default theme */
  DateTime {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   border: none;
   border-radius: 0 2px 2px 0;
   color: #464a4e;
@@ -1306,7 +1306,7 @@ DateTime-Calendar-Navbar {
   background-color: #00569c;
   background-image: gradient(linear, left top, left bottom, from(#416693), to(#5882b5));
   color: white;
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   text-shadow: none;
 }
 DateTime-Calendar-PreviousMonthButton {
@@ -1503,16 +1503,32 @@ Slider-DownButton-Icon[VERTICAL] {
 /* ToolTip default theme */
 ToolTip, Shell.batik-status-tooltip {
   cursor: default;
-  border: none;
   border-radius: 3px;
-  padding: 8px 8px;
+  padding: 3px 3px;
   opacity: 1;
-  color: #f0f0f0;
   /*background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));*/
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
-  background-color: #363532;
+  font: 14px"Open Sans", Arial, sans-serif;
+  
+  border: 1px solid #6FA1DA;
+  background-color: #f8f8f8;
+  /*background-color: #FFFEDB;*/
+  /*background-image: gradient(linear, left top, left bottom, from(#888), to(#363532));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#ffffff), to(#e5e9ec));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#f6f8fa), to(#dde0e1));*/
+
+  color: #f0f0f0;
   animation: fadeIn 200ms linear, fadeOut 500ms ease-out;
-  box-shadow: 0px 1px 5px #606060;
+  animation: flyInTop 500ms ease-out, flyOutTop 500ms ease-in;
+  box-shadow: 0px 1px 2px #808080;
+
+  /*  
+  border: 2px solid #6eb02e;
+  background-color: #f5f5f5;
+  color: #444;
+  animation: flyInRight 500ms ease-out, flyOutRight 500ms ease-in;
+  box-shadow: 0px 1px 5px #cdcdcd;
+  background-image: gradient(linear, left top, left bottom, from(#fff), to(#f5f5f5));
+  */
 }
 ToolTip-Image[ICON_ERROR] {
   background-image: url(resources/icons/rap/tooltip/error.png );
@@ -1525,12 +1541,12 @@ ToolTip-Image[ICON_WARNING] {
 }
 ToolTip-Text, Label.batik-status-tooltip-text {
   color: #f8f8f8;
-  font: bold 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: bold 14px"Open Sans", Arial, sans-serif;
   text-shadow: none;
 }
 ToolTip-Message, Label.batik-status-tooltip-message {
   color: #e8e8e8;
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   text-shadow: none;
 }
 Widget-ToolTip {
@@ -1540,13 +1556,14 @@ Widget-ToolTip {
   opacity: 1;
   color: #e8e8e8;
   background-color: #363532;
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  background-image: gradient(linear, left top, left bottom, from(#666), to(#363532));
+  font: 14px"Open Sans", Arial, sans-serif;
   animation: fadeIn 100ms linear, fadeOut 150ms ease-out;
-  box-shadow: 0px 1px 4px #606060;
+  box-shadow: 0px 1px 6px #888;
 }
 /* CCombo default theme */
  CCombo {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   background-image: none;
@@ -1602,7 +1619,7 @@ CCombo-FocusIndicator {
 }
 /* CLabel default theme */
 /* CLabel {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   color: #4a4a4a;
   background-color: #ffffff;
   background-image: none;
@@ -1659,7 +1676,7 @@ ScrollBar-DownButton[VERTICAL] {
 }
 /* FileUpload default theme */
  FileUpload {
-  font: 14px"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 14px"Open Sans", Arial, sans-serif;
   background-image: none;
   border: none;
   border-radius: 4px;
@@ -1714,7 +1731,7 @@ Composite[BORDER].batik-panel-section {
   border: 1px solid #cdcdcd;
 }
 Label.batik-panel-section-title {
-  font: 20px/100%"Open Sans", "Lucida Sans", Helvetica, Verdana, Arial, sans-serif;
+  font: 22px/100%"Open Sans", Arial, sans-serif;
   color: #0f1c23;
   border: none;
 }

@@ -15,6 +15,7 @@
 package org.polymap.rhei.batik.map;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +46,7 @@ import org.polymap.openlayers.rap.widget.base_types.Bounds;
 import org.polymap.openlayers.rap.widget.base_types.OpenLayersMap;
 import org.polymap.openlayers.rap.widget.base_types.Projection;
 import org.polymap.openlayers.rap.widget.base_types.Size;
+import org.polymap.openlayers.rap.widget.controls.Control;
 import org.polymap.openlayers.rap.widget.controls.LayerSwitcherControl;
 import org.polymap.openlayers.rap.widget.controls.LoadingPanelControl;
 import org.polymap.openlayers.rap.widget.controls.MousePositionControl;
@@ -184,7 +186,15 @@ public class MapViewer
         return maxExtent.getCoordinateReferenceSystem();
     }
 
-    
+    public ReferencedEnvelope getMapExtent() {
+        return mapExtent;
+    }
+
+    public ReferencedEnvelope getMaxExtent() {
+        return maxExtent;
+    }
+
+
     public void zoomTo( ReferencedEnvelope extent ) {
         try {
             mapExtent = extent.transform( getCRS(), true );            
@@ -198,7 +208,12 @@ public class MapViewer
         }
     }
 
+    
+    public void addMapControl( Control control ) {
+        map.addControl( control );
+    }
 
+    
     public void addLayersFromMessages( String prefix ) {
         // layers
         int suffix = 1;
@@ -263,6 +278,16 @@ public class MapViewer
     }
     
     
+    public List<WMSLayer> getLayers() {
+        return Collections.unmodifiableList( layers );
+    }
+
+
+    public boolean isVisible( WMSLayer layer ) {
+        return visibleLayers.contains( layer );
+    }
+
+
     public void addToolbarItem( IContributionItem item ) {
         toolbarItems.add( item );
         if (toolbar != null) {
