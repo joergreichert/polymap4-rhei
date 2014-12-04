@@ -36,6 +36,7 @@ import org.polymap.core.model2.store.StoreDecorator;
 import org.polymap.core.model2.store.StoreSPI;
 import org.polymap.core.model2.store.StoreUnitOfWork;
 
+import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
@@ -163,6 +164,7 @@ public class FulltextIndexer
         for (FeatureTransformer transformer : transformers) {
             transformed = transformer.apply( transformed );
         }
+        assert ((JSONObject)transformed).opt( FullTextIndex.FIELD_ID ) != null;
         log.debug( "Transformed: " + transformed.toString() );
         return (JSONObject)transformed;
     }

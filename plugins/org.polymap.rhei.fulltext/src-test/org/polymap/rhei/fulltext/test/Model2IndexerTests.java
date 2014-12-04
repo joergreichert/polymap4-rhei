@@ -76,7 +76,7 @@ public class Model2IndexerTests {
     @Test
     public void simpleTest() throws Exception {
         UnitOfWork uow = repo.newUnitOfWork();
-        uow.createEntity( IndexedEntity.class, null, new ValueInitializer<IndexedEntity>() {
+        IndexedEntity entity = uow.createEntity( IndexedEntity.class, null, new ValueInitializer<IndexedEntity>() {
             @Override
             public IndexedEntity initialize( IndexedEntity proto ) throws Exception {
                 proto.name.set( "name1" );
@@ -106,7 +106,7 @@ public class Model2IndexerTests {
         });
         uow.commit();
         
-        //
+        // check
         Iterable<JSONObject> rs = index.search( "name1", 100 );
         Assert.assertEquals( 1, Iterables.size( rs ) );
 
@@ -121,6 +121,14 @@ public class Model2IndexerTests {
 
         rs = index.search( "Ulrike AND nicht_da", 100 );
         Assert.assertEquals( 0, Iterables.size( rs ) );
+        
+        // update
+        entity.name.set( "name1(modified)" );
+        uow.commit();
+
+        // check
+        rs = index.search( "name1(modified)", 100 );
+        Assert.assertEquals( 1, Iterables.size( rs ) );
     }
     
 

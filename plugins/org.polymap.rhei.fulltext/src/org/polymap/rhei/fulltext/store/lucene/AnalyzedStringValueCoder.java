@@ -48,7 +48,7 @@ class AnalyzedStringValueCoder
     
 
     public Object decode( Document doc, String key ) {
-        return doc.get( key );
+        return key.equals( LuceneFullTextIndex.FIELD_ANALYZED ) ? doc.get( key ) : null;
     }
 
 }

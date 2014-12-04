@@ -73,7 +73,12 @@ public abstract class EntitySearchField<T extends Entity>
 
             List<BooleanExpression> ids = new ArrayList( 256 );
             for (JSONObject record : rs) {
-                ids.add( Expressions.id( record.getString( FullTextIndex.FIELD_ID ) ) );
+                if (record.optString( FullTextIndex.FIELD_ID ).length() > 0) {
+                    ids.add( Expressions.id( record.getString( FullTextIndex.FIELD_ID ) ) );
+                }
+                else {
+                    log.warn( "No FIELD_ID in record: " + record );
+                }
             }
 
             // none

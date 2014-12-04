@@ -14,7 +14,11 @@
  */
 package org.polymap.rhei.fulltext.model2;
 
+import static com.google.common.base.Objects.firstNonNull;
+
 import java.util.Date;
+import java.util.Locale;
+
 import java.text.NumberFormat;
 
 import org.json.JSONObject;
@@ -44,7 +48,7 @@ public class EntityFeatureTransformer
 
     private static Log log = LogFactory.getLog( EntityFeatureTransformer.class );
 
-    private NumberFormat        nf = NumberFormat.getInstance( Polymap.getSessionLocale() );
+    private NumberFormat        nf = NumberFormat.getInstance( firstNonNull( Polymap.getSessionLocale(), Locale.getDefault() ) );
     
     private FastDateFormat      df = FastDateFormat.getDateInstance( FastDateFormat.FULL, Polymap.getSessionLocale() );
 
@@ -80,7 +84,7 @@ public class EntityFeatureTransformer
             // visit all simple properties
             process( entity );
 
-            log.info( "   " + result.toString( 2 ) );
+            log.debug( "   " + result.toString( 2 ) );
             return result;
         }
         finally {

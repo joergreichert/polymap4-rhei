@@ -55,6 +55,7 @@ class LuceneUpdater
     public void store( JSONObject feature, boolean update ) throws Exception {
         assert updator != null : "Updator is already closed.";
         String fid = feature.getString( FIELD_ID );
+        assert fid != null : "No FIELD_ID in feature: " + feature;
 
         IRecordState record = update ? store.get( fid ) : null;
         if (record == null) {
