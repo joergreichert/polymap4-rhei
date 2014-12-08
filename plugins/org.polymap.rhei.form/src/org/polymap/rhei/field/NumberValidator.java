@@ -1,7 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2011, Falko Bräutigam, and individual contributors as 
- * indicated by the @authors tag.
+ * Copyright (C) 2011-2014, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,8 +11,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id$
  */
 package org.polymap.rhei.field;
 
@@ -29,8 +26,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * 
  *
- * @author <a href="http://www.polymap.de">Falko Braeutigam</a>
- * @version POLYMAP3 ($Revision$)
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  * @since 3.0
  */
 public class NumberValidator
@@ -110,8 +106,7 @@ public class NumberValidator
     }
 
     
-    public Object transform2Model( Object fieldValue )
-    throws Exception {
+    public Object transform2Model( Object fieldValue ) throws Exception {
         if (fieldValue == null) {
             return null;
         }
@@ -149,8 +144,7 @@ public class NumberValidator
     }
     
     
-    public Object transform2Field( Object modelValue )
-    throws Exception {
+    public Object transform2Field( Object modelValue ) throws Exception {
         return  modelValue == null ? null : nf.format( targetClass.cast( modelValue ) );
     }
     
