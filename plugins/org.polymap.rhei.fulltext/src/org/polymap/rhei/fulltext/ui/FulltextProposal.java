@@ -72,7 +72,7 @@ public class FulltextProposal {
             }
         };
         proposal = new XContentProposalAdapter( control, controlAdapter, proposalProvider, null, null );
-        proposal.setAutoActivationDelay( 750 );
+        //proposal.setAutoActivationDelay( 2500 );
         control.addKeyListener( new KeyAdapter() {
             public void keyReleased( KeyEvent ev ) {
                 if (ev.keyCode == SWT.ARROW_DOWN) {
@@ -89,7 +89,7 @@ public class FulltextProposal {
                         proposalProvider.setProposals( new String[0] );
                     }
                     else {
-                        new ProposalJob().schedule( 500 );
+                        new ProposalJob().schedule( 2000 );
                     }
                 }
             }
