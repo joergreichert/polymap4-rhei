@@ -43,7 +43,7 @@ public class DefaultFormFieldDecorator
 
     private static Log log = LogFactory.getLog( DefaultFormFieldDecorator.class );
 
-    private static final Image  focusImage, dirtyImage, invalidImage;
+    public static final Image   focusImage, dirtyImage, invalidImage;
     
     private IFormFieldSite      site;
     

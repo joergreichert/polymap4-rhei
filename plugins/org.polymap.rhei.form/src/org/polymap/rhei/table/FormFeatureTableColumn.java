@@ -60,6 +60,7 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
+import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 
 /**
  * An {@link IFeatureTableColumn} that employes {@link IFormField} and
@@ -140,8 +141,9 @@ public class FormFeatureTableColumn
     }
 
 
-    protected void setLabelProvider( IFormFieldValidator labelValidator ) {
+    public FormFeatureTableColumn setLabelProvider( IFormFieldValidator labelValidator ) {
         this.labelValidator = labelValidator;
+        return this;
     }
 
 
@@ -349,7 +351,7 @@ public class FormFeatureTableColumn
     
     
     /**
-     * 
+     * Loading and dirty/valid decoration. 
      */
     class LoadingCheckLabelProvider
             extends ColumnLabelProvider {
@@ -372,9 +374,19 @@ public class FormFeatureTableColumn
                     ? null : delegate.getToolTipText( element );
         }
 
-        public Image getImage( Object element ) {
-            return element == FeatureTableViewer.LOADING_ELEMENT
-                    ? null : delegate.getImage( element );
+        public Image getImage( Object elm ) {
+            if (elm == FeatureTableViewer.LOADING_ELEMENT) {
+                return null;
+            }
+            else if (invalidFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
+                return DefaultFormFieldDecorator.invalidImage;
+            }
+            else if (dirtyFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
+                return DefaultFormFieldDecorator.dirtyImage;
+            }
+            else {
+                return delegate.getImage( elm );
+            }
         }
 
         public Color getForeground( Object element ) {

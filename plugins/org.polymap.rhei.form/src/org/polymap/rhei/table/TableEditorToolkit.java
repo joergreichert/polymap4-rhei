@@ -92,6 +92,22 @@ public class TableEditorToolkit
 
 
     @Override
+    public Combo createCombo( Composite parent, Set<String> values, int style ) {
+        Combo combo = new Combo( parent, style );
+//        combo.setBackground( textBackground );
+        combo.setVisibleItemCount( 12 );
+        for (String value : values) {
+            combo.add( value );
+        }
+        return combo;
+    }
+
+    @Override
+    public Combo createCombo( Composite parent, Set<String> values ) {
+        return createCombo( parent, values, SWT.NONE );
+    }
+
+    @Override
     public FormText createFormText( Composite parent, boolean trackFocus ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
@@ -177,20 +193,6 @@ public class TableEditorToolkit
 
     @Override
     public Tree createTree( Composite parent, int style ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
-    }
-
-
-    @Override
-    public Combo createCombo( Composite parent, Set<String> values ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
-    }
-
-
-    @Override
-    public Combo createCombo( Composite parent, Set<String> values, int style ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }

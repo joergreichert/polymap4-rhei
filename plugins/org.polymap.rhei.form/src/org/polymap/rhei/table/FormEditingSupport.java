@@ -83,8 +83,8 @@ class FormEditingSupport
         IFeatureTableElement featureElm = (IFeatureTableElement)elm;
         featureElm.setValue( tableColumn.getName(), value );
         
-        boolean valid = true;
-        tableColumn.markElement( featureElm, true, !valid );
+//        boolean valid = true;
+//        tableColumn.markElement( featureElm, true, !valid );
         tableColumn.getViewer().update( elm, null );
     }
     
@@ -126,12 +126,28 @@ class FormEditingSupport
 
         @Override
         protected void doSetValue( Object value ) {
-            field.setValue( value );
+            try {
+                // use validator instead of setting directly via field.setValue( value );
+                field.load();
+            }
+            catch (Exception e) {
+                throw new RuntimeException( e ); 
+            }
         }
 
         @Override
         protected Object doGetValue() {
-            return fieldValue;
+            try {
+                // use validator instead of setting directly via field.setValue( value );
+                field.store();
+                
+                boolean valid = errorMsg == null;
+                tableColumn.markElement( elm, true, !valid );
+                return fieldValue;
+            }
+            catch (Exception e) {
+                throw new RuntimeException( e ); 
+            }
         }
 
         @Override
@@ -162,7 +178,10 @@ class FormEditingSupport
 
             @Override
             public void setFieldValue( Object value ) throws Exception {
-                elm.setValue( tableColumn.getName(), validator.transform2Model( value ) );
+                if (isValid()) {
+                    fieldValue = validator.transform2Model( value );
+                    elm.setValue( tableColumn.getName(), fieldValue );
+                }
             }
 
             @Override
@@ -214,7 +233,7 @@ class FormEditingSupport
                             throw new RuntimeException( e );
                         }
                     }
-                    fieldValue = validatedNewValue;
+                    //fieldValue = validatedNewValue;
                 }
 
                 FormFieldEvent ev = new FormFieldEvent( 
