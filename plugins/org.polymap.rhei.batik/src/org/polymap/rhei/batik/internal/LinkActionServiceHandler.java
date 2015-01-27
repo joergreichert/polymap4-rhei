@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2011-2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2011-2015, Polymap GmbH. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -15,6 +15,7 @@
 package org.polymap.rhei.batik.internal;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.service.IServiceHandler;
+import org.eclipse.rap.rwt.service.ServiceHandler;
 
 import org.polymap.core.runtime.ConcurrentReferenceHashMap;
 import org.polymap.core.runtime.ConcurrentReferenceHashMap.ReferenceType;
@@ -38,7 +38,7 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit.LinkAction;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class LinkActionServiceHandler
-        implements IServiceHandler {
+        implements ServiceHandler {
 
     private static Log log = LogFactory.getLog( LinkActionServiceHandler.class );
 
@@ -85,10 +85,9 @@ public class LinkActionServiceHandler
 
     // instance *******************************************
     
-    public void service() throws IOException, ServletException {
-        HttpServletRequest request = RWT.getRequest();
-        HttpServletResponse response = RWT.getResponse();
-        
+    @Override
+    public void service( HttpServletRequest request, HttpServletResponse response ) 
+            throws IOException, ServletException {
         String id = request.getParameter( ID_REQUEST_PARAM );
         log.info( "Request: id=" + id );
         if (id == null) {

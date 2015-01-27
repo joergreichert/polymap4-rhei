@@ -20,14 +20,14 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.rwt.lifecycle.IEntryPoint;
-
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.window.Window;
 
 import org.eclipse.ui.PlatformUI;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.rap.rwt.application.IEntryPoint;
 
 import org.polymap.core.runtime.Polymap;
 

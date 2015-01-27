@@ -11,7 +11,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/getjars.build.xml - Batik.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/org.polymap.rhei.batik getjars.build.xml [Builder].launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

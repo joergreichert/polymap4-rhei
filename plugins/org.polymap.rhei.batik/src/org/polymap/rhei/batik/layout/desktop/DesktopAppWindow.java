@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.rwt.lifecycle.UICallBack;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-
 import org.eclipse.jface.window.ApplicationWindow;
 
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
+
+import org.eclipse.rap.rwt.lifecycle.UICallBack;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;

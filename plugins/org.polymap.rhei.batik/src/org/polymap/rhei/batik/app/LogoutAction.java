@@ -17,8 +17,6 @@ package org.polymap.rhei.batik.app;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.eclipse.rwt.internal.widgets.JSExecutor;
-
 import org.eclipse.jface.action.Action;
 
 import org.polymap.core.runtime.IMessages;

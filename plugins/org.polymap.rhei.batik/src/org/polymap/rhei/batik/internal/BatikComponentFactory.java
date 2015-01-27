@@ -23,11 +23,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Predicate;
 
-import org.eclipse.rwt.RWT;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.rap.rwt.RWT;
 
 import org.polymap.core.runtime.SessionSingleton;
 

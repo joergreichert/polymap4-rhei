@@ -15,6 +15,7 @@
 package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 import org.pegdown.FastEncoder;
 import org.pegdown.LinkRenderer;
@@ -26,13 +27,12 @@ import org.pegdown.ast.ExpLinkNode;
 import org.pegdown.ast.RefLinkNode;
 import org.pegdown.ast.WikiLinkNode;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -47,12 +47,12 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.graphics.Graphics;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.Section;
+
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.graphics.Graphics;
+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 
 import org.polymap.core.runtime.Lazy;
 import org.polymap.core.runtime.LockedLazyInit;
@@ -84,12 +84,10 @@ public class DesktopToolkit
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
     public static final String  CSS_SECTION_CLIENT = CSS_PREFIX + "-section-client";
     
-    public static final Lazy<Color> COLOR_SECTION_TITLE_FG = new LockedLazyInit( new Supplier<Color>() {
-        public Color get() { return Graphics.getColor( new RGB( 0x41, 0x83, 0xa6 ) ); }  //0x4a, 0x8a, 0xaf
-    });
-    public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( new Supplier<Color>() {
-        public Color get() { return Graphics.getColor( new RGB( 0xbc, 0xe1, 0xf4 ) ); }
-    });
+    public static final Lazy<Color> COLOR_SECTION_TITLE_FG = new LockedLazyInit( () -> 
+            Graphics.getColor( new RGB( 0x41, 0x83, 0xa6 ) ) );
+    public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( () -> 
+            Graphics.getColor( new RGB( 0xbc, 0xe1, 0xf4 ) ) );
 
     private static ArrayList<MarkdownRenderer> renderers = new ArrayList();
     

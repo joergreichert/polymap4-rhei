@@ -32,11 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Layout;
 
-import org.eclipse.rwt.IBrowserHistory;
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.events.BrowserHistoryEvent;
-import org.eclipse.rwt.events.BrowserHistoryListener;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.window.Window;
@@ -45,6 +40,10 @@ import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.BrowserNavigation;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
 
 import org.polymap.core.runtime.event.EventManager;
 
@@ -69,7 +68,7 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class DesktopAppManager
-        implements IApplicationLayouter, BrowserHistoryListener {
+        implements IApplicationLayouter, BrowserNavigationListener {
 
     private static Log log = LogFactory.getLog( DesktopAppManager.class );
     
@@ -85,7 +84,7 @@ public class DesktopAppManager
 
     protected IPanel                    activePanel;
 
-    protected IBrowserHistory           browserHistory;
+    protected BrowserNavigation         browserHistory;
 
     protected UserPreferences           userPrefs;
 
@@ -96,9 +95,9 @@ public class DesktopAppManager
 
     @Override
     public Window initMainWindow( Display display ) {
-        browserHistory = RWT.getBrowserHistory();
-        browserHistory.createEntry( "Start", "Start" );
-        browserHistory.addBrowserHistoryListener( this );
+        browserHistory = RWT.getClient().getService( BrowserNavigation.class );
+        browserHistory.pushState( "Start", "Start" );
+        browserHistory.addBrowserNavigationListener( this );
         
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
@@ -141,7 +140,7 @@ public class DesktopAppManager
 
     @Override
     public void dispose() {
-        browserHistory.removeBrowserHistoryListener( this );
+        browserHistory.removeBrowserNavigationListener( this );
     }
 
 
@@ -149,8 +148,12 @@ public class DesktopAppManager
      * Browser history event. 
      */
     @Override
-    public void navigated( BrowserHistoryEvent ev ) {
-        log.info( "BROWSER: " + ev.entryId );
+    public void navigated( BrowserNavigationEvent ev ) {
+        log.info( "BROWSER: " + ev.getState() );
+        if (activePanel == null) {
+            log.info( "   no activePanel, skipping." );
+            return;
+        }
         
         // go to start panel (no matter what)
         while (activePanel.getSite().getPath().size() > 1) {
@@ -221,7 +224,7 @@ public class DesktopAppManager
         activePanel = panel;
         EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATED ) );
 
-        browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
+        browserHistory.pushState( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
         
         return activePanel;
@@ -267,7 +270,7 @@ public class DesktopAppManager
         scrolledPanelContainer.showPage( activePanel.id() );
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
 
-        browserHistory.createEntry( activePanel.id().id(), activePanel.getSite().getTitle() );
+        browserHistory.pushState( activePanel.id().id(), activePanel.getSite().getTitle() );
     }
 
     
@@ -299,7 +302,7 @@ public class DesktopAppManager
         }
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
         
-        browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
+        browserHistory.pushState( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
     }
 

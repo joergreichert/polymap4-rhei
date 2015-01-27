@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.rwt.graphics.Graphics;
-
 import org.eclipse.jface.action.ContributionItem;
+
+import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.ui.FormDataFactory;
 

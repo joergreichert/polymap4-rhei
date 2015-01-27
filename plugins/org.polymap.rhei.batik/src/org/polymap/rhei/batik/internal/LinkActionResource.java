@@ -14,8 +14,7 @@
  */
 package org.polymap.rhei.batik.internal;
 
-import org.eclipse.rwt.resources.IResource;
-import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
+import org.eclipse.rap.ui.resources.IResource;
 
 /**
  * 
@@ -31,10 +30,6 @@ public class LinkActionResource
 
     public final String getCharset() {
         return "UTF8";
-    }
-
-    public final RegisterOptions getOptions() {
-        return RegisterOptions.VERSION_AND_COMPRESS;
     }
 
     public final ClassLoader getLoader() {

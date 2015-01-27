@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -18,14 +18,14 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.service.IServiceHandler;
+import org.eclipse.rap.rwt.service.ServiceHandler;
 
 import org.polymap.core.runtime.event.EventManager;
 
@@ -37,14 +37,14 @@ import org.polymap.rhei.batik.app.BatikApplication;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class BrowserSizeServiceHandler
-        implements IServiceHandler {
+        implements ServiceHandler {
 
     private static Log log = LogFactory.getLog( BrowserSizeServiceHandler.class );
 
 
     @Override
-    public void service() throws IOException, ServletException {
-        final HttpServletRequest request = RWT.getRequest();
+    public void service( HttpServletRequest request, HttpServletResponse response ) 
+            throws IOException, ServletException {
         log.info( "Browser size: " + request.getParameter( "width" ) );
         
         final Display display = BatikApplication.sessionDisplay();

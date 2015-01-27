@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.internal;
 
-import org.eclipse.rwt.RWT;
+import org.eclipse.rap.rwt.RWT;
 
 import org.polymap.core.runtime.IMessages;
 import org.polymap.core.runtime.MessagesImpl;
