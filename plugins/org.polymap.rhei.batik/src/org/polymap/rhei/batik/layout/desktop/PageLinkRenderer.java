@@ -25,11 +25,11 @@ import org.polymap.core.runtime.Polymap;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.LinkAction;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.MarkdownNode;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.MarkdownNodeType;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.MarkdownRenderer;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.RenderOutput;
+import org.polymap.rhei.batik.toolkit.IMarkdownNode.Type;
+import org.polymap.rhei.batik.toolkit.ILinkAction;
+import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
+import org.polymap.rhei.batik.toolkit.IMarkdownNode;
+import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
 
 /**
  * Render @action/page style links.
@@ -41,17 +41,17 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit.RenderOutput;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 class PageLinkRenderer
-        implements MarkdownRenderer {
+        implements IMarkdownRenderer {
 
     private static Log log = LogFactory.getLog( PageLinkRenderer.class );
 
     
     @Override
-    public boolean render( final MarkdownNode node, RenderOutput out, final IAppContext context ) {
+    public boolean render( final IMarkdownNode node, MarkdownRenderOutput out, final IAppContext context ) {
         log.info( "url=" + node.url() );
-        if (node.type() == MarkdownNodeType.ExpLink 
+        if (node.type() == IMarkdownNode.Type.ExpLink 
                 && node.url().startsWith( "@" )) {
-            String id = LinkActionServiceHandler.register( new LinkAction() {
+            String id = LinkActionServiceHandler.register( new ILinkAction() {
                 Display display = Polymap.getSessionDisplay();
                 
                 @Override

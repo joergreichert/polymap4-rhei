@@ -15,7 +15,7 @@
 package org.polymap.rhei.batik.layout.desktop;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
+import java.util.concurrent.Callable;
 
 import org.pegdown.FastEncoder;
 import org.pegdown.LinkRenderer;
@@ -61,8 +61,12 @@ import org.polymap.core.runtime.Polymap;
 import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.IBusyIndicator;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
+import org.polymap.rhei.batik.toolkit.ILinkAction;
+import org.polymap.rhei.batik.toolkit.IMarkdownNode;
+import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
 
 /**
  *
@@ -89,14 +93,22 @@ public class DesktopToolkit
     public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( () -> 
             Graphics.getColor( new RGB( 0xbc, 0xe1, 0xf4 ) ) );
 
-    private static ArrayList<MarkdownRenderer> renderers = new ArrayList();
+    private static ArrayList<Callable<IMarkdownRenderer>> mdRendererFactories = new ArrayList();
     
+    /**
+     * Statis init: register standard Markdown renderer
+     */
     static {
-        registerMarkdownRenderer( new PageLinkRenderer() );
+        registerMarkdownRenderer( new Callable<IMarkdownRenderer>() {
+            @Override
+            public PageLinkRenderer call() throws Exception {
+                return new PageLinkRenderer();
+            }
+        });
     }
     
-    public static void registerMarkdownRenderer( MarkdownRenderer renderer ) {
-        renderers.add( renderer );
+    public static void registerMarkdownRenderer( Callable<IMarkdownRenderer> factory ) {
+        mdRendererFactories.add( factory );
     }
 
     
@@ -134,7 +146,7 @@ public class DesktopToolkit
     }
 
     @Override
-    public Label createFlowText( Composite parent, String text, LinkAction[] linkActions, int... styles ) {
+    public Label createFlowText( Composite parent, String text, ILinkAction[] linkActions, int... styles ) {
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
             // process markdown
@@ -150,7 +162,7 @@ public class DesktopToolkit
      * 
      */
     protected static class PegDownRenderOutput
-            implements RenderOutput {
+            implements MarkdownRenderOutput {
 
         private String      url, text, title;
         
@@ -181,17 +193,22 @@ public class DesktopToolkit
     
     /**
      * Delegates link and image rendering to the
-     * {@link DesktopToolkit#registerMarkdownRenderer(IPanelToolkit.MarkdownRenderer)
-     * registered} {@link MarkdownRenderer}s.
+     * {@link DesktopToolkit#registerMarkdownRenderer(IPanelToolkit.IMarkdownRenderer)
+     * registered} {@link IMarkdownRenderer}s.
      */
     protected class DelegatingLinkRenderer
             extends LinkRenderer {
         
-        protected Rendering render( MarkdownNode node ) {
-            for (MarkdownRenderer renderer : renderers) {
+        protected Rendering render( IMarkdownNode node ) {
+            for (Callable<IMarkdownRenderer> factory : mdRendererFactories) {
                 PegDownRenderOutput out = new PegDownRenderOutput();
-                if (renderer.render( node, out, context )) {
-                    return out.createRendering();
+                try {
+                    if (factory.call().render( node, out, context )) {
+                        return out.createRendering();
+                    }
+                }
+                catch (Exception e) {
+                    throw new RuntimeException( e );
                 }
             }
             return null;
@@ -199,10 +216,10 @@ public class DesktopToolkit
         
         @Override
         public Rendering render( final ExpImageNode imageNode, final String text ) {
-            Rendering result = render( new MarkdownNode() {
+            Rendering result = render( new IMarkdownNode() {
                 @Override
-                public MarkdownNodeType type() {
-                    return MarkdownNodeType.ExpImage;
+                public IMarkdownNode.Type type() {
+                    return IMarkdownNode.Type.ExpImage;
                 }
                 @Override
                 public String url() {
@@ -222,10 +239,10 @@ public class DesktopToolkit
 
         @Override
         public Rendering render( final ExpLinkNode linkNode, final String linktext ) {
-            Rendering result = render( new MarkdownNode() {
+            Rendering result = render( new IMarkdownNode() {
                 @Override
-                public MarkdownNodeType type() {
-                    return MarkdownNodeType.ExpLink;
+                public IMarkdownNode.Type type() {
+                    return IMarkdownNode.Type.ExpLink;
                 }
                 @Override
                 public String url() {
