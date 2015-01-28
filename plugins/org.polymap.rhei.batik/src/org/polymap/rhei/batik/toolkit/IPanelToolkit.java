@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
-import java.util.EventListener;
 
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,7 +25,6 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 
 /**
@@ -74,65 +72,8 @@ public interface IPanelToolkit {
      * @param styles
      * @return The newly created control.
      */
-    public Label createFlowText( Composite parent, String text, LinkAction[] linkActions, int... styles );
+    public Label createFlowText( Composite parent, String text, ILinkAction[] linkActions, int... styles );
 
-    public static interface LinkAction
-            extends EventListener {
-        
-        public void linkPressed() throws Exception;
-        
-    }
-
-    /**
-     * Allows to render links and images and later maybe other special nodes. 
-     */
-    public static interface MarkdownRenderer {
-
-        /**
-         * @param node The Markdown node to render.
-         * @param out
-         * @return True if this renderer was able to render the given node.
-         */
-        public boolean render( MarkdownNode node, RenderOutput out, IAppContext context );
-    }
-
-    /**
-     * 
-     */
-    public static enum MarkdownNodeType {
-        ExpLink,
-        RefLink,
-        ExpImage,
-        RefImage
-    }
-    
-    /**
-     * 
-     */
-    public static interface MarkdownNode {
-        
-        public MarkdownNodeType type();
-
-        public String url();
-
-        public String title();
-        
-        public String text();
-    }
-    
-    /**
-     * 
-     */
-    public static interface RenderOutput {
-
-        public void setUrl( String linkUrl );
-
-        public void setTitle( String title );
-
-        public void setText( String text );
-    }
-    
-    
     public Link createLink( Composite parent, String text, int... styles );
 
     public Button createButton( Composite parent, String text, int... styles );
