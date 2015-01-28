@@ -25,10 +25,9 @@ import org.polymap.core.runtime.Polymap;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
-import org.polymap.rhei.batik.toolkit.IMarkdownNode.Type;
 import org.polymap.rhei.batik.toolkit.ILinkAction;
-import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
 import org.polymap.rhei.batik.toolkit.IMarkdownNode;
+import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
 import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
 
 /**

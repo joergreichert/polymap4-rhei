@@ -29,8 +29,7 @@ import org.polymap.core.runtime.ConcurrentReferenceHashMap;
 import org.polymap.core.runtime.ConcurrentReferenceHashMap.ReferenceType;
 import org.polymap.core.runtime.Polymap;
 
-import org.polymap.rhei.batik.toolkit.IPanelToolkit;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit.LinkAction;
+import org.polymap.rhei.batik.toolkit.ILinkAction;
 
 /**
  * 
@@ -46,7 +45,7 @@ public class LinkActionServiceHandler
 
     public static final String          ID_REQUEST_PARAM = "id";
 
-    static ConcurrentReferenceHashMap<String,IPanelToolkit.LinkAction>   providers 
+    static ConcurrentReferenceHashMap<String,ILinkAction>   providers 
             = new ConcurrentReferenceHashMap( ReferenceType.STRONG, ReferenceType.SOFT );
 
 
@@ -63,7 +62,7 @@ public class LinkActionServiceHandler
      * @param provider
      * @return The download URL for the given provider.
      */
-    public static String register( IPanelToolkit.LinkAction action ) {
+    public static String register( ILinkAction action ) {
         return register( String.valueOf( action.hashCode() ), action );
     }
 
@@ -75,10 +74,11 @@ public class LinkActionServiceHandler
      * @param provider
      * @return The download URL for the given provider.
      */
-    public static String register( String id, IPanelToolkit.LinkAction action ) {
+    public static String register( String id, ILinkAction action ) {
         if (providers.put( id, action ) != null) {
             log.warn( "ContetProvider already registered for id: " + id );
         }
+       // UICallBack.activate( LinkActionServiceHandler.class.getName() );
         return id;        
     }
     
@@ -96,7 +96,7 @@ public class LinkActionServiceHandler
             return;
         }
 
-        final LinkAction linkAction = providers.get( id );
+        final ILinkAction linkAction = providers.get( id );
         if (linkAction == null) {
             log.warn( "No content provider registered for id: " + id );
             response.sendError( 404 );
