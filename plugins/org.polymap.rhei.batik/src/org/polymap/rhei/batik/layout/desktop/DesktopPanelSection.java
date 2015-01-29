@@ -23,10 +23,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.toolkit.ConstraintData;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
@@ -57,28 +56,28 @@ class DesktopPanelSection
     
     public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
         control = new Composite( parent, SWT.NO_FOCUS );
-        control.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION  );
+        UIUtils.setVariant( control, DesktopToolkit.CSS_SECTION  );
         control.setData( "panelSection", this );
         control.setMenu( parent.getMenu() );
         control.setLayout( FormLayoutFactory.defaults().spacing( 3 ).create() );
 
         // title
         title = new Label( control, SWT.NO_FOCUS );
-        title.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
+        UIUtils.setVariant( title, DesktopToolkit.CSS_SECTION_TITLE  );
         title.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
         FormDataFactory.filled().bottom( -1 ).height( 25 ).applyTo( title );
         title.setVisible( false );
         
         // separator
         sep = new Label( control, SWT.NO_FOCUS | SWT.SEPARATOR | SWT.HORIZONTAL );
-        sep.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_SEPARATOR );
+        UIUtils.setVariant( sep, DesktopToolkit.CSS_SECTION_SEPARATOR );
         FormDataFactory.filled().top( this.title ).bottom( -1 ).applyTo( sep );
         sep.setVisible( false );
         sep.moveBelow( title );
 
         // client
-        client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.stylebits( styles ) ) );
-        client.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_CLIENT );
+        client = tk.adapt( new Composite( control, /*SWT.NO_FOCUS |*/ tk.stylebits( styles ) ) );
+        UIUtils.setVariant( client, DesktopToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 
 //        ColumnLayout clientLayout = ColumnLayoutFactory.defaults().columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 

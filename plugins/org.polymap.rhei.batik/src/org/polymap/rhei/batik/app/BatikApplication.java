@@ -20,21 +20,16 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.window.Window;
 
 import org.eclipse.ui.PlatformUI;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.rap.rwt.application.IEntryPoint;
-
+import org.eclipse.rap.rwt.application.EntryPoint;
 import org.polymap.core.runtime.Polymap;
 
-import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IApplicationLayouter;
 import org.polymap.rhei.batik.internal.BatikComponentFactory;
-import org.polymap.rhei.batik.internal.Messages;
+import org.polymap.rhei.batik.internal.BrowserSizeServiceHandler;
 
 /**
  *
@@ -42,7 +37,7 @@ import org.polymap.rhei.batik.internal.Messages;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class BatikApplication
-        implements IEntryPoint {
+        implements EntryPoint {
 
     private static final Log log = LogFactory.getLog( BatikApplication.class );
 
@@ -82,60 +77,6 @@ public class BatikApplication
     }
 
 
-    /**
-     * @see #handleError(String, String, Throwable)
-     */
-    public static void handleError( final String msg, Throwable e ) {
-        handleError( BatikPlugin.PLUGIN_ID, msg, e );
-    }
-
-
-    /**
-     * Handle the given error by opening an error dialog and logging the given
-     * message to the CorePlugin log.
-     *
-     * @param msg The error message. If null, then a standard message is used.
-     * @param e The reason of the error, must not be null.
-     */
-    public static void handleError( String pluginId, final String msg, Throwable e ) {
-        log.error( msg, e );
-
-        final Status status = new Status( IStatus.ERROR, pluginId, e.getLocalizedMessage(), e );
-        // XXX causes Exception; don't know why doing this anyway
-        //CorePlugin.getDefault().getLog().log( status );
-
-        final Display display = Polymap.getSessionDisplay();
-        if (display == null) {
-            log.error( "No display -> no error message." );
-            return;
-        }
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                try {
-                    Shell shell = shellToParentOn();
-                    ErrorDialog dialog = new ErrorDialog(
-                            shell,
-                            Messages.get( "PolymapWorkbench_errorDialogTitle" ),
-                            msg != null ? msg : "Fehler beim Ausführen der Operation.",
-                            status,
-                            IStatus.OK | IStatus.INFO | IStatus.WARNING | IStatus.ERROR );
-//                dialog.setBlockOnOpen( true );
-                    dialog.open();
-                }
-                catch (Throwable ie) {
-                    log.warn( ie );
-                }
-            }
-        };
-        if (Display.getCurrent() == display) {
-            runnable.run();
-        } else {
-            display.asyncExec( runnable );
-        }
-    }
-
-
     // instance *******************************************
 
     private Display                     display;
@@ -157,6 +98,8 @@ public class BatikApplication
         // start Atlas UI
 //        try {
             display = PlatformUI.createDisplay();
+            
+            BrowserSizeServiceHandler.current = display;
 
             log.info( "Display DPI: " + display.getDPI().x + "x" + display.getDPI().y );
 

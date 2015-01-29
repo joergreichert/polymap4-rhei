@@ -54,29 +54,30 @@ class PageLinkRenderer
                 Display display = Polymap.getSessionDisplay();
                 
                 @Override
-                public void linkPressed() throws Exception {
-                    display.asyncExec( new Runnable() {
-                        public void run() {
-                            String[] urlParts = StringUtils.split( node.url(), "/" );
-                            String command = "open";
-                            String panelId = urlParts[0];
+                public Display display() {
+                    return display;
+                }
 
-                            if (urlParts.length > 1) {
-                                command = urlParts[0].substring( 1 );
-                                panelId = urlParts[1];
-                            }
-                            if (urlParts.length > 2) {
-                                
-                            }
-                            if ("open".equalsIgnoreCase( command )) {
-                                log.info( command + " : " + panelId );
-                                context.openPanel( PanelIdentifier.parse( panelId ) );
-                            }
-                            else {
-                                throw new IllegalStateException( "Unknown link command: " + command );
-                            }
-                        }
-                    });
+                @Override
+                public void linkPressed() throws Exception {
+                    String[] urlParts = StringUtils.split( node.url(), "/" );
+                    String command = "open";
+                    String panelId = urlParts[0];
+
+                    if (urlParts.length > 1) {
+                        command = urlParts[0].substring( 1 );
+                        panelId = urlParts[1];
+                    }
+                    if (urlParts.length > 2) {
+
+                    }
+                    if ("open".equalsIgnoreCase( command )) {
+                        log.info( command + " : " + panelId );
+                        context.openPanel( PanelIdentifier.parse( panelId ) );
+                    }
+                    else {
+                        throw new IllegalStateException( "Unknown link command: " + command );
+                    }
                 }
             });
             

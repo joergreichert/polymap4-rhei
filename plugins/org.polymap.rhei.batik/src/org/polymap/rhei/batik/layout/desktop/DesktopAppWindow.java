@@ -23,6 +23,8 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -30,16 +32,13 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 
 import org.eclipse.rap.rwt.lifecycle.UICallBack;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
-import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
-import org.polymap.rhei.batik.internal.ApplicationResizeEvent;
 import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopPanelSite;
 
 /**
@@ -54,8 +53,6 @@ public abstract class DesktopAppWindow
 
     protected DesktopAppManager       appManager;
     
-    protected ResizeHandler           resizeHandler = new ResizeHandler();
-
     protected Composite               panels;
 
     protected Composite               contents;
@@ -87,31 +84,21 @@ public abstract class DesktopAppWindow
         // navi
         Composite navi = fillNavigationArea( contents );
         navi.setLayoutData( FormDataFactory.filled().bottom( -1 ).height( 30 ).create() );
-        navi.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+        UIUtils.setVariant( navi, "atlas-navi"  );
 
         panels = fillPanelArea( contents );
         panels.setLayoutData( FormDataFactory.filled().top( navi, 10 ).create() );
-        panels.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-panels"  );
+        UIUtils.setVariant( panels, "atlas-panels" );
 
         appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return input.getType() == TYPE.ACTIVATED;
             }
         });
-        
-        EventManager.instance().subscribe( resizeHandler );
-        
         return contents;
     }
 
     
-
-    @Override
-    public boolean close() {
-        EventManager.instance().unsubscribe( resizeHandler );
-        return super.close();
-    }
-
 
     @EventHandler(display=true)
     protected void panelChanged( PanelChangeEvent ev ) {
@@ -130,6 +117,18 @@ public abstract class DesktopAppWindow
         Rectangle bounds = Display.getCurrent().getBounds();
         shell.setBounds( 0, 60, bounds.width, bounds.height - 60 );
 //        shell.setMaximized( true );
+        
+        shell.getDisplay().addListener( SWT.Resize, new Listener() {
+            public void handleEvent( Event ev ) {
+                log.info( "Display size: " + ev.width + "x" + ev.height );
+                
+                getShell().setBounds( 0, 60, ev.width, ev.height - 60 );
+                //getShell().layout();
+                //((ScrolledPageBook)panels).reflow( true );
+                
+                delayedRefresh( null );
+            }
+        });
     }
 
 
@@ -196,24 +195,6 @@ public abstract class DesktopAppWindow
     @Override
     protected boolean showTopSeperator() {
         return false;
-    }
-
-
-    /**
-     * 
-     */
-    class ResizeHandler {
-    
-        @EventHandler(display=true)
-        public void handleEvent( ApplicationResizeEvent ev ) {
-            Rectangle bounds = Display.getCurrent().getBounds();
-            log.info( "layout: " + bounds );
-            getShell().setBounds( 0, 60, bounds.width, bounds.height - 60 );
-            //getShell().layout();
-            //((ScrolledPageBook)panels).reflow( true );
-            
-            delayedRefresh( null );
-        }
     }
 
 }

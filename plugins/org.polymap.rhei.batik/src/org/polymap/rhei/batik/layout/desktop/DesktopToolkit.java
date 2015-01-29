@@ -52,11 +52,11 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.graphics.Graphics;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 
 import org.polymap.core.runtime.Lazy;
 import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
 import org.polymap.rhei.batik.toolkit.IBusyIndicator;
@@ -406,7 +406,7 @@ public class DesktopToolkit
 
     
     protected <T extends Composite> T adapt( T composite ) {
-        composite.setData( WidgetUtil.CUSTOM_VARIANT, CSS_PREFIX );
+        UIUtils.setVariant( composite, CSS_PREFIX );
 
 //        composite.setBackground( colors.getBackground() );
 //        composite.addMouseListener( new MouseAdapter() {
@@ -439,7 +439,7 @@ public class DesktopToolkit
      *        by the control.
      */
     public <T extends Control> T adapt( T control, boolean trackFocus, boolean trackKeyboard) {
-        control.setData( WidgetUtil.CUSTOM_VARIANT, CSS_PREFIX );
+        UIUtils.setVariant( control, CSS_PREFIX );
 
 //        control.setBackground( colors.getBackground() );
 //        control.setForeground( colors.getForeground() );

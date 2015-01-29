@@ -26,10 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.rap.rwt.service.ServiceHandler;
-
 import org.polymap.core.runtime.event.EventManager;
-
-import org.polymap.rhei.batik.app.BatikApplication;
 
 /**
  * 
@@ -41,17 +38,18 @@ public class BrowserSizeServiceHandler
 
     private static Log log = LogFactory.getLog( BrowserSizeServiceHandler.class );
 
+    /* FIXME !!! */
+    public static Display       current;
 
     @Override
     public void service( HttpServletRequest request, HttpServletResponse response ) 
             throws IOException, ServletException {
         log.info( "Browser size: " + request.getParameter( "width" ) );
         
-        final Display display = BatikApplication.sessionDisplay();
-        display.asyncExec( new Runnable() {
+        current.asyncExec( new Runnable() {
             public void run() {
-                log.info( "Display size: " + display.getBounds() );
-                EventManager.instance().publish( new ApplicationResizeEvent( display ) );
+                log.info( "Display size: " + current.getBounds() );
+                EventManager.instance().publish( new ApplicationResizeEvent( current ) );
             }
         });
     }

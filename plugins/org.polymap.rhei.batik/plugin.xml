@@ -54,18 +54,11 @@
             class="org.polymap.rhei.batik.internal.LinkActionServiceHandler"
             id="org.polymap.rhei.batik.LinkActionServiceHandler">
       </serviceHandler>
-      <serviceHandler
-            class="org.polymap.rhei.batik.internal.BrowserSizeServiceHandler"
-            id="org.polymap.rhei.batik.BrowserSizeServiceHandler">
-      </serviceHandler>
    </extension>
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
             class="org.polymap.rhei.batik.internal.LinkActionResource">
-      </resource>
-      <resource
-            class="org.polymap.rhei.batik.internal.BrowserSizeResource">
       </resource>
    </extension>
    <extension

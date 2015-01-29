@@ -16,6 +16,8 @@ package org.polymap.rhei.batik.toolkit;
 
 import java.util.EventListener;
 
+import org.eclipse.swt.widgets.Display;
+
 /**
  * 
  *
@@ -23,6 +25,8 @@ import java.util.EventListener;
  */
 public interface ILinkAction
         extends EventListener {
+    
+    public Display display();
     
     public void linkPressed() throws Exception;
     

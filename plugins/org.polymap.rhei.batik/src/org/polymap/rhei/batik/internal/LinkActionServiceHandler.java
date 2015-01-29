@@ -23,11 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.rap.rwt.service.ServiceHandler;
 
 import org.polymap.core.runtime.ConcurrentReferenceHashMap;
 import org.polymap.core.runtime.ConcurrentReferenceHashMap.ReferenceType;
-import org.polymap.core.runtime.Polymap;
 
 import org.polymap.rhei.batik.toolkit.ILinkAction;
 
@@ -46,7 +47,7 @@ public class LinkActionServiceHandler
     public static final String          ID_REQUEST_PARAM = "id";
 
     static ConcurrentReferenceHashMap<String,ILinkAction>   providers 
-            = new ConcurrentReferenceHashMap( ReferenceType.STRONG, ReferenceType.SOFT );
+            = new ConcurrentReferenceHashMap( ReferenceType.STRONG, ReferenceType.WEAK );
 
 
 //    static {
@@ -105,16 +106,14 @@ public class LinkActionServiceHandler
         
         //response.flushBuffer();
 
-        Polymap.getSessionDisplay().asyncExec( new Runnable() {
-            public void run() {
-                try {
-                    linkAction.linkPressed();
-                }
-                catch (Exception e) {
-                    log.debug( "", e );
-                }
-            }
-        });
+        Runnable task = () -> { try { linkAction.linkPressed(); } catch (Exception e) { log.warn( "", e ); } };
+        Display display = linkAction.display();
+        if (display != null) {
+            display.asyncExec( task );
+        }
+        else {
+            task.run();
+        }
     }
     
 }

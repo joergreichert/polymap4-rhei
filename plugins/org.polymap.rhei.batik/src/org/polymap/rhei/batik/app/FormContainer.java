@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,9 +28,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
 
 import org.eclipse.jface.action.Action;
+
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -41,24 +39,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
-import org.polymap.rhei.field.CheckboxFormField;
-import org.polymap.rhei.field.DateTimeFormField;
-import org.polymap.rhei.field.FormFieldEvent;
-import org.polymap.rhei.field.IFormField;
-import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.field.NumberValidator;
-import org.polymap.rhei.field.StringFormField;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
-import org.polymap.rhei.internal.form.FormFieldComposite;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the
@@ -129,7 +114,7 @@ public abstract class FormContainer
             pageContainer.doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {
-            BatikApplication.handleError( BatikPlugin.PLUGIN_ID, "An error occured while creating the new page.", e );
+            StatusDispatcher.handleError( "An error occured while creating the new page.", e );
         }
         return pageBody;
     }
