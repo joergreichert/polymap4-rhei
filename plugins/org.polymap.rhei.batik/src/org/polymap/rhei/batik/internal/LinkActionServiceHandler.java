@@ -50,17 +50,11 @@ public class LinkActionServiceHandler
             = new ConcurrentReferenceHashMap( ReferenceType.STRONG, ReferenceType.WEAK );
 
 
-//    static {
-//        LinkActionServiceHandler instance = new LinkActionServiceHandler();
-//        RWT.getServiceManager().registerServiceHandler( SERVICE_HANDLER_ID, instance );
-//    }
-
-    
     /**
      * Registers the given provider for downloading. An unique id of the newly
      * registered download is build automatically.
      * 
-     * @param provider
+     * @param action The action to execute. (<b>WEAKLY</b> referenced inside!)
      * @return The download URL for the given provider.
      */
     public static String register( ILinkAction action ) {
@@ -75,7 +69,7 @@ public class LinkActionServiceHandler
      * @param provider
      * @return The download URL for the given provider.
      */
-    public static String register( String id, ILinkAction action ) {
+    protected static String register( String id, ILinkAction action ) {
         if (providers.put( id, action ) != null) {
             log.warn( "ContetProvider already registered for id: " + id );
         }

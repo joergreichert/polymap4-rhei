@@ -76,7 +76,7 @@ class DesktopPanelSection
         sep.moveBelow( title );
 
         // client
-        client = tk.adapt( new Composite( control, /*SWT.NO_FOCUS |*/ tk.stylebits( styles ) ) );
+        client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.stylebits( styles ) ) );
         UIUtils.setVariant( client, DesktopToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 

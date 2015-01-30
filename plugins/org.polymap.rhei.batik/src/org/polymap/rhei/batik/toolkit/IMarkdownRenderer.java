@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
+import org.eclipse.swt.widgets.Widget;
+
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.layout.desktop.DesktopToolkit;
 
@@ -30,8 +32,9 @@ public interface IMarkdownRenderer {
     /**
      * @param node The Markdown node to render.
      * @param out
+     * @param widget The widget the text is rendered for.
      * @return True if this renderer was able to render the given node.
      */
-    public boolean render( IMarkdownNode node, MarkdownRenderOutput out, IAppContext context );
+    public boolean render( IMarkdownNode node, MarkdownRenderOutput out, IAppContext context, Widget widget );
     
 }

@@ -18,9 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Widget;
 
-import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
@@ -40,46 +43,32 @@ import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 class PageLinkRenderer
-        implements IMarkdownRenderer {
+        implements IMarkdownRenderer, DisposeListener, ILinkAction {
 
     private static Log log = LogFactory.getLog( PageLinkRenderer.class );
+    
+    private Display             display;
+
+    private IMarkdownNode       node;
+
+    private IAppContext         context;
 
     
     @Override
-    public boolean render( final IMarkdownNode node, MarkdownRenderOutput out, final IAppContext context ) {
+    public boolean render( final IMarkdownNode node, MarkdownRenderOutput out, final IAppContext context, Widget widget ) {
         log.info( "url=" + node.url() );
         if (node.type() == IMarkdownNode.Type.ExpLink 
                 && node.url().startsWith( "@" )) {
-            String id = LinkActionServiceHandler.register( new ILinkAction() {
-                Display display = Polymap.getSessionDisplay();
-                
-                @Override
-                public Display display() {
-                    return display;
-                }
 
-                @Override
-                public void linkPressed() throws Exception {
-                    String[] urlParts = StringUtils.split( node.url(), "/" );
-                    String command = "open";
-                    String panelId = urlParts[0];
+            // prevent this from being GCed as long as the widget exists
+            widget.addDisposeListener( this );
 
-                    if (urlParts.length > 1) {
-                        command = urlParts[0].substring( 1 );
-                        panelId = urlParts[1];
-                    }
-                    if (urlParts.length > 2) {
-
-                    }
-                    if ("open".equalsIgnoreCase( command )) {
-                        log.info( command + " : " + panelId );
-                        context.openPanel( PanelIdentifier.parse( panelId ) );
-                    }
-                    else {
-                        throw new IllegalStateException( "Unknown link command: " + command );
-                    }
-                }
-            });
+            String id = LinkActionServiceHandler.register( this );
+            
+            this.node = node;
+            this.context = context;
+            this.display = UIUtils.sessionDisplay();
+            assert display != null;
             
             String linkUrl = "javascript:sendServiceHandlerRequest('" + LinkActionServiceHandler.SERVICE_HANDLER_ID + "','" + id + "');";
             out.setUrl( linkUrl );
@@ -93,6 +82,40 @@ class PageLinkRenderer
         else {
             return false;
         }
+    }
+
+
+    @Override
+    public Display display() {
+        return display;
+    }
+
+    
+    @Override
+    public void linkPressed() throws Exception {
+        String[] urlParts = StringUtils.split( node.url(), "/" );
+        String command = "open";
+        String panelId = urlParts[0];
+
+        if (urlParts.length > 1) {
+            command = urlParts[0].substring( 1 );
+            panelId = urlParts[1];
+        }
+        if (urlParts.length > 2) {
+
+        }
+        if ("open".equalsIgnoreCase( command )) {
+            log.info( command + " : " + panelId );
+            context.openPanel( PanelIdentifier.parse( panelId ) );
+        }
+        else {
+            throw new IllegalStateException( "Unknown link command: " + command );
+        }
+    }
+
+    @Override
+    public void widgetDisposed( DisposeEvent ev ) {
+        //LinkActionServiceHandler.deregister( this );
     }
     
 }

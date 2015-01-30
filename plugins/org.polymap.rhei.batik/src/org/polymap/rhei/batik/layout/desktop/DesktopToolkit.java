@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.Section;
@@ -137,7 +138,7 @@ public class DesktopToolkit
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
             // process markdown
-            LinkRenderer linkRenderer = new DelegatingLinkRenderer();
+            LinkRenderer linkRenderer = new DelegatingLinkRenderer( result );
             String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
             result.setText( processed );
         }
@@ -150,7 +151,7 @@ public class DesktopToolkit
         Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
         if (text != null) {
             // process markdown
-            LinkRenderer linkRenderer = new DelegatingLinkRenderer();
+            LinkRenderer linkRenderer = new DelegatingLinkRenderer( result );
             String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
             result.setText( processed );
         }
@@ -199,11 +200,17 @@ public class DesktopToolkit
     protected class DelegatingLinkRenderer
             extends LinkRenderer {
         
+        private Widget              widget;
+        
+        public DelegatingLinkRenderer( Widget widget ) {
+            this.widget = widget;
+        }
+
         protected Rendering render( IMarkdownNode node ) {
             for (Callable<IMarkdownRenderer> factory : mdRendererFactories) {
                 PegDownRenderOutput out = new PegDownRenderOutput();
                 try {
-                    if (factory.call().render( node, out, context )) {
+                    if (factory.call().render( node, out, context, widget )) {
                         return out.createRendering();
                     }
                 }
@@ -378,7 +385,6 @@ public class DesktopToolkit
     @Override
     public IPanelSection createPanelSection( Composite parent, String title, int... styles ) {
         DesktopPanelSection result = new DesktopPanelSection( this, parent, styles );
-        adapt( result.getControl() );
         if (title != null) {
             result.setTitle( title );
         }
