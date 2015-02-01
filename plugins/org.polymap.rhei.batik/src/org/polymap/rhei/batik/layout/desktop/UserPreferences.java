@@ -35,11 +35,10 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.rap.rwt.graphics.Graphics;
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelIdentifier;
@@ -116,7 +115,7 @@ class UserPreferences
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
-        btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+        UIUtils.setVariant( btn, PanelNavigator.CSS_PREFIX );
         btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/cog.png" ) );
         btn.setToolTipText( i18n.get( "menuTip" ) );
         
@@ -129,7 +128,7 @@ class UserPreferences
 //        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
             usernameLnk = new Button( contents, SWT.PUSH | SWT.LEFT );
             usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
-            usernameLnk.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            UIUtils.setVariant( usernameLnk, PanelNavigator.CSS_PREFIX );
             usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
             

@@ -1,0 +1,117 @@
+/*
+ * polymap.org
+ * Copyright 2015, Falko Bräutigam. All rights reserved.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3.0 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
+/*
+ * Batik specific elements like Navigation and Status
+ *
+ *    Background grey: #f3f3f3 
+ *    Action blue: background-color: #5a9cbd;
+ */
+ 
+Display {
+  rwt-fontlist: 13px Helvetica, Arial, sans-serif;
+  /*background-image: url(resources/icons/rap/display/browser_bg.png );*/
+  font: 13px Helvetica, Arial, sans-serif;
+}
+* {
+  font: 13px Helvetica, Arial, sans-serif;
+  color: #4a4a4a;
+  background-color: transparent;  /*#fff;*/
+  background-image: none;
+}
+*:disabled {
+  color: #CFCFCF;
+}
+ 
+/*
+ * Navigation Buttons
+ */
+Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
+  color: #4a8aaf;
+  background-color: #f3f3f3;
+  background-image: none;
+  border: none;
+}
+Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH]:hover.atlas-navi {
+  color: #0f1c23;
+  background-color: #e3e3e3;
+  background-image: none;
+  border: none;
+}
+Composite.atlas-navi/*, Composite.atlas-status, CLabel.atlas-status*/ {
+  background-color: #f3f3f3;
+}
+
+/* 
+ * ToolTip 
+ */
+ToolTip, Shell.batik-status-tooltip {
+  cursor: default;
+  border-radius: 3px;
+  padding: 3px 3px;
+  opacity: 1;
+  /*background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));*/
+  
+  border: 1px solid #6FA1DA;
+  background-color: #f8f8f8;
+  /*background-color: #FFFEDB;*/
+  /*background-image: gradient(linear, left top, left bottom, from(#888), to(#363532));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#ffffff), to(#e5e9ec));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#f6f8fa), to(#dde0e1));*/
+
+  color: #f0f0f0;
+  animation: fadeIn 200ms linear, fadeOut 500ms ease-out;
+  animation: flyInTop 500ms ease-out, flyOutTop 500ms ease-in;
+  box-shadow: 0px 1px 2px #808080;
+
+  /*  
+  border: 2px solid #6eb02e;
+  background-color: #f5f5f5;
+  color: #444;
+  animation: flyInRight 500ms ease-out, flyOutRight 500ms ease-in;
+  box-shadow: 0px 1px 5px #cdcdcd;
+  background-image: gradient(linear, left top, left bottom, from(#fff), to(#f5f5f5));
+  */
+}
+ToolTip-Text, Label.batik-status-tooltip-text {
+  color: #f8f8f8;
+  text-shadow: none;
+}
+ToolTip-Message, Label.batik-status-tooltip-message {
+  color: #e8e8e8;
+  text-shadow: none;
+}
+
+/* 
+ * Batik Section
+ */
+Composite[BORDER].batik-panel-section-client {
+  border-radius: 4px;
+  border: 1px solid #cdcdcd;
+}
+Composite[BORDER].batik-panel-section {
+  border-radius: 4px;
+  border: 1px solid #cdcdcd;
+}
+Label.batik-panel-section-title {
+  font: 22px/100% Helvetica, Arial, sans-serif;
+  border: none;
+}
+Label:disabled.batik-panel-section-title {
+  opacity: 0.3;
+}
+/* Label.batik-panel-section-separator {
+  opacity: 0;
+}*/

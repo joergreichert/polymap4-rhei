@@ -5,8 +5,17 @@
    <extension-point id="org.polymap.rhei.batik.panels" name="Batik Panels" schema="schema/panels.exsd"/>
    <extension
          point="org.eclipse.rap.ui.themes">
+      <theme
+            file="resources/css/default-rap23.css"
+            id="org.polymap.rhei.batik.theme"
+            name="Batik Default">
+      </theme>
       <themeContribution
-            file="batik.css"
+            file="resources/css/batik.css"
+            themeId="org.polymap.rhei.batik.theme">
+      </themeContribution>
+      <themeContribution
+            file="resources/css/button.css"
             themeId="org.polymap.rhei.batik.theme">
       </themeContribution>
    </extension>

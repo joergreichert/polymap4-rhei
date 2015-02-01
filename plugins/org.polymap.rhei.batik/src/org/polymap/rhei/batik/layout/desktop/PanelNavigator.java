@@ -33,18 +33,16 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.layout.RowDataFactory;
 import org.eclipse.jface.layout.RowLayoutFactory;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.Panels;
-import org.polymap.rhei.batik.app.BatikApplication;
 
 /**
  *
@@ -54,17 +52,19 @@ import org.polymap.rhei.batik.app.BatikApplication;
 public class PanelNavigator
         extends ContributionItem {
 
+    public static final String      CSS_PREFIX = "atlas-navi";
+
     private static Log log = LogFactory.getLog( PanelNavigator.class );
 
-    private DesktopAppManager         appManager;
+    private DesktopAppManager       appManager;
 
-    private Composite                 contents;
+    private Composite               contents;
 
-    private List<PanelChangeEvent>    pendingStartEvents = new ArrayList();
+    private List<PanelChangeEvent>  pendingStartEvents = new ArrayList();
 
-    private Composite                 breadcrumb;
+    private Composite               breadcrumb;
 
-    private IPanel                    activePanel;
+    private IPanel                  activePanel;
 
 
     public PanelNavigator( DesktopAppManager appManager ) {
@@ -120,7 +120,7 @@ public class PanelNavigator
 //            }
 //        });
         
-        boolean showText = BatikApplication.sessionDisplay().getClientArea().width > 900;
+        boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
 
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
@@ -128,7 +128,7 @@ public class PanelNavigator
             final IPanel panel = appManager.getContext().getPanel( path.prefix( i ) );
 
             Button btn = new Button( breadcrumb, SWT.PUSH );
-            btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            UIUtils.setVariant( btn, CSS_PREFIX );
             btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
             Image icon = panel.getSite().getIcon();
             if (showText || icon == null) {
@@ -159,7 +159,7 @@ public class PanelNavigator
         PanelPath prefix = activePanel.getSite().getPath().removeLast( 1 );
         for (final IPanel panel : appManager.getContext().findPanels( Panels.withPrefix( prefix ) )) {
             final Button btn = new Button( breadcrumb, SWT.TOGGLE );
-            btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
+            UIUtils.setVariant( btn, CSS_PREFIX );
             Image icon = panel.getSite().getIcon();
             String title = panel.getSite().getTitle();
             

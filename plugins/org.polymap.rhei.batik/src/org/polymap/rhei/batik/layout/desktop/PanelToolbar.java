@@ -33,11 +33,10 @@ import org.eclipse.jface.layout.RowDataFactory;
 import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelChangeEvent;
@@ -54,11 +53,13 @@ public class PanelToolbar
 
     private static Log log = LogFactory.getLog( PanelToolbar.class );
 
-    private DesktopAppManager           appManager;
+    public static final String      CSS_PREFIX = "atlas-toolbar";
 
-    private Composite                   contents;
+    private DesktopAppManager       appManager;
 
-    private List<PanelChangeEvent>      pendingStartEvents = new ArrayList();
+    private Composite               contents;
+
+    private List<PanelChangeEvent>  pendingStartEvents = new ArrayList();
     
 
     public PanelToolbar( DesktopAppManager appManager ) {
@@ -115,7 +116,7 @@ public class PanelToolbar
                             btn = new Button( contents, SWT.PUSH );
                     }
                     btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-                    btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-toolbar"  );
+                    UIUtils.setVariant( btn, CSS_PREFIX );
                     btn.setData( "source", tool );
                     if (action.getText() != null) {
                         btn.setText( action.getText() );

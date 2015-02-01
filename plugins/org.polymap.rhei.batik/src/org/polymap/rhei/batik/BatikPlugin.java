@@ -86,7 +86,7 @@ public class BatikPlugin extends AbstractUIPlugin {
                 HttpService httpService = (HttpService)super.addingService( reference );                
                 if (httpService != null) {
                     try {
-                        httpService.registerResources( "/resources", "/resources", null );
+                        httpService.registerResources( "/batikres", "/resources", null );
                     }
                     catch (NamespaceException e) {
                         throw new RuntimeException( e );

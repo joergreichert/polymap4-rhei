@@ -65,7 +65,7 @@ class DesktopPanelSection
         title = new Label( control, SWT.NO_FOCUS );
         UIUtils.setVariant( title, DesktopToolkit.CSS_SECTION_TITLE  );
         title.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-        FormDataFactory.filled().bottom( -1 ).height( 25 ).applyTo( title );
+        FormDataFactory.filled().bottom( -1 ).height( 26 ).applyTo( title );
         title.setVisible( false );
         
         // separator

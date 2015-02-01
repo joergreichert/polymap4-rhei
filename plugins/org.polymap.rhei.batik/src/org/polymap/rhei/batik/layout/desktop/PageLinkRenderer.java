@@ -55,6 +55,7 @@ class PageLinkRenderer
 
     
     @Override
+    @SuppressWarnings("hiding")
     public boolean render( final IMarkdownNode node, MarkdownRenderOutput out, final IAppContext context, Widget widget ) {
         log.info( "url=" + node.url() );
         if (node.type() == IMarkdownNode.Type.ExpLink 
