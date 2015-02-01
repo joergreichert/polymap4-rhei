@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.form.batik;
 
 import static org.polymap.rhei.batik.layout.desktop.DesktopToolkit.*;
 
@@ -43,7 +43,11 @@ import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.app.BatikApplication;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
+import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the

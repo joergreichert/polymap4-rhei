@@ -15,6 +15,7 @@
 package org.polymap.rhei.batik.toolkit;
 
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -100,7 +101,7 @@ public interface IPanelToolkit {
      * 
      * @param parent
      * @param title The heading of this section, or null if no heading.
-     * @param styles One of the {@link IPanelSection} constants.
+     * @param styles One of the {@link IPanelSection} constants, or {@link SWT#BORDER} .
      * @return Newly created viewer instance.
      */
     public IPanelSection createPanelSection( Composite parent, String title, int... styles );

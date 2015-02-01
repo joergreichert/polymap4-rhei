@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.dashboard;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
@@ -26,6 +26,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IAppContext;
@@ -62,7 +63,7 @@ public class DashboardPanel
         Image icon = JFaceResources.getImage( Dialog.DLG_IMG_MESSAGE_INFO );
         Action infoAction = new Action( "Info" ) {
             public void run() {
-                MessageDialog.openInformation( BatikApplication.shellToParentOn(),
+                MessageDialog.openInformation( UIUtils.shellToParentOn(),
                         "Information", "Atlas Client Version: " + BatikPlugin.instance().getBundle().getVersion() );
             }
         };

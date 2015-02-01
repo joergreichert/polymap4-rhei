@@ -55,7 +55,7 @@ class DesktopPanelSection
 
     
     public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
-        control = new Composite( parent, SWT.NO_FOCUS );
+        control = new Composite( parent, SWT.NO_FOCUS | tk.stylebits( styles ) );
         UIUtils.setVariant( control, DesktopToolkit.CSS_SECTION  );
         control.setData( "panelSection", this );
         control.setMenu( parent.getMenu() );
@@ -76,7 +76,7 @@ class DesktopPanelSection
         sep.moveBelow( title );
 
         // client
-        client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.stylebits( styles ) ) );
+        client = tk.adapt( new Composite( control, SWT.NO_FOCUS ) );
         UIUtils.setVariant( client, DesktopToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 

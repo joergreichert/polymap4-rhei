@@ -21,13 +21,8 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.geotools.geojson.feature.FeatureJSON;
-import org.opengis.feature.simple.SimpleFeature;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -44,13 +39,14 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.internal.Messages;
 
-import org.polymap.openlayers.rap.widget.base.OpenLayersEventListener;
-import org.polymap.openlayers.rap.widget.base.OpenLayersObject;
-import org.polymap.openlayers.rap.widget.base_types.OpenLayersMap;
-import org.polymap.openlayers.rap.widget.base_types.Style;
-import org.polymap.openlayers.rap.widget.base_types.StyleMap;
-import org.polymap.openlayers.rap.widget.controls.DrawFeatureControl;
-import org.polymap.openlayers.rap.widget.layers.VectorLayer;
+import org.polymap.rap.openlayers.base.OpenLayersEventListener;
+import org.polymap.rap.openlayers.base.OpenLayersObject;
+import org.polymap.rap.openlayers.base_types.OpenLayersMap;
+import org.polymap.rap.openlayers.base_types.Style;
+import org.polymap.rap.openlayers.base_types.StyleMap;
+import org.polymap.rap.openlayers.controls.DrawFeatureControl;
+import org.polymap.rap.openlayers.geometry.Geometry;
+import org.polymap.rap.openlayers.layers.VectorLayer;
 
 /**
  * Punkt digitalisieren. Setzt die Geometry im übergebenen MCase (siehe

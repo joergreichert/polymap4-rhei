@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.layout.RowLayoutFactory;
 
-import org.polymap.core.data.util.Geometries;
 import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
@@ -39,23 +35,23 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.internal.Messages;
 
-import org.polymap.openlayers.rap.widget.OpenLayersWidget;
-import org.polymap.openlayers.rap.widget.base.OpenLayersEventListener;
-import org.polymap.openlayers.rap.widget.base.OpenLayersObject;
-import org.polymap.openlayers.rap.widget.base_types.Bounds;
-import org.polymap.openlayers.rap.widget.base_types.OpenLayersMap;
-import org.polymap.openlayers.rap.widget.base_types.Projection;
-import org.polymap.openlayers.rap.widget.base_types.Size;
-import org.polymap.openlayers.rap.widget.controls.Control;
-import org.polymap.openlayers.rap.widget.controls.LayerSwitcherControl;
-import org.polymap.openlayers.rap.widget.controls.LoadingPanelControl;
-import org.polymap.openlayers.rap.widget.controls.MousePositionControl;
-import org.polymap.openlayers.rap.widget.controls.NavigationControl;
-import org.polymap.openlayers.rap.widget.controls.PanZoomBarControl;
-import org.polymap.openlayers.rap.widget.controls.ScaleLineControl;
-import org.polymap.openlayers.rap.widget.layers.GridLayer;
-import org.polymap.openlayers.rap.widget.layers.Layer;
-import org.polymap.openlayers.rap.widget.layers.WMSLayer;
+import org.polymap.rap.openlayers.OpenLayersWidget;
+import org.polymap.rap.openlayers.base.OpenLayersEventListener;
+import org.polymap.rap.openlayers.base.OpenLayersObject;
+import org.polymap.rap.openlayers.base_types.Bounds;
+import org.polymap.rap.openlayers.base_types.OpenLayersMap;
+import org.polymap.rap.openlayers.base_types.Projection;
+import org.polymap.rap.openlayers.base_types.Size;
+import org.polymap.rap.openlayers.controls.Control;
+import org.polymap.rap.openlayers.controls.LayerSwitcherControl;
+import org.polymap.rap.openlayers.controls.LoadingPanelControl;
+import org.polymap.rap.openlayers.controls.MousePositionControl;
+import org.polymap.rap.openlayers.controls.NavigationControl;
+import org.polymap.rap.openlayers.controls.PanZoomBarControl;
+import org.polymap.rap.openlayers.controls.ScaleLineControl;
+import org.polymap.rap.openlayers.layers.GridLayer;
+import org.polymap.rap.openlayers.layers.Layer;
+import org.polymap.rap.openlayers.layers.WMSLayer;
 
 /**
  * 

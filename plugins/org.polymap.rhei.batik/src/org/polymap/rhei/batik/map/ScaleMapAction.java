@@ -30,7 +30,7 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.internal.Messages;
 
-import org.polymap.openlayers.rap.widget.base_types.OpenLayersMap;
+import org.polymap.rap.openlayers.base_types.OpenLayersMap;
 
 /**
  * 

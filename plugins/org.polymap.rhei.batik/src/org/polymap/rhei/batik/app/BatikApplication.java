@@ -25,11 +25,12 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
+
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.IApplicationLayouter;
 import org.polymap.rhei.batik.internal.BatikComponentFactory;
-import org.polymap.rhei.batik.internal.BrowserSizeServiceHandler;
 
 /**
  *
@@ -43,10 +44,7 @@ public class BatikApplication
 
 
     /**
-     * The {@link Display} of the session of the current thread. Null, if the
-     * current thread has no session. The result is equivalent to
-     * {@link Display#getCurrent()} except that the calling thread does need to
-     * be the UI thread of the session.
+     * @deprecated Use {@link UIUtils} instead.
      */
     public static Display sessionDisplay() {
         return Polymap.getSessionDisplay();
@@ -65,12 +63,7 @@ public class BatikApplication
     
     
     /**
-     * Return an appropriate shell to parent dialogs on. This will be one of the
-     * workbench windows (the active one) should any exist. Otherwise
-     * <code>null</code> is returned.
-     *
-     * @return The shell to parent on or <code>null</code> if there is no
-     *         appropriate shell.
+     * @deprecated Use {@link UIUtils} instead.
      */
     public static Shell shellToParentOn() {
         return Polymap.getSessionDisplay().getActiveShell();
@@ -88,10 +81,6 @@ public class BatikApplication
 
     @Override
     public int createUI() {
-//        ScopedPreferenceStore prefStore = (ScopedPreferenceStore)PrefUtil.getAPIPreferenceStore();
-//        String keyPresentationId = IWorkbenchPreferenceConstants.PRESENTATION_FACTORY_ID;
-//        String presentationId = prefStore.getString( keyPresentationId );
-
         // security config / login
 //        Polymap.instance().login();
 
@@ -99,8 +88,6 @@ public class BatikApplication
 //        try {
             display = PlatformUI.createDisplay();
             
-            BrowserSizeServiceHandler.current = display;
-
             log.info( "Display DPI: " + display.getDPI().x + "x" + display.getDPI().y );
 
             appLayouter = BatikComponentFactory.instance().createApplicationLayouter();

@@ -22,7 +22,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-import org.polymap.core.data.DataPlugin;
 import org.polymap.rhei.batik.BatikPlugin;
 
 /**

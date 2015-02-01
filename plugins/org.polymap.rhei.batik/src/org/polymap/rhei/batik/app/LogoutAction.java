@@ -19,8 +19,10 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.jface.action.Action;
 
-import org.polymap.core.runtime.IMessages;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
 
+import org.polymap.core.runtime.IMessages;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.internal.Messages;
 
@@ -29,7 +31,6 @@ import org.polymap.rhei.batik.internal.Messages;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-@SuppressWarnings("restriction")
 public class LogoutAction
         extends Action {
 
@@ -46,7 +47,8 @@ public class LogoutAction
 
     @Override
     public void run() {
-        JSExecutor.executeJS( "window.location.reload();" );
+        JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
+        executor.execute( "window.location.reload();" );
     }
     
 }

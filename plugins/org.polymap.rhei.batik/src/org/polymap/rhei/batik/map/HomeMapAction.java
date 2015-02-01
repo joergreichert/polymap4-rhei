@@ -31,8 +31,8 @@ import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.internal.Messages;
 
-import org.polymap.openlayers.rap.widget.base_types.Bounds;
-import org.polymap.openlayers.rap.widget.base_types.OpenLayersMap;
+import org.polymap.rap.openlayers.base_types.Bounds;
+import org.polymap.rap.openlayers.base_types.OpenLayersMap;
 
 /**
  * 

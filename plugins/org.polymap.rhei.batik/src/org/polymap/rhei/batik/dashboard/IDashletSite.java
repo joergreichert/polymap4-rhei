@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,27 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.dashboard;
 
-import java.util.EventObject;
-
-import org.eclipse.swt.widgets.Display;
+import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.SiteProperty;
+import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class ApplicationResizeEvent
-        extends EventObject {
+public interface IDashletSite {
 
-    public ApplicationResizeEvent( Object source ) {
-        super( source );
-    }
-
-    @Override
-    public Display getSource() {
-        return (Display)super.getSource();
-    }
+    public SiteProperty<String> title();
+    
+    public SiteProperty<Boolean> isBoxStyle();
+    
+    public IPanelSite panelSite();
+    
+    public IPanelToolkit toolkit();
     
 }
