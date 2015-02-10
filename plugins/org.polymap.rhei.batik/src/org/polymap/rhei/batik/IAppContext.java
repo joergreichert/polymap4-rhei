@@ -59,6 +59,8 @@ public interface IAppContext {
      */
     public void closePanel( final PanelPath panelPath );
 
+    public IPanel getPanel( PanelPath path );
+
     /**
      * All direct children of the given path.
      *

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.layout.RowDataFactory;
 import org.eclipse.jface.layout.RowLayoutFactory;
@@ -38,33 +37,31 @@ import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
-import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopPanelSite;
+import org.polymap.rhei.batik.app.DefaultAppManager.DefaultPanelSite;
 
 /**
  *
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelToolbar
-        extends ContributionItem {
+public class DefaultAppToolbar
+        implements DefaultActionBar.Part {
 
-    private static Log log = LogFactory.getLog( PanelToolbar.class );
+    private static Log log = LogFactory.getLog( DefaultAppToolbar.class );
 
     public static final String      CSS_PREFIX = "atlas-toolbar";
-
-    private DesktopAppManager       appManager;
 
     private Composite               contents;
 
     private List<PanelChangeEvent>  pendingStartEvents = new ArrayList();
     
 
-    public PanelToolbar( DesktopAppManager appManager ) {
-        this.appManager = appManager;
-
+    public DefaultAppToolbar() {
+        IAppManager appManager = BatikApplication.instance().getAppManager();
         appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return true; //input.getType() == TYPE.ACTIVATED;
@@ -74,7 +71,7 @@ public class PanelToolbar
 
 
     @Override
-    public void fill( Composite parent ) {
+    public void fillContents( Composite parent ) {
         contents = parent;
         contents.setLayoutData( FormDataFactory.filled().create() );
         contents.setLayout( RowLayoutFactory.fillDefaults().margins( 0, 0 ).fill( false ).create() );
@@ -101,7 +98,7 @@ public class PanelToolbar
         }
         // open
         if (ev.getType() == TYPE.ACTIVATED) {
-            DesktopPanelSite panelSite = (DesktopPanelSite)ev.getSource().getSite();
+            DefaultPanelSite panelSite = (DefaultPanelSite)ev.getSource().getSite();
             for (Object tool : panelSite.getTools()) {
                 Button btn = null;
 

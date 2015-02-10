@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.internal;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -25,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.ContextProperty;
+import org.polymap.rhei.batik.app.DefaultAppContext;
 
 /**
  *

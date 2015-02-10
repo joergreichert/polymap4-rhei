@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +29,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.layout.RowDataFactory;
 import org.eclipse.jface.layout.RowLayoutFactory;
 
-import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
@@ -49,14 +48,14 @@ import org.polymap.rhei.batik.Panels;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelNavigator
-        extends ContributionItem {
+public class DefaultAppNavigator 
+        implements DefaultActionBar.Part {
 
     public static final String      CSS_PREFIX = "atlas-navi";
 
-    private static Log log = LogFactory.getLog( PanelNavigator.class );
+    private static Log log = LogFactory.getLog( DefaultAppNavigator.class );
 
-    private DesktopAppManager       appManager;
+    private IAppManager             appManager;
 
     private Composite               contents;
 
@@ -67,26 +66,21 @@ public class PanelNavigator
     private IPanel                  activePanel;
 
 
-    public PanelNavigator( DesktopAppManager appManager ) {
-        this.appManager = appManager;
-
-        appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
-            public boolean apply( PanelChangeEvent input ) {
-                return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.ACTIVATED;
-            }
-        });
+    public DefaultAppNavigator() {
+        appManager = BatikApplication.instance().getAppManager();
+        appManager.getContext().addListener( this, ev -> ev.getType() == TYPE.ACTIVATED || ev.getType() == TYPE.TITLE );
     }
 
 
     @Override
-    public void fill( Composite parent ) {
+    public void fillContents( Composite parent ) {
         this.contents = parent;
         contents.setLayout( new FormLayout() );
 
         // breadcrumb
         breadcrumb = new Composite( parent, SWT.NONE );
         breadcrumb.setLayoutData( FormDataFactory.filled().create() );
-        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 0, 0 ).fill( false ).create() );
+        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 30, 1 ).fill( false ).create() );
 
         // fire pending events
         for (PanelChangeEvent ev : pendingStartEvents) {
@@ -208,6 +202,10 @@ public class PanelNavigator
         // open
         if (ev.getType() == TYPE.ACTIVATED) {
             activePanel = ev.getSource();
+            updateBreadcrumb();
+        }
+        // title or icon
+        else if (ev.getType() == TYPE.TITLE) {
             updateBreadcrumb();
         }
     }

@@ -34,7 +34,9 @@ public class PanelChangeEvent
         ACTIVATED,
         DEACTIVATING,
         DEACTIVATED,
-        STATUS
+        STATUS,
+        /** Titel or Icon */
+        TITLE
     }
     
     // instance *******************************************

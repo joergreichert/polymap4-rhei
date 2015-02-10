@@ -12,7 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,17 +23,15 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jface.window.Window;
-
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.rap.rwt.application.EntryPoint;
 
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
 
-import org.polymap.rhei.batik.IApplicationLayouter;
-import org.polymap.rhei.batik.internal.BatikComponentFactory;
+import org.polymap.rhei.batik.app.IAppDesign;
+import org.polymap.rhei.batik.app.IAppManager;
+import org.polymap.rhei.batik.internal.BatikFactory;
 
 /**
  *
@@ -47,7 +48,7 @@ public class BatikApplication
      * @deprecated Use {@link UIUtils} instead.
      */
     public static Display sessionDisplay() {
-        return Polymap.getSessionDisplay();
+        return UIUtils.sessionDisplay();
     }
 
 //    public Point displayDPI() {
@@ -63,52 +64,75 @@ public class BatikApplication
     
     
     /**
-     * @deprecated Use {@link UIUtils} instead.
+     * Use {@link UIUtils} instead.
      */
     public static Shell shellToParentOn() {
-        return Polymap.getSessionDisplay().getActiveShell();
+        return UIUtils.shellToParentOn();
     }
 
+    private static Map<Display,BatikApplication> instances = new ConcurrentHashMap();
+    
+    /**
+     * The instance of the current session.
+     */
+    public static BatikApplication instance() {
+        return instances.get( UIUtils.sessionDisplay() );
+    }
 
     // instance *******************************************
 
     private Display                     display;
 
-    private IApplicationLayouter        appLayouter;
+    private Shell                       mainWindow;
 
-    private Window                      mainWindow;
+    private IAppManager                 appManager;
 
+    private IAppDesign                  appDesign;
+
+
+    public IAppManager getAppManager() {
+        return appManager;
+    }
+
+    public IAppContext getContext() {
+        return getAppManager().getContext();
+    }
+
+    public IAppDesign getAppDesign() {
+        return appDesign;
+    }
 
     @Override
     public int createUI() {
-        // security config / login
-//        Polymap.instance().login();
+        display = PlatformUI.createDisplay();
 
-        // start Atlas UI
-//        try {
-            display = PlatformUI.createDisplay();
-            
-            log.info( "Display DPI: " + display.getDPI().x + "x" + display.getDPI().y );
+        instances.put( display, this );
+        log.info( "Display DPI: " + display.getDPI().x + "x" + display.getDPI().y );
 
-            appLayouter = BatikComponentFactory.instance().createApplicationLayouter();
-            mainWindow = appLayouter.initMainWindow( display );
-            mainWindow.open();
+        appManager = BatikFactory.instance().createAppManager();
+        appDesign = BatikFactory.instance().createAppDesign();
+        try {
+            appManager.init();
+            appDesign.init();
 
-            Shell shell = mainWindow.getShell();
-            while (!shell.isDisposed()) {
+            mainWindow = appDesign.createMainWindow( display );
+
+            // main loop
+            while (!mainWindow.isDisposed()) {
                 if (!display.readAndDispatch()) {
                     display.sleep();
                 }
             }
             log.info( "Exiting..." );
-            display.dispose();
-            return PlatformUI.RETURN_OK;
-//        }
-//        catch (Exception e) {
-//            //
-//            handleError( CorePlugin.PLUGIN_ID, e.getLocalizedMessage(), e );
-//            return PlatformUI.RETURN_OK;
-//        }
+        }
+        finally {
+            appManager.close();
+            appDesign.close();
+        }
+
+        instances.remove( display );
+        display.dispose();
+        return PlatformUI.RETURN_OK;
     }
 
 }

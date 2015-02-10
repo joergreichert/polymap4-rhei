@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.rap.rwt.RWT;
+
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
@@ -38,10 +39,10 @@ import org.polymap.rhei.batik.toolkit.LayoutConstraint;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class DesktopPanelSection
+public class DefaultPanelSection
         implements IPanelSection {
 
-    private static Log log = LogFactory.getLog( DesktopPanelSection.class );
+    private static Log log = LogFactory.getLog( DefaultPanelSection.class );
     
     private int                     level;
 
@@ -54,30 +55,30 @@ class DesktopPanelSection
     private Label                   sep;
 
     
-    public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
+    public DefaultPanelSection( DefaultToolkit tk, Composite parent, int[] styles ) {
         control = new Composite( parent, SWT.NO_FOCUS | tk.stylebits( styles ) );
-        UIUtils.setVariant( control, DesktopToolkit.CSS_SECTION  );
+        UIUtils.setVariant( control, DefaultToolkit.CSS_SECTION  );
         control.setData( "panelSection", this );
         control.setMenu( parent.getMenu() );
         control.setLayout( FormLayoutFactory.defaults().spacing( 3 ).create() );
 
         // title
         title = new Label( control, SWT.NO_FOCUS );
-        UIUtils.setVariant( title, DesktopToolkit.CSS_SECTION_TITLE  );
+        UIUtils.setVariant( title, DefaultToolkit.CSS_SECTION_TITLE  );
         title.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
         FormDataFactory.filled().bottom( -1 ).height( 26 ).applyTo( title );
         title.setVisible( false );
         
         // separator
         sep = new Label( control, SWT.NO_FOCUS | SWT.SEPARATOR | SWT.HORIZONTAL );
-        UIUtils.setVariant( sep, DesktopToolkit.CSS_SECTION_SEPARATOR );
+        UIUtils.setVariant( sep, DefaultToolkit.CSS_SECTION_SEPARATOR );
         FormDataFactory.filled().top( this.title ).bottom( -1 ).applyTo( sep );
         sep.setVisible( false );
         sep.moveBelow( title );
 
         // client
         client = tk.adapt( new Composite( control, SWT.NO_FOCUS ) );
-        UIUtils.setVariant( client, DesktopToolkit.CSS_SECTION_CLIENT );
+        UIUtils.setVariant( client, DefaultToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 
 //        ColumnLayout clientLayout = ColumnLayoutFactory.defaults().columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 

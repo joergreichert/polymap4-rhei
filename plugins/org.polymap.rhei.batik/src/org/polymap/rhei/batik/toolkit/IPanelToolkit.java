@@ -33,8 +33,12 @@ import org.polymap.rhei.batik.IPanel;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IPanelToolkit {
+public interface IPanelToolkit
+        extends AutoCloseable {
 
+//    @Override
+//    public void close();
+    
     /**
      *
      * @see Label#Label(Composite, int)

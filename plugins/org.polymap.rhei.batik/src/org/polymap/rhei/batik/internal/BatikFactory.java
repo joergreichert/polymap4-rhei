@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -32,44 +32,48 @@ import org.polymap.core.runtime.SessionSingleton;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.IApplicationLayouter;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.app.DefaultAppManager;
+import org.polymap.rhei.batik.app.IAppDesign;
+import org.polymap.rhei.batik.app.IAppManager;
 
 /**
- * Factory of components of the Atlas UI. The components are defined via several
+ * Factory of components of the Batik UI. The components are defined via several
  * plugin extension points.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class BatikComponentFactory
+public class BatikFactory
         extends SessionSingleton {
 
-    private static Log log = LogFactory.getLog( BatikComponentFactory.class );
+    private static Log log = LogFactory.getLog( BatikFactory.class );
 
-    public static final String          APPLICATION_LAYOUTER_EXTENSION_POINT = "applicationLayouters";
-
+    public static final String          APP_DESIGN_EXTENSION_POINT = "design";
     public static final String          PANEL_EXTENSION_POINT = "panels";
 
 
-    public static BatikComponentFactory instance() {
-        return instance( BatikComponentFactory.class );
+    public static BatikFactory instance() {
+        return instance( BatikFactory.class );
     }
 
 
     // instance *******************************************
 
-    private BatikComponentFactory() {
+    private BatikFactory() {
     }
 
 
-    /**
-     * Creates the main application layouter for the current environment.
-     */
-    public IApplicationLayouter createApplicationLayouter() {
+    public IAppManager createAppManager() {
+        // XXX make it extendable
+        return new DefaultAppManager();
+    }
+
+
+    public IAppDesign createAppDesign() {
         try {
             IConfigurationElement[] elms = Platform.getExtensionRegistry()
-                    .getConfigurationElementsFor( BatikPlugin.PLUGIN_ID, APPLICATION_LAYOUTER_EXTENSION_POINT );
+                    .getConfigurationElementsFor( BatikPlugin.PLUGIN_ID, APP_DESIGN_EXTENSION_POINT );
 
             String path = RWT.getRequest().getServletPath();
             IConfigurationElement bestMatch = null;
@@ -83,7 +87,7 @@ public class BatikComponentFactory
                     }
                 }
             }
-            return (IApplicationLayouter)bestMatch.createExecutableExtension( "class" );
+            return (IAppDesign)bestMatch.createExecutableExtension( "class" );
         }
         catch (CoreException e) {
             throw new RuntimeException( e );

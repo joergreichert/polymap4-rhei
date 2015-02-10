@@ -26,6 +26,7 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.rhei.batik.ContextProperty;
 import org.polymap.rhei.batik.PropertyAccessEvent;
 import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
+import org.polymap.rhei.batik.app.DefaultAppContext;
 
 /**
  * 

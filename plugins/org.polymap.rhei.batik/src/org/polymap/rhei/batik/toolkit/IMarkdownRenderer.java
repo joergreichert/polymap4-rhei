@@ -17,13 +17,13 @@ package org.polymap.rhei.batik.toolkit;
 import org.eclipse.swt.widgets.Widget;
 
 import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.layout.desktop.DesktopToolkit;
+import org.polymap.rhei.batik.app.DefaultToolkit;
 
 /**
  * Allows to render links and images in Markdown and later maybe other special nodes.
  * <p/>
  * Renderers are create for every render request by the factory registered via
- * {@link DesktopToolkit#registerMarkdownRenderer(java.util.concurrent.Callable)}.
+ * {@link DefaultToolkit#registerMarkdownRenderer(java.util.concurrent.Callable)}.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */

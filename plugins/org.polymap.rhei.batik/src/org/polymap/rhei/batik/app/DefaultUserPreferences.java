@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2013, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2013-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,19 +30,19 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.rap.rwt.graphics.Graphics;
+
 import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.app.LogoutAction;
 import org.polymap.rhei.batik.internal.Messages;
 
 /**
@@ -50,14 +50,14 @@ import org.polymap.rhei.batik.internal.Messages;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class UserPreferences
-        extends ContributionItem {
+public class DefaultUserPreferences
+        implements DefaultActionBar.Part {
 
-    private static Log log = LogFactory.getLog( UserPreferences.class );
+    private static Log log = LogFactory.getLog( DefaultUserPreferences.class );
     
     private static final IMessages      i18n = Messages.forPrefix( "UserPreferences" );
     
-    private DesktopAppManager   appManager;
+    private IAppManager         appManager;
 
     private Composite           contents;
     
@@ -73,8 +73,8 @@ class UserPreferences
     private SelectionListener   usernameLnkListener;
 
     
-    public UserPreferences( DesktopAppManager appManager ) {
-        this.appManager = appManager;
+    public DefaultUserPreferences() {
+        this.appManager = BatikApplication.instance().getAppManager();
     }
 
     
@@ -109,13 +109,13 @@ class UserPreferences
 
 
     @Override
-    public void fill( Composite parent ) {
+    public void fillContents( Composite parent ) {
         contents = parent;
         contents.setLayout( FormLayoutFactory.defaults().create() );
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
-        UIUtils.setVariant( btn, PanelNavigator.CSS_PREFIX );
+        UIUtils.setVariant( btn, DefaultAppNavigator.CSS_PREFIX );
         btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/cog.png" ) );
         btn.setToolTipText( i18n.get( "menuTip" ) );
         
@@ -128,7 +128,7 @@ class UserPreferences
 //        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
             usernameLnk = new Button( contents, SWT.PUSH | SWT.LEFT );
             usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
-            UIUtils.setVariant( usernameLnk, PanelNavigator.CSS_PREFIX );
+            UIUtils.setVariant( usernameLnk, DefaultAppNavigator.CSS_PREFIX );
             usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
             

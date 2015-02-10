@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -55,11 +54,11 @@ import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
-import org.polymap.rhei.batik.app.BatikApplication;
 
 /**
  * 
@@ -67,8 +66,7 @@ import org.polymap.rhei.batik.app.BatikApplication;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class StatusManager
-        extends ContributionItem
-        implements IStatusLineManager {
+        implements DefaultActionBar.Part, IStatusLineManager {
 
     private static Log log = LogFactory.getLog( StatusManager.class );
     
@@ -105,8 +103,6 @@ public class StatusManager
     
     // instance *******************************************
     
-    private DesktopAppManager       appManager;
-
     private Composite               contents;
 
     private List<PanelChangeEvent>  pendingStartEvents = new ArrayList();
@@ -131,11 +127,10 @@ public class StatusManager
     };
 
 
-    public StatusManager( DesktopAppManager appManager ) {
-        this.appManager = appManager;
-
-        managers.put( BatikApplication.sessionDisplay(), this );
+    public StatusManager() {
+        managers.put( Display.getCurrent(), this );
         
+        IAppManager appManager = BatikApplication.instance().getAppManager();
         appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
                 return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.STATUS;
@@ -201,10 +196,10 @@ public class StatusManager
     }
 
     
-    // Status handling (ContributionItem) *****************
+    // Status handling ************************************
     
     @Override
-    public void fill( Composite parent ) {
+    public void fillContents( Composite parent ) {
         this.contents = parent;
         contents.setLayout( FormLayoutFactory.defaults().margins( 0, 3 ).create() );
 

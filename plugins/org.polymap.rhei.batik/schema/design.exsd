@@ -3,10 +3,10 @@
 <schema targetNamespace="org.polymap.rhei.batik" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.polymap.rhei.batik" id="applicationLayouters" name="Batik Application Layouter"/>
+         <meta.schema plugin="org.polymap.rhei.batik" id="design" name="Batik Application Design"/>
       </appinfo>
       <documentation>
-         Allows to register layouters for the main window and other aspects of the Batik application UI.
+         A design defines the layout of the main window and the toolkit to use to create UI elements.
       </documentation>
    </annotation>
 
@@ -17,8 +17,8 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="applicationLayouter"/>
+         <sequence>
+            <element ref="design"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="applicationLayouter">
+   <element name="design">
       <annotation>
          <documentation>
             Element description.
@@ -74,10 +74,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  A class that implements &lt;code&gt;IApplicationLayouter&lt;/code&gt;.
+                  A class that implements &lt;code&gt;IAppDesign&lt;/code&gt;.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.polymap.rhei.batik.IApplicationLayouter"/>
+                  <meta.attribute kind="java" basedOn=":org.polymap.rhei.batik.app.IAppDesign"/>
                </appinfo>
             </annotation>
          </attribute>

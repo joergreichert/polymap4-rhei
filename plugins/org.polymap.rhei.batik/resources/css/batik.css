@@ -36,7 +36,7 @@ Display {
 }
  
 /*
- * Navigation Buttons
+ * Navigation/Action Buttons
  */
 Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
   color: #4a8aaf;
@@ -51,7 +51,24 @@ Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH
   border: none;
 }
 Composite.atlas-navi/*, Composite.atlas-status, CLabel.atlas-status*/ {
-  background-color: #f3f3f3;
+  /*background-color: #f3f3f3;*/
+}
+
+Composite[BORDER].atlas-actions {
+  background-color: #f5f5f5;
+  border-radius: 0px;
+  border: 1px solid #e8e8e8;
+  border-top-color: #ffffff;
+}
+Composite[BORDER].atlas-header {
+  background-color: #ffffff;
+  border-radius: 0px;
+  border: none;
+}
+Label.atlas-header {
+  font: bold 30px Helvetica, Arial, sans-serif;
+/*  color: #60A7CA;*/
+  color: #666;
 }
 
 /* 
@@ -99,11 +116,11 @@ ToolTip-Message, Label.batik-status-tooltip-message {
  */
 Composite[BORDER].batik-panel-section-client {
   border-radius: 4px;
-  border: 1px solid #cdcdcd;
+  border: 1px solid #ddd;
 }
 Composite[BORDER].batik-panel-section {
   border-radius: 4px;
-  border: 1px solid #cdcdcd;
+  border: 1px solid #ddd;
 }
 Label.batik-panel-section-title {
   font: 22px/100% Helvetica, Arial, sans-serif;
@@ -112,6 +129,18 @@ Label.batik-panel-section-title {
 Label:disabled.batik-panel-section-title {
   opacity: 0.3;
 }
+Label[SEPARATOR].batik-panel-section-separator, Label.batik-panel-section-separator {
+  background-color: #303030;
+  color: #f8f8f8;
+}
+Label-SeparatorLine.batik-panel-section-separator {
+  background-image: none;
+  background-color: #ddd;
+  border: 0px solid #000000;
+  width: 1px;
+  color: #000000;
+}
+
 /* Label.batik-panel-section-separator {
   opacity: 0;
 }*/

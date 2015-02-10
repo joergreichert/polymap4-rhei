@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.polymap.rhei.batik.applicationLayouters" name="Batik Application Layouters" schema="schema/applicationLayouters.exsd"/>
+   <extension-point id="org.polymap.rhei.batik.design" name="Batik Application Design" schema="schema/design.exsd"/>
    <extension-point id="org.polymap.rhei.batik.panels" name="Batik Panels" schema="schema/panels.exsd"/>
+   <extension
+         point="org.eclipse.rap.ui.entrypoint">
+      <entrypoint
+            brandingId="org.polymap.rhei.batik.branding"
+            class="org.polymap.rhei.batik.BatikApplication"
+            id="org.polymap.rhei.batik.entrypoint"
+            parameter="batik"
+            path="/batik">
+      </entrypoint>
+   </extension>
    <extension
          point="org.eclipse.rap.ui.themes">
       <theme
@@ -22,40 +32,20 @@
    <extension
          point="org.eclipse.rap.ui.branding">
       <branding
-            body="resources/html/body.html"
             defaultEntrypointId="org.polymap.rhei.batik.entrypoint"
             id="org.polymap.rhei.batik.branding"
             servletName="batik"
             themeId="org.polymap.rhei.batik.theme"
             title="Batik">
-         <additionalHeaders>
-            <link
-                  href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"
-                  rel="stylesheet"
-                  type="text/css">
-            </link>
-         </additionalHeaders>
       </branding>
    </extension>
    <extension
-         point="org.eclipse.rap.ui.entrypoint">
-      <entrypoint
-            class="org.polymap.rhei.batik.app.BatikApplication"
-            id="org.polymap.rhei.batik.entrypoint"
-            parameter="batik"
-            path="/batik">
-      </entrypoint>
-   </extension>
-   <extension
-         point="org.polymap.rhei.batik.applicationLayouters">
-      <applicationLayouter
-            class="org.polymap.rhei.batik.layout.desktop.DesktopAppManager"
-            id="org.polymap.rhei.batik.DesktopApplicationLayouter"
+         point="org.polymap.rhei.batik.design">
+      <design
+            class="org.polymap.rhei.batik.app.DefaultAppDesign"
+            id="org.polymap.rhei.batik.DefaultAppDesign"
             servletNameMatcher="*">
-      </applicationLayouter>
-   </extension>
-   <extension
-         point="org.polymap.rhei.batik.panels">
+      </design>
    </extension>
    <extension
          point="org.eclipse.rap.ui.serviceHandler">

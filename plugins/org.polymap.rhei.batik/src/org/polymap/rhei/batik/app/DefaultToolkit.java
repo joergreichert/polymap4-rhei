@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.desktop;
+package org.polymap.rhei.batik.app;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -37,7 +37,6 @@ import com.google.common.base.Joiner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -52,14 +51,14 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.Section;
 
 import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.runtime.Lazy;
 import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
 
-import org.polymap.rhei.batik.layout.desktop.DesktopAppManager.DesktopAppContext;
+import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.toolkit.IBusyIndicator;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.ILinkAction;
@@ -74,10 +73,10 @@ import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class DesktopToolkit
+public class DefaultToolkit
         implements IPanelToolkit {
 
-    private static Log log = LogFactory.getLog( DesktopToolkit.class );
+    private static Log log = LogFactory.getLog( DefaultToolkit.class );
 
     public static final String  CSS_PREFIX = "batik-panel";
     public static final String  CSS_FORM = CSS_PREFIX + "-form";
@@ -89,10 +88,9 @@ public class DesktopToolkit
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
     public static final String  CSS_SECTION_CLIENT = CSS_PREFIX + "-section-client";
     
-    public static final Lazy<Color> COLOR_SECTION_TITLE_FG = new LockedLazyInit( () -> 
-            Graphics.getColor( new RGB( 0x41, 0x83, 0xa6 ) ) );
-    public static final Lazy<Color> COLOR_SECTION_TITLE_BG = new LockedLazyInit( () -> 
-            Graphics.getColor( new RGB( 0xbc, 0xe1, 0xf4 ) ) );
+    public final Lazy<Color>    COLOR_SECTION_TITLE_FG = new LockedLazyInit( () -> new Color( null, 0x41, 0x83, 0xa6 ) );
+    public final Lazy<Color>    COLOR_SECTION_TITLE_BG = new LockedLazyInit( () -> new Color( null, 0xbc, 0xe1, 0xf4 ) );
+    public final Lazy<Color>    COLOR_SECTION_TITLE_BORDER = new LockedLazyInit( () -> new Color( null, 0x80, 0x80, 0xa0 ) );
 
     private static ArrayList<Callable<IMarkdownRenderer>> mdRendererFactories = new ArrayList();
     
@@ -117,13 +115,25 @@ public class DesktopToolkit
     
     private FormColors          colors;
     
-    private DesktopAppContext   context;
-
     
-    protected DesktopToolkit( DesktopAppContext context ) {
-        this.context = context;
+    protected DefaultToolkit() {
     }
     
+    
+    @Override
+    public void close() {
+        if (COLOR_SECTION_TITLE_BG.isInitialized()) {
+            COLOR_SECTION_TITLE_BG.get().dispose();
+        }
+        if (COLOR_SECTION_TITLE_FG.isInitialized()) {
+            COLOR_SECTION_TITLE_FG.get().dispose();
+        }
+        if (COLOR_SECTION_TITLE_BORDER.isInitialized()) {
+            COLOR_SECTION_TITLE_BORDER.get().dispose();
+        }
+    }
+
+
     @Override
     public Label createLabel( Composite parent, String text, int... styles ) {
         Label result = adapt( new Label( parent, stylebits( styles ) ), false, false );
@@ -194,7 +204,7 @@ public class DesktopToolkit
     
     /**
      * Delegates link and image rendering to the
-     * {@link DesktopToolkit#registerMarkdownRenderer(IPanelToolkit.IMarkdownRenderer)
+     * {@link DefaultToolkit#registerMarkdownRenderer(IPanelToolkit.IMarkdownRenderer)
      * registered} {@link IMarkdownRenderer}s.
      */
     protected class DelegatingLinkRenderer
@@ -210,6 +220,7 @@ public class DesktopToolkit
             for (Callable<IMarkdownRenderer> factory : mdRendererFactories) {
                 PegDownRenderOutput out = new PegDownRenderOutput();
                 try {
+                    IAppContext context = BatikApplication.instance().getContext();
                     if (factory.call().render( node, out, context, widget )) {
                         return out.createRendering();
                     }
@@ -368,7 +379,7 @@ public class DesktopToolkit
 //        result.setFont( Graphics.getFont( bold ) );
         result.setTitleBarForeground( COLOR_SECTION_TITLE_FG.get() );
         result.setTitleBarBackground( COLOR_SECTION_TITLE_BG.get() );
-        result.setTitleBarBorderColor( Graphics.getColor( new RGB( 0x80, 0x80, 0xa0 ) ) );
+        result.setTitleBarBorderColor( COLOR_SECTION_TITLE_BORDER.get() );
 
         Composite client = createComposite( result );
         result.setClient( client );
@@ -384,7 +395,7 @@ public class DesktopToolkit
     
     @Override
     public IPanelSection createPanelSection( Composite parent, String title, int... styles ) {
-        DesktopPanelSection result = new DesktopPanelSection( this, parent, styles );
+        DefaultPanelSection result = new DefaultPanelSection( this, parent, styles );
         if (title != null) {
             result.setTitle( title );
         }

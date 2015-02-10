@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +36,7 @@ import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.internal.PanelContextInjector;
 
 
 /**
@@ -73,6 +74,7 @@ public abstract class DefaultAppContext
     private Map<PanelPath,IPanel>           panels = new HashMap();
 
 
+    @Override
     public IPanel getPanel( PanelPath path ) {
         return panels.get( path );
     }
