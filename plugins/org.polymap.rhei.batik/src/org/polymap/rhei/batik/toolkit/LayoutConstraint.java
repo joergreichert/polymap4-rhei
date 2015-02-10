@@ -14,9 +14,9 @@
  */
 package org.polymap.rhei.batik.toolkit;
 
-import org.polymap.rhei.batik.layout.cp.IConstraint;
-import org.polymap.rhei.batik.layout.cp.PercentScore;
-import org.polymap.rhei.batik.layout.cp.Prioritized;
+import org.polymap.rhei.batik.cp.IConstraint;
+import org.polymap.rhei.batik.cp.PercentScore;
+import org.polymap.rhei.batik.cp.Prioritized;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 
 /**

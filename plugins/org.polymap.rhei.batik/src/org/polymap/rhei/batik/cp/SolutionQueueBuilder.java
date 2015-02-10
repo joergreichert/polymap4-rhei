@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.layout.cp;
+package org.polymap.rhei.batik.cp;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import com.google.common.collect.MinMaxPriorityQueue;
 import com.google.common.collect.Ordering;
 
-import org.polymap.rhei.batik.layout.cp.ISolver.ScoredSolution;
+import org.polymap.rhei.batik.cp.ISolver.ScoredSolution;
 
 /**
  * Factory for priority queues. Creates bound or unbound queues that have elements

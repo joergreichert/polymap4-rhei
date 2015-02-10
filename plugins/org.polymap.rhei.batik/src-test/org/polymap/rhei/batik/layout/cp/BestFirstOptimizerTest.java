@@ -23,11 +23,11 @@ import org.junit.Test;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.batik.layout.cp.IScore;
-import org.polymap.rhei.batik.layout.cp.ISolution;
-import org.polymap.rhei.batik.layout.cp.ISolver;
-import org.polymap.rhei.batik.layout.cp.PercentScore;
-import org.polymap.rhei.batik.layout.cp.SolutionQueueBuilder;
+import org.polymap.rhei.batik.cp.IScore;
+import org.polymap.rhei.batik.cp.ISolution;
+import org.polymap.rhei.batik.cp.ISolver;
+import org.polymap.rhei.batik.cp.PercentScore;
+import org.polymap.rhei.batik.cp.SolutionQueueBuilder;
 
 /**
  * 
