@@ -14,8 +14,9 @@
  */
 package org.polymap.rhei.batik;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
+import java.util.function.Predicate;
+
+import org.polymap.core.runtime.Predicates;
 
 /**
  * Provides predicates to be used as filters in
@@ -29,29 +30,21 @@ public class Panels {
      *
      */
     public static final Predicate<IPanel> all() {
-        return Predicates.alwaysTrue();
+        return Predicates.ALWAYS_TRUE;  //(IPanel panel) -> true;
     }
 
     /**
-    *
-    */
-   public static final Predicate<IPanel> withPrefix( final PanelPath prefix ) {
-       return new Predicate<IPanel>() {
-           public boolean apply( IPanel input ) {
-               return prefix.isPrefixOf( input.getSite().getPath() );
-           }
-       };
-   }
+     *
+     */
+    public static final Predicate<IPanel> withPrefix( final PanelPath prefix ) {
+        return (IPanel panel) -> prefix.isPrefixOf( panel.getSite().getPath() );
+    }
 
-   /**
-    *
-    */
-   public static final Predicate<IPanel> is( final PanelPath path ) {
-       return new Predicate<IPanel>() {
-           public boolean apply( IPanel input ) {
-               return path.equals( input.getSite().getPath() );
-           }
-       };
-   }
+    /**
+     *
+     */
+    public static final Predicate<IPanel> is( final PanelPath path ) {
+        return (IPanel input) -> path.equals( input.getSite().getPath() );
+    }
 
 }

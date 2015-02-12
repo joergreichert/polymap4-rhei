@@ -21,12 +21,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
@@ -81,12 +80,12 @@ public abstract class DefaultAppContext
 
 
     @Override
-    public Iterable<IPanel> findPanels( Predicate<IPanel> filter ) {
+    public List<IPanel> findPanels( Predicate<IPanel> filter ) {
         // make a copy so that contents is stable while iterating (remove)
-        return new ArrayList( Collections2.filter( panels.values(), filter ) );
+        return panels.values().stream().filter( filter ).collect( Collectors.toList() ); //.collect( toCollection( () -> new ArrayList() ) );
     }
 
-
+    
     public void addPanel( IPanel panel ) {
         if (panels.put( panel.getSite().getPath(), panel ) != null) {
             throw new IllegalStateException( "Panel already exists at: " + panel.getSite().getPath() );

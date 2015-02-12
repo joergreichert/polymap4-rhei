@@ -42,6 +42,8 @@ public interface IPanelSite {
      * The whole path of the panel including the name of the panel as last segment.
      */
     public PanelPath getPath();
+    
+    public Integer getStackPriority();
 
     /**
      * Changes the status of the panel. {@link Status#OK_STATUS} signals that the

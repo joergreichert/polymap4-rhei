@@ -66,6 +66,13 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="stackPriority" type="string">
+            <annotation>
+               <documentation>
+                  The priority of this panel when displayed in the navigator next to its siblings. Defaults to 0.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

@@ -14,6 +14,9 @@
  */
 package org.polymap.rhei.batik.app;
 
+import static java.util.Collections.reverseOrder;
+import static java.util.Comparator.comparing;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,42 +154,45 @@ public class DefaultAppNavigator
         
         // switcher
         PanelPath prefix = activePanel.getSite().getPath().removeLast( 1 );
-        for (final IPanel panel : appManager.getContext().findPanels( Panels.withPrefix( prefix ) )) {
-            final Button btn = new Button( breadcrumb, SWT.TOGGLE );
-            UIUtils.setVariant( btn, CSS_PREFIX );
-            Image icon = panel.getSite().getIcon();
-            String title = panel.getSite().getTitle();
-            
-            if (icon == null && title == null) {
-                btn.setVisible( false );
-            }
-            else if (showText || icon == null) {
-                btn.setText( title );
-            }
-            else {
-                btn.setToolTipText( title );
-            }
-            if (icon != null) {
-                btn.setImage( icon );
-            }
-            btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-            
-            if (panel.equals( activePanel )) {
-                btn.setSelection( true );
-                btn.addSelectionListener( new SelectionAdapter() {
-                    public void widgetSelected( SelectionEvent ev ) {
+        appManager.getContext().findPanels( Panels.withPrefix( prefix ) )
+                .stream()
+                .sorted( reverseOrder( comparing( panel -> panel.getSite().getStackPriority() ) ) )
+                .forEach( panel -> {
+                    final Button btn = new Button( breadcrumb, SWT.TOGGLE );
+                    UIUtils.setVariant( btn, CSS_PREFIX );
+                    Image icon = panel.getSite().getIcon();
+                    String title = panel.getSite().getTitle();
+
+                    if (icon == null && title == null) {
+                        btn.setVisible( false );
+                    }
+                    else if (showText || icon == null) {
+                        btn.setText( title );
+                    }
+                    else {
+                        btn.setToolTipText( title );
+                    }
+                    if (icon != null) {
+                        btn.setImage( icon );
+                    }
+                    btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+
+                    if (panel.equals( activePanel )) {
                         btn.setSelection( true );
+                        btn.addSelectionListener( new SelectionAdapter() {
+                            public void widgetSelected( SelectionEvent ev ) {
+                                btn.setSelection( true );
+                            }
+                        });
+                    }
+                    else {
+                        btn.addSelectionListener( new SelectionAdapter() {
+                            public void widgetSelected( SelectionEvent ev ) {
+                                appManager.activatePanel( panel.id() );
+                            }
+                        });
                     }
                 });
-            }
-            else {
-                btn.addSelectionListener( new SelectionAdapter() {
-                    public void widgetSelected( SelectionEvent ev ) {
-                        appManager.activatePanel( panel.id() );
-                    }
-                });
-            }
-        }
         
         breadcrumb.layout( true );
         contents.layout( true );
@@ -197,16 +203,17 @@ public class DefaultAppNavigator
     protected void panelChanged( PanelChangeEvent ev ) {
         if (contents == null) {
             pendingStartEvents.add( ev );
-            return;
         }
-        // open
-        if (ev.getType() == TYPE.ACTIVATED) {
-            activePanel = ev.getSource();
-            updateBreadcrumb();
-        }
-        // title or icon
-        else if (ev.getType() == TYPE.TITLE) {
-            updateBreadcrumb();
+        else {
+            // open
+            if (ev.getType() == TYPE.ACTIVATED) {
+                activePanel = ev.getSource();
+                updateBreadcrumb();
+            }
+            // title or icon
+            else if (ev.getType() == TYPE.TITLE) {
+                updateBreadcrumb();
+            }
         }
     }
 

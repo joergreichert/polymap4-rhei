@@ -14,8 +14,8 @@
  */
 package org.polymap.rhei.batik;
 
-import com.google.common.base.Predicate;
-
+import java.util.List;
+import java.util.function.Predicate;
 import org.eclipse.jface.action.IAction;
 
 import org.polymap.core.runtime.event.EventFilter;
@@ -67,7 +67,7 @@ public interface IAppContext {
      * @see Panels
      * @param path
      */
-    public Iterable<IPanel> findPanels( Predicate<IPanel> filter );
+    public List<IPanel> findPanels( Predicate<IPanel> filter );
 
     /**
      * Registers the given {@link EventHandler annotated event handler} for event types:

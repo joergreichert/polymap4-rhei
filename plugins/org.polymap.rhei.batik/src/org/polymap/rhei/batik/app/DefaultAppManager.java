@@ -23,12 +23,12 @@ import java.util.concurrent.Callable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.base.Predicate;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rap.rwt.RWT;
@@ -131,32 +131,26 @@ public class DefaultAppManager
      */
     @Override
     public IPanel openPanel( final PanelIdentifier panelId ) {
-        // find and initialize panels
+        // create, filter, init, add  panels
         final PanelPath prefix = activePanel != null ? activePanel.getSite().getPath() : PanelPath.ROOT;
-        List<IPanel> panels = BatikFactory.instance().createPanels( new Predicate<IPanel>() {
-            public boolean apply( IPanel panel ) {
-                new PanelContextInjector( panel, context ).run();
-                EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.INITIALIZING ) );
+        BatikFactory.instance().createPanels( ep -> {
+                new PanelContextInjector( ep.panel, context ).run();
+                EventManager.instance().publish( new PanelChangeEvent( ep.panel, TYPE.INITIALIZING ) );
                 
-                PanelPath path = prefix.append( panel.id() );
-                boolean wantsToBeShown = panel.init( new DefaultPanelSite( path ), context );
+                PanelPath path = prefix.append( ep.panel.id() );
+                DefaultPanelSite site = new DefaultPanelSite( path, ep.stackPriority );
+                boolean wantsToBeShown = ep.panel.init( site, context );
                 
-                if (panel.getSite() == null) {
+                if (ep.panel.getSite() == null) {
                     throw new IllegalStateException( "Panel must not return null for getSite(). (Did you call super.init()?)");
                 }
                 
-                if (panel.id().equals( panelId ) || wantsToBeShown) {
-                    EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.INITIALIZED ) );
+                if (ep.panel.id().equals( panelId ) || wantsToBeShown) {
+                    EventManager.instance().publish( new PanelChangeEvent( ep.panel, TYPE.INITIALIZED ) );
                     return true;
                 }
                 return false;
-            }
-        });
-
-        // add to context
-        for (IPanel panel : panels) {
-            context.addPanel( panel );
-        }
+        }).forEach( ep -> context.addPanel( ep.panel ) );
 
         //
         IPanel panel = context.getPanel( prefix.append( panelId ) );
@@ -314,6 +308,8 @@ public class DefaultAppManager
             implements IPanelSite {
 
         private PanelPath           path;
+        
+        private Integer             stackPriority;
 
         private String              title = "Untitled";
         
@@ -325,14 +321,20 @@ public class DefaultAppManager
         private IStatus             status = Status.OK_STATUS;
 
 
-        protected DefaultPanelSite( PanelPath path ) {
+        protected DefaultPanelSite( PanelPath path, Integer stackPriority  ) {
             assert path != null;
             this.path = path;
+            this.stackPriority = stackPriority;
         }
 
         @Override
         public PanelPath getPath() {
             return path;
+        }
+
+        @Override        
+        public Integer getStackPriority() {
+            return stackPriority;
         }
 
         @Override
