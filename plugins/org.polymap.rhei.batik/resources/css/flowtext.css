@@ -28,10 +28,17 @@ a:hover {
   text-decoration: underline;
 }
 p {
+  color: #606060;
   font-size: 13px;
-  line-height: 16px;
+  line-height: 14px;
   text-align: justify;
   margin: 3px 0 3px 0;
+}
+ul {
+  color: #606060;
+  font-size: 13px;
+  margin: 3px 0 3px 0;
+  padding-left: 30px;
 }
 h1 {
   font-size: 24px;
@@ -48,8 +55,14 @@ h3 {
   font-weight: normal;
   margin: 10px 0 3px 0;
 }
+h4 {
+  font-size: 16px;
+  font-weight: normal;
+  margin: 5px 0 0px 0;
+}
 hr {
   height: 0px;
   border: none;
-  border-top: 1px solid #9B918C;
+  border-top: 1px solid #c8c8c8;
+  
 }

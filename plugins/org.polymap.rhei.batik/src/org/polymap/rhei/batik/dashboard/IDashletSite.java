@@ -14,9 +14,12 @@
  */
 package org.polymap.rhei.batik.dashboard;
 
+import java.util.List;
+
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.SiteProperty;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutConstraint;
 
 /**
  * 
@@ -32,5 +35,7 @@ public interface IDashletSite {
     public IPanelSite panelSite();
     
     public IPanelToolkit toolkit();
+    
+    public SiteProperty<List<LayoutConstraint>> layoutConstraints();
     
 }

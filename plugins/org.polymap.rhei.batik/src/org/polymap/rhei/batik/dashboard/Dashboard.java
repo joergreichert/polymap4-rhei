@@ -14,7 +14,9 @@
  */
 package org.polymap.rhei.batik.dashboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,6 +31,7 @@ import org.polymap.rhei.batik.SiteProperty;
 import org.polymap.rhei.batik.internal.DefaultSiteProperty;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutConstraint;
 
 /**
  * 
@@ -71,6 +74,9 @@ public class Dashboard {
             int expandable = SWT.NONE;
             IPanelSection section = tk.createPanelSection( parent, title, border, expandable );
             
+            List<LayoutConstraint> constraints = dashletSite.layoutConstraints().get();
+            section.addConstraint( constraints.toArray( new LayoutConstraint[constraints.size()]) );
+            
             dashlet.createContents( section.getBody() );
         }
         return parent;
@@ -87,6 +93,8 @@ public class Dashboard {
         
         private DefaultSiteProperty<Boolean>    isBoxStyle = new DefaultSiteProperty( false );
         
+        private DefaultSiteProperty<List<LayoutConstraint>> constraints = new DefaultSiteProperty( new ArrayList() );
+        
         @Override
         public SiteProperty<String> title() {
             return title;
@@ -95,6 +103,11 @@ public class Dashboard {
         @Override
         public SiteProperty<Boolean> isBoxStyle() {
             return isBoxStyle;
+        }
+
+        @Override
+        public SiteProperty<List<LayoutConstraint>> layoutConstraints() {
+            return constraints;
         }
 
         @Override

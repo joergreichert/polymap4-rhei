@@ -19,7 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 
-import org.polymap.core.runtime.Closeables;
+import org.polymap.core.runtime.Closer;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
@@ -55,6 +55,8 @@ public class DefaultAppDesign
 
     private static Log log = LogFactory.getLog( DefaultAppDesign.class );
 
+    public static final int         MAX_CONTENT_WIDTH = 1100;
+    
     protected Shell                 mainWindow;
     
     protected IPanelToolkit         toolkit;
@@ -78,10 +80,7 @@ public class DefaultAppDesign
 
     @Override
     public void close() {
-        if (toolkit != null) {
-            Closeables.close( toolkit );
-            toolkit = null;
-        }
+        toolkit = Closer.create().closeAndNull( toolkit );
     }
 
 
@@ -94,9 +93,12 @@ public class DefaultAppDesign
     @Override
     public Shell createMainWindow( Display display ) {
         mainWindow = new Shell( display, SWT.NO_TRIM );
-        mainWindow.setLayout( new FormLayout() );
         mainWindow.setMaximized( true );
         UIUtils.setVariant( mainWindow, IAppDesign.CSS_SHELL );
+
+        Rectangle bounds = display.getBounds();
+        int margins = Math.max( bounds.width - MAX_CONTENT_WIDTH, 0 );
+        mainWindow.setLayout( FormLayoutFactory.defaults().margins( 0, margins/2, 10, margins/2 ).create() );
 
         // header
         Composite headerContainer = fillHeaderArea( mainWindow );
