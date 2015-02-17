@@ -1,6 +1,6 @@
 # Web UI for mobile and desktop
 
-<img align="right" width="450" style="margin-left:10px;" src="http://polymap.org/mosaic/raw-attachment/wiki/WikiStart/mosaic.png" alt=""/>
+<img align="right" width="450" hspace="8" src="http://polymap.org/mosaic/raw-attachment/wiki/WikiStart/mosaic.png" alt=""/>
 
 Batik is an UI framework based on Eclipse/RAP. Its focus is to provide a user centric, modern UI that is easy to programm and easy to use and navigate, both on **desktop and mobile** devices. The business and presentation logic is **written in Java**, including the entiry layout. No JavaScript involved. The system is extendible via Eclipse extension points. The appearance of the UI elements can be adjusted via **CSS** which is parsed and **validated** on the server.
 
