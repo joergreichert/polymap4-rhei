@@ -23,12 +23,12 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
 import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.batik.FormContainer;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.internal.Messages;
 

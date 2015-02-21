@@ -23,8 +23,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Predicate;
 
-import org.polymap.core.runtime.recordstore.IRecordStore;
-
 import org.polymap.rhei.um.Entity;
 import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;

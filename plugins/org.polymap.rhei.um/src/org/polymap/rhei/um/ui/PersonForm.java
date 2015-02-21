@@ -25,12 +25,12 @@ import org.polymap.core.runtime.IMessages;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.EMailAddressValidator;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PicklistFormField;
 import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.batik.FormContainer;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Person;
 import org.polymap.rhei.um.Property;

@@ -23,12 +23,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.service.ISettingStore;
-
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.service.ISettingStore;
 
 import org.polymap.core.operation.OperationSupport;
 import org.polymap.core.runtime.IMessages;
@@ -37,9 +36,7 @@ import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.DefaultPanel;
-import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -88,13 +85,12 @@ public class UserSettingsPanel
     
 
     @Override
-    public boolean init( IPanelSite site, IAppContext context ) {
-        super.init( site, context );
-        tk = site.toolkit();
+    public void init() {
+        super.init();
+        tk = getSite().toolkit();
         // XXX sort out context property issues
         UserPrincipal loggedIn = (UserPrincipal)Polymap.instance().getUser(); //userPrincipal.get();
         user = loggedIn != null ? UserRepository.instance().findUser( loggedIn.getName() ) : null;        
-        return false;
     }
 
 
@@ -104,12 +100,6 @@ public class UserSettingsPanel
             personForm.removeFieldListener( personFormListener );
             personForm = null;
         }
-    }
-
-
-    @Override
-    public PanelIdentifier id() {
-        return ID;
     }
 
 

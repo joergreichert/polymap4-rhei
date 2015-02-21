@@ -19,7 +19,7 @@ import java.util.List;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.rwt.graphics.Graphics;
-
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+
+import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.data.DataPlugin;
 import org.polymap.core.runtime.cache.Cache;

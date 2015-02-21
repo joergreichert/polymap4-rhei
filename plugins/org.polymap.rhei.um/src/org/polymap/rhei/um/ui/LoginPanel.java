@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.um.ui;
 
+import java.io.IOException;
+
 import javax.security.auth.login.LoginException;
 
 import org.apache.commons.logging.Log;
@@ -26,14 +28,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.service.ISettingStore;
-import org.eclipse.rwt.service.SettingStoreException;
-
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.service.ISettingStore;
 
 import org.polymap.core.operation.OperationSupport;
 import org.polymap.core.runtime.IMessages;
@@ -42,12 +42,11 @@ import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
-import org.polymap.rhei.batik.ContextProperty;
+import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.field.CheckboxFormField;
@@ -58,6 +57,7 @@ import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
 import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.batik.FormContainer;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -76,25 +76,15 @@ public class LoginPanel
 
     public static final PanelIdentifier ID = new PanelIdentifier( "um", "login" );
 
-    private ContextProperty<UserPrincipal> user;
+    private Context<UserPrincipal> user;
 
     private IPanelToolkit                  tk;
 
     
     @Override
-    public boolean init( IPanelSite site, IAppContext context ) {
-        super.init( site, context );
-        this.tk = site.toolkit();
-        //assert nutzer.get() == null;
-        
-        // open only if directly called
-        return false;
-    }
-
-    
-    @Override
-    public PanelIdentifier id() {
-        return ID;
+    public void init() {
+        super.init();
+        this.tk = getSite().toolkit();
     }
 
     
@@ -130,7 +120,7 @@ public class LoginPanel
 
         private static final IMessages          i18n = Messages.forPrefix( "LoginForm" );
         
-        protected ContextProperty<UserPrincipal> user;
+        protected Context<UserPrincipal> user;
 
         protected Button                         loginBtn;
 
@@ -153,7 +143,7 @@ public class LoginPanel
         private boolean                          showLostLink;
 
         
-        public LoginForm( IAppContext context, IPanelSite panelSite, ContextProperty<UserPrincipal> user ) {
+        public LoginForm( IAppContext context, IPanelSite panelSite, Context<UserPrincipal> user ) {
             this.context = context;
             this.panelSite = panelSite;
             this.user = user;
@@ -166,9 +156,9 @@ public class LoginPanel
                 settings.removeAttribute( "org.polymap.rhei.um.LoginForm.passwd" );
                 storeLogin = username != null;
             }
-            catch (SettingStoreException e) {
-                log.warn( "", e );
-            } 
+            catch (IOException e) {
+                throw new RuntimeException( e );
+            }
         }
 
         
@@ -326,8 +316,8 @@ public class LoginPanel
                 settings.setAttribute( "org.polymap.rhei.um.LoginForm.login", name );
                 settings.setAttribute( "org.polymap.rhei.um.LoginForm.passwd", passwd );
             }
-            catch (SettingStoreException e) {
-                log.warn( "", e );
+            catch (IOException e) {
+                throw new RuntimeException( e );
             }
         }
         

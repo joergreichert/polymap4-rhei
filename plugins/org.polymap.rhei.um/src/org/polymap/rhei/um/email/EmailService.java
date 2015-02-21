@@ -16,7 +16,7 @@ package org.polymap.rhei.um.email;
 
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -26,6 +26,7 @@ import org.apache.commons.mail.EmailException;
 import com.google.common.base.Supplier;
 
 import org.polymap.core.runtime.CachedLazyInit;
+import org.polymap.core.runtime.Lazy;
 import org.polymap.core.runtime.LazyInit;
 
 /**
@@ -37,7 +38,7 @@ public class EmailService {
 
     private static Log log = LogFactory.getLog( EmailService.class );
 
-    private static final LazyInit<EmailService>   instance = new CachedLazyInit( 1024 );
+    private static final Lazy<EmailService>   instance = new CachedLazyInit( 1024 );
     
     public static EmailService instance() {
         return instance.get( new Supplier<EmailService>() {

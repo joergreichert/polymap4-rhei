@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.um.ui;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.polymap.rhei.field.DelegatingValidator;
 import org.polymap.rhei.field.IFormFieldValidator;

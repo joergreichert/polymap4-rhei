@@ -35,11 +35,9 @@ import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.BatikPlugin;
-import org.polymap.rhei.batik.ContextProperty;
+import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.DefaultPanel;
-import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -68,7 +66,7 @@ public class RegisterPanel
 
     public static final IMessages       i18n = Messages.forPrefix( "RegisterPanel" );
 
-    private ContextProperty<UserPrincipal> userPrincipal;
+    private Context<UserPrincipal> userPrincipal;
 
     private IPanelToolkit               tk;
     
@@ -80,16 +78,14 @@ public class RegisterPanel
 
     private Composite                   panelContainer;
 
-    private IPanelSection welcomeSection;
+    private IPanelSection               welcomeSection;
 
-    private IPanelSection personSection;
+    private IPanelSection               personSection;
     
 
     @Override
-    public boolean init( IPanelSite site, IAppContext context ) {
-        super.init( site, context );
-        tk = site.toolkit();
-        return false;
+    public void init() {
+        tk = getSite().toolkit();
     }
 
 
@@ -102,11 +98,6 @@ public class RegisterPanel
     }
 
 
-    @Override
-    public PanelIdentifier id() {
-        return ID;
-    }
-    
     public Composite getPanelContainer() {
         return panelContainer;
     }

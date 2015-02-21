@@ -24,11 +24,11 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.app.FormContainer;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.batik.FormContainer;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Property;
 import org.polymap.rhei.um.internal.Messages;

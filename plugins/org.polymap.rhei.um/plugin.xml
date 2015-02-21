@@ -30,11 +30,5 @@
             class="org.polymap.rhei.um.auth.UmAuthorizationModule">
       </AuthorizationModule>
    </extension>
-   <extension
-         point="org.polymap.core.model.moduleAssemblers">
-      <assembler
-            class="org.polymap.rhei.um.providers.qi4j.UserRepositoryAssembler">
-      </assembler>
-   </extension>
 
 </plugin>
