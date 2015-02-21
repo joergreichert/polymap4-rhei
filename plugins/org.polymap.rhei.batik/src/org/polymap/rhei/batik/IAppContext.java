@@ -26,7 +26,7 @@ import org.polymap.core.runtime.event.EventManager;
  * hierachy.
  * <p/>
  * Properties of the context can be injected into an {@link IPanel} by declaring a
- * {@link ContextProperty} with appropriate type and scope.
+ * {@link Context} with appropriate type and scope.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -86,7 +86,7 @@ public interface IAppContext {
 
     
     /**
-     * Propagates this context by injecting {@link ContextProperty} instances into
+     * Propagates this context by injecting {@link Context} instances into
      * the given target instance.
      * 
      * @param panel

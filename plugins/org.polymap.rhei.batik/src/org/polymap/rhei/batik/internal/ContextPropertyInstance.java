@@ -15,15 +15,14 @@
 package org.polymap.rhei.batik.internal;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Predicates;
 
 import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
-import org.polymap.rhei.batik.ContextProperty;
+import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.PropertyAccessEvent;
 import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
 import org.polymap.rhei.batik.app.DefaultAppContext;
@@ -34,7 +33,7 @@ import org.polymap.rhei.batik.app.DefaultAppContext;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class ContextPropertyInstance<T>
-        implements ContextProperty<T> {
+        implements Context<T> {
 
     private DefaultAppContext       context;
     
@@ -111,10 +110,11 @@ public class ContextPropertyInstance<T>
     public void addListener( Object annotated, final EventFilter... filters ) {
         EventManager.instance().subscribe( annotated, new EventFilter<PropertyAccessEvent>() {
             public boolean apply( PropertyAccessEvent input ) {
-                ContextProperty src = input.getSource();
+                Context src = input.getSource();
+                List<EventFilter<PropertyAccessEvent>> l = Arrays.asList( (EventFilter<PropertyAccessEvent>[])filters );
                 return src.getDeclaredType().equals( getDeclaredType() )
                         && src.getScope().equals( getScope() )
-                        && Predicates.and( Arrays.asList( (EventFilter<PropertyAccessEvent>[])filters ) ).apply( input );
+                        && l.stream().allMatch( filter -> filter.apply( input ) );
             }
         });
     }

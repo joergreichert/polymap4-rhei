@@ -24,8 +24,8 @@ import java.lang.reflect.Type;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.polymap.rhei.batik.Scope;
 import org.polymap.rhei.batik.Context;
-import org.polymap.rhei.batik.ContextProperty;
 import org.polymap.rhei.batik.app.DefaultAppContext;
 
 /**
@@ -61,7 +61,7 @@ public class PanelContextInjector
 
             for (Field f : type.getDeclaredFields()) {
                 // ContextProperty
-                if (ContextProperty.class.isAssignableFrom( f.getType() )) {
+                if (Context.class.isAssignableFrom( f.getType() )) {
                     f.setAccessible( true );
                     Type ftype = f.getGenericType();
                     if (ftype instanceof ParameterizedType) {
@@ -69,9 +69,9 @@ public class PanelContextInjector
 
                         // find scope
                         String scope = type.getPackage().getName();
-                        Context annotation = f.getAnnotation( Context.class );
-                        if (annotation != null && annotation.scope().length() > 0) {
-                            scope = annotation.scope();
+                        Scope annotation = f.getAnnotation( Scope.class );
+                        if (annotation != null && annotation.value().length() > 0) {
+                            scope = annotation.value();
                         }
                         // set
                         try {
@@ -89,7 +89,7 @@ public class PanelContextInjector
                 }
                 
                 // @Context annotation
-                Context annotation = f.getAnnotation( Context.class );
+                Scope annotation = f.getAnnotation( Scope.class );
                 if (annotation != null) {
                     f.setAccessible( true );
                     throw new UnsupportedOperationException( "Injecting context property as direct member." );

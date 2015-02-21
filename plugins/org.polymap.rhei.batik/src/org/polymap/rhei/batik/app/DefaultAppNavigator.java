@@ -27,10 +27,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.layout.RowDataFactory;
 import org.eclipse.jface.layout.RowLayoutFactory;
@@ -40,6 +40,7 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
@@ -55,6 +56,8 @@ public class DefaultAppNavigator
         implements DefaultActionBar.Part {
 
     public static final String      CSS_PREFIX = "atlas-navi";
+    public static final String      CSS_BREADCRUMP = CSS_PREFIX + "-breadcrump";
+    public static final String      CSS_SWITCHER = CSS_PREFIX + "-switcher";
 
     private static Log log = LogFactory.getLog( DefaultAppNavigator.class );
 
@@ -65,6 +68,8 @@ public class DefaultAppNavigator
     private List<PanelChangeEvent>  pendingStartEvents = new ArrayList();
 
     private Composite               breadcrumb;
+
+    private Composite               switcher;
 
     private IPanel                  activePanel;
 
@@ -80,11 +85,6 @@ public class DefaultAppNavigator
         this.contents = parent;
         contents.setLayout( new FormLayout() );
 
-        // breadcrumb
-        breadcrumb = new Composite( parent, SWT.NONE );
-        breadcrumb.setLayoutData( FormDataFactory.filled().create() );
-        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 30, 1 ).fill( false ).create() );
-
         // fire pending events
         for (PanelChangeEvent ev : pendingStartEvents) {
             panelChanged( ev );
@@ -94,30 +94,32 @@ public class DefaultAppNavigator
 
 
     protected void updateBreadcrumb() {
-        // when called from DesktopPanelSite
-        if (activePanel == null) {
-            return;
-        }
         // clear
-        for (Control control : breadcrumb.getChildren()) {
-            control.dispose();
+        if (breadcrumb != null) {
+            breadcrumb.dispose();
         }
-//        // home
-//        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
-//        homeBtn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
-//        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
-//        homeBtn.setToolTipText( "Zurück zur Startseite" );
-//        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-//        homeBtn.addSelectionListener( new SelectionAdapter() {
-//            public void widgetSelected( SelectionEvent e ) {
-//                while (activePanel.getSite().getPath().size() > 1) {
-//                    appManager.closePanel();
-//                    activePanel = appManager.getActivePanel();
-//                }
-//            }
-//        });
+        breadcrumb = new Composite( contents, SWT.NONE );
+        breadcrumb.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
+        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 30, 1 ).fill( false ).create() );
+        UIUtils.setVariant( breadcrumb, CSS_BREADCRUMP );
         
         boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
+        
+        // home
+        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
+        UIUtils.setVariant( homeBtn, CSS_PREFIX );
+        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
+        homeBtn.setToolTipText( "Zurück zur Startseite" );
+        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+        homeBtn.addSelectionListener( new SelectionAdapter() {
+            public void widgetSelected( SelectionEvent e ) {
+                while (activePanel.getSite().getPath().size() > 1) {
+                    appManager.closePanel( activePanel.getSite().getPath() );
+                    activePanel = appManager.getActivePanel();
+                }
+            }
+        });
+        //homeBtn.setEnabled( activePanel.getSite().getPath().size() > 1 );
 
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
@@ -151,51 +153,63 @@ public class DefaultAppNavigator
 //            separator.setText( " " );
 //            separator.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-navi"  );
         }
+    }
+    
+    
+    protected void updateSwitcher() {    
+        if (switcher != null) {
+            switcher.dispose();
+        }
+        switcher = new Composite( contents, SWT.NONE );
+        switcher.setLayout( RowLayoutFactory.fillDefaults().margins( 1, 1 ).spacing( 0 ).fill( false ).create() );
+        UIUtils.setVariant( switcher, CSS_SWITCHER );
         
-        // switcher
+        boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
+
         PanelPath prefix = activePanel.getSite().getPath().removeLast( 1 );
         appManager.getContext().findPanels( Panels.withPrefix( prefix ) )
                 .stream()
                 .sorted( reverseOrder( comparing( panel -> panel.getSite().getStackPriority() ) ) )
                 .forEach( panel -> {
-                    final Button btn = new Button( breadcrumb, SWT.TOGGLE );
-                    UIUtils.setVariant( btn, CSS_PREFIX );
-                    Image icon = panel.getSite().getIcon();
-                    String title = panel.getSite().getTitle();
+                        final Button btn = new Button( switcher, SWT.TOGGLE );
+                        UIUtils.setVariant( btn, CSS_PREFIX );
+                        Image icon = panel.getSite().getIcon();
+                        String title = panel.getSite().getTitle();
 
-                    if (icon == null && title == null) {
-                        btn.setVisible( false );
-                    }
-                    else if (showText || icon == null) {
-                        btn.setText( title );
-                    }
-                    else {
-                        btn.setToolTipText( title );
-                    }
-                    if (icon != null) {
-                        btn.setImage( icon );
-                    }
-                    btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+                        if (icon == null && title == null) {
+                            btn.setVisible( false );
+                        }
+                        else if (showText || icon == null) {
+                            btn.setText( title );
+                        }
+                        else {
+                            btn.setToolTipText( title );
+                        }
+                        if (icon != null) {
+                            btn.setImage( icon );
+                        }
+                        btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
 
-                    if (panel.equals( activePanel )) {
-                        btn.setSelection( true );
-                        btn.addSelectionListener( new SelectionAdapter() {
-                            public void widgetSelected( SelectionEvent ev ) {
-                                btn.setSelection( true );
-                            }
-                        });
-                    }
-                    else {
-                        btn.addSelectionListener( new SelectionAdapter() {
-                            public void widgetSelected( SelectionEvent ev ) {
-                                appManager.activatePanel( panel.id() );
-                            }
-                        });
-                    }
+                        if (panel.equals( activePanel )) {
+                            btn.setSelection( true );
+                            btn.addSelectionListener( new SelectionAdapter() {
+                                public void widgetSelected( SelectionEvent ev ) {
+                                    btn.setSelection( true );
+                                }
+                            });
+                        }
+                        else {
+                            btn.addSelectionListener( new SelectionAdapter() {
+                                public void widgetSelected( SelectionEvent ev ) {
+                                    appManager.activatePanel( panel.id() );
+                                }
+                            });
+                        }
                 });
         
-        breadcrumb.layout( true );
-        contents.layout( true );
+        // calculate width
+        Point size = switcher.computeSize( SWT.DEFAULT, 30, true );
+        switcher.setLayoutData( FormDataFactory.filled().clearLeft().width( size.x+30 ).create() );
     }
 
 
@@ -208,11 +222,21 @@ public class DefaultAppNavigator
             // open
             if (ev.getType() == TYPE.ACTIVATED) {
                 activePanel = ev.getSource();
-                updateBreadcrumb();
+                if (activePanel != null) {
+                    updateSwitcher();
+                    updateBreadcrumb();
+
+                    breadcrumb.layout( true );
+                    switcher.layout( true );
+                    contents.layout( true );
+                }
             }
             // title or icon
             else if (ev.getType() == TYPE.TITLE) {
-                updateBreadcrumb();
+                updateSwitcher();
+
+                switcher.layout( true );
+                contents.layout( true );
             }
         }
     }

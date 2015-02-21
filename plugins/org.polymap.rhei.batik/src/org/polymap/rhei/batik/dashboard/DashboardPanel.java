@@ -14,24 +14,13 @@
  */
 package org.polymap.rhei.batik.dashboard;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.JFaceResources;
-
 import org.polymap.core.ui.FormDataFactory;
-import org.polymap.core.ui.UIUtils;
-
-import org.polymap.rhei.batik.BatikPlugin;
-import org.polymap.rhei.batik.IAppContext;
+import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 
 /**
@@ -40,42 +29,27 @@ import org.polymap.rhei.batik.PanelIdentifier;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class DashboardPanel
+        extends DefaultPanel
         implements IPanel {
 
     public static final PanelIdentifier     ID = new PanelIdentifier( "dashboard" );
 
-    private IPanelSite      site;
-
-    private IAppContext     context;
-
 
     @Override
-    public boolean init( IPanelSite _site, IAppContext _context ) {
-        if (_site.getPath().size() > 1) {
-            return false;
-        }
-        this.site = _site;
-        this.context = _context;
+    public void init() {
+        getSite().setTitle( "Dashboard" );
 
-        site.setTitle( "Dashboard" );
-
-        // info action
-        Image icon = JFaceResources.getImage( Dialog.DLG_IMG_MESSAGE_INFO );
-        Action infoAction = new Action( "Info" ) {
-            public void run() {
-                MessageDialog.openInformation( UIUtils.shellToParentOn(),
-                        "Information", "Atlas Client Version: " + BatikPlugin.instance().getBundle().getVersion() );
-            }
-        };
-        infoAction.setImageDescriptor( ImageDescriptor.createFromImage( icon ) );
-        infoAction.setToolTipText( "Version Information" );
-        site.addToolbarAction( infoAction );
-        return true;
-    }
-
-
-    @Override
-    public void dispose() {
+//        // info action
+//        Image icon = JFaceResources.getImage( Dialog.DLG_IMG_MESSAGE_INFO );
+//        Action infoAction = new Action( "Info" ) {
+//            public void run() {
+//                MessageDialog.openInformation( UIUtils.shellToParentOn(),
+//                        "Information", "Atlas Client Version: " + BatikPlugin.instance().getBundle().getVersion() );
+//            }
+//        };
+//        infoAction.setImageDescriptor( ImageDescriptor.createFromImage( icon ) );
+//        infoAction.setToolTipText( "Version Information" );
+//        site.addToolbarAction( infoAction );
     }
 
 
@@ -87,17 +61,11 @@ public class DashboardPanel
 
     @Override
     public void createContents( Composite parent ) {
-        Composite contents = site.toolkit().createComposite( parent );
+        Composite contents = getSite().toolkit().createComposite( parent );
         contents.setLayout( new FormLayout() );
 
-        Label l = site.toolkit().createLabel( contents, "Dashboard!" );
+        Label l = getSite().toolkit().createLabel( contents, "Dashboard!" );
         l.setLayoutData( FormDataFactory.filled().create() );
-    }
-
-
-    @Override
-    public IPanelSite getSite() {
-        return site;
     }
 
 }

@@ -86,8 +86,17 @@ public class ConstraintLayout
     
     @Override
     protected Point computeSize( Composite composite, int wHint, int hHint, boolean flushCache ) {
-        Point result = null;
-
+        // compute min width
+        if (wHint == SWT.DEFAULT) {
+            int maxWidth = 0;
+            for (Control child : composite.getChildren()) {
+                Point minChildSize = child.computeSize( wHint, hHint );
+                maxWidth = Math.max( maxWidth, minChildSize.x );
+            }
+            return new Point( maxWidth, hHint );
+        }
+        
+        // else compute solution
         Rectangle clientArea = composite.getClientArea();
         clientArea.width = wHint != SWT.DEFAULT ? wHint : clientArea.width;
         clientArea.height = hHint != SWT.DEFAULT ? hHint : clientArea.height;
@@ -99,13 +108,12 @@ public class ConstraintLayout
                 maxColumn = maxColumn == null || column.height >= maxColumn.height ? column : maxColumn;
             }
             int height = maxColumn.height + (2*marginHeight) + ((maxColumn.size()-1)*spacing);
-            result = new Point( SWT.DEFAULT, height );
+            return new Point( SWT.DEFAULT, height );
             //log.info( "    computeSize: " + result );
         }
         else {
-            result = new Point( wHint, hHint );
+            return new Point( wHint, hHint );
         }
-        return result;
     }
 
     
@@ -117,11 +125,11 @@ public class ConstraintLayout
                 return false;
             }
             if (clientArea.width > composite.getDisplay().getBounds().width) {
-                log.debug( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
+                log.warn( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
                 return false;
             }
 
-            log.debug( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
+            log.info( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
 
             ISolver solver = new BestFirstOptimizer( 250, 100 );
             solver.addGoal( new PriorityOnTopGoal( 1 ) );
@@ -242,7 +250,7 @@ public class ConstraintLayout
         /** Equal width for all columns. */
         public int defaultColumnWidth() {
             int result = (clientArea.width - (marginWidth*2) - ((columns.size()-1) * spacing)) / columns.size();
-            assert result > 0;
+            assert result > 0 : "defaultColumnWidth > 0 : " + result;
             return result;
         }
 

@@ -132,7 +132,7 @@ public class DefaultActionBar {
         if (navi != null) {
             Composite container = new Composite( contents, SWT.NONE );
             navi.fillContents( container );
-            container.setLayoutData( FormDataFactory.filled().right( -1 ).width( 600 ).create() );
+            container.setLayoutData( FormDataFactory.filled()/*.right( -1 ).width( 600 )*/.create() );
             left = container;
         }
         

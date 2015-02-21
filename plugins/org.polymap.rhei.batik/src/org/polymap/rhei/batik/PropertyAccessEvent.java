@@ -35,14 +35,14 @@ public class PropertyAccessEvent
     
     private TYPE            type;
     
-    public PropertyAccessEvent( ContextProperty source, TYPE type ) {
+    public PropertyAccessEvent( Context source, TYPE type ) {
         super( source );
         this.type = type;
     }
 
     @Override
-    public ContextProperty getSource() {
-        return (ContextProperty)super.getSource();
+    public Context getSource() {
+        return (Context)super.getSource();
     }
 
     public TYPE getType() {

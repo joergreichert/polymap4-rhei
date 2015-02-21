@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
-import org.polymap.rhei.batik.ContextProperty;
+import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
@@ -82,13 +82,13 @@ public abstract class DefaultAppContext
     @Override
     public List<IPanel> findPanels( Predicate<IPanel> filter ) {
         // make a copy so that contents is stable while iterating (remove)
-        return panels.values().stream().filter( filter ).collect( Collectors.toList() ); //.collect( toCollection( () -> new ArrayList() ) );
+        return panels.values().stream().filter( filter ).collect( Collectors.toList() );
     }
 
     
-    public void addPanel( IPanel panel ) {
-        if (panels.put( panel.getSite().getPath(), panel ) != null) {
-            throw new IllegalStateException( "Panel already exists at: " + panel.getSite().getPath() );
+    public void addPanel( IPanel panel, PanelPath path ) {
+        if (panels.put( path, panel ) != null) {
+            throw new IllegalStateException( "Panel already exists at: " + path );
         }
     }
 
@@ -153,7 +153,7 @@ public abstract class DefaultAppContext
     }
 
 
-    public <T> T getPropertyValue( ContextProperty<T> prop ) {
+    public <T> T getPropertyValue( Context<T> prop ) {
         try {
             propertiesLock.readLock().lock();
             
@@ -166,7 +166,7 @@ public abstract class DefaultAppContext
     }
     
 
-    public <T> T setPropertyValue( ContextProperty<T> prop, T value ) {
+    public <T> T setPropertyValue( Context<T> prop, T value ) {
         try {
             propertiesLock.writeLock().lock();
 
@@ -194,7 +194,7 @@ public abstract class DefaultAppContext
     }
 
     
-    public <T> boolean compareAndSetPropertyValue( ContextProperty<T> prop, T expect, T update ) {
+    public <T> boolean compareAndSetPropertyValue( Context<T> prop, T expect, T update ) {
         try {
             propertiesLock.writeLock().lock();
          
@@ -213,7 +213,7 @@ public abstract class DefaultAppContext
     }
     
     
-    protected ScopedPropertyValue findPropertyValue( ContextProperty prop ) {
+    protected ScopedPropertyValue findPropertyValue( Context prop ) {
         ScopedPropertyValue result = null;
         for (ScopedPropertyValue value : properties) {
             if (value.scope.equals( prop.getScope() )

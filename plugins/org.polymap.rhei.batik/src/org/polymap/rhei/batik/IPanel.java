@@ -25,7 +25,7 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout;
  * A panel is identified by its path and name. The path defines the place in the
  * hierarchy of panel.
  *
- * @see Context
+ * @see Scope
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IPanel {
@@ -35,21 +35,37 @@ public interface IPanel {
     /** See {@link IPanelSite#LAYOUT_MARGINS_KEY}. */
     public static final String      LAYOUT_MARGINS_KEY = IPanelSite.LAYOUT_MARGINS_KEY;
 
+    public void setSite( IPanelSite site, IAppContext context );
     
     /**
-     * Initializes the panel and checks if it is valid for the given site and
-     * context.
+     * This method is called before {@link #init(IPanelSite, IAppContext)} in order
+     * to check if the panel wants to be displayed as sibling in the given context.
+     * All context properties are initialized when the methos is called.
      * <p/>
-     * This method is *not* usually called when the panel is activated. The init
-     * method might be called even if the panel is never activated and displayed
-     * actually. Register for {@link PanelChangeEvent}s to get notified when the
-     * panel is activated.
+     * This method should be lightweight and should not initialize anything, except
+     * for the title and icon which is shown in the navigation bar.
+     * <p/>
+     * Check for <code>site.getPath().size() == 1;</code> to see if this is the
+     * first/root panel.
+     *
+     * @param site
+     * @param context
+     * @return True if the panels wants to be shown.
+     */
+    public boolean wantsToBeShown();
+    
+    
+    /**
+     * Initializes the panel. This method is called right before the panel is
+     * activated for the first time.
+     * <p/>
+     * This method is called just once, register for {@link PanelChangeEvent}s to get
+     * notified everytime the panel is activated.
      * 
      * @param site
      * @param context
-     * @return True if the panel is valid for the given site and context.
      */
-    public boolean init( IPanelSite site, IAppContext context );
+    public void init();
 
     public void dispose();
 

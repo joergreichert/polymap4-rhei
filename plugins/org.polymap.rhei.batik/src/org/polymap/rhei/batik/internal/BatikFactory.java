@@ -15,10 +15,8 @@
 package org.polymap.rhei.batik.internal;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
@@ -29,7 +27,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.rap.rwt.RWT;
 
-import org.polymap.core.runtime.Predicates;
 import org.polymap.core.runtime.SessionSingleton;
 
 import org.polymap.rhei.batik.BatikPlugin;
@@ -117,28 +114,24 @@ public class BatikFactory
      * @param name The panel name to filter, or null to get all panels.
      * @return Newly created panel instance.
      */
-    public List<PanelExtensionPoint> createPanels( Predicate<PanelExtensionPoint> filter ) {
+    public Stream<PanelExtensionPoint> allPanelExtensionPoints() {
         IConfigurationElement[] elms = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor( BatikPlugin.PLUGIN_ID, PANEL_EXTENSION_POINT );
 
         return Arrays.asList( elms ).stream()
-//                .sorted( reverseOrder( comparing( (IConfigurationElement elm) -> 
-//                    Optional.ofNullable( elm.getAttribute( "stackPriority" ) ).orElse( "0" ) ) ) )
                 .<PanelExtensionPoint>map( elm -> {
                     try {
                         PanelExtensionPoint result = new PanelExtensionPoint();
                         result.panel = (IPanel)elm.createExecutableExtension( "class" );
                         result.stackPriority = Integer.parseInt( 
                                 Optional.ofNullable( elm.getAttribute( "stackPriority" ) ).orElse( "0" ) );
-                        return filter.test( result ) ? result : null;
+                        return result;
                     }
                     catch (Exception e) {
                         log.error( "Error while initializing panel: " + elm.getName(), e );
                         return null;
                     }
-                })
-                .filter( Predicates.notNull() )
-                .collect( Collectors.toList() );
+                });
     }
 
 }

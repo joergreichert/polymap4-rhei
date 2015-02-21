@@ -26,9 +26,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.ui.forms.widgets.ScrolledPageBook;
-import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
-
 import org.polymap.core.runtime.Closer;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
@@ -41,7 +38,10 @@ import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
+import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.app.DefaultActionBar.PLACE;
+import org.polymap.rhei.batik.app.DefaultAppManager.DefaultPanelSite;
+import org.polymap.rhei.batik.internal.PageStack;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
@@ -69,7 +69,7 @@ public class DefaultAppDesign
 
     protected DefaultUserPreferences  userPrefs;
 
-    protected ScrolledPageBook      panelsArea;
+    protected PageStack<PanelIdentifier> panelsArea;
 
 
     @Override
@@ -141,16 +141,16 @@ public class DefaultAppDesign
     protected Composite fillActionArea( Composite parent ) {
         IAppContext context = BatikApplication.instance().getAppManager().getContext();
         DefaultActionBar actionbar = new DefaultActionBar( context, toolkit );
-        actionbar.add( toolbar = new DefaultAppToolbar(), PLACE.PANEL_TOOLBAR );
+        //actionbar.add( toolbar = new DefaultAppToolbar(), PLACE.PANEL_TOOLBAR );
         actionbar.add( navigator = new DefaultAppNavigator(), PLACE.PANEL_NAVI );
-        actionbar.add( userPrefs = new DefaultUserPreferences(), PLACE.USER_PREFERENCES );
-        actionbar.add( statusManager = new StatusManager(), PLACE.STATUS );
+        //actionbar.add( userPrefs = new DefaultUserPreferences(), PLACE.USER_PREFERENCES );
+        //actionbar.add( statusManager = new StatusManager(), PLACE.STATUS );
         return actionbar.createContents( parent, SWT.BORDER );
     }
 
 
     protected Composite fillPanelArea( Composite parent ) {
-        panelsArea = new ScrolledPageBook( parent, SWT.V_SCROLL );
+        panelsArea = new PageStack( parent );  //new ScrolledPageBook( parent, SWT.V_SCROLL );
         panelsArea.showEmptyPage();
         return UIUtils.setVariant( panelsArea, CSS_PANELS );
     }
@@ -166,8 +166,11 @@ public class DefaultAppDesign
                 panelsArea.showPage( panel.id() );                
             }
             else {
-                Composite page = panelsArea.createPage( panel.id() );
+                Composite page = panelsArea.createPage( panel.id(),
+                        // every new panel is created on top
+                        (int)System.currentTimeMillis() );
                 page.setLayout( newPanelLayout() );
+                UIUtils.setVariant( page, CSS_PANEL );
 
                 panel.createContents( page );
                 page.layout( true );
@@ -179,18 +182,17 @@ public class DefaultAppDesign
         }
         //
         else if (ev.getType() == TYPE.ACTIVATED) {
-//            DesktopPanelSite panelSite = (DesktopPanelSite)ev.getSource().getSite();
-//            getShell().setText( "Mosaic - " + panelSite.getTitle() );
-//            getShell().layout();
+            DefaultPanelSite panelSite = (DefaultPanelSite)ev.getSource().getSite();
+            mainWindow.setText( panelSite.getTitle() );
             delayedRefresh();
         }
         //
-        else if (ev.getType() == TYPE.DISPOSING) {
-            if (panelsArea.hasPage( panel.id() )) {
-                panelsArea.removePage( panel.id() );
-            }
-        }
         else if (ev.getType() == TYPE.DEACTIVATING) {
+//            if (panelsArea.hasPage( panel.id() )) {
+//                panelsArea.hidePage( panel.id() );
+//            }
+        }
+        else if (ev.getType() == TYPE.DISPOSING) {
             if (panelsArea.hasPage( panel.id() )) {
                 panelsArea.removePage( panel.id() );
             }
@@ -212,7 +214,7 @@ public class DefaultAppDesign
         // XXX this forces the content send twice to the client (measureString: calculate text height)
         // without layout fails sometimes (page to short, no content at all)
 //        s.layout( true );
-        ((SharedScrolledComposite)panelsArea).reflow( true );
+        panelsArea.reflow( true );
         
         // FIXME HACK! force re-layout after font sizes are known (?)
         UIUtils.activateCallback( DefaultAppDesign.class.getName() );

@@ -38,22 +38,27 @@ Display {
 /*
  * Navigation/Action Buttons
  */
-Button[TOGGLE].atlas-navi, Button[PUSH].atlas-navi {
+Button[TOGGLE].atlas-navi, 
+Button[PUSH].atlas-navi {
   color: #4a8aaf;
   background-color: #f3f3f3;
   background-image: none;
   border: none;
 }
-Button[TOGGLE]:selected.atlas-navi, Button[TOGGLE]:hover.atlas-navi, Button[PUSH]:hover.atlas-navi {
+Button[TOGGLE]:selected.atlas-navi, 
+Button[TOGGLE]:hover.atlas-navi, 
+Button[PUSH]:hover.atlas-navi {
   color: #0f1c23;
-  background-color: #e3e3e3;
+  background-color: #fcfcff;
   background-image: none;
   border: none;
+}
+Button[TOGGLE]:selected.atlas-navi { 
+  border: 1px solid #6BBAE1
 }
 Composite.atlas-navi/*, Composite.atlas-status, CLabel.atlas-status*/ {
   /*background-color: #f3f3f3;*/
 }
-
 Composite[BORDER].atlas-actions {
   background-color: #f5f5f5;
   border-radius: 3px;
@@ -69,6 +74,12 @@ Label.atlas-header {
   font: bold 30px Helvetica, Arial, sans-serif;
 /*  color: #60A7CA;*/
   color: #666;
+}
+Composite.atlas-panel,
+Composite[BORDER].atlas-panel, 
+Composite.atlas-navi-switcher, 
+Composite[BORDER].atlas-navi-switcher {
+  animation: fadeIn 800ms ease-in, fadeOut 800ms ease-out;    
 }
 
 /* 
