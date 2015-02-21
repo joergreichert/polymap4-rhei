@@ -14,28 +14,27 @@
  */
 package org.polymap.rhei.fulltext.model2;
 
-import static com.google.common.base.Objects.firstNonNull;
-
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 import java.text.NumberFormat;
 
 import org.json.JSONObject;
 
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.model2.Entity;
-import org.polymap.core.model2.Property;
-import org.polymap.core.model2.Queryable;
-import org.polymap.core.model2.runtime.CompositeStateVisitor;
-import org.polymap.core.model2.runtime.PropertyInfo;
 import org.polymap.core.runtime.Polymap;
-
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
+
+import org.polymap.model2.Entity;
+import org.polymap.model2.Property;
+import org.polymap.model2.Queryable;
+import org.polymap.model2.runtime.CompositeStateVisitor;
+import org.polymap.model2.runtime.PropertyInfo;
 
 /**
  * 
@@ -48,7 +47,7 @@ public class EntityFeatureTransformer
 
     private static Log log = LogFactory.getLog( EntityFeatureTransformer.class );
 
-    private NumberFormat        nf = NumberFormat.getInstance( firstNonNull( Polymap.getSessionLocale(), Locale.getDefault() ) );
+    private NumberFormat        nf = NumberFormat.getInstance( Optional.ofNullable( Polymap.getSessionLocale() ).orElse( Locale.getDefault() ) );
     
     private FastDateFormat      df = FastDateFormat.getDateInstance( FastDateFormat.FULL, Polymap.getSessionLocale() );
 

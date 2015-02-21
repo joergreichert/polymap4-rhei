@@ -22,11 +22,11 @@ import java.text.NumberFormat;
 
 import org.json.JSONObject;
 
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.eclipse.jface.util.Geometry;
 
 /**
  * 

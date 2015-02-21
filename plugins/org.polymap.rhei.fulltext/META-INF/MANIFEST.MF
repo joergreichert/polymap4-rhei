@@ -1,18 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Full-Text Search Capabilities
+Bundle-Name: Fulltext Search Capabilities
 Bundle-SymbolicName: org.polymap.rhei.fulltext
-Bundle-Version: 2.1.0.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.polymap.rhei.fulltext.FullTextPlugin
 Bundle-Vendor: polymap.org
-Require-Bundle: org.eclipse.core.runtime,
- org.polymap.core;bundle-version="3.2.0",
- org.polymap.core.project;bundle-version="3.2.0",
- org.polymap.core.data;bundle-version="3.2.0",
- org.polymap.core.model;bundle-version="3.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="2.3.1",
+ org.eclipse.rap.ui;bundle-version="2.3.1",
+ org.polymap.core;bundle-version="4.0.0",
+ org.polymap.core.data;bundle-version="4.0.0",
+ org.polymap.model2;bundle-version="3.0.0";resolution:=optional,
+ org.polymap.model2.store.recordstore;bundle-version="1.0.0";resolution:=optional
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: org.polymap.rhei.fulltext,
+Export-Package: org.json,
+ org.polymap.rhei.fulltext,
  org.polymap.rhei.fulltext.address,
  org.polymap.rhei.fulltext.indexing,
  org.polymap.rhei.fulltext.model2,
@@ -23,4 +25,7 @@ Export-Package: org.polymap.rhei.fulltext,
 Bundle-ClassPath: lib/jdom-1.0.jar,
  lib/rome-0.9.jar,
  lib/georss-rome-0.9.8.jar,
+ lib/json-20131018.jar,
+ lib/lucene-core-3.6.2.jar,
+ lib/lucene-queryparser-3.6.2.jar,
  .

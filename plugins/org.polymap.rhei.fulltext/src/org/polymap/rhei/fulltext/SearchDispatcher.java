@@ -14,6 +14,11 @@
  */
 package org.polymap.rhei.fulltext;
 
+import static com.google.common.collect.Iterables.all;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.limit;
+import static com.google.common.collect.Iterables.transform;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,13 +29,12 @@ import java.util.concurrent.Future;
 
 import org.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import static com.google.common.collect.Iterables.*;
 
 /**
  * Allows multiple {@link FullTextIndex} instances to be queried.

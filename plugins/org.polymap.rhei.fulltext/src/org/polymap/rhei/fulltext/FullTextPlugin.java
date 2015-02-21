@@ -18,7 +18,7 @@ import org.osgi.framework.BundleContext;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class FullTextPlugin
         errorHandler = new ErrorHandler() {
             @Override
             public void handleError( String msg, Throwable e ) {
-                PolymapWorkbench.handleError( FullTextPlugin.PLUGIN_ID, FullTextPlugin.this, msg, e );
+                StatusDispatcher.handleError( FullTextPlugin.PLUGIN_ID, FullTextPlugin.this, msg, e );
             }
         };
     }

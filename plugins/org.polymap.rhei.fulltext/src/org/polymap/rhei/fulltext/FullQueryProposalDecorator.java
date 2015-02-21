@@ -17,10 +17,10 @@ package org.polymap.rhei.fulltext;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
-import static org.apache.commons.lang.StringUtils.substringAfterLast;
-import static org.apache.commons.lang.StringUtils.substringBeforeLast;
+import static org.apache.commons.lang3.StringUtils.substringAfterLast;
+import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

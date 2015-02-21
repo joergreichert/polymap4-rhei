@@ -18,7 +18,9 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.polymap.core.runtime.recordstore.lucene.StringValueCoder;
+
+import org.polymap.recordstore.lucene.StringValueCoder;
+import org.polymap.recordstore.lucene.ValueCoders;
 
 
 /**

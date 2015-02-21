@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.fulltext;
 
-import org.polymap.core.project.ProjectRepository;
 import org.polymap.core.runtime.DefaultSessionContext;
 import org.polymap.core.runtime.DefaultSessionContextProvider;
 import org.polymap.core.runtime.Polymap;

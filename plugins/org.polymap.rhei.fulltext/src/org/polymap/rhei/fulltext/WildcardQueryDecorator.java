@@ -16,7 +16,7 @@ package org.polymap.rhei.fulltext;
 
 import org.json.JSONObject;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Append (Lucene) wildcard '*' to the search query. 

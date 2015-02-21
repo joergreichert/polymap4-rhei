@@ -14,10 +14,6 @@
  */
 package org.polymap.rhei.fulltext.model2;
 
-import static org.polymap.core.model2.runtime.EntityRuntimeContext.EntityStatus.CREATED;
-import static org.polymap.core.model2.runtime.EntityRuntimeContext.EntityStatus.MODIFIED;
-import static org.polymap.core.model2.runtime.EntityRuntimeContext.EntityStatus.REMOVED;
-
 import java.util.List;
 
 import org.json.JSONObject;
@@ -29,18 +25,19 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
-import org.polymap.core.model2.Entity;
-import org.polymap.core.model2.store.CloneCompositeStateSupport;
-import org.polymap.core.model2.store.CompositeState;
-import org.polymap.core.model2.store.StoreDecorator;
-import org.polymap.core.model2.store.StoreSPI;
-import org.polymap.core.model2.store.StoreUnitOfWork;
-
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+
+import org.polymap.model2.Entity;
+import org.polymap.model2.runtime.EntityRuntimeContext.EntityStatus;
+import org.polymap.model2.store.CloneCompositeStateSupport;
+import org.polymap.model2.store.CompositeState;
+import org.polymap.model2.store.StoreDecorator;
+import org.polymap.model2.store.StoreSPI;
+import org.polymap.model2.store.StoreUnitOfWork;
 
 /**
  * Provides a decorator for an underlying store. This decorator tracks modifications and
@@ -191,13 +188,13 @@ public class FulltextIndexer
             updater = index.prepareUpdate();
             for (Entity entity : loaded) {
                 if (entityFilter.apply( entity )) {
-                    if (entity.status() == CREATED) {
+                    if (entity.status() == EntityStatus.CREATED) {
                         updater.store( transform( entity ), false );
                     }
-                    else if (entity.status() == MODIFIED) {
+                    else if (entity.status() == EntityStatus.MODIFIED) {
                         updater.store( transform( entity ), true );
                     }
-                    else if (entity.status() == REMOVED) {
+                    else if (entity.status() == EntityStatus.REMOVED) {
                         updater.remove( entity.id().toString() );
                     }
                 }

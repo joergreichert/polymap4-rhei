@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.fulltext.ui;
 
-import static org.polymap.core.model2.query.Expressions.or;
+import static org.polymap.model2.query.Expressions.or;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.model2.Entity;
-import org.polymap.core.model2.query.Expressions;
-import org.polymap.core.model2.query.ResultSet;
-import org.polymap.core.model2.query.grammar.BooleanExpression;
-import org.polymap.core.model2.runtime.UnitOfWork;
-
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.model2.FulltextIndexer;
+
+import org.polymap.model2.Entity;
+import org.polymap.model2.query.Expressions;
+import org.polymap.model2.query.ResultSet;
+import org.polymap.model2.query.grammar.BooleanExpression;
+import org.polymap.model2.runtime.UnitOfWork;
 
 /**
  * A search field for Model2 {@link Entity}s which were indexed using the

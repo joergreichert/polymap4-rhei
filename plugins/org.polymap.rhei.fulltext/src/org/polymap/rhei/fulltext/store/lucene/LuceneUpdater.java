@@ -14,18 +14,21 @@
  */
 package org.polymap.rhei.fulltext.store.lucene;
 
-import org.json.JSONObject; 
+import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_ID;
+import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_SRS;
+
+import org.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.eclipse.jface.util.Geometry;
 
-import org.polymap.core.runtime.recordstore.IRecordState;
-import org.polymap.core.runtime.recordstore.IRecordStore;
-import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
-
-import static org.polymap.rhei.fulltext.FullTextIndex.*;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+
+import org.polymap.recordstore.IRecordState;
+import org.polymap.recordstore.IRecordStore;
+import org.polymap.recordstore.lucene.LuceneRecordStore;
 
 /**
  * 

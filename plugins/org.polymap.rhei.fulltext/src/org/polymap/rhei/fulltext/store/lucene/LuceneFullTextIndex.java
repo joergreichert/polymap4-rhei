@@ -18,6 +18,7 @@ import static com.google.common.collect.Iterables.limit;
 import static com.google.common.collect.Iterables.transform;
 import static java.util.Arrays.asList;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -27,7 +28,6 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.Term;
@@ -40,14 +40,15 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.util.Version;
 
 import com.google.common.base.Function;
-import org.polymap.core.runtime.recordstore.lucene.GeometryValueCoder;
-import org.polymap.core.runtime.recordstore.lucene.LuceneRecordQuery;
-import org.polymap.core.runtime.recordstore.lucene.LuceneRecordState;
-import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
-import org.polymap.core.runtime.recordstore.lucene.StringValueCoder;
 
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+
+import org.polymap.recordstore.lucene.GeometryValueCoder;
+import org.polymap.recordstore.lucene.LuceneRecordQuery;
+import org.polymap.recordstore.lucene.LuceneRecordState;
+import org.polymap.recordstore.lucene.LuceneRecordStore;
+import org.polymap.recordstore.lucene.StringValueCoder;
 
 /**
  * 
@@ -60,8 +61,8 @@ public class LuceneFullTextIndex
 
     private static Log log = LogFactory.getLog( LuceneFullTextIndex.class );
 
-    /** The Lucene version we are using, current 3.4 from core.libs. */
-    public final static Version     LUCENE_VERSION = Version.LUCENE_34;
+    /** The Lucene version we are using. */
+    public final static Version     LUCENE_VERSION = Version.LUCENE_36;
 
     public final static String      FIELD_ANALYZED = "_analyzed_";
     
@@ -119,7 +120,7 @@ public class LuceneFullTextIndex
             throws Exception {
         // no proposals for empty term
         if (term.length() == 0) {
-            return ListUtils.EMPTY_LIST;
+            return Collections.EMPTY_LIST;
         }
         IndexSearcher searcher = store.getIndexSearcher();
         TermEnum terms = searcher.getIndexReader().terms( 
@@ -149,7 +150,7 @@ public class LuceneFullTextIndex
         }
         catch (Exception e) {
             log.warn( "", e );
-            return ListUtils.EMPTY_LIST;
+            return Collections.EMPTY_LIST;
         }
         finally {
             terms.close();
