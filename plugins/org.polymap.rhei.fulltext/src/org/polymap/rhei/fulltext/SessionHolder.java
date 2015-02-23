@@ -14,11 +14,11 @@
  */
 package org.polymap.rhei.fulltext;
 
-import org.polymap.core.runtime.DefaultSessionContext;
-import org.polymap.core.runtime.DefaultSessionContextProvider;
 import org.polymap.core.runtime.Polymap;
-import org.polymap.core.runtime.SessionContext;
 import org.polymap.core.runtime.entity.EntityStateEvent;
+import org.polymap.core.runtime.session.DefaultSessionContext;
+import org.polymap.core.runtime.session.DefaultSessionContextProvider;
+import org.polymap.core.runtime.session.SessionContext;
 import org.polymap.core.security.SecurityUtils;
 import org.polymap.core.security.UserPrincipal;
 

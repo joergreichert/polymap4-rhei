@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 
 import org.polymap.core.runtime.FutureJobAdapter;
-import org.polymap.core.runtime.SessionContext;
 import org.polymap.core.runtime.UIJob;
+import org.polymap.core.runtime.session.SessionContext;
 
 import org.polymap.rhei.fulltext.FullTextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;

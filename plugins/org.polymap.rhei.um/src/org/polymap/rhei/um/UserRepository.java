@@ -21,8 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.base.Predicate;
 
-import org.polymap.core.runtime.SessionContext;
-import org.polymap.core.runtime.SessionSingleton;
+import org.polymap.core.runtime.session.SessionContext;
+import org.polymap.core.runtime.session.SessionSingleton;
 
 import org.polymap.rhei.um.providers.UserRepositorySPI;
 import org.polymap.rhei.um.providers.qi4j.QiUserRepository;

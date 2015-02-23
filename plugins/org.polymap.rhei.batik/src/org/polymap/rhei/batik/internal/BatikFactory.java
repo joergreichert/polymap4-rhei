@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.rap.rwt.RWT;
 
-import org.polymap.core.runtime.SessionSingleton;
+import org.polymap.core.runtime.session.SessionSingleton;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IAppContext;
