@@ -16,6 +16,7 @@ package org.polymap.rhei.um.operations;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.commands.operations.IUndoableOperation;
@@ -24,7 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import org.polymap.core.runtime.IMessages;
+import org.polymap.core.runtime.i18n.IMessages;
 
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;

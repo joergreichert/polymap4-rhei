@@ -30,8 +30,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.service.ISettingStore;
 
 import org.polymap.core.operation.OperationSupport;
-import org.polymap.core.runtime.IMessages;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 

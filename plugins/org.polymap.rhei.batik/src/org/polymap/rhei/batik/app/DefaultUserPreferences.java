@@ -35,7 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.rap.rwt.graphics.Graphics;
 
-import org.polymap.core.runtime.IMessages;
+import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;

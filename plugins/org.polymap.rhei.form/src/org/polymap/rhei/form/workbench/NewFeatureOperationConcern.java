@@ -35,7 +35,7 @@ import org.polymap.core.data.operations.NewFeatureOperation;
 import org.polymap.core.operation.IOperationConcernFactory;
 import org.polymap.core.operation.OperationConcernAdapter;
 import org.polymap.core.operation.OperationInfo;
-import org.polymap.core.runtime.IMessages;
+import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
 

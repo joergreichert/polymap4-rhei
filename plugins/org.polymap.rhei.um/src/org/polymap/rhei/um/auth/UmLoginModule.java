@@ -28,7 +28,7 @@ import javax.security.auth.spi.LoginModule;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.runtime.IMessages;
+import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.security.AuthorizationModule;
 import org.polymap.core.security.AuthorizationModuleExtension;
 import org.polymap.core.security.UserPrincipal;

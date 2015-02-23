@@ -30,8 +30,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import org.polymap.core.runtime.IMessages;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.runtime.i18n.IMessages;
 
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
