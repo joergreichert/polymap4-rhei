@@ -31,9 +31,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 
-import org.eclipse.rwt.graphics.Graphics;
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -44,9 +41,12 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.core.ui.upload.Upload;
+import org.eclipse.rap.rwt.graphics.Graphics;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
+
+import org.polymap.rap.updownload.upload.Upload;
 
 /**
  * Default implementation of the {@link IFormEditorToolkit} interface.
@@ -76,7 +76,7 @@ public class FormEditorToolkit
     }
 
     public <T extends Control> T adapt( T control ) {
-        control.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+        UIUtils.setVariant( control, CUSTOM_VARIANT_VALUE );
         // reset colors to allow styling
         control.setForeground( null );
         control.setBackground( null );

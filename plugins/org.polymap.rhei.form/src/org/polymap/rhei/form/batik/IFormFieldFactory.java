@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-packageorg.polymap.rhei.form.batikp;
+package org.polymap.rhei.form.batik;
 
 import org.opengis.feature.Property;
 

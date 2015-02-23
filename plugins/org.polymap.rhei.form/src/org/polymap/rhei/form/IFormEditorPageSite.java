@@ -19,9 +19,8 @@ package org.polymap.rhei.form;
 
 import org.opengis.feature.Property;
 
-import org.apache.log4j.Layout;
-
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Layout;
 
 import org.polymap.core.runtime.event.EventManager;
 

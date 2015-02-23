@@ -22,8 +22,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.project.ILayer;
-import org.polymap.core.workbench.PolymapWorkbench;
 import org.polymap.rhei.RheiFormPlugin;
 
 /**
@@ -65,7 +63,7 @@ public class FilterFactory {
                 }
             }
             catch (Exception e) {
-                PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, null, e.getLocalizedMessage(), e );                
+                StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, null, e.getLocalizedMessage(), e );                
             }
         }
         return Collections.unmodifiableList( !filters.isEmpty() ? filters : standardFilters );

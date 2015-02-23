@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2013-2015, Polymap GmbH. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -14,13 +14,19 @@
  */
 package org.polymap.rhei.form.batik;
 
-import static org.polymap.rhei.batik.layout.desktop.DesktopToolkit.*;
-
+import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORM;
+import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORMFIELD;
+import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORMFIELD_DISABLED;
+import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORM_DISABLED;
+import static org.polymap.rhei.internal.form.FormEditorToolkit.CUSTOM_VARIANT_VALUE;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
+
+import org.opengis.feature.Feature;
+import org.opengis.feature.Property;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,23 +43,35 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-
+import org.eclipse.rap.rwt.RWT;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.StatusDispatcher;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.app.BatikApplication;
+import org.polymap.rhei.batik.app.DefaultToolkit;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
+import org.polymap.rhei.field.CheckboxFormField;
+import org.polymap.rhei.field.DateTimeFormField;
+import org.polymap.rhei.field.FormFieldEvent;
+import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.field.IFormFieldValidator;
+import org.polymap.rhei.field.NumberValidator;
+import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the
  * create forms that are connected to a feature or entity.
  *
- * @author <a href="http://www.polymap.de">Falko Br√§utigam</a>
+ * @author <a href="http://www.polymap.de">Falko Br‰utigam</a>
  */
 public abstract class FormContainer
         implements IFormEditorPage {
@@ -107,9 +125,9 @@ public abstract class FormContainer
      * @param parent The parent under which to create the form UI controls.
      */
     public final Composite createContents( Composite body ) {
-        toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
+        toolkit = new FormEditorToolkit( new FormToolkit( UIUtils.sessionDisplay() ) );
         pageBody = body;
-        pageBody.setData( WidgetUtil.CUSTOM_VARIANT, CSS_FORM  );
+        UIUtils.setVariant( pageBody, DefaultToolkit.CSS_FORM );
         pageContainer = new PageContainer( this );
 
         try {
@@ -181,18 +199,18 @@ public abstract class FormContainer
         while (!deque.isEmpty()) {
             Control control = deque.pop();
             
-            String variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
+            String variant = (String)control.getData( RWT.CUSTOM_VARIANT );
             log.debug( "VARIANT: " + variant + " (" + control.getClass().getSimpleName() + ")" );
 
             // form fields
             if (variant == null 
                     || variant.equals( CSS_FORMFIELD ) || variant.equals( CSS_FORMFIELD_DISABLED ) 
-                    || variant.equals( FormEditorToolkit.CUSTOM_VARIANT_VALUE ) || variant.equals( FormFieldComposite.CUSTOM_VARIANT_VALUE )) {
-                control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
+                    || variant.equals( CUSTOM_VARIANT_VALUE ) || variant.equals( CUSTOM_VARIANT_VALUE )) {
+                UIUtils.setVariant( control, enabled ? CSS_FORMFIELD : CSS_FORMFIELD_DISABLED  );
             }
             // form
             else if (variant.equals( CSS_FORM ) || variant.equals( CSS_FORM_DISABLED )) {
-                control.setData( WidgetUtil.CUSTOM_VARIANT, enabled ? CSS_FORM : CSS_FORM_DISABLED  );
+                UIUtils.setVariant( control, enabled ? CSS_FORM : CSS_FORM_DISABLED  );
             }
 
 //            // labeler Label
@@ -213,7 +231,7 @@ public abstract class FormContainer
                 
                 deque.addAll( Arrays.asList( ((Composite)control).getChildren() ) );                
             }
-            variant = (String)control.getData( WidgetUtil.CUSTOM_VARIANT );
+            variant = (String)control.getData( RWT.CUSTOM_VARIANT );
             log.debug( "      -> " + variant + " (" + control.getClass().getSimpleName() + ")" );
         }
     }
@@ -314,7 +332,7 @@ public abstract class FormContainer
 
         public PageContainer( IFormEditorPage page ) {
             super( FormContainer.this, page, "_id_", "_title_" );
-            double displayWidth = BatikApplication.sessionDisplay().getBounds().width;
+            double displayWidth = UIUtils.sessionDisplay().getBounds().width;
             // minimum 110 plus 10px per 100 pixel display width;
             double width = 110;
             if (displayWidth > 1000) {

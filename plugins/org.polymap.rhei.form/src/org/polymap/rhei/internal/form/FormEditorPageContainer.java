@@ -49,7 +49,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
@@ -57,11 +57,11 @@ import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.form.FormEditor;
 import org.polymap.rhei.form.IFormEditorPage;
 import org.polymap.rhei.form.IFormEditorPage2;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.workbench.FormEditor;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 
@@ -229,7 +229,7 @@ public class FormEditorPageContainer
             doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, this, "An error occured while creating the new page.", e );
+            StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, "An error occured while creating the new page.", e );
         }
 
         // XXX hack: help the ScrolledCompositeLayout to correctly display

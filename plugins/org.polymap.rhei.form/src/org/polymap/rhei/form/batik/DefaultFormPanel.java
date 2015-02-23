@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2013, Polymap GmbH. All rights reserved.
+ * Copyright (C) 2013-2015, Polymap GmbH. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -30,6 +30,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IPanel;
@@ -48,7 +49,7 @@ import org.polymap.rhei.internal.form.FormEditorToolkit;
  * This panel supports Rhei forms. Sub-classes can use the Rhei form API the
  * create forms that are connected to features or entities.
  *
- * @author <a href="http://www.polymap.de">Falko Br√§utigam</a>
+ * @author <a href="http://www.polymap.de">Falko Br‰utigam</a>
  */
 public abstract class DefaultFormPanel
         extends DefaultPanel
@@ -65,7 +66,7 @@ public abstract class DefaultFormPanel
 
     @Override
     public final void createContents( Composite parent ) {
-        toolkit = new FormEditorToolkit( new FormToolkit( Polymap.getSessionDisplay() ) );
+        toolkit = new FormEditorToolkit( new FormToolkit( UIUtils.sessionDisplay() ) );
         pageBody = parent;
         pageSite = new PageContainer( this );
         createFormContent( pageSite );

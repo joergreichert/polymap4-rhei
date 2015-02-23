@@ -13,9 +13,7 @@
  */
 package org.polymap.rhei.field;
 
-import org.apache.commons.lang.StringUtils;
-
-import org.polymap.rhei.field.IFormFieldValidator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Checks if the value id null or empty if instance of String.

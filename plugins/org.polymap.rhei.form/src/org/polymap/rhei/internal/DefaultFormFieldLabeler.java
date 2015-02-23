@@ -17,7 +17,7 @@
  */
 package org.polymap.rhei.internal;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -26,9 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldLabel;
@@ -92,12 +91,11 @@ public class DefaultFormFieldLabeler
         else {
             result = new Composite( parent, SWT.NO_FOCUS ) {
                 public void setEnabled( boolean enabled ) {
-                    setData( WidgetUtil.CUSTOM_VARIANT, 
-                            enabled ? CUSTOM_VARIANT_VALUE : CUSTOM_VARIANT_VALUE+"-disabled" );
+                    UIUtils.setVariant( this, enabled ? CUSTOM_VARIANT_VALUE : CUSTOM_VARIANT_VALUE+"-disabled" );
                 }
             };
             ((Composite)result).setLayout( new FormLayout() );
-            result.setData( WidgetUtil.CUSTOM_VARIANT, CUSTOM_VARIANT_VALUE );
+            UIUtils.setVariant( result, CUSTOM_VARIANT_VALUE );
             label = toolkit.createLabel( (Composite)result, 
                     labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ), SWT.WRAP );
             label.setLayoutData( FormDataFactory.filled().top( 0, 4 ).create() );

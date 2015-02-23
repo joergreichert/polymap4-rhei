@@ -14,15 +14,15 @@
  */
 package org.polymap.rhei;
 
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-
-import org.polymap.core.ImageRegistryHelper;
-
 import org.osgi.framework.BundleContext;
 
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+
+import org.polymap.core.ui.ImageRegistryHelper;
 
 /**
  * The activator class controls the plug-in life cycle

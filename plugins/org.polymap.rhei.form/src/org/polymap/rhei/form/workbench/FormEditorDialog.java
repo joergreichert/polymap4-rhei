@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.form;
+package org.polymap.rhei.form.workbench;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,11 +31,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.polymap.core.runtime.Polymap;
-import org.polymap.core.workbench.PolymapWorkbench;
+
+import org.polymap.core.ui.StatusDispatcher;
+import org.polymap.core.ui.UIUtils;
+
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormEditorToolkit;
 import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
@@ -65,7 +69,7 @@ public class FormEditorDialog
         pageContainer = new PageContainer( page );
         pageContainer.addFieldListener( this );
         // init button state after fields and dialog have been initialized
-        Polymap.getSessionDisplay().asyncExec( new Runnable() {
+        UIUtils.sessionDisplay().asyncExec( new Runnable() {
             public void run() {
                 getButton( IDialogConstants.OK_ID ).setEnabled( pageContainer.isValid() && pageContainer.isValid() );
             }
@@ -100,7 +104,7 @@ public class FormEditorDialog
             super.okPressed();
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, this, "Werte konnten nicht gespeichert werden.", e );
+            StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, "Werte konnten nicht gespeichert werden.", e );
         }
     }
 
@@ -131,7 +135,7 @@ public class FormEditorDialog
             pageContainer.doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, this, e.getLocalizedMessage(), e );
+            StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, e.getLocalizedMessage(), e );
         }
 
         // form.getToolkit().decorateFormHeading( form.getForm().getForm() );

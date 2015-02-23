@@ -25,7 +25,7 @@ import org.opengis.feature.Property;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,8 +40,8 @@ import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.jface.action.Action;
 
-import org.polymap.core.project.ui.util.SimpleFormData;
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.ui.FormDataFactory;
 
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.DateTimeFormField;
@@ -50,10 +50,10 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.TextFormField;
-import org.polymap.rhei.form.FormEditor;
 import org.polymap.rhei.form.IFormEditorPage;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormPageProvider;
+import org.polymap.rhei.form.workbench.FormEditor;
 
 /**
  * 
@@ -159,7 +159,7 @@ public class StandardPageProvider
                 }
                 if (last != null) {
                     new Label( site.getPageBody(), SWT.SEPARATOR ).setLayoutData(
-                            new SimpleFormData().top( last, 2 ).bottom( 100 ).create() );
+                            FormDataFactory.filled().top( last, 2 ).bottom( 100 ).create() );
                 }
             }
         });

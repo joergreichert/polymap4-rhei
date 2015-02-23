@@ -11,12 +11,10 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.rap.ui;bundle-version="2.3.0";visibility:=reexport,
  org.eclipse.rap.ui.forms;bundle-version="2.3.0";visibility:=reexport,
  org.polymap.core;bundle-version="3.0.0",
- org.polymap.core.model;bundle-version="3.1.0",
  org.polymap.core.data;bundle-version="3.0.0",
- org.polymap.core.project;bundle-version="3.1.0",
- org.polymap.core.catalog;bundle-version="3.1.0",
- org.polymap.core.mapeditor;bundle-version="3.1.0",
- org.polymap.rhei.batik;bundle-version="4.0.0";resolution:=optional
+ org.polymap.core.catalog;bundle-version="3.1.0";resolution:=optional,
+ org.polymap.rhei.batik;bundle-version="4.0.0";resolution:=optional,
+ org.polymap.rap.updownload
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -24,9 +22,13 @@ Export-Package: org.polymap.rhei,
  org.polymap.rhei.field,
  org.polymap.rhei.filter,
  org.polymap.rhei.form,
+ org.polymap.rhei.form.batik,
  org.polymap.rhei.form.json,
+ org.polymap.rhei.form.workbench,
  org.polymap.rhei.internal.form,
  org.polymap.rhei.model,
- org.polymap.rhei.table
+ org.polymap.rhei.navigator.filter,
+ org.polymap.rhei.table,
+ org.polymap.rhei.table.workbench
 Bundle-ClassPath: .
 

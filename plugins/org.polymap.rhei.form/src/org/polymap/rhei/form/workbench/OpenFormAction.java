@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.form;
+package org.polymap.rhei.form.workbench;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,8 +28,8 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import org.polymap.core.data.ui.featureselection.FeatureSelectionView;
-import org.polymap.core.data.ui.featuretable.SimpleFeatureTableElement;
-import org.polymap.rhei.form.FormEditor;
+
+import org.polymap.rhei.table.SimpleFeatureTableElement;
 
 /**
  * 

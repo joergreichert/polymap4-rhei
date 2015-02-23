@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright (C) 2011-2014, Falko Bräutigam, and other contributors as
+ * Copyright 2011, Falko Bräutigam, and other contributors as
  * indicated by the @authors tag. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
@@ -17,10 +17,7 @@ package org.polymap.rhei.table;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 import org.opengis.feature.type.PropertyDescriptor;
 
@@ -33,10 +30,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TableColumn;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -46,44 +45,23 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerColumn;
 
-import org.eclipse.rap.rwt.graphics.Graphics;
-
-import org.polymap.core.runtime.Polymap;
-
-import org.polymap.rhei.field.IFormField;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.field.NumberValidator;
-import org.polymap.rhei.field.StringFormField;
-import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.table.workbench.FeatureTableViewer;
 
 /**
- * An {@link IFeatureTableColumn} that employes {@link IFormField} and
- * {@link IFormFieldValidator} to display/transform and edit values of a
- * {@link FeatureTableViewer}.
- * 
+ *
+ *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class FormFeatureTableColumn
+public class DefaultFeatureTableColumn
         implements IFeatureTableColumn {
 
-    static Log log = LogFactory.getLog( FormFeatureTableColumn.class );
-
-    public static final Color       INVALID_BACKGROUND = Graphics.getColor( 0xff, 0xd0, 0xe0 );
-    public static final Color       DIRTY_BACKGROUND = Graphics.getColor( 0xd0, 0xf0, 0xc0 );
+    private static Log log = LogFactory.getLog( DefaultFeatureTableColumn.class );
 
     private FeatureTableViewer      viewer;
 
     private PropertyDescriptor      prop;
-    
-    private IFormFieldValidator     labelValidator;
-    
-    private IFormField              editingFormField;
-    
-    private IFormFieldValidator     editingValidator;
-    
-    private ColumnLabelProvider     labelProvider;
+
+    private boolean                 editing;
     
     private EditingSupport          editingSupport;
 
@@ -93,40 +71,39 @@ public class FormFeatureTableColumn
 
     private int                     minimumWidth = -1;
     
+    private ColumnLabelProvider     labelProvider = new DefaultCellLabelProvider();
+    
     private int                     align = -1;
     
     private boolean                 sortable = true;
-    
-    /** The feature ids of the currently dirty {@link IFeatureTableElement}s. */
-    private Set<String>             dirtyFids = new HashSet();
-
-    /** The feature ids of the currently invalid {@link IFeatureTableElement}s. */
-    private Set<String>             invalidFids = new HashSet();
 
     private TableViewerColumn       viewerColumn;
 
 
-    public FormFeatureTableColumn( PropertyDescriptor prop ) {
+    public DefaultFeatureTableColumn( PropertyDescriptor prop ) {
         super();
         assert prop != null : "Argument is null.";
         this.prop = prop;
     }
 
-    public FeatureTableViewer getViewer() {
-        return viewer;
+    @Override
+    public void setViewer( FeatureTableViewer viewer ) {
+        this.viewer = viewer;
+        this.editingSupport = editing ? new DefaultEditingSupport( viewer ) : null;
     }
     
-    public PropertyDescriptor getProperty() {
-        return prop;
+    @Override
+    public FeatureTableViewer getViewer() {
+        return viewer;
     }
 
     @Override
     public String getName() {
         return prop.getName().getLocalPart();
     }
-
+    
     @Override
-    public FormFeatureTableColumn setLabelProvider( ColumnLabelProvider labelProvider ) {
+    public DefaultFeatureTableColumn setLabelProvider( ColumnLabelProvider labelProvider ) {
         this.labelProvider = labelProvider;
         return this;
     }
@@ -136,60 +113,64 @@ public class FormFeatureTableColumn
         return labelProvider;
     }
 
-
-    public FormFeatureTableColumn setLabelProvider( IFormFieldValidator labelValidator ) {
-        this.labelValidator = labelValidator;
-        return this;
-    }
-
-
-    public FormFeatureTableColumn setHeader( String header ) {
+    public DefaultFeatureTableColumn setHeader( String header ) {
         this.header = header;
         return this;
     }
 
-    public FormFeatureTableColumn setWeight( int weight, int minimumWidth) {
+    public DefaultFeatureTableColumn setWeight( int weight, int minimumWidth) {
         this.weight = weight;
         this.minimumWidth = minimumWidth;
         return this;
     }
     
-    public FormFeatureTableColumn setAlign( int align ) {
+    public DefaultFeatureTableColumn setAlign( int align ) {
         this.align = align;
         return this;
+    }
+
+    public DefaultFeatureTableColumn setEditing( boolean editing ) {
+        assert viewer == null : "Call before table is created.";
+        // defer creation of editingSupport to setViewer()
+        this.editing = editing;
+        return this;
+    }
+
+//    public CellEditor getCellEditor( Composite parent ) {
+//        if (cellEditor == null) {
+//            Class binding = prop.getType().getBinding();
+//            cellEditor = new BasicTypeCellEditor( parent, binding );
+//        }
+//        return cellEditor;
+//    }
+
+
+    public EditingSupport getEditingSupport() {
+        throw new RuntimeException( "not yet implemented" );
     }
 
     public boolean isSortable() {
         return sortable;
     }
     
-    public FormFeatureTableColumn setSortable( boolean sortable ) {
+    public DefaultFeatureTableColumn setSortable( boolean sortable ) {
         this.sortable = sortable;
         return this;
     }
 
-
-    public FormFeatureTableColumn setEditing( IFormField formField, IFormFieldValidator validator ) {
-        assert viewer == null : "Call before table is created.";
-        this.editingFormField = formField;
-        this.editingValidator = validator != null ? validator : new NullValidator();
+    @Override
+    public DefaultFeatureTableColumn sort( int dir ) {
+        assert viewerColumn != null : "Add this column to the viewer before calling sort()!";
+        Comparator<IFeatureTableElement> comparator = newComparator( dir );
+        viewer.sortContent( comparator, dir, viewerColumn.getColumn() );
         return this;
     }
-
-
-    @Override
-    public void setViewer( FeatureTableViewer viewer ) {
-        this.viewer = viewer;
-    }
-    
     
     @Override
     public TableViewerColumn getViewerColumn() {
         return viewerColumn;
     }
 
-    
-    @Override
     public TableViewerColumn newViewerColumn() {
         assert viewerColumn == null;
         
@@ -202,41 +183,12 @@ public class FormFeatureTableColumn
         viewerColumn = new TableViewerColumn( viewer, align );
         viewerColumn.getColumn().setMoveable( true );
         viewerColumn.getColumn().setResizable( true );
-        viewerColumn.getColumn().setText( header != null ? header : StringUtils.capitalize( getName() ) );
         
-        boolean editing = editingFormField != null;
-        
-        // defaults for basic types
-        Class binding = prop.getType().getBinding();
-        Locale locale = Optional.ofNullable( Polymap.getSessionLocale() ).orElse( Locale.getDefault() );
-        // Number
-        if (Number.class.isAssignableFrom( binding )) {
-            labelValidator = labelValidator != null ? labelValidator : new NumberValidator( binding, locale );
-            editingValidator = editingValidator != null ? editingValidator : labelValidator;
-            editingFormField = editingFormField != null ? editingFormField : new StringFormField();
-        }
-        // Date
-        else if (Date.class.isAssignableFrom( binding )) {
-            throw new RuntimeException( "Not yet supported: Date" );
-        }
-        // Boolean
-        else if (Boolean.class.isAssignableFrom( binding )) {
-            throw new RuntimeException( "Not yet supported: Boolean" );
-        }
-        // default: String
-        else {
-            labelValidator = labelValidator != null ? labelValidator : new NullValidator();
-            editingValidator = editingValidator != null ? editingValidator : labelValidator;
-            editingFormField = editingFormField != null ? editingFormField : new StringFormField();
-        }
-        
-        // labelProvider
-        labelProvider = labelProvider != null ? labelProvider : new FormColumnLabelProvider( this, labelValidator );
         viewerColumn.setLabelProvider( new LoadingCheckLabelProvider( labelProvider ) );
+        String normalizedName = StringUtils.capitalize( getName() );
+        viewerColumn.getColumn().setText( header != null ? header : normalizedName );
         
-        // editingSupport
-        if (editing) {
-            editingSupport = new FormEditingSupport( viewer, this, editingFormField, editingValidator );
+        if (editingSupport != null) {
             viewerColumn.setEditingSupport( editingSupport );
         }
         
@@ -303,7 +255,7 @@ public class FormFeatureTableColumn
                     return 1;
                 }
                 else if (!value1.getClass().equals( value2.getClass() )) {
-                    throw new RuntimeException( "Column type do not match: " + value1.getClass().getSimpleName() + " - " + value2.getClass().getSimpleName() );
+                    throw new RuntimeException( "Column type do not match: " + value1.getClass().getSimpleName() + " - " + value1.getClass().getSimpleName() );
                 }
                 else if (value1 instanceof String) {
                     return ((String)value1).compareToIgnoreCase( (String)value2 );
@@ -323,37 +275,81 @@ public class FormFeatureTableColumn
     }
 
     
-    @Override
-    public FormFeatureTableColumn sort( int dir ) {
-        assert viewerColumn != null : "Add this column to the viewer before calling sort()!";
-        Comparator<IFeatureTableElement> comparator = newComparator( dir );
-        viewer.sortContent( comparator, dir, viewerColumn.getColumn() );
-        return this;
+    /**
+     * 
+     */
+    public class DefaultCellLabelProvider
+            extends ColumnLabelProvider {
+            
+        public String getText( Object elm ) {
+            try {
+                IFeatureTableElement featureElm = (IFeatureTableElement)elm;
+                //log.info( "getText(): fid=" + featureElm.fid() + ", prop=" + prop.getName().getLocalPart() );
+
+                Object value = featureElm.getValue( getName() );
+                return value != null ? value.toString() : "";
+            }
+            catch (Exception e) {
+                log.warn( "", e );
+                return "Fehler: " + e.getLocalizedMessage();
+            }
+        }
+
+        public String getToolTipText( Object elm ) {
+            if (elm != null) {
+                try {
+                    IFeatureTableElement featureElm = (IFeatureTableElement)elm;
+                    Object value = featureElm.getValue( getName() );
+                    return value != null ? value.toString() : null;
+                }
+                catch (Exception e) {
+                    log.warn( "", e );
+                    return null;
+                }
+            }
+            return null;
+        }
     }
 
-    
-    protected void markElement( IFeatureTableElement elm, boolean dirty, boolean invalid ) {
-        String fid = elm.fid();
-        boolean success = dirty ? dirtyFids.add( fid ) : dirtyFids.remove( fid );
-        log.debug( "markElement: elm=" + fid + ", dirty=" + dirty + ", success="  + success );
-        success = invalid ? invalidFids.add( fid ) : invalidFids.remove( fid );
-        log.debug( "markElement: elm=" + fid + ", invalid=" + invalid + ", success="  + success );
-    }
-
-    
-    
-    public Set<String> invalidFids() {
-        return invalidFids;
-    }
-    
-    
-    public Set<String> dirtyFids() {
-        return dirtyFids;
-    }
-    
     
     /**
-     * Loading and dirty/valid decoration. 
+     * 
+     */
+    public class DefaultEditingSupport
+            extends EditingSupport {
+
+        public DefaultEditingSupport( ColumnViewer viewer ) {
+            super( viewer );
+        }
+
+        protected boolean canEdit( Object elm ) {
+            return true;
+        }
+
+        protected CellEditor getCellEditor( Object elm ) {
+            return new BasicTypeCellEditor( (Composite)viewer.getControl(), prop.getType().getBinding() );
+        }
+
+        protected Object getValue( Object elm ) {
+            try {
+                IFeatureTableElement featureElm = (IFeatureTableElement)elm;
+                Object value = featureElm.getValue( getName() );
+                return value;
+            }
+            catch (Exception e) {
+                return "Fehler: " + e.getLocalizedMessage();
+            }
+        }
+
+        protected void setValue( Object elm, Object value ) {
+            IFeatureTableElement featureElm = (IFeatureTableElement)elm;
+            featureElm.setValue( getName(), value );
+        }
+    }
+
+    
+    /**
+     * 
      */
     class LoadingCheckLabelProvider
             extends ColumnLabelProvider {
@@ -361,7 +357,6 @@ public class FormFeatureTableColumn
         private ColumnLabelProvider     delegate;
 
         public LoadingCheckLabelProvider( ColumnLabelProvider delegate ) {
-            assert delegate != null;
             this.delegate = delegate;
         }
 
@@ -376,19 +371,9 @@ public class FormFeatureTableColumn
                     ? null : delegate.getToolTipText( element );
         }
 
-        public Image getImage( Object elm ) {
-            if (elm == FeatureTableViewer.LOADING_ELEMENT) {
-                return null;
-            }
-            else if (invalidFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return DefaultFormFieldDecorator.invalidImage;
-            }
-            else if (dirtyFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return DefaultFormFieldDecorator.dirtyImage;
-            }
-            else {
-                return delegate.getImage( elm );
-            }
+        public Image getImage( Object element ) {
+            return element == FeatureTableViewer.LOADING_ELEMENT
+                    ? null : delegate.getImage( element );
         }
 
         public Color getForeground( Object element ) {
@@ -397,19 +382,10 @@ public class FormFeatureTableColumn
                     : delegate.getForeground( element );
         }
 
-        public Color getBackground( Object elm ) {
-            if (elm == FeatureTableViewer.LOADING_ELEMENT) {
-                return FeatureTableViewer.LOADING_BACKGROUND;
-            }
-            else if (invalidFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return INVALID_BACKGROUND;
-            }
-            else if (dirtyFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return DIRTY_BACKGROUND;
-            }
-            else {
-                return delegate.getBackground( elm );
-            }
+        public Color getBackground( Object element ) {
+            return element == FeatureTableViewer.LOADING_ELEMENT
+                    ? FeatureTableViewer.LOADING_BACKGROUND
+                    : delegate.getBackground( element );
         }
 
         public void addListener( ILabelProviderListener listener ) {

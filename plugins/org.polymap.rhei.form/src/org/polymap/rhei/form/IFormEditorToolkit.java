@@ -39,9 +39,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.core.ui.upload.Upload;
-
 import org.polymap.rhei.filter.FilterEditor;
+import org.polymap.rhei.form.workbench.FormEditor;
+
+import org.polymap.rap.updownload.upload.Upload;
 
 /**
  * Provides a general factory facade for the creation of UI element. Concrete

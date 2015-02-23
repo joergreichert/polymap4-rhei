@@ -22,7 +22,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.polymap.rhei.form.FormEditor"
+            class="org.polymap.rhei.form.workbench.FormEditor"
             default="false"
             icon="icons/eview16/form_editor.gif"
             id="org.polymap.rhei.form.FormEditor"
@@ -102,7 +102,7 @@
                tooltip="%actions_downloadCsvTip">
          </action-->
          <action
-               class="org.polymap.rhei.internal.form.OpenFormAction"
+               class="org.polymap.rhei.form.workbench.OpenFormAction"
                enablesFor="+"
                icon="icons/etool16/open_form_editor.gif"
                id="org.polymap.rhei.OpenFormAction"
@@ -121,7 +121,7 @@
             id="org.polymap.rhei.layerContribution"
             objectClass="org.polymap.core.project.ILayer">
          <action
-               class="org.polymap.rhei.internal.form.NewFormAction"
+               class="org.polymap.rhei.form.workbench.NewFormAction"
                enablesFor="+"
                icon="icons/elcl16/add_co.gif"
                id="org.polymap.rhei.form.layerNewFormAction"
@@ -133,9 +133,9 @@
       <objectContribution
             adaptable="false"
             id="org.polymap.rhei.featureContribution"
-            objectClass="org.polymap.core.data.ui.featuretable.IFeatureTableElement">
+            objectClass="org.polymap.rhei.table.IFeatureTableElement">
          <action
-               class="org.polymap.rhei.internal.form.OpenFormAction"
+               class="org.polymap.rhei.form.workbench.OpenFormAction"
                icon="icons/etool16/open_form_editor.gif"
                id="org.polymap.rhei.form.OpenFormAction_feature"
                label="%actions_openForm"
@@ -199,7 +199,7 @@
    <extension
          point="org.polymap.core.operation.concerns">
       <concern
-            class="org.polymap.rhei.internal.form.NewFeatureOperationConcern"
+            class="org.polymap.rhei.form.workbench.NewFeatureOperationConcern"
             id="org.polymap.rhei.form.NewFeatureOperationConcern">
       </concern>
       <concern
@@ -207,17 +207,17 @@
             id="org.polymap.rhei.form.CopyFeaturesOperationConcern">
       </concern>
    </extension>
-   <extension
+   <!--extension
          point="org.polymap.core.mapeditor.mapContextMenu">
       <contribution
-            class="org.polymap.rhei.internal.form.OpenFormMapContextMenu"
+            class="org.polymap.rhei.form.workbench.OpenFormMapContextMenu"
             id="org.polymap.rhei.form.OpenFormContextMenu">
       </contribution>
-   </extension>
+   </extension-->
    <extension
          point="org.eclipse.ui.elementFactories">
       <factory
-            class="org.polymap.rhei.form.FormEditorInput"
+            class="org.polymap.rhei.form.workbench.FormEditorInput"
             id="org.polymap.rhei.form.FormEditorInputFactory">
       </factory>
    </extension>

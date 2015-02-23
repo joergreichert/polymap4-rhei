@@ -37,9 +37,9 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.core.ui.upload.Upload;
-
 import org.polymap.rhei.form.IFormEditorToolkit;
+
+import org.polymap.rap.updownload.upload.Upload;
 
 /**
  * 

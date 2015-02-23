@@ -20,7 +20,7 @@
  *
  * $Id$
  */
-package org.polymap.rhei.form;
+package org.polymap.rhei.form.workbench;
 
 import java.util.Collections;
 
@@ -35,8 +35,6 @@ import org.opengis.filter.identity.FeatureId;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.qi4j.api.unitofwork.NoSuchEntityException;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.eclipse.ui.IEditorInput;
@@ -47,8 +45,6 @@ import org.eclipse.ui.IPersistableElement;
 import org.eclipse.core.runtime.IAdaptable;
 
 import org.polymap.core.data.PipelineFeatureSource;
-import org.polymap.core.project.ILayer;
-import org.polymap.core.project.ProjectRepository;
 
 /**
  * 

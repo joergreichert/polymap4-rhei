@@ -16,8 +16,6 @@ package org.polymap.rhei.table;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import org.polymap.core.data.ui.featuretable.IFeatureTableElement;
-
 import org.polymap.rhei.field.IFormFieldValidator;
 
 /**

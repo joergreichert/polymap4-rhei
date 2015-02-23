@@ -17,14 +17,10 @@
  */
 package org.polymap.rhei.navigator.filter;
 
-import org.apache.commons.lang.ArrayUtils;
-
-import org.qi4j.api.unitofwork.NoSuchEntityException;
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-
-import org.polymap.core.project.ILayer;
 
 import org.polymap.rhei.filter.FilterFactory;
 

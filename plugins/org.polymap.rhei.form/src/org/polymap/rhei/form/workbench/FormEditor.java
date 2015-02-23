@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.form;
+package org.polymap.rhei.form.workbench;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,8 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.qi4j.api.unitofwork.NoSuchEntityException;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -65,19 +63,19 @@ import org.polymap.core.data.operations.ModifyFeaturesOperation;
 import org.polymap.core.data.operations.ZoomFeatureBoundsOperation;
 import org.polymap.core.operation.IOperationSaveListener;
 import org.polymap.core.operation.OperationSupport;
-import org.polymap.core.project.ILayer;
-import org.polymap.core.project.IMap;
 import org.polymap.core.qi4j.event.PropertyChangeSupport;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.Messages;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormPageProvider;
 import org.polymap.rhei.internal.form.FeatureOperationsItem;
 import org.polymap.rhei.internal.form.FormEditorPageContainer;
 import org.polymap.rhei.internal.form.FormPageProviderExtension;
@@ -135,7 +133,7 @@ public class FormEditor
             return part instanceof FormEditor ? (FormEditor)part : null;
         }
         catch (PartInitException e) {
-            PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, null, e.getMessage(), e );
+            StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, null, e.getMessage(), e );
             return null;
         }
     }
@@ -194,7 +192,7 @@ public class FormEditor
                         OperationSupport.instance().execute( op, true, true );
                     }
                     catch (Exception e) {
-                        PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, this, "", e );
+                        StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, "", e );
                     }
                 }
             };

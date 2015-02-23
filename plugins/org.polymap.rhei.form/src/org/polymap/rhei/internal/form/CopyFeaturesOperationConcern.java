@@ -42,7 +42,7 @@ import org.polymap.core.operation.OperationInfo;
 import org.polymap.core.workbench.PolymapWorkbench;
 
 import org.polymap.rhei.Messages;
-import org.polymap.rhei.form.FormEditor;
+import org.polymap.rhei.form.workbench.FormEditor;
 
 /**
  * 

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.form;
+package org.polymap.rhei.form.workbench;
 
 import org.geotools.data.FeatureStore;
 import org.opengis.feature.Feature;
@@ -36,10 +36,10 @@ import org.polymap.core.operation.IOperationConcernFactory;
 import org.polymap.core.operation.OperationConcernAdapter;
 import org.polymap.core.operation.OperationInfo;
 import org.polymap.core.runtime.IMessages;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.Messages;
-import org.polymap.rhei.form.FormEditor;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class NewFeatureOperationConcern
                             public void run() {
                                 try {
                                     if (MessageDialog.openQuestion( 
-                                            PolymapWorkbench.getShellToParentOn(), 
+                                            UIUtils.shellToParentOn(), 
                                             i18n.get( "dialogTitle", 1 ),
                                             i18n.get( "dialogMsg" ) )) {
 
@@ -79,7 +79,7 @@ public class NewFeatureOperationConcern
                                     }
                                 }
                                 catch (Exception e) {
-                                    PolymapWorkbench.handleError( DataPlugin.PLUGIN_ID, this, "Das Formular zum Bearbeiten des neuen Objektes konnte nicht geöffnet werden.", e );
+                                    StatusDispatcher.handleError( DataPlugin.PLUGIN_ID, this, "Das Formular zum Bearbeiten des neuen Objektes konnte nicht geöffnet werden.", e );
                                 }
                             }
                         });

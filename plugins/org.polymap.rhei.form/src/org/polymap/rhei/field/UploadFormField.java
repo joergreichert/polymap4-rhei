@@ -20,7 +20,6 @@ import java.io.InputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.lf5.util.StreamUtils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -35,16 +34,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.rwt.graphics.Graphics;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 
+import org.eclipse.rap.rwt.graphics.Graphics;
+
 import org.polymap.core.data.DataPlugin;
-import org.polymap.core.ui.upload.IUploadHandler;
-import org.polymap.core.ui.upload.Upload;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.form.IFormEditorToolkit;
+
+import org.polymap.rap.updownload.upload.IUploadHandler;
+import org.polymap.rap.updownload.upload.Upload;
 
 /**
  * A upload form field based on the {@link Upload} widget.
@@ -250,7 +250,7 @@ public class UploadFormField
 //                    enableViewButton( true );
                 }
                 catch (IOException e) {
-                    PolymapWorkbench.handleError( DataPlugin.PLUGIN_ID, UploadFormField.this,
+                    StatusDispatcher.handleError( DataPlugin.PLUGIN_ID, UploadFormField.this,
                             "Fehler beim Upload der Daten.", e );
                 }
 

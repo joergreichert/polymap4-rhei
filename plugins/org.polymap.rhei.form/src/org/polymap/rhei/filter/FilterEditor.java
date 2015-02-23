@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.Messages;
 import org.polymap.rhei.RheiFormPlugin;
@@ -189,7 +189,7 @@ public abstract class FilterEditor
             }
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( RheiFormPlugin.PLUGIN_ID, this, Messages.get( "FilterEditor_okError" ), e );
+            StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, Messages.get( "FilterEditor_okError" ), e );
         }
     }
 

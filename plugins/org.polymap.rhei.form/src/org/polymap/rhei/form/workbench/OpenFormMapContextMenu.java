@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.form;
+package org.polymap.rhei.form.workbench;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,7 +48,6 @@ import org.polymap.core.runtime.UIJob;
 
 import org.polymap.rhei.Messages;
 import org.polymap.rhei.RheiFormPlugin;
-import org.polymap.rhei.form.FormEditor;
 
 /**
  * 

@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.opengis.feature.Feature;
 
+import org.polymap.rhei.form.workbench.FormEditor;
 import org.polymap.rhei.internal.form.FormPageProviderExtension;
 
 /**

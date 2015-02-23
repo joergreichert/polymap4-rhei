@@ -17,8 +17,8 @@
  */
 package org.polymap.rhei.field;
 
-import org.polymap.rhei.form.FormEditor;
 import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.workbench.FormEditor;
 
 /**
  * The primary interface between a form field and the {@link FormEditor}.

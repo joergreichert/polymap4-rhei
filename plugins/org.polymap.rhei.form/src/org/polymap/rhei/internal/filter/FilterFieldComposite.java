@@ -24,10 +24,9 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.rwt.lifecycle.WidgetUtil;
-
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
@@ -96,7 +95,7 @@ public class FilterFieldComposite
     
     public Composite createComposite( Composite parent, int style ) {
         Composite result = toolkit.createComposite( parent, style );
-        result.setData( WidgetUtil.CUSTOM_VARIANT, "formeditor-field" );
+        UIUtils.setVariant( result, "formeditor-field" );
         result.setLayout( new FormLayout() );
         
         // label

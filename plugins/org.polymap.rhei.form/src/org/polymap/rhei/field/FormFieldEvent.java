@@ -53,7 +53,7 @@ public class FormFieldEvent
     /**
      * The editor that this event belongs to.
      *
-     * @return {@link org.polymap.rhei.form.FormEditor} or {@link FilterEditor}
+     * @return {@link org.polymap.rhei.form.workbench.FormEditor} or {@link FilterEditor}
      */
     public Object getEditor() {
         return editor;

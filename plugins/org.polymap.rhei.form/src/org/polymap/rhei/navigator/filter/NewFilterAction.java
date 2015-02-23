@@ -28,7 +28,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.PlatformUI;
 
 import org.polymap.core.data.DataPlugin;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.rhei.Messages;
 
 /**
@@ -67,7 +67,7 @@ public class NewFilterAction
             dialog.open();
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( DataPlugin.PLUGIN_ID, this, "Fehler beim Öffnen der Attributtabelle.", e );
+            StatusDispatcher.handleError( DataPlugin.PLUGIN_ID, this, "Fehler beim Öffnen der Attributtabelle.", e );
         }
     }
 

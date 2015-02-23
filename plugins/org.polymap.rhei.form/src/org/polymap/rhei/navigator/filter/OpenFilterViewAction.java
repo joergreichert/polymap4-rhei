@@ -18,7 +18,7 @@
 package org.polymap.rhei.navigator.filter;
 
 import org.polymap.core.data.DataPlugin;
-import org.polymap.core.workbench.PolymapWorkbench;
+import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.rhei.Messages;
 import org.polymap.rhei.filter.FilterView;
 import org.polymap.rhei.filter.IFilter;
@@ -44,7 +44,7 @@ public class OpenFilterViewAction
             FilterView.open( filter );
         }
         catch (Exception e) {
-            PolymapWorkbench.handleError( DataPlugin.PLUGIN_ID, this, "Fehler beim Suchen und Öffnen der Ergebnistabelle.", e );
+            StatusDispatcher.handleError( DataPlugin.PLUGIN_ID, this, "Fehler beim Suchen und Öffnen der Ergebnistabelle.", e );
         }
     }
 
