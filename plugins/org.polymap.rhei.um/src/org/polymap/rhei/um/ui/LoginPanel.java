@@ -49,6 +49,7 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
@@ -91,8 +92,9 @@ public class LoginPanel
     @Override
     public void createContents( Composite panelBody ) {
         getSite().setTitle( "Login" );
+        LayoutSupplier layoutPrefs = getSite().getLayoutPreference();
         panelBody.setLayout( FormLayoutFactory.defaults()
-                .margins( getSite().getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
+                .margins( layoutPrefs.getMarginLeft(), layoutPrefs.getMarginTop() ).create() );
         
         IPanelSection section = tk.createPanelSection( panelBody, "Anmelden" );
         
@@ -183,7 +185,7 @@ public class LoginPanel
             Composite body = site.getPageBody();
             body.setLayout( ColumnLayoutFactory.defaults()
                     .spacing( 5 /*panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) / 4*/ )
-                    .margins( panelSite.getLayoutPreference( LAYOUT_MARGINS_KEY ) ).create() );
+                    .margins( panelSite.getLayoutPreference().getMarginLeft() ).create() );
             // username
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
                     .setField( new StringFormField() ).setValidator( new NotEmptyValidator() )
