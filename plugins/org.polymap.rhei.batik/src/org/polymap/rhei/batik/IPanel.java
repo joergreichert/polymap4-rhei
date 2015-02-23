@@ -30,11 +30,6 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout;
  */
 public interface IPanel {
 
-    /** See {@link IPanelSite#LAYOUT_SPACING_KEY}. */
-    public static final String      LAYOUT_SPACING_KEY = IPanelSite.LAYOUT_SPACING_KEY;
-    /** See {@link IPanelSite#LAYOUT_MARGINS_KEY}. */
-    public static final String      LAYOUT_MARGINS_KEY = IPanelSite.LAYOUT_MARGINS_KEY;
-
     public void setSite( IPanelSite site, IAppContext context );
     
     /**

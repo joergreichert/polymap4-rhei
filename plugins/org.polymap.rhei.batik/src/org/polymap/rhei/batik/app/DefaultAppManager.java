@@ -32,11 +32,6 @@ import org.eclipse.jface.action.IAction;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.client.service.BrowserNavigation;
-import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
-import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
-
 import org.polymap.core.runtime.Predicates;
 import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.UIUtils;
@@ -52,6 +47,7 @@ import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.internal.BatikFactory;
 import org.polymap.rhei.batik.internal.PanelContextInjector;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
  * 
@@ -59,17 +55,13 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class DefaultAppManager
-        implements IAppManager, BrowserNavigationListener {
+        implements IAppManager {
 
     private static Log log = LogFactory.getLog( DefaultAppManager.class );
 
     protected Default2AppContext        context = new Default2AppContext();
 
     protected IPanel                    activePanel;
-
-    protected BrowserNavigation         browserHistory;
-
-    //protected DefaultUserPreferences    userPrefs;
 
     protected IAppDesign                design;
     
@@ -80,10 +72,6 @@ public class DefaultAppManager
     public void init() {
         design = BatikApplication.instance().getAppDesign();
         
-        browserHistory = RWT.getClient().getService( BrowserNavigation.class );
-        browserHistory.pushState( "Start", "Start" );
-        browserHistory.addBrowserNavigationListener( this );
-
         // open root panel / after main window is created
         UIUtils.sessionDisplay().asyncExec( new Runnable() {
             public void run() {
@@ -95,34 +83,6 @@ public class DefaultAppManager
 
     @Override
     public void close() {
-        if (browserHistory != null) {
-            browserHistory.removeBrowserNavigationListener( this );
-            browserHistory = null;
-        }
-    }
-
-
-    /** 
-     * Browser history event. 
-     */
-    @Override
-    public void navigated( BrowserNavigationEvent ev ) {
-        log.info( "BROWSER: " + ev.getState() );
-        if (activePanel == null) {
-            log.info( "   no activePanel, skipping." );
-            return;
-        }
-        
-        // go to start panel (no matter what)
-        while (activePanel.getSite().getPath().size() > 1) {
-            closePanel( activePanel.getSite().getPath() );
-            activePanel = getActivePanel();
-        }
-
-//        if ("start".equalsIgnoreCase( ev.entryId )) {
-//            //mainWindow.getShell().dispose();
-//            //JSExecutor.executeJS( "window.location.reload();" );
-//        }
     }
 
 
@@ -149,7 +109,7 @@ public class DefaultAppManager
     public IPanel openPanel( final PanelIdentifier panelId ) {
         final PanelPath prefix = activePanel != null ? activePanel.getSite().getPath() : PanelPath.ROOT;
         
-        // create, filter, init, add  panels
+        // create, filter, init, add panels
         BatikFactory.instance().allPanelExtensionPoints()
                 // sort in order to initialize main panel context first
                 .sorted( reverseOrder( comparing( ep -> ep.stackPriority ) ) )
@@ -181,8 +141,6 @@ public class DefaultAppManager
         activePanel = panel;
         EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATED ) );
 
-        browserHistory.pushState( panelId.id(), activePanel.getSite().getTitle() );
-        
         return activePanel;
     }
 
@@ -222,8 +180,6 @@ public class DefaultAppManager
         activePanel = context.getPanel( activePath );
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
-
-        browserHistory.pushState( activePanel.id().id(), activePanel.getSite().getTitle() );
     }
 
     
@@ -245,8 +201,6 @@ public class DefaultAppManager
         // activating
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
         EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
-        
-        browserHistory.pushState( panelId.id(), activePanel.getSite().getTitle() );
     }
 
 
@@ -436,18 +390,8 @@ public class DefaultAppManager
         }
 
         @Override
-        public int getLayoutPreference( String key ) {
-            if (LAYOUT_SPACING_KEY.equals( key )) {
-                // 1000px display width -> 20px spacing
-                return (int)(UIUtils.sessionDisplay().getBounds().width * 0.02);
-            }
-            else if (LAYOUT_MARGINS_KEY.equals( key )) {
-                // 1000px display width -> 20px margins
-                return (int)(UIUtils.sessionDisplay().getBounds().width * 0.02);
-            }
-            else {
-                throw new RuntimeException( "Unknown layout key: " + key );
-            }
+        public LayoutSupplier getLayoutPreference() {
+            return design.getPanelLayoutPreferences();
         }
 
     }

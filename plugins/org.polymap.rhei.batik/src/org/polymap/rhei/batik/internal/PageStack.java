@@ -25,6 +25,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
+
 /**
  * 
  *
@@ -38,7 +40,7 @@ public class PageStack<K>
     /**
      * 
      */
-    class Page {
+    static class Page {
         
         int                 priority;
         
@@ -61,22 +63,29 @@ public class PageStack<K>
         }
     }
     
+    
     // instance *******************************************
     
     private Map<K,Page>     pages = new HashMap();
     
 
-    public PageStack( Composite parent ) {
+    public PageStack( Composite parent, LayoutSupplier layoutSettings ) {
         super( parent, SWT.NONE );
-        setLayout( new PageStackLayout( this ) );
+        setLayout( new PageStackLayout( this, layoutSettings ) );
     }
 
     
+    @Override
+    public PageStackLayout getLayout() {
+        return (PageStackLayout)super.getLayout();
+    }
+
+
     public Collection<Page> getPages() {
         return pages.values();
     }
 
-
+    
     public Composite createPage( K key, int priority ) {
         Composite scrolled = new Composite( this, SWT.VERTICAL );
         if (pages.put( key, new Page( scrolled, priority ) ) != null) {
@@ -148,7 +157,7 @@ public class PageStack<K>
 
     @Override
     public Point computeSize( int wHint, int hHint, boolean changed ) {
-        return ((PageStackLayout)getLayout()).computeSize( this, wHint, hHint, changed );
+        return getLayout().computeSize( this, wHint, hHint, changed );
     }
 
 

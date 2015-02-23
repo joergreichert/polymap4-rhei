@@ -47,19 +47,13 @@ public class ConstraintLayout
 
     private static Log log = LogFactory.getLog( ConstraintLayout.class );
 
-    public int                  marginWidth = 10;
-
-    public int                  marginHeight = 10;
-    
-    public int                  spacing = 10;
+    private LayoutSupplier      margins;
     
     private LayoutSolution      solution;
     
     
-    public ConstraintLayout( int marginWidth, int marginHeight, int spacing ) {
-        this.marginWidth = marginWidth;
-        this.marginHeight = marginHeight;
-        this.spacing = spacing;
+    public ConstraintLayout( LayoutSupplier margins ) {
+        this.margins = margins;
     }
 
 
@@ -68,17 +62,17 @@ public class ConstraintLayout
         Rectangle clientArea = composite.getClientArea();
         if (computeSolution( composite, clientArea, flushCache )) {
             // layout elements
-            int colX = marginWidth;
+            int colX = margins.getMarginLeft();
             for (LayoutColumn column : solution.columns) {
                 assert column.width > 0;
-                int elmY = marginHeight;
+                int elmY = margins.getMarginTop();
 
                 for (LayoutElement elm : column) {
                     assert elm.height >= 0;
                     elm.control.setBounds( colX, elmY, column.width, elm.height );
-                    elmY += elm.height + spacing;
+                    elmY += elm.height + margins.getSpacing();
                 }
-                colX += column.width + spacing;
+                colX += column.width + margins.getSpacing();
             }
         }
     }
@@ -107,7 +101,9 @@ public class ConstraintLayout
             for (LayoutColumn column : solution.columns) {
                 maxColumn = maxColumn == null || column.height >= maxColumn.height ? column : maxColumn;
             }
-            int height = maxColumn.height + (2*marginHeight) + ((maxColumn.size()-1)*spacing);
+            int height = maxColumn.height 
+                    + margins.getMarginTop() + margins.getMarginBottom() 
+                    + ((maxColumn.size()-1) * margins.getSpacing());
             return new Point( SWT.DEFAULT, height );
             //log.info( "    computeSize: " + result );
         }
@@ -124,12 +120,13 @@ public class ConstraintLayout
             if (clientArea.width <= 0 || clientArea.height < 0) {
                 return false;
             }
-            if (clientArea.width > composite.getDisplay().getBounds().width) {
-                log.warn( "Invalid client area: " + clientArea + ", display: " + composite.getDisplay().getBounds().width );
+            Rectangle displayArea = composite.getDisplay().getBounds();
+            if (clientArea.width > displayArea.width) {
+                log.warn( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", fluschCache: " + flushCache );
                 return false;
             }
 
-            log.info( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
+            log.debug( "LAYOUT: " + composite.hashCode() + " -> " + clientArea );
 
             ISolver solver = new BestFirstOptimizer( 250, 100 );
             solver.addGoal( new PriorityOnTopGoal( 1 ) );
@@ -142,7 +139,8 @@ public class ConstraintLayout
                     data.fillSolver( solver );
                 }
             }
-            LayoutSolution start = new LayoutSolution( composite, clientArea, marginWidth, marginHeight, spacing );
+            LayoutSolution start = new LayoutSolution( composite, clientArea, 
+                    margins.getMarginLeft(), margins.getMarginTop(), margins.getSpacing() );
             start.justifyElements();
 
             ScoredSolution result = solver.solve( start );

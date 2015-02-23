@@ -28,6 +28,7 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.toolkit.ConstraintData;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.ILayoutElement;
@@ -81,8 +82,8 @@ public class DefaultPanelSection
         UIUtils.setVariant( client, DefaultToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 
-//        ColumnLayout clientLayout = ColumnLayoutFactory.defaults().columns( 1, 3 ).spacing( 10 ).margins( 10 ).create(); 
-        ConstraintLayout clientLayout = new ConstraintLayout( 0, 0, 10 );
+        IAppDesign appDesign = BatikApplication.instance().getAppDesign();
+        ConstraintLayout clientLayout = new ConstraintLayout( appDesign.getPanelLayoutPreferences() );
         client.setLayout( clientLayout );
         client.moveBelow( title );
         

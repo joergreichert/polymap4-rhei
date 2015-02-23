@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
  * The primary interface between an {@link IPanel} and the Batik framework.
@@ -28,10 +29,6 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  */
 public interface IPanelSite {
 
-    /** Constant to be used as param for {@link #getLayoutPreference(String)}. */
-    public static final String      LAYOUT_SPACING_KEY = "spacing";
-    /** Constant to be used as param for {@link #getLayoutPreference(String)}. */
-    public static final String      LAYOUT_MARGINS_KEY = "margins";
     /** Signals that an action or item should have 'submit' style. */
     public static final String      SUBMIT = "__submit__";
 
@@ -96,17 +93,12 @@ public interface IPanelSite {
 
     public void layout( boolean changed );
 
+    
     /**
-     * Get the layout preferences for the given key. Possible keys include:
-     * <ul>
-     * <li>{@link #LAYOUT_SPACING_KEY}</li>
-     * <li>{@link #LAYOUT_MARGINS_KEY}</li>
-     * </ul>
-     *
-     * @param key
-     * @return The value for the given key, or null.
+     * Layout preferences should be used by client code in order to fit panel layout
+     * into the layout of the application.
      */
-    public int getLayoutPreference( String key );
+    public LayoutSupplier getLayoutPreference();
     
 //    /**
 //     * Registers the given {@link EventHandler event handler}.

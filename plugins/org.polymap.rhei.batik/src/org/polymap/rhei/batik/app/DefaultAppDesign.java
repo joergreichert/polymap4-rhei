@@ -14,10 +14,13 @@
  */
 package org.polymap.rhei.batik.app;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -25,6 +28,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.BrowserNavigation;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
 
 import org.polymap.core.runtime.Closer;
 import org.polymap.core.runtime.event.EventFilter;
@@ -44,6 +52,7 @@ import org.polymap.rhei.batik.app.DefaultAppManager.DefaultPanelSite;
 import org.polymap.rhei.batik.internal.PageStack;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
  * 
@@ -51,36 +60,70 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class DefaultAppDesign
-        implements IAppDesign {
+        implements IAppDesign, BrowserNavigationListener {
 
     private static Log log = LogFactory.getLog( DefaultAppDesign.class );
 
-    public static final int         MAX_CONTENT_WIDTH = 1100;
+    public static final int             MAX_CONTENT_WIDTH = 1100;
     
-    protected Shell                 mainWindow;
+    protected Shell                     mainWindow;
     
-    protected IPanelToolkit         toolkit;
+    protected BrowserNavigation         browserHistory;
 
-    protected StatusManager         statusManager;
+    protected IPanelToolkit             toolkit;
 
-    protected DefaultAppToolbar     toolbar;
+    protected StatusManager             statusManager;
 
-    protected DefaultAppNavigator   navigator;
+    protected DefaultAppToolbar         toolbar;
 
-    protected DefaultUserPreferences  userPrefs;
+    protected DefaultAppNavigator       navigator;
+
+    protected DefaultUserPreferences    userPrefs;
 
     protected PageStack<PanelIdentifier> panelsArea;
+    
+    protected DefaultLayoutSupplier     panelLayoutSettings = new DefaultLayoutSupplier();
+ 
+    protected DefaultLayoutSupplier     appLayoutSettings = new DefaultLayoutSupplier();
 
 
     @Override
     public void init() {
         toolkit = new DefaultToolkit();
+
+        browserHistory = RWT.getClient().getService( BrowserNavigation.class );
+        browserHistory.addBrowserNavigationListener( this );
     }
 
 
     @Override
     public void close() {
         toolkit = Closer.create().closeAndNull( toolkit );
+        if (browserHistory != null) {
+            browserHistory.removeBrowserNavigationListener( this );
+            browserHistory = null;
+        }
+    }
+
+
+    /** 
+     * Browser history event. 
+     */
+    @Override
+    public void navigated( BrowserNavigationEvent ev ) {
+        log.info( "navigated(): " + ev.getState() );
+//        BatikApplication.instance().getAppManager().activatePanel( new PanelIdentifier( "start" ) );
+        
+//        if (activePanel == null) {
+//            log.info( "   no activePanel, skipping." );
+//            return;
+//        }
+//        
+//        // go to start panel (no matter what)
+//        while (activePanel.getSite().getPath().size() > 1) {
+//            closePanel( activePanel.getSite().getPath() );
+//            activePanel = getActivePanel();
+//        }
     }
 
 
@@ -96,10 +139,20 @@ public class DefaultAppDesign
         mainWindow.setMaximized( true );
         UIUtils.setVariant( mainWindow, IAppDesign.CSS_SHELL );
 
-        Rectangle bounds = display.getBounds();
-        int margins = Math.max( bounds.width - MAX_CONTENT_WIDTH, 0 );
-        mainWindow.setLayout( FormLayoutFactory.defaults().margins( 0, margins/2, 10, margins/2 ).create() );
-
+        adjustLayout();
+        
+        mainWindow.addControlListener( new ControlAdapter() {
+            private Rectangle lastDisplayArea = display.getBounds();
+            @Override
+            public void controlResized( ControlEvent ev ) {
+                Rectangle displayArea = display.getBounds();
+                if (!displayArea.equals( lastDisplayArea )) {
+                    lastDisplayArea = displayArea;
+                    adjustLayout();
+                }
+            }
+        });
+        
         // header
         Composite headerContainer = fillHeaderArea( mainWindow );
         headerContainer.setLayoutData( FormDataFactory.filled().clearBottom().create() );
@@ -150,7 +203,20 @@ public class DefaultAppDesign
 
 
     protected Composite fillPanelArea( Composite parent ) {
-        panelsArea = new PageStack( parent );  //new ScrolledPageBook( parent, SWT.V_SCROLL );
+        panelsArea = new PageStack( parent, new DelegatingLayoutSupplier( getAppLayoutSettings() ) {
+            @Override
+            public int getMarginLeft() {
+                return 0;
+            }
+            @Override
+            public int getMarginRight() {
+                return 0;
+            }
+            @Override
+            public int getMarginTop() {
+                return getSpacing()/2;
+            }
+        });
         panelsArea.showEmptyPage();
         return UIUtils.setVariant( panelsArea, CSS_PANELS );
     }
@@ -183,7 +249,8 @@ public class DefaultAppDesign
         //
         else if (ev.getType() == TYPE.ACTIVATED) {
             DefaultPanelSite panelSite = (DefaultPanelSite)ev.getSource().getSite();
-            mainWindow.setText( panelSite.getTitle() );
+            mainWindow.setText( panelSite.getTitle() );        
+            browserHistory.pushState( panel.id().id(), StringUtils.abbreviate( panelSite.getTitle(), 25 ) );
             delayedRefresh();
         }
         //
@@ -200,21 +267,72 @@ public class DefaultAppDesign
     }
 
 
+    @Override
+    public LayoutSupplier getAppLayoutSettings() {
+        return appLayoutSettings;
+    }
+
+
+    @Override
+    public LayoutSupplier getPanelLayoutPreferences() {
+        return panelLayoutSettings;
+    }
+
+
     protected Layout newPanelLayout() {
         // 1000px display width -> 30px margin
-        int margins = (int)(UIUtils.sessionDisplay().getBounds().width * 0.03 );
-        ConstraintLayout result = new ConstraintLayout( margins, margins, margins );
-        log.info( "display width: " + UIUtils.sessionDisplay().getBounds().width + " -> margin: " + result.marginWidth );
+//        int margins = (int)(UIUtils.sessionDisplay().getBounds().width * 0.03 );
+//        ConstraintLayout result = new ConstraintLayout( margins, margins, margins );
+        ConstraintLayout result = new ConstraintLayout( getPanelLayoutPreferences() );
         return result;
     }
     
 
+    /**
+     * Sets/adapts the {@link #mainWindow} layout rigth after init and before
+     * {@link #delayedRefresh()}. Override to change behaviour.
+     */
+    protected void adjustLayout() {
+        Rectangle displayArea = Display.getCurrent().getBounds();
+
+        int marginsWidth = -1;
+        int spacing = -1;
+        if (displayArea.width < 500) {
+            marginsWidth = spacing = 5;
+        }
+        else if (displayArea.width < 1200) {
+            marginsWidth = spacing = (int)(displayArea.width * 0.025);
+        }
+        else {
+            marginsWidth = (int)(displayArea.width * 0.025) + 100;
+            spacing = (int)(displayArea.width * 0.025);
+        }
+        log.info( "adjustLayout(): display width=" + displayArea.width + " -> spacing=" + spacing );
+        
+        // panel layout
+        panelLayoutSettings.spacing = spacing;
+        
+        // app layout
+        appLayoutSettings.spacing = spacing;
+        appLayoutSettings.marginLeft = appLayoutSettings.marginRight = marginsWidth;
+        
+        mainWindow.setLayout( FormLayoutFactory.defaults().margins( 
+                appLayoutSettings.marginTop, appLayoutSettings.marginRight, 
+                appLayoutSettings.marginBottom, appLayoutSettings.marginLeft ).create() );
+        
+        // propagate settings to PageStackLayout
+        mainWindow.layout( true );
+    }
+    
+    
     @Override
     public void delayedRefresh() {
+        adjustLayout();
+        
         // XXX this forces the content send twice to the client (measureString: calculate text height)
         // without layout fails sometimes (page to short, no content at all)
 //        s.layout( true );
-        panelsArea.reflow( true );
+//        panelsArea.reflow( true );
         
         // FIXME HACK! force re-layout after font sizes are known (?)
         UIUtils.activateCallback( DefaultAppDesign.class.getName() );
@@ -222,12 +340,8 @@ public class DefaultAppDesign
             public void run() {
                 log.info( "layout..." );
 
-//                Rectangle bounds = Display.getCurrent().getBounds();
-//                int random = (refreshCount++ % 3);
-//                s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
-
                 mainWindow.layout( true );
-                panelsArea.reflow( true );
+//                panelsArea.reflow( true );
                 //((Composite)scrolled.getCurrentPage()).layout();
                 
                 UIUtils.deactivateCallback( DefaultAppDesign.class.getName() );
@@ -235,4 +349,70 @@ public class DefaultAppDesign
         });
     }
 
+
+    /**
+     * 
+     */
+    public static class DefaultLayoutSupplier
+            extends LayoutSupplier {
+        
+        public int marginLeft, marginRight, marginTop, marginBottom, spacing;
+    
+        @Override
+        public int getMarginLeft() {
+            return marginLeft;
+        }
+        @Override
+        public int getMarginRight() {
+            return marginRight;
+        }
+        @Override
+        public int getMarginTop() {
+            return marginTop;
+        }
+        @Override
+        public int getMarginBottom() {
+            return marginBottom;
+        }
+        @Override
+        public int getSpacing() {
+            return spacing;
+        }
+    }
+    
+    
+    /**
+     * 
+     */
+    public static class DelegatingLayoutSupplier
+            extends LayoutSupplier {
+        
+        private LayoutSupplier          delegate;
+
+        public DelegatingLayoutSupplier( LayoutSupplier delegate ) {
+            this.delegate = delegate;
+        }
+        @Override
+        public int getMarginLeft() {
+            return delegate.getMarginLeft();
+        }
+        @Override
+        public int getMarginRight() {
+            return delegate.getMarginRight();
+        }
+        @Override
+        public int getMarginTop() {
+            return delegate.getMarginTop();
+        }
+        @Override
+        public int getMarginBottom() {
+            return delegate.getMarginBottom();
+        }
+        @Override
+        public int getSpacing() {
+            return delegate.getSpacing();
+        }
+        
+    }
+    
 }

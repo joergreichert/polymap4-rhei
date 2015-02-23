@@ -18,10 +18,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
- * A design creates the layout of the main window and teh {@link IPanelToolkit}
- * to be used to create UI elments.
+ * A design creates the layout of the main window and the {@link IPanelToolkit} to be
+ * used to create UI elments as well as browser history and all stuff related to the
+ * app design.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -40,6 +42,18 @@ public interface IAppDesign
     public void close();
     
     public IPanelToolkit getToolkit();
+    
+    /**
+     * The layout preferences for panels. The returned a {@link LayoutSupplier}
+     * instance dynamically represents current values.
+     */
+    public LayoutSupplier getPanelLayoutPreferences();
+    
+    /**
+     * The layout settings of the main window. The returned a {@link LayoutSupplier}
+     * instance dynamically represents current values.
+     */
+    public LayoutSupplier getAppLayoutSettings();
     
     public Shell createMainWindow( Display display );
 

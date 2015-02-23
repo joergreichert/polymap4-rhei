@@ -16,11 +16,15 @@ package org.polymap.rhei.batik.app;
 
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
+import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 
 /**
- * 
+ * ...
+ * <p/>
+ * The {@link IAppManager} is the source of all {@link PanelChangeEvent}s that drives
+ * the entiry UI and application.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */

@@ -40,7 +40,6 @@ import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
-import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
@@ -100,26 +99,26 @@ public class DefaultAppNavigator
         }
         breadcrumb = new Composite( contents, SWT.NONE );
         breadcrumb.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
-        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 30, 1 ).fill( false ).create() );
+        breadcrumb.setLayout( RowLayoutFactory.fillDefaults().margins( 0, 1 ).fill( false ).create() );
         UIUtils.setVariant( breadcrumb, CSS_BREADCRUMP );
         
         boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
         
-        // home
-        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
-        UIUtils.setVariant( homeBtn, CSS_PREFIX );
-        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
-        homeBtn.setToolTipText( "Zurück zur Startseite" );
-        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-        homeBtn.addSelectionListener( new SelectionAdapter() {
-            public void widgetSelected( SelectionEvent e ) {
-                while (activePanel.getSite().getPath().size() > 1) {
-                    appManager.closePanel( activePanel.getSite().getPath() );
-                    activePanel = appManager.getActivePanel();
-                }
-            }
-        });
-        //homeBtn.setEnabled( activePanel.getSite().getPath().size() > 1 );
+//        // home
+//        Button homeBtn = new Button( breadcrumb, SWT.PUSH );
+//        UIUtils.setVariant( homeBtn, CSS_PREFIX );
+//        homeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/house.png" ) );
+//        homeBtn.setToolTipText( "Zurück zur Startseite" );
+//        homeBtn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+//        homeBtn.addSelectionListener( new SelectionAdapter() {
+//            public void widgetSelected( SelectionEvent e ) {
+//                while (activePanel.getSite().getPath().size() > 1) {
+//                    appManager.closePanel( activePanel.getSite().getPath() );
+//                    activePanel = appManager.getActivePanel();
+//                }
+//            }
+//        });
+//        //homeBtn.setEnabled( activePanel.getSite().getPath().size() > 1 );
 
         // path
         PanelPath path = activePanel.getSite().getPath().removeLast( 1 );
@@ -209,7 +208,7 @@ public class DefaultAppNavigator
         
         // calculate width
         Point size = switcher.computeSize( SWT.DEFAULT, 30, true );
-        switcher.setLayoutData( FormDataFactory.filled().clearLeft().width( size.x+30 ).create() );
+        switcher.setLayoutData( FormDataFactory.filled().clearLeft().width( size.x+5 ).create() );
     }
 
 

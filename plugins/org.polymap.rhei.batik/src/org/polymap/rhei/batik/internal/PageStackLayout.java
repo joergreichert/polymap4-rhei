@@ -14,6 +14,9 @@
  */
 package org.polymap.rhei.batik.internal;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,13 +37,14 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.forms.widgets.ILayoutExtension;
 
 import org.polymap.rhei.batik.internal.PageStack.Page;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
  * Layout of the {@link PageStack}.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-class PageStackLayout 
+public class PageStackLayout 
         extends Layout 
         implements ILayoutExtension {
 
@@ -49,10 +53,13 @@ class PageStackLayout
     public static final int         DEFAULT_PAGE_MIN_WIDTH = 300;
     
     private final PageStack         pageStack;
+
+    private LayoutSupplier          margins;
     
 
-    PageStackLayout( PageStack pageStack ) {
+    PageStackLayout( PageStack pageStack, LayoutSupplier margins ) {
         this.pageStack = pageStack;
+        this.margins = margins;
     }
 
     
@@ -69,10 +76,14 @@ class PageStackLayout
     
     @Override
     protected void layout( Composite composite, boolean flushCache ) {
-        log.info( "layout() ..." );
         assert pageStack == composite;
         Rectangle clientArea = pageStack.getClientArea();
-        
+        log.info( "layout(): clientArea=" + clientArea );
+
+        // available size
+        int availWidth = clientArea.width - margins.getMarginLeft() - margins.getMarginRight();
+        int availHeight = clientArea.height - margins.getMarginTop() + margins.getMarginBottom();
+
         Collection<Page> pages = pageStack.getPages();
         List<Page> sortedVisible = pages.stream()
                 .filter( page -> page.visible )
@@ -83,24 +94,28 @@ class PageStackLayout
         List<Page> topDown = new ArrayList( sortedVisible );
         Collections.reverse( topDown );
 
+        // use app spacing for margins
         int filledWidth = 0;
-        int grey = 0xff, greyStep = 4;
+        int greyStep = 5, grey = 0xff - greyStep;
         for (Page page : topDown) {
             page.control.setVisible( false );
 
-            if (filledWidth <= clientArea.width) {
+            if (filledWidth <= availWidth) {
                 Point minPageSize = page.control.computeSize( SWT.DEFAULT, Integer.MAX_VALUE );
-                int minPageWidth = Math.max( minPageSize.x, DEFAULT_PAGE_MIN_WIDTH );
+
+                // limit: DEFAULT_PAGE_MIN_WIDTH < minPageSize < clientArea.width
+                int minPageWidth = min( availWidth, max( minPageSize.x, DEFAULT_PAGE_MIN_WIDTH ) );
+                
                 // right most is always displayed
                 if (filledWidth == 0) {
-                    filledWidth = Math.min( minPageWidth, clientArea.width );
+                    filledWidth = min( minPageWidth, availWidth );
                     // just save minPageSize for next step
                     page.control.setBounds( 0, 0, minPageWidth, minPageSize.y );
                     page.control.setVisible( true );
                 }
                 //
-                else if (filledWidth + minPageWidth <= clientArea.width) {
-                    filledWidth += minPageWidth;
+                else if (filledWidth + minPageWidth <= availWidth) {
+                    filledWidth += minPageWidth + margins.getSpacing();
                     // just save minPageSize for next step
                     page.control.setBounds( 0, 0, minPageWidth, minPageSize.y );
                     page.control.setVisible( true );
@@ -112,15 +127,17 @@ class PageStackLayout
         }
         
         // actually set bounds: bottom -> up
-        int panelX = 0;
+        int panelX = margins.getMarginLeft();
         Page topPage = topDown.isEmpty() ? null : topDown.get( 0 );
         for (Page page : sortedVisible) {
             if (page.control.isVisible()) {
                 Rectangle minSize = page.control.getBounds();
                 // all remaining width if topPage
-                int pageWidth = page == topPage ? clientArea.width - panelX : minSize.width;
-                page.control.setBounds( panelX, 0, pageWidth, clientArea.height );
-                panelX += pageWidth;
+                int pageWidth = page == topPage 
+                        ? clientArea.width - panelX - margins.getMarginRight() 
+                        : minSize.width;
+                page.control.setBounds( panelX, margins.getMarginTop(), pageWidth, availHeight );
+                panelX += pageWidth + margins.getSpacing();
                 log.info( "    page: " + page.control.getBounds() );                
             }
         }
