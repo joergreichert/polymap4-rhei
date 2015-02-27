@@ -14,6 +14,7 @@
  */
 package org.polymap.rhei.batik.layout.desktop;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -21,9 +22,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-
 import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.WidgetUtil;
+
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.widgets.TreeNode;
 
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
@@ -54,8 +58,12 @@ class DesktopPanelSection
 
     private Label                   sep;
 
+    private TreeNode                expander;
+
+    private boolean                 expanded = true;
+
     
-    public DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
+    protected DesktopPanelSection( DesktopToolkit tk, Composite parent, int[] styles ) {
         control = new Composite( parent, SWT.NO_FOCUS );
         control.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION  );
         control.setData( "panelSection", this );
@@ -66,8 +74,31 @@ class DesktopPanelSection
         title = new Label( control, SWT.NO_FOCUS );
         title.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
         title.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-        FormDataFactory.filled().bottom( -1 ).height( 25 ).applyTo( title );
+        FormDataFactory.filled().clearBottom().height( 25 )
+                .left( 0, ArrayUtils.contains( styles, EXPANDABLE ) ? 17 : 0).applyTo( title );
         title.setVisible( false );
+        
+        // expander
+        if (ArrayUtils.contains( styles, EXPANDABLE )) {
+            expander = new TreeNode( control, SWT.NULL );
+            expander.setExpanded( expanded );
+
+//            expander = new Label( control, SWT.NO_FOCUS );
+            expander.setData( WidgetUtil.CUSTOM_VARIANT, DesktopToolkit.CSS_SECTION_TITLE  );
+            FormDataFactory.filled().clearBottom().height( 25 ).top( 0, 8 ).applyTo( expander );
+            setExpanded( true );
+            expander.addHyperlinkListener( new HyperlinkAdapter() {
+                public void linkActivated( HyperlinkEvent ev ) {
+                    DesktopPanelSection.this.setExpanded( !isExpanded() );
+                }
+            });
+//            expander.addListener( SWT.MouseUp, new Listener() {
+//                @Override
+//                public void handleEvent( Event ev ) {
+//                    setExpanded( !isExpanded() );
+//                }
+//            });
+        }
         
         // separator
         sep = new Label( control, SWT.NO_FOCUS | SWT.SEPARATOR | SWT.HORIZONTAL );
@@ -163,11 +194,25 @@ class DesktopPanelSection
 
     @Override
     public boolean isExpanded() {
-        return true;
+        return expanded;
     }
 
     @Override
     public IPanelSection setExpanded( boolean expanded ) {
+        //expander.setText( expanded ? "-" : "+" );
+        //expander.setExpanded( expanded );
+
+        this.expanded = expanded;
+        if (client != null) {
+            client.setVisible( expanded );
+            if (expanded) {
+                FormDataFactory.filled().top( sep ).applyTo( client );
+            }
+            else {
+                FormDataFactory.filled().top( sep ).height( 0 ).applyTo( client );                
+            }
+            control.getParent().layout( true );
+        }
         return this;
     }
     
