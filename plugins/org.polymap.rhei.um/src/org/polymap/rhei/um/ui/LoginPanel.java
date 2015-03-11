@@ -140,9 +140,9 @@ public class LoginPanel
         
         private IAppContext                      context;
 
-        private IFormEditorPageSite              formSite;
+        protected IFormEditorPageSite            formSite;
         
-        private IPanelSite                       panelSite;
+        protected IPanelSite                     panelSite;
         
         private IFormFieldListener               fieldListener;
         
@@ -201,7 +201,13 @@ public class LoginPanel
                     .create().setFocus();
             // password
             new FormFieldBuilder( body, new PlainValuePropertyAdapter( "password", password ) )
-                    .setField( new StringFormField( Style.PASSWORD ) ).setValidator( new NotEmptyValidator() )
+                    .setField( new StringFormField( Style.PASSWORD ) )
+                    .setValidator( new NotEmptyValidator() {
+                        @Override
+                        public String validate( Object passwd ) {
+                            return validatePasswd( (String)passwd ) ? null : "Passwort ist nicht korrekt";
+                        }
+                    })
                     .setLabel( i18n.get( "password" ) )
                     .create();
 
@@ -211,7 +217,6 @@ public class LoginPanel
                         .setField( new CheckboxFormField() )
                         .setLabel( i18n.get( "storeLogin" ) ).setToolTipText( i18n.get( "storeLoginTip" ) )
                         .create();
-                
             }
             // btn
             loginBtn = site.getToolkit().createButton( body, i18n.get( "login" ), SWT.PUSH );
@@ -272,7 +277,12 @@ public class LoginPanel
             });
         }
 
-    
+        
+        protected boolean validatePasswd( String passwd ) {
+            return passwd != null && Polymap.instance().validatePassword( username, passwd );
+        }
+
+        
         /**
          * Does the login for given name and password. This default implementation
          * calls {@link Polymap#login(String, String)} and sets the {@link #user}
