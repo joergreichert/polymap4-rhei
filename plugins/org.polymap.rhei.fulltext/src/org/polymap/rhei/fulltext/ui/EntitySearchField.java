@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.model2.Entity;
 import org.polymap.core.model2.query.Expressions;
-import org.polymap.core.model2.query.ResultSet;
+import org.polymap.core.model2.query.Query;
 import org.polymap.core.model2.query.grammar.BooleanExpression;
 import org.polymap.core.model2.runtime.UnitOfWork;
 
@@ -52,7 +52,7 @@ public abstract class EntitySearchField<T extends Entity>
     
     protected Class<T>                  entityClass;
     
-    protected ResultSet<T>              results;
+    protected Query<T>                  query;
     
     
     public EntitySearchField( Composite parent, FullTextIndex index, UnitOfWork uow, Class<T> entityClass ) {
@@ -64,12 +64,12 @@ public abstract class EntitySearchField<T extends Entity>
 
     
     @Override
-    protected void doSearch( String query ) throws Exception {
-        if (query.length() == 0) {
-            results = ResultSet.EMPTY;            
+    protected void doSearch( String queryString ) throws Exception {
+        if (queryString.length() == 0) {
+            query = uow.query( entityClass ).where( Expressions.FALSE );         
         }
         else {
-            Iterable<JSONObject> rs = index.search( query, -1 );
+            Iterable<JSONObject> rs = index.search( queryString, -1 );
 
             List<BooleanExpression> ids = new ArrayList( 256 );
             for (JSONObject record : rs) {
@@ -83,20 +83,20 @@ public abstract class EntitySearchField<T extends Entity>
 
             // none
             if (ids.isEmpty()) {
-                results = ResultSet.EMPTY;
+                query = uow.query( entityClass ).where( Expressions.FALSE );         
             }
             // one
             else if (ids.size() == 1) {
-                results = uow.query( entityClass ).where( ids.get( 0 ) ).execute();
+                query = uow.query( entityClass ).where( ids.get( 0 ) );
             }
             // two
             else if (ids.size() == 2) {
-                results = uow.query( entityClass ).where( or( ids.get( 0 ), ids.get( 1 ) ) ).execute();
+                query = uow.query( entityClass ).where( or( ids.get( 0 ), ids.get( 1 ) ) );
             }
             // more
             else {
                 BooleanExpression[] more = ids.subList( 2, ids.size() ).toArray( new BooleanExpression[ids.size()-2] );
-                results = uow.query( entityClass ).where( or( ids.get( 0 ), ids.get( 1 ), more ) ).execute();
+                query = uow.query( entityClass ).where( or( ids.get( 0 ), ids.get( 1 ), more ) );
             }
         }
     }
