@@ -1,7 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,8 +11,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.field;
 
@@ -28,13 +25,10 @@ import org.polymap.rhei.form.IFormEditorToolkit;
  * </p>
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @version ($Revision$)
  */
 public interface IFormFieldSite {
 
     public String getFieldName();
-
-//    public Class getFieldType();
 
     /**
      * Returns the current value of this field from the backend store. The value
@@ -46,9 +40,7 @@ public interface IFormFieldSite {
      * @throws Exception When the value could not be validated/transformed with
      *         the {@link IFormFieldValidator} of this field.
      */
-    public Object getFieldValue()
-    throws Exception;
-
+    public Object getFieldValue() throws Exception;
 
     /**
      * Changes the value of this field as the result of a submit action. The
@@ -59,8 +51,7 @@ public interface IFormFieldSite {
      * @throws Exception When the value could not be validated/transformed with
      *         the {@link IFormFieldValidator} of this field.
      */
-    public void setFieldValue( Object value )
-    throws Exception;
+    public void setFieldValue( Object value ) throws Exception;
     
     public boolean isValid();
     
@@ -76,7 +67,7 @@ public interface IFormFieldSite {
      * @param eventCode One of the constants in {@link IFormFieldListener}.
      * @param newValue
      */
-    public void fireEvent( Object source, int eventCode, Object newValue ); 
+    public void fireEvent( Object source, int eventCode, Object newFieldValue ); 
     
     public IFormEditorToolkit getToolkit();
     

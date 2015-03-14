@@ -102,9 +102,10 @@ public interface IFormEditorPageSite {
      *
      * @param source XXX
      * @param eventCode One of the constants in {@link IFormFieldListener}.
-     * @param validatedNewValue
+     * @param newFieldValue
+     * @param newModelValue
      */
-    public void fireEvent( Object source, String fieldName, int eventCode, Object validNewValue );
+    public void fireEvent( Object source, String fieldName, int eventCode, Object newFieldValue, Object newModelValue );
 
     public void setFieldValue( String fieldName, Object value );
 

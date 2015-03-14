@@ -19,6 +19,9 @@ import java.util.Map;
 
 import org.opengis.feature.Property;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -47,6 +50,8 @@ import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 public abstract class AbstractFormEditorPageContainer
         implements IFormEditorPageSite {
     
+    private static Log log = LogFactory.getLog( AbstractFormEditorPageContainer.class );
+
     private Object                          editor;
     
     protected IFormEditorPage               page;
@@ -104,24 +109,23 @@ public abstract class AbstractFormEditorPageContainer
      * Called from page provider client code.
      */
     @Override
-    public void fireEvent( Object source, String fieldName, int eventCode, Object validNewValue ) {
+    public void fireEvent( Object source, String fieldName, int eventCode, 
+            Object newFieldValue, Object newModelValue ) {
         if (eventCode == IFormFieldListener.VALUE_CHANGE) {
-            if (validNewValue == null) {
+            if (newModelValue == null) {
                 values.remove( fieldName );
             } else {
-                values.put( fieldName, validNewValue );
+                values.put( fieldName, newModelValue );
             }
         }
         
         if (!blockEvents) {
-            // syncPublish() helps to avoid to much UICallbacks browser which slows
-            // down form performance
+            // syncPublish() helps to avoid to much UICallbacks from browser,
+            // which slow down form performance
             FormFieldEvent ev = new FormFieldEvent( editor, source, 
-                    fieldName, fields.get( fieldName ).getField(), eventCode, null, validNewValue );
+                    fieldName, fields.get( fieldName ).getField(), eventCode, newFieldValue, newModelValue );
+            log.debug( "" + ev );
             EventManager.instance().syncPublish( ev );
-
-//            FormFieldEvent ev = new FormFieldEvent( editor, source, fieldName, null, eventCode, null, newValue );
-//            EventManager.instance().publish( ev );
         }
     }
     

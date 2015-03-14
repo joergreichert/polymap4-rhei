@@ -261,13 +261,13 @@ public class LoginPanel
                         return;
                     }
                     else if (ev.getFieldName().equals( "store" ) ) {
-                        storeLogin = ev.getNewValue();
+                        storeLogin = (Boolean)ev.getNewModelValue().orNull();
                     }
                     else if (ev.getFieldName().equals( "username" ) ) {
-                        username = ev.getNewValue();
+                        username = (String)ev.getNewModelValue().orNull();
                     }
                     else if (ev.getFieldName().equals( "password" ) ) {
-                        password = ev.getNewValue();
+                        password = (String)ev.getNewModelValue().orNull();
                     }
                     if (loginBtn != null && !loginBtn.isDisposed()) {
                         // don't check dirty to allow login with stored credentials

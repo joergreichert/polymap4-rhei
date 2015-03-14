@@ -197,10 +197,10 @@ public class UserSettingsPanel
                 getSite().setStatus( Status.OK_STATUS );
 
                 if (ev.getFieldName().equals( "pwd1" )) {
-                    pwd1 = ev.getNewValue();
+                    pwd1 = (String)ev.getNewModelValue().orNull();
                 }
                 if (ev.getFieldName().equals( "pwd2" )) {
-                    pwd2 = ev.getNewValue();
+                    pwd2 = (String)ev.getNewModelValue().orNull();
                 }
 
                 if (!pwdForm.isValid()) {
@@ -235,10 +235,10 @@ public class UserSettingsPanel
                 okBtn.setEnabled( false );            
 
                 if (ev.getFieldName().equals( "email" )) {
-                    email = ev.getNewValue();
+                    email = (String)ev.getNewModelValue().orNull();
                 }
                 if (ev.getFieldName().equals( "name" )) {
-                    name = ev.getNewValue();
+                    name = (String)ev.getNewModelValue().orNull();
                 }
 
                 if (personForm.isValid()) {

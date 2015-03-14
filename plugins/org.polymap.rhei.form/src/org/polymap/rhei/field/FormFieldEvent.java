@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2010-2012, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -16,10 +16,12 @@ package org.polymap.rhei.field;
 
 import java.util.EventObject;
 
+import com.google.common.base.Optional;
+
 import org.polymap.rhei.filter.FilterEditor;
 
 /**
- * Default event implementation. 
+ * Event thrown by a form field and handled by an {@link IFormFieldListener}. 
  *
  * @see IFormFieldListener
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
@@ -33,21 +35,22 @@ public class FormFieldEvent
     
     private int         eventCode;
     
-    private Object      oldValue;
+    private Object      newFieldValue;
     
-    private Object      newValue;
+    private Object      newModelValue;
 
     private String      fieldName;
 
 
-    public FormFieldEvent( Object editor, Object source, String fieldName, IFormField field, int eventCode, Object oldValue, Object newValue ) {
+    public FormFieldEvent( Object editor, Object source, String fieldName, IFormField field, 
+            int eventCode, Object newFieldValue, Object newModelValue ) {
         super( source );
         this.editor = editor;
         this.formField = field;
         this.fieldName = fieldName;
         this.eventCode = eventCode;
-        this.oldValue = oldValue;
-        this.newValue = newValue;
+        this.newFieldValue = newFieldValue;
+        this.newModelValue = newModelValue;
     }
     
     /**
@@ -70,18 +73,40 @@ public class FormFieldEvent
     public int getEventCode() {
         return eventCode;
     }
-
-    public <T> T getOldValue() {
-        return (T)oldValue;
+    
+    /**
+     * The value that would be stored in the underlying Property on submit. Type and
+     * value my differ from the value that was actually entered in the
+     * {@link IFormField}, it depends on the {@link IFormFieldValidator} of the form
+     * field.
+     * 
+     * @see #getNewFieldValue()
+     * @return An optional value that is present only if the
+     *         {@link #getNewFieldValue() new field value} was successfully
+     *         validated.
+     */
+    public <T> Optional<T> getNewModelValue() {
+        return Optional.fromNullable( (T)newModelValue );
     }
 
-    public <T> T getNewValue() {
-        return (T)newValue;
+    /**
+     * The value that was entered in the form field. The type and value depend on
+     * the {@link IFormField} that is used in this form field, it may differ from
+     * type and value of the underlying Property of this form field.
+     *
+     * @see #getNewModelValue()
+     * @return The value as entered in the {@link IFormField}.
+     */
+    public <T> T getNewFieldValue() {
+        return (T)newFieldValue;
     }
 
     public String toString() {
-        return "FormFieldEvent [source=" + source + ", eventCode=" + eventCode + ", formField=" + formField
-                + ", newValue=" + newValue + ", oldValue=" + oldValue + "]";
+        return "FormFieldEvent[source=" + source.getClass().getSimpleName() + 
+                ", eventCode=" + eventCode + 
+                ", formField=" + formField.getClass().getSimpleName() +
+                ", newFieldValue=" + newFieldValue + 
+                ", newModelValue=" + newModelValue + "]";
     }
 
 }
