@@ -50,7 +50,8 @@ public interface IPanelSite {
      * <p/>
      * Use status severity as follows:
      * <ul>
-     * <li>{@link IStatus#OK} : An action has been complete sucessfully.</li>
+     * <li>{@link Status#OK_STATUS} : Everything is ok. No message.</li>
+     * <li>{@link IStatus#OK} : An action has been complete successfully. Message gets displayed.</li>
      * <li>{@link IStatus#INFO} : ...</li>
      * <li>{@link IStatus#WARNING} : The user's attention is needed.</li>
      * <li>{@link IStatus#ERROR} : An error/exception occured. An</li>

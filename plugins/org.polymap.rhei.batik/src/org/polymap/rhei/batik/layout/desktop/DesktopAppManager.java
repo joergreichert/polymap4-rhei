@@ -91,7 +91,7 @@ public class DesktopAppManager
 
     protected PanelNavigator            panelNavigator;
 
-    protected StatusManager             statusManager;
+    protected StatusManager2            statusManager;
     
 
     @Override
@@ -102,10 +102,10 @@ public class DesktopAppManager
         
         // panel navigator area
         actionBar = new DesktopActionBar( context, tk );
-        actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
+//        actionBar.add( new PanelToolbar( this ), PLACE.PANEL_TOOLBAR );
         actionBar.add( panelNavigator = new PanelNavigator( this ), PLACE.PANEL_NAVI );
         actionBar.add( userPrefs = new UserPreferences( this ), PLACE.USER_PREFERENCES );
-        actionBar.add( statusManager = new StatusManager( this ), PLACE.STATUS );
+        actionBar.add( statusManager = new StatusManager2( this ), PLACE.STATUS );
 
         // mainWindow
         mainWindow = new DesktopAppWindow( this ) {
@@ -116,6 +116,7 @@ public class DesktopAppManager
             @Override
             protected Composite fillPanelArea( Composite parent ) {
                 scrolledPanelContainer = new ScrolledPageBook( parent, SWT.V_SCROLL );
+                scrolledPanelContainer.setTouchEnabled( true );
                 scrolledPanelContainer.showEmptyPage();
                 
 //                scrolledPanelContainer = (ScrolledComposite)tk.createComposite( parent, SWT.BORDER, SWT.V_SCROLL );
@@ -178,7 +179,7 @@ public class DesktopAppManager
         List<IPanel> panels = BatikComponentFactory.instance().createPanels( new Predicate<IPanel>() {
             public boolean apply( IPanel panel ) {
                 new PanelContextInjector( panel, context ).run();
-                EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.INITIALIZING ) );
+                publishEvent( panel, TYPE.INITIALIZING );
                 
                 PanelPath path = prefix.append( panel.id() );
                 boolean wantsToBeShown = panel.init( new DesktopPanelSite( path ), context );
@@ -188,7 +189,7 @@ public class DesktopAppManager
                 }
                 
                 if (panel.id().equals( panelId ) || wantsToBeShown) {
-                    EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.INITIALIZED ) );
+                    publishEvent( panel, TYPE.INITIALIZED );
                     return true;
                 }
                 return false;
@@ -207,7 +208,7 @@ public class DesktopAppManager
         }
 
         // update UI
-        EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATING ) );
+        publishEvent( panel, TYPE.ACTIVATING );
         
         final Composite page = scrolledPanelContainer.createPage( panel.id() );
         page.setLayout( newPanelLayout() );
@@ -219,7 +220,7 @@ public class DesktopAppManager
         scrolledPanelContainer.setMinHeight( panelSize.y );
 
         activePanel = panel;
-        EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.ACTIVATED ) );
+        publishEvent( panel, TYPE.ACTIVATED );
 
         browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
@@ -247,25 +248,25 @@ public class DesktopAppManager
         }
         // remove/dispose activePanel and siblings
         for (IPanel panel : context.findPanels( withPrefix( activePath.removeLast( 1 ) ) )) {
-            EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.DISPOSING ) );
+            publishEvent( panel, TYPE.DISPOSING );
             panel.dispose();
             context.removePanel( panel.getSite().getPath() );
             if (scrolledPanelContainer.hasPage( panel.id() )) {
                 scrolledPanelContainer.removePage( panel.id() );
             }
-            EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.DISPOSED ) );
+            publishEvent( panel, TYPE.DISPOSED );
         }
         
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATING ) );
+        publishEvent( activePanel, TYPE.DEACTIVATING );
         scrolledPanelContainer.removePage( activePanel.id() );
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATED ) );
+        publishEvent( activePanel, TYPE.DEACTIVATED );
         
         // activate child panel
         activePath = activePath.removeLast( 1 );
         activePanel = context.getPanel( activePath );
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
+        publishEvent( activePanel, TYPE.ACTIVATING );
         scrolledPanelContainer.showPage( activePanel.id() );
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
+        publishEvent( activePanel, TYPE.ACTIVATED );
 
         browserHistory.createEntry( activePanel.id().id(), activePanel.getSite().getTitle() );
     }
@@ -276,17 +277,16 @@ public class DesktopAppManager
         PanelPath activePath = prefix.append( panelId );
 
         // deactivating
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.DEACTIVATING ) );
+        publishEvent( activePanel, TYPE.DEACTIVATING );
         IPanel previous = activePanel = context.getPanel( activePath );
-        EventManager.instance().publish( new PanelChangeEvent( previous, TYPE.DEACTIVATED ) );
+        publishEvent( previous, TYPE.DEACTIVATED );
 
         // activating
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
+        publishEvent( activePanel, TYPE.ACTIVATING );
         if (scrolledPanelContainer.hasPage( panelId )) {
             scrolledPanelContainer.showPage( panelId );
         }
         else {
-            EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATING ) );
             Composite page = scrolledPanelContainer.createPage( activePanel.id() );
             page.setLayout( newPanelLayout() );
 
@@ -297,7 +297,7 @@ public class DesktopAppManager
             Point panelSize = page.computeSize( SWT.DEFAULT, SWT.DEFAULT );
             scrolledPanelContainer.setMinHeight( panelSize.y );
         }
-        EventManager.instance().publish( new PanelChangeEvent( activePanel, TYPE.ACTIVATED ) );
+        publishEvent( activePanel, TYPE.ACTIVATED );
         
         browserHistory.createEntry( panelId.id(), activePanel.getSite().getTitle() );
         mainWindow.delayedRefresh( null );
@@ -313,7 +313,13 @@ public class DesktopAppManager
         return activePanel;
     }
 
+    
+    protected void publishEvent( IPanel panel, TYPE eventType ) {
+        // XXX avouid race conditions; EventManager does not seem to always handle display events properly
+        EventManager.instance().syncPublish( new PanelChangeEvent( panel, eventType ) );        
+    }
 
+    
     /**
      * 
      */
@@ -427,7 +433,15 @@ public class DesktopAppManager
         public void setStatus( IStatus status ) {
             this.status = status;
             IPanel panel = context.getPanel( path );
-            EventManager.instance().publish( new PanelChangeEvent( panel, TYPE.STATUS ) );
+            if (panel != null) {
+                // FIXME make sure that Display thread handles the handlers of this event
+                // EventManager should do this via UICallbacks but seems to fail
+                EventManager.instance().syncPublish( new PanelChangeEvent( panel, TYPE.STATUS ) );
+            }
+            // panel == null -> called after dispose, probably from event handler
+            else {
+                throw new IllegalStateException( "Panel is already closed: " + path );
+            }
         }
 
         @Override

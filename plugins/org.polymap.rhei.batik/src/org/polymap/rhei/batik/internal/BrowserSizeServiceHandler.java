@@ -51,7 +51,9 @@ public class BrowserSizeServiceHandler
         display.asyncExec( new Runnable() {
             public void run() {
                 log.info( "Display size: " + display.getBounds() );
-                EventManager.instance().publish( new ApplicationResizeEvent( display ) );
+                // sync in order to ensure that the event handler has been processed within
+                // the current request and so UI updates are send to the browser
+                EventManager.instance().syncPublish( new ApplicationResizeEvent( display ) );
             }
         });
     }

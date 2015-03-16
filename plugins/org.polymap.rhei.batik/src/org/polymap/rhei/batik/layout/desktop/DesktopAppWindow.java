@@ -67,6 +67,8 @@ public abstract class DesktopAppWindow
         super( null );
         this.appManager = appManager;
         statusManager = getStatusManager();
+        
+        setShellStyle( SWT.NONE );
     }
 
 
@@ -138,13 +140,13 @@ public abstract class DesktopAppWindow
     public void delayedRefresh( final Shell shell ) {
         final Shell s = shell != null ? shell : getShell();
 
+        // XXX this forces the content send twice to the client (measureString: calculate text height)
+        // without layout fails sometimes (page to short, no content at all)
         s.layout( true );
-        ScrolledPageBook scrolled = (ScrolledPageBook)panels;
-        //scrolled.layout();
-        scrolled.reflow( true );
+        ((ScrolledPageBook)panels).reflow( true );
         
         // FIXME HACK! force re-layout after font sizes are known (?)
-        UICallBack.activate( getClass().getName() );
+        UICallBack.activate( "DesktopAppWindow" );
         s.getDisplay().timerExec( 1000, new Runnable() {
             public void run() {
                 log.info( "layout..." );
@@ -154,35 +156,12 @@ public abstract class DesktopAppWindow
 //                s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
 
                 s.layout( true );
-                ScrolledPageBook scrolled = (ScrolledPageBook)panels;
-                //scrolled.layout();
-                scrolled.reflow( true );
+                ((ScrolledPageBook)panels).reflow( true );
                 //((Composite)scrolled.getCurrentPage()).layout();
                 
-                UICallBack.deactivate( getClass().getName() );
+                UICallBack.deactivate( "DesktopAppWindow" );
             }
         });
-
-//        UICallBack.activate( getClass().getName() );
-//        Job job = new Job( "Layout" ) {
-//            protected IStatus run( IProgressMonitor monitor ) {
-//                s.getDisplay().asyncExec( new Runnable() {
-//                    public void run() {
-//                        log.info( "layout..." );
-//                        s.layout();
-//                        ((ScrolledPageBook)panels).reflow( true );
-//
-//                        Rectangle bounds = Display.getCurrent().getBounds();
-//                        int random = (refreshCount++ % 3);
-//                        s.setBounds( 0, 60, bounds.width, bounds.height - 60 - random );
-//                        UICallBack.deactivate( getClass().getName() );
-//                    }
-//                });
-//                return Status.OK_STATUS;
-//            }
-//        };
-//        //job.setUser( true );
-//        job.schedule( 1000 );
     }
 
     
