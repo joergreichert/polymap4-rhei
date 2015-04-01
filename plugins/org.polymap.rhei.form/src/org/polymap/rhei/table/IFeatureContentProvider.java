@@ -17,10 +17,6 @@ package org.polymap.rhei.table;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 
-import org.polymap.core.data.ui.featuretable.IFeatureTableElement;
-
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
-
 /**
  * Provides the content elements of a {@link FeatureTableViewer}. The provided
  * elements are of type {@link IFeatureTableElement}.

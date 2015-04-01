@@ -20,8 +20,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
-
 /**
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>

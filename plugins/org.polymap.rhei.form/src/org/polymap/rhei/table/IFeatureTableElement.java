@@ -19,11 +19,7 @@ import org.opengis.feature.Feature;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
-import org.polymap.core.data.ui.featuretable.DefaultFeatureTableColumn;
-import org.polymap.core.data.ui.featuretable.IFeatureContentProvider;
-
 import org.polymap.rhei.table.DefaultFeatureTableColumn.DefaultCellLabelProvider;
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
 
 /**
  * This is the content element of a {@link FeatureTableViewer}.

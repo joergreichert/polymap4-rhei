@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.table.workbench;
+package org.polymap.rhei.table;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -57,13 +57,6 @@ import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.runtime.ListenerList;
 import org.polymap.core.ui.SelectionAdapter;
-
-import org.polymap.rhei.table.DeferredFeatureContentProvider2;
-import org.polymap.rhei.table.FeatureCollectionContentProvider;
-import org.polymap.rhei.table.IDeferredFeatureContentProvider;
-import org.polymap.rhei.table.IFeatureContentProvider;
-import org.polymap.rhei.table.IFeatureTableColumn;
-import org.polymap.rhei.table.IFeatureTableElement;
 
 /**
  *

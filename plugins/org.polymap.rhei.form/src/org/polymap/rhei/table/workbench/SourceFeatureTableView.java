@@ -36,6 +36,7 @@ import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.table.DefaultFeatureTableColumn;
+import org.polymap.rhei.table.FeatureTableViewer;
 
 /**
  *  

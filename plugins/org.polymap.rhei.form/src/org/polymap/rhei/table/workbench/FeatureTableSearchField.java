@@ -45,6 +45,7 @@ import org.polymap.core.runtime.UIJob;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
+import org.polymap.rhei.table.FeatureTableViewer;
 import org.polymap.rhei.table.IFeatureTableElement;
 
 /**

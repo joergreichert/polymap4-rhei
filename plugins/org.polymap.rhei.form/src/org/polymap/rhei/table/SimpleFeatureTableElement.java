@@ -26,8 +26,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 
-import org.apache.commons.collections.KeyValue;
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,9 +35,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import org.polymap.core.data.DataPlugin;
-import org.polymap.core.data.ui.featuretable.IFeatureTableElement;
-import org.polymap.core.data.ui.featuretable.SimpleFeatureTableElement;
-import org.polymap.core.data.ui.featuretable.SimpleFeatureTableElement.FetchJob;
 import org.polymap.core.runtime.cache.Cache;
 import org.polymap.core.runtime.cache.CacheLoader;
 
@@ -67,7 +62,7 @@ public class SimpleFeatureTableElement
     
     /** 
      * The value that was last returned by {@link #getValue(String)}. Key/value
-     * is cached to avoid ref-fetch of the feature during one sorting run.
+     * is cached to avoid re-fetch of the feature during one sorting run.
      */
     private KeyValue                    sortedValue;          
     

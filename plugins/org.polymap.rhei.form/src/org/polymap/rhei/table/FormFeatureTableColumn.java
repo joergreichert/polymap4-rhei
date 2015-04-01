@@ -56,7 +56,6 @@ import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
 
 /**
  * An {@link IFeatureTableColumn} that employes {@link IFormField} and

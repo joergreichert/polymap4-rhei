@@ -45,8 +45,6 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerColumn;
 
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
-
 /**
  *
  *

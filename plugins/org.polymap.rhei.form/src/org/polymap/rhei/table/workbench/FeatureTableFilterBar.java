@@ -37,6 +37,8 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
+import org.polymap.rhei.table.FeatureTableViewer;
+
 /**
  * A set of predefined filters for {@link FeatureTableViewer}.
  *

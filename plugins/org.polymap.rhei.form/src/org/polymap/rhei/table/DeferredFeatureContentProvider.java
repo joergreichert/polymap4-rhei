@@ -47,8 +47,6 @@ import org.polymap.core.runtime.cache.Cache;
 import org.polymap.core.runtime.cache.CacheConfig;
 import org.polymap.core.runtime.cache.CacheManager;
 
-import org.polymap.rhei.table.workbench.FeatureTableViewer;
-
 /**
  * Feature content provider that performs sorting and filtering in a background
  * thread based on {@link DeferredContentProvider}.
