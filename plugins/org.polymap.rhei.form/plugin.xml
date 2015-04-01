@@ -221,5 +221,12 @@
             id="org.polymap.rhei.form.FormEditorInputFactory">
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.themes">
+      <themeContribution
+            file="resources/css/batik-form.css"
+            themeId="org.polymap.rhei.batik.theme">
+      </themeContribution>
+   </extension>
 
 </plugin>

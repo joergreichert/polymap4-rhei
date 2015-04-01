@@ -14,11 +14,9 @@
  */
 package org.polymap.rhei.form.batik;
 
-import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORM;
-import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORMFIELD;
-import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORMFIELD_DISABLED;
-import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_FORM_DISABLED;
+import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_PREFIX;
 import static org.polymap.rhei.internal.form.FormEditorToolkit.CUSTOM_VARIANT_VALUE;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -51,7 +49,6 @@ import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.app.DefaultToolkit;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.DateTimeFormField;
@@ -75,6 +72,11 @@ import org.polymap.rhei.internal.form.FormEditorToolkit;
  */
 public abstract class FormContainer
         implements IFormEditorPage {
+
+    public static final String  CSS_FORM = CSS_PREFIX + "-form";
+    public static final String  CSS_FORM_DISABLED = CSS_PREFIX + "-form-disabled";
+    public static final String  CSS_FORMFIELD = CSS_PREFIX + "-formfield";
+    public static final String  CSS_FORMFIELD_DISABLED = CSS_PREFIX + "-formfield-disabled";
 
     private static Log log = LogFactory.getLog( FormContainer.class );
     
@@ -127,7 +129,7 @@ public abstract class FormContainer
     public final Composite createContents( Composite body ) {
         toolkit = new FormEditorToolkit( new FormToolkit( UIUtils.sessionDisplay() ) );
         pageBody = body;
-        UIUtils.setVariant( pageBody, DefaultToolkit.CSS_FORM );
+        UIUtils.setVariant( pageBody, CSS_FORM );
         pageContainer = new PageContainer( this );
 
         try {
@@ -333,11 +335,14 @@ public abstract class FormContainer
         public PageContainer( IFormEditorPage page ) {
             super( FormContainer.this, page, "_id_", "_title_" );
             double displayWidth = UIUtils.sessionDisplay().getBounds().width;
-            // minimum 110 plus 10px per 100 pixel display width;
+            // minimum 110
             double width = 110;
+            // plus 10px per 100 pixel display width
             if (displayWidth > 1000) {
                 width += (displayWidth - 1000) * 0.1;
             }
+            // but not more than 160 :)
+            width = Math.min( 150, width );
             log.info( "labelWidth: " + width );
             setLabelWidth( (int)width );
         }
