@@ -15,6 +15,8 @@
  */
 package org.polymap.rhei.internal.form;
 
+import java.util.Objects;
+
 import org.opengis.feature.Property;
 
 import org.eclipse.swt.SWT;
@@ -35,6 +37,7 @@ import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
+import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.IFormEditorToolkit;
 
@@ -65,6 +68,7 @@ public class FormFieldComposite
     
     private IFormFieldLabel         labeler;
     
+    /** The validator set by the client code or the {@link NullValidator}. */
     private IFormFieldValidator     validator;
     
     private boolean                 isDirty = false;
@@ -228,39 +232,29 @@ public class FormFieldComposite
         EventManager.instance().unsubscribe( l );
     }
     
-    public void fireEvent( Object source, int eventCode, Object newValue ) {
-        Object validatedNewValue = null;
-
+    @Override
+    public void fireEvent( Object source, int eventCode, Object newFieldValue ) {
         // check isDirty / validator
         if (eventCode == IFormFieldListener.VALUE_CHANGE) {
-            errorMsg = externalErrorMsg;
-            if (validator != null) {
-                errorMsg = validator.validate( newValue );
+            try {
+                Object fieldValue = getFieldValue();
+                isDirty = !Objects.equals( fieldValue, newFieldValue );
+
+                errorMsg = externalErrorMsg != null
+                        ? externalErrorMsg
+                        : validator.validate( newFieldValue );
+
+                // if valid -> transform to model value
+                Object newModelValue = errorMsg == null
+                        ? validator.transform2Model( newFieldValue )
+                        : null;
+                
+                pageSite.fireEvent( source, getFieldName(), eventCode, newFieldValue, newModelValue );
             }
-            if (errorMsg == null) {
-                try {
-                    Object value = getFieldValue();
-                    if (value == null && newValue == null) {
-                        isDirty = false;
-                    }
-                    else {
-                        isDirty = value == null && newValue != null ||
-                                value != null && newValue == null ||
-                                !value.equals( newValue );
-                    }
-                    validatedNewValue = validator.transform2Model( newValue );
-                }
-                catch (Exception e) {
-                    // XXX hmmm... what to do?
-                    throw new RuntimeException( e );
-                }
+            catch (Exception e) {
+                throw new RuntimeException( "Exception while validating field value.", e );
             }
         }
-        // propagate;
-        pageSite.fireEvent( source, getFieldName(), eventCode, validatedNewValue );
-        
-//        FormFieldEvent ev = new FormFieldEvent( editor, source, getFieldName(), field, eventCode, null, validatedNewValue );
-//        EventManager.instance().syncPublish( ev );
     }
 
     public String getErrorMessage() {

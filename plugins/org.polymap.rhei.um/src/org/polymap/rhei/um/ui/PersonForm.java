@@ -29,6 +29,7 @@ import org.polymap.rhei.field.EMailAddressValidator;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PicklistFormField;
+import org.polymap.rhei.field.Validators;
 import org.polymap.rhei.form.IFormEditorPageSite;
 import org.polymap.rhei.form.batik.FormContainer;
 import org.polymap.rhei.um.Address;
@@ -98,7 +99,7 @@ public class PersonForm
         new FormFieldBuilder( body, new PropertyAdapter( prop ) )
                 .setLabel( i18n.get( prop.name() ) )
                 .setToolTipText( i18n.get( prop.name()+"Tip" ) )
-                .setValidator( new EMailAddressValidator() )
+                .setValidator( Validators.AND( new EMailAddressValidator(), new NotEmptyValidator() ) )
                 .create();
 
         prop = person.phone();

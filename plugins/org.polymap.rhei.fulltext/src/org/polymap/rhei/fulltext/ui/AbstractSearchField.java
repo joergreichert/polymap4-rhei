@@ -79,6 +79,8 @@ public abstract class AbstractSearchField {
         clearBtn.addMouseListener( new MouseAdapter() {
             public void mouseUp( MouseEvent e ) {
                 searchTxt.setText( "" );
+                filterText = searchTxt.getText();
+                search( searchTxt.getDisplay(), filterText );
             }
         });
         clearBtn.setVisible( false );
@@ -111,6 +113,9 @@ public abstract class AbstractSearchField {
         searchTxt.addModifyListener( new ModifyListener() {
             public void modifyText( ModifyEvent ev ) {
                 filterText = searchTxt.getText();  //.toLowerCase();
+
+                clearBtn.setVisible( filterText.length() > 0 );
+                
                 if (!searchOnEnter) {                
                     // Job: defer refresh for 2s
                     new UIJob( "Suchen" ) {
@@ -130,6 +135,7 @@ public abstract class AbstractSearchField {
             }
         });
         searchTxt.addKeyListener( new KeyAdapter() {
+            // FullTextProposal depends on this event type "KeyUp"
             public void keyReleased( KeyEvent ev ) {
                 if (ev.keyCode == SWT.Selection && searchOnEnter) {
                     filterText = searchTxt.getText();

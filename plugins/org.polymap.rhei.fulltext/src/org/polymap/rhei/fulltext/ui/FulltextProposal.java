@@ -16,16 +16,20 @@ package org.polymap.rhei.fulltext.ui;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.google.common.collect.Iterables;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposal;
+import org.eclipse.jface.fieldassist.IContentProposalListener;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
@@ -57,6 +61,8 @@ public class FulltextProposal {
     private XContentProposalAdapter         proposal;
 
     protected String                        currentSearchTxtValue;
+    
+    private boolean                         eventOnAccept = true;
 
 
     public FulltextProposal( FullTextIndex index, final Text control ) {
@@ -73,6 +79,19 @@ public class FulltextProposal {
         };
         proposal = new XContentProposalAdapter( control, controlAdapter, proposalProvider, null, null );
         //proposal.setAutoActivationDelay( 2500 );
+        
+        proposal.addContentProposalListener( new IContentProposalListener() {
+            public void proposalAccepted( IContentProposal _proposal ) {
+                if (eventOnAccept) {
+                    Event event = new Event();
+                    event.keyCode = SWT.Selection;
+                    event.display = control.getDisplay();
+                    event.type = SWT.KeyUp;
+                    control.notifyListeners( SWT.KeyUp, event );
+                }
+            }
+        });
+        
         control.addKeyListener( new KeyAdapter() {
             public void keyReleased( KeyEvent ev ) {
                 if (ev.keyCode == SWT.ARROW_DOWN) {
@@ -130,6 +149,24 @@ public class FulltextProposal {
      */
     public FulltextProposal setField( String field ) {
         this.field = field;
+        return this;
+    }
+
+    /**
+     * @see #setEventOnAccept(boolean)
+     */
+    public boolean isEventOnAccept() {
+        return eventOnAccept;
+    }
+    
+    /**
+     * True specifies that a {@link SWT#Selection} event is send to the Text control.
+     * Fpr {@link AbstractSearchField} this triggers the search to be performed.
+     * <p/>
+     * Default: true
+     */
+    public FulltextProposal setEventOnAccept( boolean eventOnAccept ) {
+        this.eventOnAccept = eventOnAccept;
         return this;
     }
 

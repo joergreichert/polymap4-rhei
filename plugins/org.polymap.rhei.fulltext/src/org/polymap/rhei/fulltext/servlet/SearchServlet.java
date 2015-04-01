@@ -32,7 +32,7 @@ import org.json.JSONObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.apache.commons.io.output.CountingOutputStream;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -95,7 +95,7 @@ public class SearchServlet
 	   	// completion request *****************************
 	   	if (request.getParameter( "term" ) != null) {
             String searchStr = request.getParameter( "term" );
-            searchStr = StringEscapeUtils.unescapeHtml( searchStr );
+            searchStr = StringEscapeUtils.unescapeHtml4( searchStr );
 	        
 	        try {
 	            JSONArray result = new JSONArray();

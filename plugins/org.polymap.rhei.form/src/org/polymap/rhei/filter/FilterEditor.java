@@ -148,7 +148,7 @@ public abstract class FilterEditor
     public void fieldChange( FormFieldEvent ev ) {
         // record value
         if (ev.getEventCode() == VALUE_CHANGE) {
-            fieldValues.put( ev.getFieldName(), ev.getNewValue() );
+            fieldValues.put( ev.getFieldName(), ev.getNewModelValue().orNull() );
             isDirty = true;
         }
         // check validity

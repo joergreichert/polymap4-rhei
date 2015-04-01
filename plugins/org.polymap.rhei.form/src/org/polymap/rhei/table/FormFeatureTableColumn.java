@@ -15,6 +15,7 @@
  */
 package org.polymap.rhei.table;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,7 +56,6 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
-import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 
 /**
  * An {@link IFeatureTableColumn} that employes {@link IFormField} and
@@ -85,6 +85,8 @@ public class FormFeatureTableColumn
     private ColumnLabelProvider     labelProvider;
     
     private EditingSupport          editingSupport;
+    
+    private Comparator<IFeatureTableElement> sorter;
 
     private String                  header;
 
@@ -135,7 +137,6 @@ public class FormFeatureTableColumn
         return labelProvider;
     }
 
-
     public FormFeatureTableColumn setLabelProvider( IFormFieldValidator labelValidator ) {
         this.labelValidator = labelValidator;
         return this;
@@ -167,6 +168,11 @@ public class FormFeatureTableColumn
         return this;
     }
 
+    public FormFeatureTableColumn setSortable( Comparator<IFeatureTableElement> sorter ) {
+        this.sorter = sorter;
+        return this;
+    }
+    
 
     public FormFeatureTableColumn setEditing( IFormField formField, IFormFieldValidator validator ) {
         assert viewer == null : "Call before table is created.";
@@ -281,44 +287,50 @@ public class FormFeatureTableColumn
 
     
     public Comparator<IFeatureTableElement> newComparator( int sortDir ) {
-        Comparator<IFeatureTableElement> result = new Comparator<IFeatureTableElement>() {
-            
-            private String                  sortPropName = getName();
-            private ColumnLabelProvider     lp = getLabelProvider();
-            
-            @Override
-            public int compare( IFeatureTableElement elm1, IFeatureTableElement elm2 ) {
-                // the value from the elm or String from LabelProvider as fallback
-                Object value1 = Optional.ofNullable( elm1.getValue( sortPropName ) ).orElse( lp.getText( elm1 ) );
-                Object value2 = Optional.ofNullable( elm2.getValue( sortPropName ) ).orElse( lp.getText( elm2 ) );
-                
-                if (value1 == null && value2 == null) {
-                    return 0;
+        Comparator<IFeatureTableElement> result = null;
+        if (sorter != null) {
+            result = sorter;
+        }
+        else {
+            result = new Comparator<IFeatureTableElement>() {
+
+                private String                  sortPropName = getName();
+                private ColumnLabelProvider     lp = getLabelProvider();
+
+                @Override
+                public int compare( IFeatureTableElement elm1, IFeatureTableElement elm2 ) {
+                    // the value from the elm or String from LabelProvider as fallback
+                    Object value1 = Optional.ofNullable( elm1.getValue( sortPropName ) ).orElse( lp.getText( elm1 ) );
+                    Object value2 = Optional.ofNullable( elm2.getValue( sortPropName ) ).orElse( lp.getText( elm2 ) );
+                    
+                    if (value1 == null && value2 == null) {
+                        return 0;
+                    }
+                    else if (value1 == null) {
+                        return -1;
+                    }
+                    else if (value2 == null) {
+                        return 1;
+                    }
+                    else if (!value1.getClass().equals( value2.getClass() )) {
+                        throw new RuntimeException( "Column type do not match: " + value1.getClass().getSimpleName() + " - " + value2.getClass().getSimpleName() );
+                    }
+                    else if (value1 instanceof String) {
+                        return ((String)value1).compareToIgnoreCase( (String)value2 );
+                    }
+                    else if (value1 instanceof Number) {
+                        return (int)(((Number)value1).doubleValue() - ((Number)value2).doubleValue());
+                    }
+                    else if (value1 instanceof Date) {
+                        return ((Date)value1).compareTo( (Date)value2 );
+                    }
+                    else {
+                        return value1.toString().compareTo( value2.toString() );
+                    }
                 }
-                else if (value1 == null) {
-                    return -1;
-                }
-                else if (value2 == null) {
-                    return 1;
-                }
-                else if (!value1.getClass().equals( value2.getClass() )) {
-                    throw new RuntimeException( "Column type do not match: " + value1.getClass().getSimpleName() + " - " + value2.getClass().getSimpleName() );
-                }
-                else if (value1 instanceof String) {
-                    return ((String)value1).compareToIgnoreCase( (String)value2 );
-                }
-                else if (value1 instanceof Number) {
-                    return (int)(((Number)value1).doubleValue() - ((Number)value2).doubleValue());
-                }
-                else if (value1 instanceof Date) {
-                    return ((Date)value1).compareTo( (Date)value2 );
-                }
-                else {
-                    return value1.toString().compareTo( value2.toString() );
-                }
-            }
-        };
-        return sortDir == SWT.UP ? result.reversed() : result;
+            };
+        }
+        return sortDir == SWT.UP ? Collections.reverseOrder( result ) : result;
     }
 
     
@@ -338,7 +350,6 @@ public class FormFeatureTableColumn
         success = invalid ? invalidFids.add( fid ) : invalidFids.remove( fid );
         log.debug( "markElement: elm=" + fid + ", invalid=" + invalid + ", success="  + success );
     }
-
     
     
     public Set<String> invalidFids() {
@@ -380,10 +391,12 @@ public class FormFeatureTableColumn
                 return null;
             }
             else if (invalidFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return DefaultFormFieldDecorator.invalidImage;
+//                return DefaultFormFieldDecorator.invalidImage;
+                return null;
             }
             else if (dirtyFids.contains( ((IFeatureTableElement)elm).fid() ) ) {
-                return DefaultFormFieldDecorator.dirtyImage;
+//                return DefaultFormFieldDecorator.dirtyImage;
+                return null;
             }
             else {
                 return delegate.getImage( elm );

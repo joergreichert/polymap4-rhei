@@ -82,10 +82,10 @@ public class SubmitStatusManager {
         for (IStatus s : status.values()) {
             highestSeverity = highestSeverity == Status.OK_STATUS || highestSeverity.getSeverity() < s.getSeverity() 
                     ? s : highestSeverity;
-            log.info( "    checking: " + s + " -> highest: " + highestSeverity );
+            log.debug( "    checking: " + s + " -> highest: " + highestSeverity );
         }
         
-        log.info( "highestSeverity: " + highestSeverity );
+        log.debug( "highestSeverity: " + highestSeverity );
         panel.getSite().setStatus( highestSeverity );
         
         if (submit != null) {
