@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +58,8 @@ import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelChangeEvent;
-import org.polymap.rhei.batik.PanelChangeEvent.TYPE;
+import org.polymap.rhei.batik.PanelChangeEvent.EventType;
+import org.polymap.rhei.batik.app.IAppManager;
 
 /**
  * 
@@ -133,7 +134,7 @@ public class StatusManager
         IAppManager appManager = BatikApplication.instance().getAppManager();
         appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
             public boolean apply( PanelChangeEvent input ) {
-                return input.getType() == TYPE.ACTIVATED || input.getType() == TYPE.STATUS;
+                return input.getType() == EventType.ACTIVATED || input.getType() == EventType.STATUS;
             }
         });
     }
@@ -225,13 +226,13 @@ public class StatusManager
             return;
         }
 
-        if (ev.getType() == TYPE.ACTIVATED) {
+        if (ev.getType() == EventType.ACTIVATED) {
             activePanel = ev.getSource();
             IStatus status = activePanel.getSite().getStatus();
             // restore status only if it is not 'OK'
             update( status.isOK() ? null : status, false );
         }
-        else if (ev.getType() == TYPE.STATUS) {
+        else if (ev.getType() == EventType.STATUS) {
             update( activePanel.getSite().getStatus(), true );
         }
     }

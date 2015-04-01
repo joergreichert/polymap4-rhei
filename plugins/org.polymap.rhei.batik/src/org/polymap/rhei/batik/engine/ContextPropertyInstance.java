@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,6 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.PropertyAccessEvent;
 import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
-import org.polymap.rhei.batik.app.DefaultAppContext;
 
 /**
  * 

@@ -12,35 +12,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine;
 
-import org.polymap.rhei.batik.SiteProperty;
+import org.polymap.rhei.batik.IPanelSite.PanelStatus;
+import org.polymap.rhei.batik.app.IAppManager;
 
 /**
- * 
+ * Provides a particular operation that modifies the stack of panels and/or the
+ * {@link PanelStatus} of the panels of an {@link IAppManager}.
+ * <p/>
+ * Separate operations are easy to re/combine to different algorithms. So, instead of
+ * poluting the AppManager instances with a lot of methods to change the panels every
+ * operations is implemented in one class.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class DefaultSiteProperty<T>
-        implements SiteProperty<T> {
+public abstract class PanelOp {
 
-    private T           value;
+    protected DefaultAppManager     manager;
     
+    public abstract void execute();
     
-    public DefaultSiteProperty( T value ) {
-        this.value = value;
-    }
-
-    @Override
-    public T get() {
-        return value;
-    }
-
-    @Override
-    public T set( T newValue ) {
-        T old = value;
-        value = newValue;
-        return old;
-    }
-
 }

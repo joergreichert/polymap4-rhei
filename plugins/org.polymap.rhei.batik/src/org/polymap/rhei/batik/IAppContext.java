@@ -43,13 +43,13 @@ public interface IAppContext {
     public void addPreferencesAction( IAction action );
     
     /**
+     * Open the panel with the given <code>panelId</code> as a child of the given <code>panelPath</code>.
      *
-     *
-     * @param parent The path of the panel to open.
-     * @param name The name of the panel to open
+     * @param panelPath The path of the parent panel to open the new panel for.
+     * @param panelId The id of the panel to open
      * @return Null if the given panels was not found.
      */
-    public IPanel openPanel( PanelIdentifier panelId );
+    public IPanel openPanel( PanelPath panelPath, PanelIdentifier panelId );
 
     /**
      * Closes the panel with the given path. This panel must be the current top/active
@@ -57,9 +57,9 @@ public interface IAppContext {
      * 
      * @param panelPath
      */
-    public void closePanel( final PanelPath panelPath );
+    public void closePanel( PanelPath panelPath );
 
-    public IPanel getPanel( PanelPath path );
+    public IPanel getPanel( PanelPath panelPath );
 
     /**
      * All direct children of the given path.

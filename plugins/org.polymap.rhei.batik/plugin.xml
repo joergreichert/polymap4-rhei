@@ -28,6 +28,10 @@
             file="resources/css/button.css"
             themeId="org.polymap.rhei.batik.theme">
       </themeContribution>
+      <themeContribution
+            file="resources/css/text.css"
+            themeId="org.polymap.rhei.batik.theme">
+      </themeContribution>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
@@ -42,7 +46,7 @@
    <extension
          point="org.polymap.rhei.batik.design">
       <design
-            class="org.polymap.rhei.batik.app.DefaultAppDesign"
+            class="org.polymap.rhei.batik.engine.DefaultAppDesign"
             id="org.polymap.rhei.batik.DefaultAppDesign"
             servletNameMatcher="*">
       </design>
@@ -63,7 +67,7 @@
    <extension
          point="org.eclipse.ui.statusHandlers">
       <statusHandler
-            class="org.polymap.rhei.batik.app.PanelStatusHandler"
+            class="org.polymap.rhei.batik.engine.PanelStatusHandler"
             id="org.polymap.rhei.batik.statusHandler">
       </statusHandler>
    </extension>

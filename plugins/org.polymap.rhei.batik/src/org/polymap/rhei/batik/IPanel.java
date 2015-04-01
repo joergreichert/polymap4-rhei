@@ -19,13 +19,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 
 /**
- * The panel is the main visual component of the Atlas UI. It typically provides a
+ * The panel is the main visual component of the Atlas UI. It typically hosts a
  * map view, an editor, wizard or a dashboard.
  * <p/>
  * A panel is identified by its path and name. The path defines the place in the
  * hierarchy of panel.
+ * <p/>
+ * {@link DefaultPanel} provides default implementations of basic methods.
  *
  * @see Scope
+ * @see DefaultPanel
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IPanel {

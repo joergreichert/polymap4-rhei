@@ -31,7 +31,7 @@ import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.app.IAppManager;
-import org.polymap.rhei.batik.internal.BatikFactory;
+import org.polymap.rhei.batik.engine.BatikFactory;
 
 /**
  *
@@ -73,7 +73,7 @@ public class BatikApplication
     private static Map<Display,BatikApplication> instances = new ConcurrentHashMap();
     
     /**
-     * The instance of the current session.
+     * The instance of the current thread/session.
      */
     public static BatikApplication instance() {
         return instances.get( UIUtils.sessionDisplay() );
@@ -126,8 +126,8 @@ public class BatikApplication
             log.info( "Exiting..." );
         }
         finally {
-            appManager.close();
             appDesign.close();
+            appManager.close();
         }
 
         instances.remove( display );

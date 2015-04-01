@@ -14,7 +14,10 @@
  */
 package org.polymap.rhei.batik;
 
+import java.util.Arrays;
 import java.util.EventObject;
+
+import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 
 /**
  * 
@@ -25,25 +28,26 @@ public class PanelChangeEvent
         extends EventObject {
 
     /** The types of {@link PanelChangeEvent}. */
-    public enum TYPE {
-        INITIALIZING,
-        INITIALIZED,
-        DISPOSING,
-        DISPOSED,
-        ACTIVATING,
-        ACTIVATED,
-        DEACTIVATING,
-        DEACTIVATED,
+    public enum EventType {
+        /** The {@link IPanelSite#getPanelStatus()} {@link PanelStatus} has changed. */
+        LIFECYCLE,
+        /** The {@link IPanelSite#getStatus()} has changed. */
         STATUS,
-        /** Titel or Icon */
-        TITLE
+        /** Titel or Icon has changed. */
+        TITLE;
+
+        public boolean isOnOf( EventType... types ) {
+            return Arrays.asList( types ).contains( this );
+        }
     }
     
     // instance *******************************************
     
-    private TYPE            type;
+    private EventType       type;
     
-    public PanelChangeEvent( IPanel source, TYPE type ) {
+    private Object          previousValue;
+    
+    public PanelChangeEvent( IPanel source, EventType type, Object previousValue ) {
         super( source );
         this.type = type;
     }
@@ -60,10 +64,14 @@ public class PanelChangeEvent
         return (T)super.getSource();
     }
 
-    public TYPE getType() {
+    public EventType getType() {
         return type;
     }
     
+    public <T> T getPreviousValue() {
+        return (T)previousValue;
+    }
+
     public String toString() {
         return getClass().getSimpleName() + "[source=" + source.getClass().getSimpleName() + ", type=" + type + "]";
     }

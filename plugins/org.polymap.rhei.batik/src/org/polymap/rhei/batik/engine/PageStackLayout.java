@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -36,11 +36,26 @@ import org.eclipse.swt.widgets.Layout;
 
 import org.eclipse.ui.forms.widgets.ILayoutExtension;
 
-import org.polymap.rhei.batik.internal.PageStack.Page;
+import org.polymap.rhei.batik.engine.PageStack.Page;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
  * Layout of the {@link PageStack}.
+ * <p/>
+ * <b>Layout rules:</b>
+ * <ul>
+ * <li>children are sorted in a <b>priority stack</b></li>
+ * <li>client can request a page {@link PageStack.Page#isVisible}</li>
+ * <li>one visible page is marked as "focused"<li>
+ * <li>the layout decides which pages are actually {@link PageStack.Page#isShown} depending on:</li> 
+ *     <ul>
+ *     <li>the priority of the page starting from the "focused" page
+ *     <li>minimal (preferred?) width of the pages</b>
+ *     <li>available space</li>
+ *     </ul>
+ * <li></li>
+ * <li></li>
+ * </ul>
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -78,69 +93,96 @@ public class PageStackLayout
     protected void layout( Composite composite, boolean flushCache ) {
         assert pageStack == composite;
         Rectangle clientArea = pageStack.getClientArea();
-        log.info( "layout(): clientArea=" + clientArea );
+        log.debug( "layout(): clientArea=" + clientArea );
 
+        pageStack.preUpdateLayout();
+        
         // available size
         int availWidth = clientArea.width - margins.getMarginLeft() - margins.getMarginRight();
         int availHeight = clientArea.height - margins.getMarginTop() + margins.getMarginBottom();
 
         Collection<Page> pages = pageStack.getPages();
         List<Page> sortedVisible = pages.stream()
-                .filter( page -> page.visible )
+                .filter( page -> page.isVisible )
                 .sorted( Comparator.comparingInt( Page::getPriority ) )
                 .collect( Collectors.toList() );
 
-        // calc and make max pages visible: top -> down
+        // calc and make max pages visible: top down
         List<Page> topDown = new ArrayList( sortedVisible );
         Collections.reverse( topDown );
 
-        // use app spacing for margins
         int filledWidth = 0;
         int greyStep = 5, grey = 0xff - greyStep;
+        
+        Page focusedPage = pageStack.getFocusedPage();
+        if (focusedPage == null && !topDown.isEmpty()) {
+            focusedPage = topDown.get( 0 );
+        }
+        boolean focusedPageSeen = false;
+        
         for (Page page : topDown) {
             page.control.setVisible( false );
+            page.isShown = false;
 
-            if (filledWidth <= availWidth) {
-                Point minPageSize = page.control.computeSize( SWT.DEFAULT, Integer.MAX_VALUE );
-
-                // limit: DEFAULT_PAGE_MIN_WIDTH < minPageSize < clientArea.width
-                int minPageWidth = min( availWidth, max( minPageSize.x, DEFAULT_PAGE_MIN_WIDTH ) );
+            // focused page is the top most page shown
+            focusedPageSeen = focusedPageSeen || page == focusedPage;
+            if (focusedPageSeen) {
                 
-                // right most is always displayed
-                if (filledWidth == 0) {
-                    filledWidth = min( minPageWidth, availWidth );
-                    // just save minPageSize for next step
-                    page.control.setBounds( 0, 0, minPageWidth, minPageSize.y );
-                    page.control.setVisible( true );
-                }
-                //
-                else if (filledWidth + minPageWidth <= availWidth) {
-                    filledWidth += minPageWidth + margins.getSpacing();
-                    // just save minPageSize for next step
-                    page.control.setBounds( 0, 0, minPageWidth, minPageSize.y );
-                    page.control.setVisible( true );
+                if (filledWidth <= availWidth) {
+                    Point prefPageSize = page.preferredWidth > 0
+                            ? new Point( page.preferredWidth, Integer.MAX_VALUE )
+                            : page.control.computeSize( SWT.DEFAULT, Integer.MAX_VALUE );
+
+                    // limit: DEFAULT_PAGE_MIN_WIDTH < prefPageSize < clientArea.width
+                    int prefPageWidth = min( availWidth, max( prefPageSize.x, DEFAULT_PAGE_MIN_WIDTH ) );
+
+                    // right most is always displayed
+                    if (filledWidth == 0) {
+                        page.isShown = true;
+                        filledWidth = min( prefPageWidth, availWidth );
+                    }
+                    //
+                    else if (filledWidth + prefPageWidth <= availWidth) {
+                        page.isShown = true;
+                        filledWidth += prefPageWidth + margins.getSpacing();
+
+                        //page.control.setBackground( new Color( page.control.getDisplay(), grey, grey, grey ) );
+                        grey -= greyStep;
+                    }
                     
-                    page.control.setBackground( new Color( page.control.getDisplay(), grey, grey, grey ) );
-                    grey -= greyStep;
+                    if (page.isShown) {
+                        // just save minPageSize for next step
+                        page.control.setBounds( 0, 0, prefPageWidth, prefPageSize.y );
+                        page.control.setVisible( true );
+                    }
                 }
             }
         }
         
-        // actually set bounds: bottom -> up
+        // actually set bounds: bottom up
         int panelX = margins.getMarginLeft();
-        Page topPage = topDown.isEmpty() ? null : topDown.get( 0 );
         for (Page page : sortedVisible) {
             if (page.control.isVisible()) {
                 Rectangle minSize = page.control.getBounds();
                 // all remaining width if topPage
-                int pageWidth = page == topPage 
+                int pageWidth = page == focusedPage 
                         ? clientArea.width - panelX - margins.getMarginRight() 
                         : minSize.width;
+                
                 page.control.setBounds( panelX, margins.getMarginTop(), pageWidth, availHeight );
+                page.control.layout( flushCache );
+                
+                if (page.control instanceof ScrolledComposite) {
+                    Point pageSize = page.control.computeSize( pageWidth, SWT.DEFAULT );
+                    ((ScrolledComposite)page.control).setMinHeight( pageSize.y );
+                    ((ScrolledComposite)page.control).setMinWidth( pageWidth );
+                }
+                
                 panelX += pageWidth + margins.getSpacing();
                 log.info( "    page: " + page.control.getBounds() );                
             }
         }
+        pageStack.postUpdateLayout();
     }
     
     
@@ -154,4 +196,5 @@ public class PageStackLayout
     public int computeMinimumWidth( Composite parent, boolean changed ) {
         return computeSize( parent, 0, SWT.DEFAULT, changed ).x;
     }
+    
 }

@@ -17,6 +17,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.batik,
  org.polymap.rhei.batik.app,
  org.polymap.rhei.batik.dashboard,
+ org.polymap.rhei.batik.engine,
  org.polymap.rhei.batik.internal,
  org.polymap.rhei.batik.toolkit
 Bundle-ClassPath: lib/asm-4.1.jar,

@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,26 +40,35 @@ public class PageStack<K>
     /**
      * 
      */
-    static class Page {
+    public class Page {
         
-        int                 priority;
+        public K            key;
         
-        boolean             visible = true;
+        public int          priority;
         
-        Composite           control;
+        /** The state that was requested from client code via API */
+        public boolean      isVisible = true;
+        
+        /** The actual visibility in the UI as calculated by the {@link PageStackLayout}. */
+        public boolean      isShown;
+        
+        public Composite    control;
+        
+        public int          preferredWidth = SWT.DEFAULT;
 
-        public Page( Composite panel , int priority  ) {
+        protected Page( Composite panel, int priority, K key ) {
             this.priority = priority;
             this.control = panel;
+            this.key = key;
         }
-
+        
         public int getPriority() {
             return priority;
         }
-
+        
         @Override
         public String toString() {
-            return "Page[priority=" + priority + ", visible=" + visible + ", control=" + control.getClass().getSimpleName() + "]";
+            return "Page[key=" + key + ", priority=" + priority + ", visible=" + isVisible + ", shown=" + isShown + "]";
         }
     }
     
@@ -68,10 +77,20 @@ public class PageStack<K>
     
     private Map<K,Page>     pages = new HashMap();
     
+    private Page            focusedPage;
+    
 
     public PageStack( Composite parent, LayoutSupplier layoutSettings ) {
         super( parent, SWT.NONE );
         setLayout( new PageStackLayout( this, layoutSettings ) );
+    }
+
+    
+    protected void preUpdateLayout() {
+    }
+    
+    
+    protected void postUpdateLayout() {
     }
 
     
@@ -87,19 +106,27 @@ public class PageStack<K>
 
     
     public Composite createPage( K key, int priority ) {
-        Composite scrolled = new Composite( this, SWT.VERTICAL );
-        if (pages.put( key, new Page( scrolled, priority ) ) != null) {
+//        ScrolledComposite scrolled = new ScrolledComposite( this, SWT.VERTICAL );
+//        scrolled.setExpandVertical( true );
+//        //scrolled.setExpandHorizontal( true );
+
+        Composite content = new Composite( this, SWT.NONE );
+        if (pages.put( key, new Page( content, priority, key ) ) != null) {
             throw new IllegalStateException( "Key already exists: " + key );
         }
-        return scrolled;
+//        Composite content = new Composite( scrolled, SWT.NONE );
+//        content.setLayout( new FillLayout() );
+//        scrolled.setContent( content );
+        return content;
     }
     
-    
+
     public void removePage( K key ) {
         Page page = pages.remove( key );
         if (!page.control.isDisposed()) {
             page.control.dispose();
         }
+        page.control = null;
     }
 
 
@@ -108,46 +135,30 @@ public class PageStack<K>
     }
     
     
-//    /**
-//     * Shows the given page. This method has no effect if the given page is not
-//     * contained in this pagebook.
-//     */
-//    public void showPage( Control page ) {
-//        if (page == currentPage)
-//            return;
-//        if (page.getParent() != this)
-//            return;
-//        Control oldPage = currentPage;
-//        currentPage = page;
-//        // show new page
-//        if (page != null) {
-//            if (!page.isDisposed()) {
-//                // page.setVisible(true);
-//                layout( true );
-//                page.setVisible( true );
-//            }
-//        }
-//        // hide old *after* new page has been made visible in order to avoid
-//        // flashing
-//        if (oldPage != null && !oldPage.isDisposed())
-//            oldPage.setVisible( false );
-//    }
-
-
     public boolean hasPage( K key ) {
         return pages.containsKey( key );
     }
 
 
-    public void showPage( K key ) {
+    public void setPageVisible( K key, boolean visible ) {
         Page page = getPage( key );
-        page.visible = true;
+        page.isVisible = visible;
+    }
+
+    
+    public void setPagePreferredWidth( K key, int preferredWidth ) {
+        Page page = getPage( key );
+        page.preferredWidth = preferredWidth;
     }
 
 
-    public void hidePage( K key ) {
-        Page page = getPage( key );
-        page.visible = false;
+//    public void setFocusedPage( K key ) {
+//        focusedPage = getPage( key );
+//    }
+    
+    
+    public Page getFocusedPage() {
+        return focusedPage;
     }
 
 
@@ -158,10 +169,6 @@ public class PageStack<K>
     @Override
     public Point computeSize( int wHint, int hHint, boolean changed ) {
         return getLayout().computeSize( this, wHint, hHint, changed );
-    }
-
-
-    public void setMinHeight( int y ) {
     }
 
 

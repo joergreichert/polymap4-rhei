@@ -16,15 +16,16 @@ package org.polymap.rhei.batik.app;
 
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
+import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 
 /**
- * ...
- * <p/>
- * The {@link IAppManager} is the source of all {@link PanelChangeEvent}s that drives
- * the entiry UI and application.
+ * There is one IAppManager per application. It manages the {@link IAppContext}, the
+ * {@link IPanel} instances and their lifecycle and {@link PanelStatus}. The
+ * IAppManager is the source of all {@link PanelChangeEvent}s that drives the entiry
+ * UI and application.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -38,12 +39,12 @@ public interface IAppManager
     
     public IAppContext getContext();
 
-    public void activatePanel( PanelIdentifier id );
+    public IPanel openPanel( PanelIdentifier panelId );
 
-    public IPanel getActivePanel();
+//    public IPanel focusPanel( PanelIdentifier panelId );
+
+    public void hidePanel( PanelPath path );
 
     public void closePanel( PanelPath panelPath );
-
-    public IPanel openPanel( PanelIdentifier panelId );
 
 }

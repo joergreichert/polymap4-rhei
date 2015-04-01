@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.core.runtime.IStatus;
@@ -32,6 +34,27 @@ public interface IPanelSite {
     /** Signals that an action or item should have 'submit' style. */
     public static final String      SUBMIT = "__submit__";
 
+    /**
+     * The lifecycle status of an {@link IPanel}.
+     */
+    public static enum PanelStatus {
+        CREATED,
+        INITIALIZED,
+        VISIBLE,
+        FOCUSED;
+        
+        public boolean isOnOf( PanelStatus... a ) {
+            return Arrays.asList( a ).contains( this );
+        }
+
+        /** Greater or equal */
+        public boolean ge( PanelStatus other ) {
+            return compareTo( other ) >= 0;
+        }
+    }
+    
+    public PanelStatus getPanelStatus();
+    
     /**
      * The whole path of the panel including the name of the panel as last segment.
      */
@@ -99,7 +122,12 @@ public interface IPanelSite {
      * into the layout of the application.
      */
     public LayoutSupplier getLayoutPreference();
+
     
+    public void setPreferredWidth( int width );
+
+    public int getPreferredWidth();
+
 //    /**
 //     * Registers the given {@link EventHandler event handler}.
 //     *

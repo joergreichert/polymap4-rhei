@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -26,7 +26,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.polymap.rhei.batik.Scope;
 import org.polymap.rhei.batik.Context;
-import org.polymap.rhei.batik.app.DefaultAppContext;
 
 /**
  *

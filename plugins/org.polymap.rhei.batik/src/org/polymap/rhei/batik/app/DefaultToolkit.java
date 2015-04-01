@@ -57,8 +57,7 @@ import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
 
-import org.polymap.rhei.batik.BatikApplication;
-import org.polymap.rhei.batik.IAppContext;
+import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.toolkit.IBusyIndicator;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
 import org.polymap.rhei.batik.toolkit.ILinkAction;
@@ -79,10 +78,6 @@ public class DefaultToolkit
     private static Log log = LogFactory.getLog( DefaultToolkit.class );
 
     public static final String  CSS_PREFIX = "batik-panel";
-    public static final String  CSS_FORM = CSS_PREFIX + "-form";
-    public static final String  CSS_FORM_DISABLED = CSS_PREFIX + "-form-disabled";
-    public static final String  CSS_FORMFIELD = CSS_PREFIX + "-formfield";
-    public static final String  CSS_FORMFIELD_DISABLED = CSS_PREFIX + "-formfield-disabled";
     public static final String  CSS_SECTION = CSS_PREFIX + "-section";
     public static final String  CSS_SECTION_TITLE = CSS_PREFIX + "-section-title";
     public static final String  CSS_SECTION_SEPARATOR = CSS_PREFIX + "-section-separator";
@@ -95,7 +90,7 @@ public class DefaultToolkit
     private static ArrayList<Callable<IMarkdownRenderer>> mdRendererFactories = new ArrayList();
     
     /**
-     * Statis init: register standard Markdown renderer
+     * Static init: register standard Markdown renderer
      */
     static {
         registerMarkdownRenderer( new Callable<IMarkdownRenderer>() {
@@ -112,14 +107,20 @@ public class DefaultToolkit
 
     
     // instance *******************************************
+
+    private PanelPath           panelPath;
     
     private FormColors          colors;
     
     
-    protected DefaultToolkit() {
+    public DefaultToolkit( PanelPath panelPath ) {
+        this.panelPath = panelPath;
     }
     
-    
+    public PanelPath getPanelPath() {
+        return panelPath;
+    }
+
     @Override
     public void close() {
         if (COLOR_SECTION_TITLE_BG.isInitialized()) {
@@ -220,8 +221,7 @@ public class DefaultToolkit
             for (Callable<IMarkdownRenderer> factory : mdRendererFactories) {
                 PegDownRenderOutput out = new PegDownRenderOutput();
                 try {
-                    IAppContext context = BatikApplication.instance().getContext();
-                    if (factory.call().render( node, out, context, widget )) {
+                    if (factory.call().render( DefaultToolkit.this, node, out, widget )) {
                         return out.createRendering();
                     }
                 }

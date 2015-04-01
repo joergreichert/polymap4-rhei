@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.engine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.app.IAppDesign;
 
 /**
  * The main action bar displayed at the top of the main window.
@@ -61,14 +61,11 @@ public class DefaultActionBar {
 
     private IAppContext                 context;
 
-    private IPanelToolkit               tk;
-
     private Map<PLACE,Part>             parts = new HashMap();
 
 
-    public DefaultActionBar( IAppContext context, IPanelToolkit tk ) {
+    public DefaultActionBar( IAppContext context ) {
         this.context = context;
-        this.tk = tk;
     }
 
 
@@ -78,7 +75,7 @@ public class DefaultActionBar {
 
 
     public Composite createContents( Composite parent, int style ) {
-        Composite contents = tk.createComposite( parent, style );
+        Composite contents = new Composite( parent, style | SWT.NO_FOCUS );
         UIUtils.setVariant( contents, IAppDesign.CSS_ACTIONS );
         contents.setLayout( FormLayoutFactory.defaults().spacing( 10 ).create() );
 

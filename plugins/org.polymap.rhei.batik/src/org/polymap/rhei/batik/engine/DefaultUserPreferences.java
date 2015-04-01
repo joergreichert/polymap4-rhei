@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.engine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,11 +38,12 @@ import org.eclipse.rap.rwt.graphics.Graphics;
 import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
-import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelIdentifier;
+import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.app.IAppManager;
+import org.polymap.rhei.batik.app.LogoutAction;
 import org.polymap.rhei.batik.internal.Messages;
 
 /**
@@ -115,7 +116,7 @@ public class DefaultUserPreferences
         
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
-        UIUtils.setVariant( btn, DefaultAppNavigator.CSS_PREFIX );
+//        UIUtils.setVariant( btn, DefaultAppNavigator.CSS_PREFIX );
         btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/cog.png" ) );
         btn.setToolTipText( i18n.get( "menuTip" ) );
         
@@ -128,14 +129,14 @@ public class DefaultUserPreferences
 //        if (BatikApplication.sessionDisplay().getClientArea().width >= 900) {
             usernameLnk = new Button( contents, SWT.PUSH | SWT.LEFT );
             usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
-            UIUtils.setVariant( usernameLnk, DefaultAppNavigator.CSS_PREFIX );
+//            UIUtils.setVariant( usernameLnk, DefaultAppNavigator.CSS_PREFIX );
             usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
             usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
             
             // FIXME
             usernameLnk.addSelectionListener( usernameLnkListener = new SelectionAdapter() {
                 public void widgetSelected( SelectionEvent e ) {
-                    appManager.getContext().openPanel( new PanelIdentifier( "azvlogin" ) );
+                    appManager.getContext().openPanel( PanelPath.ROOT, new PanelIdentifier( "azvlogin" ) );
                 }
             });
 //        }

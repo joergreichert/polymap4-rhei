@@ -1230,7 +1230,7 @@ Table-Checkbox:checked:grayed:hover {
 }
 
 /* Text default theme */
-
+/*
 Text {
   border: none;
   border-radius: 0;
@@ -1245,10 +1245,6 @@ Text {
 }
 
 Text[MULTI] {
-/*
- * padding currently has no effect because of bug 253644
- * [TODO] remove comment if bug fixed
- */
   padding: 5px 10px 5px 10px;
 }
 
@@ -1285,7 +1281,7 @@ Text-Search-Icon {
 Text-Cancel-Icon {
   background-image: url( resource/widget/rap/text/clear.gif );
   spacing: 3px;
-}
+}*/
 
 /* ToolBar default theme */
 

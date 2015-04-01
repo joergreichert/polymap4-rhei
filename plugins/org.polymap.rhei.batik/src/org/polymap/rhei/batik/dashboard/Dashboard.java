@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.SiteProperty;
-import org.polymap.rhei.batik.internal.DefaultSiteProperty;
+import org.polymap.rhei.batik.engine.DefaultSiteProperty;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;

@@ -17,6 +17,7 @@ package org.polymap.rhei.batik.app;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
@@ -41,7 +42,7 @@ public interface IAppDesign
     @Override
     public void close();
     
-    public IPanelToolkit getToolkit();
+    public IPanelToolkit createToolkit( PanelPath panelPath );
     
     /**
      * The layout preferences for panels. The returned a {@link LayoutSupplier}

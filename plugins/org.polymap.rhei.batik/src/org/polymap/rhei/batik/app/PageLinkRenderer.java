@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
@@ -50,14 +51,14 @@ class PageLinkRenderer
     private Display             display;
 
     private IMarkdownNode       node;
-
-    private IAppContext         context;
+    
+    private DefaultToolkit      toolkit;
 
     
     @Override
     @SuppressWarnings("hiding")
-    public boolean render( final IMarkdownNode node, MarkdownRenderOutput out, final IAppContext context, Widget widget ) {
-        log.info( "url=" + node.url() );
+    public boolean render( DefaultToolkit toolkit, final IMarkdownNode node, MarkdownRenderOutput out, Widget widget ) {
+        log.debug( "url=" + node.url() );
         if (node.type() == IMarkdownNode.Type.ExpLink 
                 && node.url().startsWith( "@" )) {
 
@@ -66,8 +67,8 @@ class PageLinkRenderer
 
             String id = LinkActionServiceHandler.register( this );
             
+            this.toolkit = toolkit;
             this.node = node;
-            this.context = context;
             this.display = UIUtils.sessionDisplay();
             assert display != null;
             
@@ -106,8 +107,9 @@ class PageLinkRenderer
 
         }
         if ("open".equalsIgnoreCase( command )) {
-            log.info( command + " : " + panelId );
-            context.openPanel( PanelIdentifier.parse( panelId ) );
+            log.debug( command + " : " + panelId );
+            IAppContext context = BatikApplication.instance().getContext();
+            context.openPanel( toolkit.getPanelPath(), PanelIdentifier.parse( panelId ) );
         }
         else {
             throw new IllegalStateException( "Unknown link command: " + command );
