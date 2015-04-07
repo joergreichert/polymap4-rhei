@@ -20,21 +20,6 @@
  *    Action blue: background-color: #5a9cbd;
  */
  
-Display {
-  rwt-fontlist: 13px Helvetica, Arial, sans-serif;
-  /*background-image: url(resources/icons/rap/display/browser_bg.png );*/
-  font: 13px Helvetica, Arial, sans-serif;
-}
-* {
-  font: 13px Helvetica, Arial, sans-serif;
-  color: #4a4a4a;
-  background-color: transparent;  /*#fff;*/
-  background-image: none;
-}
-*:disabled {
-  color: #CFCFCF;
-}
-
 /**********************************************************
 /* Panel header
  */
@@ -62,7 +47,7 @@ Button[TOGGLE]:hover.atlas-panel-header {
   background-color: #6BBAE1;
 }
 Label.atlas-panel-header {
-  font: 14px Helvetica, Arial, sans-serif;
+  /*font: 14px Helvetica, Arial, sans-serif;*/
   color: #909090;
 }
  
@@ -144,17 +129,19 @@ ToolTip, Shell.batik-status-tooltip {
   background-image: gradient(linear, left top, left bottom, from(#fff), to(#f5f5f5));
   */
 }
-ToolTip-Text, Label.batik-status-tooltip-text {
+ToolTip-Text, 
+Label.batik-status-tooltip-text {
   color: #f8f8f8;
   text-shadow: none;
 }
-ToolTip-Message, Label.batik-status-tooltip-message {
+ToolTip-Message, 
+Label.batik-status-tooltip-message {
   color: #e8e8e8;
   text-shadow: none;
 }
 
 /**********************************************************
- * Batik Section
+ * Section
  */
 Composite[BORDER].batik-panel-section-client {
   border-radius: 4px;
@@ -165,17 +152,20 @@ Composite[BORDER].batik-panel-section {
   border: 1px solid #ddd;
 }
 Label.batik-panel-section-title {
-  font: 22px/100% Helvetica, Arial, sans-serif;
+  /*font: 22px/100% sans-serif;*/
   border: none;
 }
 Label:disabled.batik-panel-section-title {
   opacity: 0.3;
 }
-Label[SEPARATOR], Label[SEPARATOR].batik-panel-section-separator, Label.batik-panel-section-separator {
+Label[SEPARATOR], 
+Label[SEPARATOR].batik-panel-section-separator, 
+Label.batik-panel-section-separator {
   background-color: #303030;
   color: #f8f8f8;
 }
-Label-SeparatorLine, Label-SeparatorLine.batik-panel-section-separator {
+Label-SeparatorLine, 
+Label-SeparatorLine.batik-panel-section-separator {
   background-image: none;
   background-color: #c8c8c8; /* ! */
   border: 0px solid #000000;
