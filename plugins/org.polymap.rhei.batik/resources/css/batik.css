@@ -24,10 +24,9 @@
 /* Panel header
  */
 Composite[BORDER].atlas-panel-header {
-  background-color: #f5f5f5;
   border-radius: 5px;
   border: 0px solid #e8e8e8;
-  background-image: gradient(linear, left top, left bottom, from(#f1f1f0), to(#fdfdfd));
+  background-image: gradient(linear, left top, left bottom, from(#E2EdF5), to(#ffffff));
 }
 Button[PUSH].atlas-panel-header,
 Button[TOGGLE].atlas-panel-header {
@@ -48,7 +47,7 @@ Button[TOGGLE]:hover.atlas-panel-header {
 }
 Label.atlas-panel-header {
   /*font: 14px Helvetica, Arial, sans-serif;*/
-  color: #909090;
+  color: #5993AE;
 }
  
 /**********************************************************
@@ -116,9 +115,9 @@ ToolTip, Shell.batik-status-tooltip {
   /*background-image: gradient(linear, left top, left bottom, from(#f6f8fa), to(#dde0e1));*/
 
   color: #f0f0f0;
-  animation: fadeIn 200ms linear, fadeOut 500ms ease-out;
+  /*animation: fadeIn 200ms linear, fadeOut 500ms ease-out;*/
   animation: flyInTop 500ms ease-out, flyOutTop 500ms ease-in;
-  box-shadow: 0px 1px 2px #808080;
+  box-shadow: 0px 1px 4px #808080;
 
   /*  
   border: 2px solid #6eb02e;

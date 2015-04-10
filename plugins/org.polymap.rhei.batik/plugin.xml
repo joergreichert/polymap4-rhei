@@ -9,7 +9,6 @@
             brandingId="org.polymap.rhei.batik.branding"
             class="org.polymap.rhei.batik.BatikApplication"
             id="org.polymap.rhei.batik.entrypoint"
-            parameter="batik"
             path="/batik">
       </entrypoint>
    </extension>
@@ -32,13 +31,15 @@
             file="resources/css/text.css"
             themeId="org.polymap.rhei.batik.theme">
       </themeContribution>
+      <themeContribution
+            file="resources/css/table.css"
+            themeId="org.polymap.rhei.batik.theme">
+      </themeContribution>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
       <branding
-            defaultEntrypointId="org.polymap.rhei.batik.entrypoint"
             id="org.polymap.rhei.batik.branding"
-            servletName="batik"
             themeId="org.polymap.rhei.batik.theme"
             title="Batik">
       </branding>

@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.layout.RowDataFactory;
-import org.eclipse.jface.layout.RowLayoutFactory;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
@@ -54,11 +53,13 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
+import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.Panels;
 import org.polymap.rhei.batik.app.DefaultToolkit;
@@ -90,7 +91,7 @@ public class DefaultAppDesign
     
     protected BrowserNavigation         browserHistory;
 
-    protected StatusManager             statusManager;
+    protected StatusManager2            statusManager;
 
     protected DefaultUserPreferences    userPrefs;
 
@@ -126,18 +127,10 @@ public class DefaultAppDesign
     @Override
     public void navigated( BrowserNavigationEvent ev ) {
         log.info( "navigated(): " + ev.getState() );
-//        BatikApplication.instance().getAppManager().activatePanel( new PanelIdentifier( "start" ) );
-        
-//        if (activePanel == null) {
-//            log.info( "   no activePanel, skipping." );
-//            return;
-//        }
-//        
-//        // go to start panel (no matter what)
-//        while (activePanel.getSite().getPath().size() > 1) {
-//            closePanel( activePanel.getSite().getPath() );
-//            activePanel = getActivePanel();
-//        }
+        if (!ev.getState().equals( "start" )) {
+            IAppContext context = appManager.getContext();
+            context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) );
+        }
     }
 
 
@@ -175,6 +168,10 @@ public class DefaultAppDesign
         Composite panelContainer = fillPanelArea( mainWindow );
         panelContainer.setLayoutData( FormDataFactory.filled().top( headerContainer, 0 ).create() );
 
+        // status manager
+        statusManager = new StatusManager2( (DefaultAppManager)appManager );
+        statusManager.createContents( mainWindow );
+        
         appManager.getContext().addListener( this, ev -> ev.getType().isOnOf( EventType.LIFECYCLE, EventType.TITLE ) );
         
         mainWindow.open();
@@ -277,10 +274,6 @@ public class DefaultAppDesign
         head.setLayoutData( FormDataFactory.filled().clearBottom().height( 28 ).create() );
         head.setLayout( FormLayoutFactory.defaults().margins( 2 ).spacing( 2 ).create() );
 
-//        Composite center = new Composite( head, SWT.NO_FOCUS );
-//        center.setLayoutData( FormDataFactory.filled().create() );
-//        center.moveBelow( null );
-        
         // decoration
         createPanelDecoration( panel, head );
       
@@ -316,7 +309,8 @@ public class DefaultAppDesign
         
         // switcher
         Composite switcher = new Composite( head, SWT.NONE );
-        switcher.setLayout( RowLayoutFactory.fillDefaults().margins( 1, 1 ).spacing( 5 ).fill( false ).create() );
+//        switcher.setLayout( RowLayoutFactory.fillDefaults().margins( 1, 1 ).spacing( 5 ).fill( false ).create() );
+        switcher.setLayout( FormLayoutFactory.defaults().spacing( 15 ).margins( 1, 1 ).create() );
         UIUtils.setVariant( switcher, CSS_SWITCHER );
 
         PanelPath prefix = panel.getSite().getPath().removeLast( 1 );
@@ -326,7 +320,12 @@ public class DefaultAppDesign
                 .forEach( p -> {
                     IPanelSite panelSite = p.getSite();
                         
+                    int btnCount = switcher.getChildren().length;
                     Button btn = createSwitcherButton( switcher, p );
+                    btn.setLayoutData( btnCount == 0
+                            ? FormDataFactory.filled().clearRight().create()
+                            : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
+  
                     btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
 
                     btn.addSelectionListener( new SelectionAdapter() {
@@ -410,7 +409,7 @@ public class DefaultAppDesign
         panelLayoutSettings.spacing = spacing;
         
         // app layout
-        appLayoutSettings.spacing = 10; //spacing;
+        appLayoutSettings.spacing = (int)(spacing * 0.75);
         appLayoutSettings.marginLeft = appLayoutSettings.marginRight = marginsWidth;
         
         mainWindow.setLayout( FormLayoutFactory.defaults().margins( 
@@ -432,7 +431,7 @@ public class DefaultAppDesign
         // lifecycle event
         if (ev.getType() == EventType.LIFECYCLE) {
             PanelPath pageId = panel.getSite().getPath();
-            PanelStatus panelStatus = panel.getSite().getPanelStatus();
+            PanelStatus panelStatus = (PanelStatus)ev.getNewValue();  //panel.getSite().getPanelStatus();
 
             // update visibility of panel
             if (panelsArea.hasPage( pageId ) && panelStatus != null) {

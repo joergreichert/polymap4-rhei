@@ -24,7 +24,7 @@ import org.polymap.rhei.batik.IPanelSite.PanelStatus;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class PanelChangeEvent
+public class PanelChangeEvent<V>
         extends EventObject {
 
     /** The types of {@link PanelChangeEvent}. */
@@ -47,9 +47,13 @@ public class PanelChangeEvent
     
     private Object          previousValue;
     
-    public PanelChangeEvent( IPanel source, EventType type, Object previousValue ) {
+    private Object          newValue;
+    
+    public PanelChangeEvent( IPanel source, EventType type, V newValue, V previousValue ) {
         super( source );
         this.type = type;
+        this.previousValue = previousValue;
+        this.newValue = newValue;
     }
 
     @Override
@@ -70,6 +74,10 @@ public class PanelChangeEvent
     
     public <T> T getPreviousValue() {
         return (T)previousValue;
+    }
+    
+    public <T> T getNewValue() {
+        return (T)newValue;
     }
 
     public String toString() {

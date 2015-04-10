@@ -22,10 +22,9 @@ Text[MULTI] {
 
 Text[BORDER],
 Text[MULTI][BORDER] {
-  border: 1px solid #c0c0c0;
+  border: 1px solid #cacaca;
   border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: inset 0 0 1px #cdcdcd;
+  /*box-shadow: inset 0 0 1px #cdcdcd;*/
 }
 
 Text[BORDER]:focused,

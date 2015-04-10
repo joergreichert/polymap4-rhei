@@ -14,7 +14,9 @@
  */
 package org.polymap.rhei.batik.engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -27,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -104,13 +107,13 @@ public class DefaultAppManager
         PanelSite panelSite = (PanelSite)panel.getSite();
         PanelStatus previous = panelSite.panelStatus;
         panelSite.panelStatus = panelStatus;
-        fireEvent( panel, EventType.LIFECYCLE, previous );        
+        fireEvent( panel, EventType.LIFECYCLE, panelSite.panelStatus, previous );
     }
     
     
-    protected void fireEvent( IPanel panel, EventType eventType, Object previousValue  ) {
+    protected <T> void fireEvent( IPanel panel, EventType eventType, T newValue, T previousValue  ) {
         // XXX avoid race conditions; EventManager does not seem to always handle display events properly
-        EventManager.instance().syncPublish( new PanelChangeEvent( panel, eventType, previousValue ) );        
+        EventManager.instance().syncPublish( new PanelChangeEvent( panel, eventType, newValue, previousValue ) );        
     }
 
     
@@ -285,8 +288,8 @@ public class DefaultAppManager
         
         private Image               icon;
 
-//        /** Toolbar tools: {@link IAction} or {@link IContributionItem}. */
-//        private List                tools = new ArrayList();
+        /** Toolbar tools: {@link IAction} or {@link IContributionItem}. */
+        private List                tools = new ArrayList();
         
         private IStatus             status = Status.OK_STATUS;
         
@@ -329,7 +332,7 @@ public class DefaultAppManager
             IPanel panel = context.getPanel( path );
             IStatus previous = this.status;
             this.status = status;
-            fireEvent( panel, EventType.STATUS, previous );
+            fireEvent( panel, EventType.STATUS, this.status, previous );
         }
 
         @Override
@@ -337,19 +340,14 @@ public class DefaultAppManager
             return status;
         }
 
-//        @Override
-//        public void addToolbarAction( IAction action ) {
-//            tools.add( action );
-//        }
-//
-//        @Override
-//        public void addToolbarItem( IContributionItem item ) {
-//            tools.add( item );
-//        }
-//
-//        public List getTools() {
-//            return tools;
-//        }
+        @Override
+        public void addToolbarAction( IAction action ) {
+            tools.add( action );
+        }
+
+        public List getTools() {
+            return tools;
+        }
 
         @Override
         public String getTitle() {
@@ -362,7 +360,7 @@ public class DefaultAppManager
             this.title = title;
             IPanel panel = context.getPanel( path );
             if (panel != null) {
-                fireEvent( panel, EventType.TITLE, previous );
+                fireEvent( panel, EventType.TITLE, this.title, previous );
             }
             else {
                 log.warn( "No panel yet for path: " + path );
@@ -379,7 +377,7 @@ public class DefaultAppManager
             Image previous = this.icon;
             this.icon = icon;
             IPanel panel = context.getPanel( path );
-            fireEvent( panel, EventType.TITLE, previous );
+            fireEvent( panel, EventType.TITLE, this.icon, previous );
         }
 
         @Override

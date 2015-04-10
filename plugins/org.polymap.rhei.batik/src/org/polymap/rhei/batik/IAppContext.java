@@ -16,10 +16,13 @@ package org.polymap.rhei.batik;
 
 import java.util.List;
 import java.util.function.Predicate;
+
 import org.eclipse.jface.action.IAction;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
+
+import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 
 /**
  * An app context is shared by all {@link IPanel} instances in the same panel
@@ -42,8 +45,11 @@ public interface IAppContext {
     
     public void addPreferencesAction( IAction action );
     
+    
     /**
-     * Open the panel with the given <code>panelId</code> as a child of the given <code>panelPath</code>.
+     * Opens the panel with the given <code>panelId</code> as a child of the given
+     * <code>panelPath</code>. Any children of the given parent panel are closed
+     * before opening the new child.
      *
      * @param panelPath The path of the parent panel to open the new panel for.
      * @param panelId The id of the panel to open
@@ -69,11 +75,17 @@ public interface IAppContext {
      */
     public List<IPanel> findPanels( Predicate<IPanel> filter );
 
+    
     /**
-     * Registers the given {@link EventHandler annotated event handler} for event types:
-     * <ul>
-     * <li>{@link PanelChangeEvent}</li>
-     * </ul>
+     * Registers the given {@link EventHandler annotated event handler} for
+     * {@link PanelChangeEvent}s.
+     * <p/>
+     * Note that the status of the panel and the value delivered by the
+     * {@link PanelChangeEvent} might not be the same. The {@link PanelStatus} is
+     * raised step by step, an event handler receives several events for that.
+     * <b>But</b> when the first event is handled the panel might already have the
+     * target status.
+     * <p/>
      * This delegates to the global {@link EventManager}.
      *
      * @see EventHandler

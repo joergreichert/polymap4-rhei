@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -60,10 +59,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.ui.internal.progress.JobManagerAdapter;
 
 import org.polymap.core.runtime.UIJob;
-import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
@@ -73,8 +72,10 @@ import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
+import org.polymap.rhei.batik.engine.DefaultAppManager.PanelSite;
 
 /**
  * 
@@ -83,7 +84,6 @@ import org.polymap.rhei.batik.PanelChangeEvent.EventType;
  */
 @SuppressWarnings("restriction")
 public class StatusManager2
-        extends ContributionItem
         implements IStatusLineManager, IPropertyChangeListener {
 
     private static Log log = LogFactory.getLog( StatusManager2.class );
@@ -165,14 +165,7 @@ public class StatusManager2
         instances.put( UIUtils.sessionDisplay(), this );
         
         // register panelChanged()
-        appManager.getContext().addListener( this, new EventFilter<PanelChangeEvent>() {
-            public boolean apply( PanelChangeEvent ev ) {
-                return ev.getType() == EventType.ACTIVATED 
-                        || ev.getType() == TYPE.ACTIVATING 
-                        || ev.getType() == TYPE.DEACTIVATING 
-                        || ev.getType() == TYPE.STATUS;
-            }
-        });
+        appManager.getContext().addListener( this, ev -> ev.getType().isOnOf( EventType.LIFECYCLE, EventType.STATUS ) );
     }
 
 
@@ -192,34 +185,33 @@ public class StatusManager2
             pendingStartEvents.add( ev );
             return;
         }
-        if (ev.getType() == TYPE.ACTIVATING) {
-            // deactivate current panel *** 
-            if (popup != null) {
-                popup.close();
-            }
-            // remove property listener
-            if (activePanel != null) {
-                for (Object tool : ((DefaultPanelSite)activePanel.getSite()).getTools() ) {
-                    ((IAction)tool).removePropertyChangeListener( this );
+        if (ev.getType() == EventType.LIFECYCLE) {
+            IPanel panel = ev.getPanel();
+            
+            if (ev.getNewValue() == PanelStatus.FOCUSED) {
+                // deactivate current panel *** 
+                if (popup != null) {
+                    popup.close();
+                }
+                // remove property listener
+                if (activePanel != null) {
+                    for (Object tool : ((PanelSite)activePanel.getSite()).getTools() ) {
+                        ((IAction)tool).removePropertyChangeListener( this );
+                    }
+                }
+
+                // activate new panel ***
+                activePanel = ev.getSource();            
+                panelStatus = activePanel.getSite().getStatus();
+                panelTools = ((PanelSite)activePanel.getSite()).getTools();
+
+                // register property listener
+                for (Object tool : panelTools ) {
+                    ((IAction)tool).addPropertyChangeListener( this );
                 }
             }
-            
-            // activate new panel ***
-            activePanel = ev.getSource();            
-            panelStatus = activePanel.getSite().getStatus();
-            panelTools = ((DesktopPanelSite)activePanel.getSite()).getTools();
-
-            // register property listener
-            for (Object tool : ((DesktopPanelSite)activePanel.getSite()).getTools() ) {
-                ((IAction)tool).addPropertyChangeListener( this );
-            }
         }
-        else if (ev.getType() == TYPE.ACTIVATED) {
-        }
-        else if (ev.getType() == TYPE.DEACTIVATING) {
-            // XXX in develop-rap1.5 branch DEACTIVATING event is not always send properly
-        }
-        else if (ev.getType() == TYPE.STATUS) {
+        else if (ev.getType() == EventType.STATUS) {
             panelStatus = activePanel.getSite().getStatus();
             log.debug( "Panel status changed to: " + panelStatus );
             checkUpdatePopup();
@@ -330,15 +322,14 @@ public class StatusManager2
         protected void configureShell( Shell shell ) {
             super.configureShell( shell );
             shell.setLayout( FormLayoutFactory.defaults().spacing( 5 ).margins( 8, 0 ).create() );
-            shell.setData( WidgetUtil.CUSTOM_VARIANT, "batik-status-tooltip" );
+            UIUtils.setVariant( shell, "batik-status-tooltip" );
         }
         
         @Override
         protected Control createContents( Composite popupParent ) {
             // status/message
-            messageIcon = new Label( popupParent, SWT.NO_FOCUS );
+            messageIcon = UIUtils.setVariant( new Label( popupParent, SWT.NO_FOCUS ), "batik-status-tooltip-icon" );
             messageIcon.setLayoutData( FormDataFactory.defaults().top( 0, 3 ).left( 0 ).create() );
-            messageIcon.setData( WidgetUtil.CUSTOM_VARIANT, "batik-status-tooltip-icon" );
 
             messageLabel = new Label( popupParent, SWT.NO_FOCUS );
             messageLabel.setLayoutData( FormDataFactory.filled().top( 0, 7 ).left( messageIcon).clearRight().create() );
@@ -389,7 +380,7 @@ public class StatusManager2
                         int displayWidth = display.getClientArea().width;
 
                         int x = Math.max( 5, (displayWidth-popupSize.x)/2 );
-                        popupShell.setBounds( x, 80, popupSize.x, 35 );
+                        popupShell.setBounds( x, 15, popupSize.x, 35 );
                     }
                 }                
             });
@@ -474,7 +465,7 @@ public class StatusManager2
         private void updateToolButton( IAction action, Button btn ) {
             //btn.setData( WidgetUtil.CUSTOM_VARIANT, "atlas-toolbar"  );
             if (action.getDescription() == IPanelSite.SUBMIT) {
-                btn.setData( WidgetUtil.CUSTOM_VARIANT, "mosaic-case-submit" );
+                UIUtils.setVariant( btn, "mosaic-case-submit" );
             }
             btn.setEnabled( action.isEnabled() );
 
@@ -636,14 +627,6 @@ public class StatusManager2
     public void setMessage( Image image, String message ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
-    }
-
-    
-    // ContributionItem ***********************************
-    
-    @Override
-    public void fill( Composite parent ) {
-        createContents( parent );
     }
 
     

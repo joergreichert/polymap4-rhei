@@ -1059,7 +1059,7 @@ TabItem:selected {
 }
 
 /* Table default theme */
-
+/*
 Table {
   background-color: #ffffff;
   background-image: none;
@@ -1202,10 +1202,8 @@ Table-GridLine:horizontal:rowtemplate {
 
 
 Table-Checkbox {
-  /*
-  For backward compatibility we have to keep the width property.
-  Deprecated, use "margin" instead.
-  */
+    // For backward compatibility we have to keep the width property.
+    // Deprecated, use "margin" instead.
   width: 21px;
   margin: 0 0 0 4px;
   background-image: url( resource/widget/rap/button/check-unselected.png );
@@ -1229,7 +1227,7 @@ Table-Checkbox:checked:grayed {
 
 Table-Checkbox:checked:grayed:hover {
   background-image: url( resource/widget/rap/button/check-grayed-hover.png );
-}
+}*/
 
 /* Text default theme */
 /*

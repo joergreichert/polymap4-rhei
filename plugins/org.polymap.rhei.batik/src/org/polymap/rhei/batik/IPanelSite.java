@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.jface.action.IAction;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -84,19 +86,16 @@ public interface IPanelSite {
     public IStatus getStatus();
     
     
-//    /**
-//     * Adds the given action to the toolbar of this panel.
-//     * <p/>
-//     * The description of the action can be set to {@link #SUBMIT} in order to hint
-//     * the layout engine to style the GUI element accordingly.
-//     * 
-//     * @param action
-//     */
-//    public void addToolbarAction( IAction action );
-//
-//    public void addToolbarItem( IContributionItem item );
-//
-//    public void addSidekick();
+    /**
+     * Adds the given action to the toolbar of this panel.
+     * <p/>
+     * The description of the action can be set to {@link #SUBMIT} in order to hint
+     * the layout engine to style the GUI element accordingly.
+     * 
+     * @param action
+     */
+    public void addToolbarAction( IAction action );
+
 
     public IPanelToolkit toolkit();
 
