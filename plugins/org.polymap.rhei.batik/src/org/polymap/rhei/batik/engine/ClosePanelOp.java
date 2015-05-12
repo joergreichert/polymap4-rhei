@@ -35,7 +35,7 @@ public class ClosePanelOp
     private static Log log = LogFactory.getLog( ClosePanelOp.class );
     
     @Mandatory
-    @Check(validator=PanelExists.class)
+    @Check(PanelExists.class)
     public Property<PanelPath>      panelPath;
 
     
