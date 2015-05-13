@@ -17,14 +17,15 @@ package org.polymap.rhei.batik.dashboard;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * A dashlet is a UI component that is managed by a {@link Dashboard}.
  * 
- *
+ * @see Dashboard
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IDashlet {
 
-   public void init( IDashletSite site );
+   public void init( DashletSite site );
     
-   public void createContents( Composite parent );
+   public Composite createContents( Composite parent );
    
 }

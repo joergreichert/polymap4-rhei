@@ -16,8 +16,11 @@ package org.polymap.rhei.batik.dashboard;
 
 import java.util.List;
 
+import org.polymap.core.runtime.config.Defaults;
+import org.polymap.core.runtime.config.Mandatory;
+import org.polymap.core.runtime.config.Property;
+
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.SiteProperty;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;
 
@@ -26,16 +29,21 @@ import org.polymap.rhei.batik.toolkit.LayoutConstraint;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IDashletSite {
+public abstract class DashletSite {
 
-    public SiteProperty<String> title();
+    @Defaults
+    public Property<String>                 title;
+
+    @Mandatory
+    @Defaults
+    public Property<Boolean>                isBoxStyle;
     
-    public SiteProperty<Boolean> isBoxStyle();
+    @Mandatory
+    @Defaults
+    public Property<List<LayoutConstraint>> constraints;
+
+    public abstract IPanelSite panelSite();
     
-    public IPanelSite panelSite();
-    
-    public IPanelToolkit toolkit();
-    
-    public SiteProperty<List<LayoutConstraint>> layoutConstraints();
+    public abstract IPanelToolkit toolkit();
     
 }

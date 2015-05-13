@@ -12,19 +12,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik;
-
-import org.polymap.rhei.batik.dashboard.IDashletSite;
+package org.polymap.rhei.batik.dashboard;
 
 /**
- * A read/write property of a Site interface ({@link IDashletSite}).
+ * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface SiteProperty<T> {
+public abstract class DefaultDashlet
+        implements IDashlet {
 
-    public T get();
-    
-    public T set( T value );
-    
+    protected DashletSite          site;
+
+    @Override
+    public void init( @SuppressWarnings("hiding") DashletSite site ) {
+        this.site = site;
+    }
+
 }

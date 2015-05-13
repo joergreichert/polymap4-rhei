@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.batik.dashboard;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +25,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import org.polymap.core.runtime.config.ConfigurationFactory;
+
 import org.polymap.rhei.batik.IPanelSite;
-import org.polymap.rhei.batik.SiteProperty;
-import org.polymap.rhei.batik.engine.DefaultSiteProperty;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;
@@ -46,7 +45,7 @@ public class Dashboard {
     
     private IPanelSite                      panelSite;
     
-    private Map<IDashlet,IDashletSite>      dashlets = new HashMap();
+    private Map<IDashlet,DashletSite>       dashlets = new HashMap();
 
     
     public Dashboard( IPanelSite panelSite, String id ) {
@@ -55,26 +54,27 @@ public class Dashboard {
     }
     
     
-    public void addDashlet( IDashlet dashlet ) {
-        DashletSite site = new DashletSite();
+    public Dashboard addDashlet( IDashlet dashlet ) {
+        DashletSite site = new DashletSiteImpl();
         dashlet.init( site );
         dashlets.put( dashlet, site );
+        return this;
     }
     
     
     public Composite createContents( Composite parent ) {
         IPanelToolkit tk = panelSite.toolkit();
         
-        for (Entry<IDashlet,IDashletSite> entry : dashlets.entrySet()) {
-            IDashletSite dashletSite = entry.getValue();
+        for (Entry<IDashlet,DashletSite> entry : dashlets.entrySet()) {
+            DashletSite dashletSite = entry.getValue();
             IDashlet dashlet = entry.getKey();
             
-            String title = dashletSite.title().get();
-            int border = dashletSite.isBoxStyle().get() ? SWT.BORDER : SWT.NONE;
+            String title = dashletSite.title.get();
+            int border = dashletSite.isBoxStyle.get() ? SWT.BORDER : SWT.NONE;
             int expandable = SWT.NONE;
             IPanelSection section = tk.createPanelSection( parent, title, border, expandable );
             
-            List<LayoutConstraint> constraints = dashletSite.layoutConstraints().get();
+            List<LayoutConstraint> constraints = dashletSite.constraints.get();
             section.addConstraint( constraints.toArray( new LayoutConstraint[constraints.size()]) );
             
             dashlet.createContents( section.getBody() );
@@ -86,28 +86,11 @@ public class Dashboard {
     /**
      * 
      */
-    class DashletSite
-            implements IDashletSite {
+    class DashletSiteImpl
+            extends DashletSite {
 
-        private DefaultSiteProperty<String>     title = new DefaultSiteProperty( "" );
-        
-        private DefaultSiteProperty<Boolean>    isBoxStyle = new DefaultSiteProperty( false );
-        
-        private DefaultSiteProperty<List<LayoutConstraint>> constraints = new DefaultSiteProperty( new ArrayList() );
-        
-        @Override
-        public SiteProperty<String> title() {
-            return title;
-        }
-
-        @Override
-        public SiteProperty<Boolean> isBoxStyle() {
-            return isBoxStyle;
-        }
-
-        @Override
-        public SiteProperty<List<LayoutConstraint>> layoutConstraints() {
-            return constraints;
+        protected DashletSiteImpl() {
+            ConfigurationFactory.inject( this );
         }
 
         @Override
