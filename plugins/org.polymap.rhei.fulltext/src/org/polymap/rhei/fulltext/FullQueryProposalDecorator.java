@@ -40,7 +40,7 @@ public class FullQueryProposalDecorator
     public final static String      SEPARATOR = " ";
     
     
-    public FullQueryProposalDecorator( FullTextIndex next ) {
+    public FullQueryProposalDecorator( FulltextIndex next ) {
         super( next );
     }
 

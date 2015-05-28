@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 
 /**
  * 
@@ -35,12 +35,12 @@ public class AddressFinder {
 
     private static Log log = LogFactory.getLog( AddressFinder.class );
     
-    private FullTextIndex       index;
+    private FulltextIndex       index;
     
     private int                 maxResults = -1;
     
     
-    public AddressFinder( FullTextIndex index ) {
+    public AddressFinder( FulltextIndex index ) {
         this.index = index;
     }
 
@@ -55,7 +55,7 @@ public class AddressFinder {
         Iterable<JSONObject> results = find( search );
         ReferencedEnvelope bbox = new ReferencedEnvelope();
         for (JSONObject feature : results) {
-            Geometry geom = (Geometry)feature.get( FullTextIndex.FIELD_GEOM );
+            Geometry geom = (Geometry)feature.get( FulltextIndex.FIELD_GEOM );
             bbox.expandToInclude( geom.getEnvelopeInternal() );
         }
         return bbox;

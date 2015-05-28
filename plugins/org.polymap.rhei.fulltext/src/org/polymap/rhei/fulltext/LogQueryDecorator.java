@@ -34,7 +34,7 @@ public class LogQueryDecorator
     private static Log log = LogFactory.getLog( LogQueryDecorator.class );
 
 
-    public LogQueryDecorator( FullTextIndex next ) {
+    public LogQueryDecorator( FulltextIndex next ) {
         super( next );
     }
 

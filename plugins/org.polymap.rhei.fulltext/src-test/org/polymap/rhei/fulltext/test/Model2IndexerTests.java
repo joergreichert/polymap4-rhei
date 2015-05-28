@@ -24,21 +24,21 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.common.collect.Iterables;
 
-import org.polymap.core.model2.CollectionProperty;
-import org.polymap.core.model2.Composite;
-import org.polymap.core.model2.Entity;
-import org.polymap.core.model2.Property;
-import org.polymap.core.model2.runtime.EntityRepository;
-import org.polymap.core.model2.runtime.UnitOfWork;
-import org.polymap.core.model2.runtime.ValueInitializer;
-import org.polymap.core.model2.store.recordstore.RecordStoreAdapter;
-import org.polymap.core.runtime.recordstore.lucene.LuceneRecordStore;
-
 import org.polymap.rhei.fulltext.address.AddressTokenFilter;
 import org.polymap.rhei.fulltext.indexing.LowerCaseTokenFilter;
 import org.polymap.rhei.fulltext.model2.FulltextIndexer;
-import org.polymap.rhei.fulltext.store.lucene.LuceneFullTextIndex;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+import org.polymap.rhei.fulltext.store.lucene.LuceneFulltextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
+
+import org.polymap.model2.CollectionProperty;
+import org.polymap.model2.Composite;
+import org.polymap.model2.Entity;
+import org.polymap.model2.Property;
+import org.polymap.model2.runtime.EntityRepository;
+import org.polymap.model2.runtime.UnitOfWork;
+import org.polymap.model2.runtime.ValueInitializer;
+import org.polymap.model2.store.recordstore.RecordStoreAdapter;
+import org.polymap.recordstore.lucene.LuceneRecordStore;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class Model2IndexerTests {
 
     private static Log log = LogFactory.getLog( Model2IndexerTests.class );
 
-    private static UpdateableFullTextIndex  index;
+    private static UpdateableFulltextIndex  index;
 
     private static LuceneRecordStore        store;
 
@@ -58,16 +58,16 @@ public class Model2IndexerTests {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         // index
-        index = new LuceneFullTextIndex( null );
+        index = new LuceneFulltextIndex( null );
         index.addTokenFilter( new AddressTokenFilter() );
         index.addTokenFilter( new LowerCaseTokenFilter() );
         
         store = new LuceneRecordStore();
         repo = EntityRepository.newConfiguration()
-                .setStore(
+                .store.set(
                         new FulltextIndexer( index,
                         new RecordStoreAdapter( store ) ) )
-                .setEntities( new Class[] {IndexedEntity.class} )
+                .entities.set( new Class[] {IndexedEntity.class} )
                 .create();
 
     }

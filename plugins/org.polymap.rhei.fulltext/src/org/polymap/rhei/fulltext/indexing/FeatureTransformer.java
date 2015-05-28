@@ -18,16 +18,16 @@ import org.json.JSONObject;
 
 import com.google.common.base.Function;
 
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
 
 /**
  * FeatureTransformers are {@link Function}s that transform a given input object
- * while updating an {@link UpdateableFullTextIndex}. Transformers are chainable.
+ * while updating an {@link UpdateableFulltextIndex}. Transformers are chainable.
  * Every Transformer handles a special aspect of a particular input object type. Last
  * transformation step must produce an {@link JSONObject} which is then
  * stored/indexed.
  *
- * @see UpdateableFullTextIndex
+ * @see UpdateableFulltextIndex
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface FeatureTransformer<F,T>

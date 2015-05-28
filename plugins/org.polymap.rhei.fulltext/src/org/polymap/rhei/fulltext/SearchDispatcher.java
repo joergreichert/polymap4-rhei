@@ -37,28 +37,28 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
 /**
- * Allows multiple {@link FullTextIndex} instances to be queried.
+ * Allows multiple {@link FulltextIndex} instances to be queried.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class SearchDispatcher
-        implements FullTextIndex {
+        implements FulltextIndex {
 
     private static Log log = LogFactory.getLog( SearchDispatcher.class );
 
-    private List<FullTextIndex>     searchers = new ArrayList();
+    private List<FulltextIndex>     searchers = new ArrayList();
     
     private ExecutorService         executorService;
     
     
-    public SearchDispatcher( FullTextIndex[] indexes ) {
+    public SearchDispatcher( FulltextIndex[] indexes ) {
         searchers.addAll( Arrays.asList( indexes ) );
     }
 
     @Override
     public void close() {
-        assert !isClosed() : "FullTextIndex is closed already.";
-        for (FullTextIndex index : searchers) {
+        assert !isClosed() : "FulltextIndex is closed already.";
+        for (FulltextIndex index : searchers) {
             index.close();
         }
         searchers = null;
@@ -79,8 +79,8 @@ public class SearchDispatcher
 
     @Override
     public boolean isEmpty() {
-        return all( searchers, new Predicate<FullTextIndex>() {
-            public boolean apply( FullTextIndex input ) { return input.isEmpty(); }
+        return all( searchers, new Predicate<FulltextIndex>() {
+            public boolean apply( FulltextIndex input ) { return input.isEmpty(); }
         });
     }
 
@@ -89,7 +89,7 @@ public class SearchDispatcher
         // call searches in separate threads
         // XXX score results
         List<Future<List<String>>> results = new ArrayList();
-        for (final FullTextIndex searcher : searchers) {
+        for (final FulltextIndex searcher : searchers) {
             results.add( executorService.submit( new Callable<List<String>>() {
                 @Override
                 public List<String> call() throws Exception {
@@ -133,7 +133,7 @@ public class SearchDispatcher
         // call searches in separate threads
         // XXX score results
         List<Future<Iterable<JSONObject>>> results = new ArrayList();
-        for (final FullTextIndex searcher : searchers) {
+        for (final FulltextIndex searcher : searchers) {
             results.add( executorService.submit( new Callable<Iterable<JSONObject>>() {
                 @Override
                 public Iterable<JSONObject> call() throws Exception {

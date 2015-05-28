@@ -20,7 +20,7 @@ import org.apache.lucene.analysis.LowerCaseFilter;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.QueryDecorator;
 
 /**
@@ -44,7 +44,7 @@ public class LowerCaseTokenFilter
     /**
      * Ctor for {@link QueryDecorator}.
      */
-    public LowerCaseTokenFilter( FullTextIndex next ) {
+    public LowerCaseTokenFilter( FulltextIndex next ) {
         super( next );
     }
 

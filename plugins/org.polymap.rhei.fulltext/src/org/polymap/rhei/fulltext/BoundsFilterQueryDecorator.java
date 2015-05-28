@@ -44,7 +44,7 @@ public class BoundsFilterQueryDecorator
     static final GeometryJSON       jsonDecoder = new GeometryJSON();
 
     
-    public BoundsFilterQueryDecorator( FullTextIndex next ) {
+    public BoundsFilterQueryDecorator( FulltextIndex next ) {
         super( next );
     }
 

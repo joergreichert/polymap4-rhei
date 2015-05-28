@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.polymap.core.runtime.UIJob;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class FulltextProposal {
 
     private static Log log = LogFactory.getLog( FulltextProposal.class );
     
-    private FullTextIndex                   index;
+    private FulltextIndex                   index;
     
     private Text                            control;
     
@@ -65,7 +65,7 @@ public class FulltextProposal {
     private boolean                         eventOnAccept = true;
 
 
-    public FulltextProposal( FullTextIndex index, final Text control ) {
+    public FulltextProposal( FulltextIndex index, final Text control ) {
         this.index = index;
         this.control = control;
 
@@ -142,7 +142,7 @@ public class FulltextProposal {
     
     
     /**
-     * The field to make the {@link FullTextIndex#propose(String, int, String) proposal} for.
+     * The field to make the {@link FulltextIndex#propose(String, int, String) proposal} for.
      * 
      * @param field The name of the field or null.
      * @return this

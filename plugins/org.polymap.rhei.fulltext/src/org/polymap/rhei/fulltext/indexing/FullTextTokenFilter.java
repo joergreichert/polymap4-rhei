@@ -16,13 +16,13 @@ package org.polymap.rhei.fulltext.indexing;
 
 import com.google.common.base.Function;
 
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
 
 /**
  * A FullTextTokenFilter is a {@link Function} that filters and/or transforms
- * index tokens while updating an {@link UpdateableFullTextIndex}.
+ * index tokens while updating an {@link UpdateableFulltextIndex}.
  *
- * @see UpdateableFullTextIndex
+ * @see UpdateableFulltextIndex
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface FullTextTokenFilter

@@ -14,9 +14,9 @@
  */
 package org.polymap.rhei.fulltext.servlet;
 
-import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_GEOM;
-import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_SRS;
-import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_TITLE;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_GEOM;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_SRS;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_TITLE;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

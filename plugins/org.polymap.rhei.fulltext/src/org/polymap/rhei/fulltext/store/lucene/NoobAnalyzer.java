@@ -29,10 +29,10 @@ import org.apache.lucene.util.AttributeSource;
 final class NoobAnalyzer
         extends Analyzer {
 
-    private LuceneFullTextIndex     index;
+    private LuceneFulltextIndex     index;
 
 
-    public NoobAnalyzer( LuceneFullTextIndex index ) {
+    public NoobAnalyzer( LuceneFulltextIndex index ) {
         this.index = index;
     }
 
@@ -53,15 +53,15 @@ final class NoobAnalyzer
             extends CharTokenizer {
 
         public NoobTokenizer( Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, in );
         }
 
         public NoobTokenizer( AttributeSource source, Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, source, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, source, in );
         }
 
         public NoobTokenizer( AttributeFactory factory, Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, factory, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, factory, in );
         }
 
         @Override

@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * @see SessionHolder
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface FullTextIndex {
+public interface FulltextIndex {
 
     public static final char[]      SEPARATOR_CHARS = { ' ', ',', ';' };
 

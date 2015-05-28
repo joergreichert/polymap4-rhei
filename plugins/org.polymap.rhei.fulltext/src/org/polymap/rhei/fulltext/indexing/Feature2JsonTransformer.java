@@ -28,14 +28,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.polymap.core.data.util.Geometries;
 import org.polymap.core.project.ILayer;
 
-import static org.polymap.rhei.fulltext.FullTextIndex.*;
+import static org.polymap.rhei.fulltext.FulltextIndex.*;
 
 /**
  * Normalizes features:
  * <ul>
- * <li>add property {@value FullTextIndex#FIELD_CATEGORIES} filled with layer keywords</li>
- * <li>normalize {@link FullTextIndex#FIELD_TITLE}</li>
- * <li>add {@link FullTextIndex#FIELD_GEOM} and {@link FullTextIndex.FIELD_SRS}</li>
+ * <li>add property {@value FulltextIndex#FIELD_CATEGORIES} filled with layer keywords</li>
+ * <li>normalize {@link FulltextIndex#FIELD_TITLE}</li>
+ * <li>add {@link FulltextIndex#FIELD_GEOM} and {@link FulltextIndex.FIELD_SRS}</li>
  * </ul>
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>

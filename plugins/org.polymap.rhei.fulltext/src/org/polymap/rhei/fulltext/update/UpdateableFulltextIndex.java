@@ -20,7 +20,7 @@ import java.util.List;
 import org.json.JSONObject;
 import com.vividsolutions.jts.geom.Geometry;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
 import org.polymap.rhei.fulltext.indexing.FullTextTokenizer;
@@ -36,8 +36,8 @@ import org.polymap.rhei.fulltext.indexing.StandardTokenizer;
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class UpdateableFullTextIndex
-        implements FullTextIndex {
+public abstract class UpdateableFulltextIndex
+        implements FulltextIndex {
 
     protected FullTextTokenizer         tokenizer = new StandardTokenizer();
     
@@ -47,7 +47,7 @@ public abstract class UpdateableFullTextIndex
     /**
      * 
      */
-    public UpdateableFullTextIndex addTokenFilter( FullTextTokenFilter filter ) {
+    public UpdateableFulltextIndex addTokenFilter( FullTextTokenFilter filter ) {
         assert !filters.contains( filter );
         filters.add( filter );
         return this;        

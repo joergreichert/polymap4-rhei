@@ -36,7 +36,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 
 /**
  * This servlet handles search and autocomplete requests. It provides data
@@ -55,7 +55,7 @@ public class SearchServlet
 
     public static final CoordinateReferenceSystem WGS84;
 
-    private FullTextIndex               dispatcher;
+    private FulltextIndex               dispatcher;
     
     
     static {
@@ -69,7 +69,7 @@ public class SearchServlet
     }
     
 
-    public SearchServlet( FullTextIndex index ) throws Exception {
+    public SearchServlet( FulltextIndex index ) throws Exception {
         log.info( "Initializing SearchServlet ..." );
         dispatcher = index;
     }

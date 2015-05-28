@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.polymap.core.runtime.Polymap;
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 
 import org.polymap.model2.Entity;
@@ -77,7 +77,7 @@ public class EntityFeatureTransformer
         propCount = 0;
         
         try {
-            result.put( FullTextIndex.FIELD_ID, entity.id().toString() );
+            result.put( FulltextIndex.FIELD_ID, entity.id().toString() );
             //result.put( "_type_", entity.getClass().getName() );
 
             // process all properties

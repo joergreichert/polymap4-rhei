@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.model2.FulltextIndexer;
 
 import org.polymap.model2.Entity;
@@ -46,7 +46,7 @@ public abstract class EntitySearchField<T extends Entity>
 
     private static Log log = LogFactory.getLog( EntitySearchField.class );
     
-    protected FullTextIndex             index;
+    protected FulltextIndex             index;
     
     protected UnitOfWork                uow;
     
@@ -55,7 +55,7 @@ public abstract class EntitySearchField<T extends Entity>
     protected Query<T>                  query;
     
     
-    public EntitySearchField( Composite parent, FullTextIndex index, UnitOfWork uow, Class<T> entityClass ) {
+    public EntitySearchField( Composite parent, FulltextIndex index, UnitOfWork uow, Class<T> entityClass ) {
         super( parent );
         this.index = index;
         this.uow = uow;
@@ -73,8 +73,8 @@ public abstract class EntitySearchField<T extends Entity>
 
             List<BooleanExpression> ids = new ArrayList( 256 );
             for (JSONObject record : rs) {
-                if (record.optString( FullTextIndex.FIELD_ID ).length() > 0) {
-                    ids.add( Expressions.id( record.getString( FullTextIndex.FIELD_ID ) ) );
+                if (record.optString( FulltextIndex.FIELD_ID ).length() > 0) {
+                    ids.add( Expressions.id( record.getString( FulltextIndex.FIELD_ID ) ) );
                 }
                 else {
                     log.warn( "No FIELD_ID in record: " + record );

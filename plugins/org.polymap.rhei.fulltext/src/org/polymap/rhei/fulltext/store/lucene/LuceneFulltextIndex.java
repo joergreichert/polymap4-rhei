@@ -41,8 +41,8 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.Function;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
 
 import org.polymap.recordstore.lucene.GeometryValueCoder;
 import org.polymap.recordstore.lucene.LuceneRecordQuery;
@@ -55,11 +55,11 @@ import org.polymap.recordstore.lucene.StringValueCoder;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class LuceneFullTextIndex
-        extends UpdateableFullTextIndex
-        implements FullTextIndex {
+public class LuceneFulltextIndex
+        extends UpdateableFulltextIndex
+        implements FulltextIndex {
 
-    private static Log log = LogFactory.getLog( LuceneFullTextIndex.class );
+    private static Log log = LogFactory.getLog( LuceneFulltextIndex.class );
 
     /** The Lucene version we are using. */
     public final static Version     LUCENE_VERSION = Version.LUCENE_36;
@@ -71,7 +71,7 @@ public class LuceneFullTextIndex
     private LuceneAnalyzer          analyzer;
     
 
-    public LuceneFullTextIndex( File dir ) throws IOException {
+    public LuceneFulltextIndex( File dir ) throws IOException {
         store = dir != null 
                 ? new LuceneRecordStore( dir, false )
                 : new LuceneRecordStore();

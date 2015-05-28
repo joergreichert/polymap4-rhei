@@ -50,7 +50,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.polymap.core.data.pipeline.PipelineProcessor;
 import org.polymap.core.data.util.Geometries;
 
-import static org.polymap.rhei.fulltext.FullTextIndex.*;
+import static org.polymap.rhei.fulltext.FulltextIndex.*;
 
 /**
  * This stream encodes {@link SimpleFeature} and {@link Document} objects into

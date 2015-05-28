@@ -36,9 +36,9 @@ import org.polymap.rhei.fulltext.address.AddressTokenFilter;
 import org.polymap.rhei.fulltext.indexing.Feature2JsonTransformer;
 import org.polymap.rhei.fulltext.indexing.LowerCaseTokenFilter;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
-import org.polymap.rhei.fulltext.store.lucene.LuceneFullTextIndex;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+import org.polymap.rhei.fulltext.store.lucene.LuceneFulltextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class FeatureTests {
 
     private static Log log = LogFactory.getLog( FeatureTests.class );
 
-    private static UpdateableFullTextIndex  index;
+    private static UpdateableFulltextIndex  index;
 
     private static SimpleFeatureType        schema;
 
@@ -62,7 +62,7 @@ public class FeatureTests {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         // index
-        index = new LuceneFullTextIndex( null );
+        index = new LuceneFulltextIndex( null );
         index.addTokenFilter( new AddressTokenFilter() );
         index.addTokenFilter( new LowerCaseTokenFilter() );                    
 

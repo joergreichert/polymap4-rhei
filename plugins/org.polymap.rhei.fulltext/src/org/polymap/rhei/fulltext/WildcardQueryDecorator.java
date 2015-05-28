@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class WildcardQueryDecorator
         extends QueryDecorator {
 
-    public WildcardQueryDecorator( FullTextIndex next ) {
+    public WildcardQueryDecorator( FulltextIndex next ) {
         super( next );
     }
 

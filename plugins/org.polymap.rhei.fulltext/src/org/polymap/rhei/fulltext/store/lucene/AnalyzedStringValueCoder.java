@@ -33,7 +33,7 @@ class AnalyzedStringValueCoder
         extends StringValueCoder {
 
     public boolean encode( Document doc, String key, Object value, boolean indexed ) {
-        if (key.equals( LuceneFullTextIndex.FIELD_ANALYZED )) {
+        if (key.equals( LuceneFulltextIndex.FIELD_ANALYZED )) {
             Field field = (Field)doc.getFieldable( key );
             if (field != null) {
                 field.setValue( (String)value );
@@ -50,7 +50,7 @@ class AnalyzedStringValueCoder
     
 
     public Object decode( Document doc, String key ) {
-        return key.equals( LuceneFullTextIndex.FIELD_ANALYZED ) ? doc.get( key ) : null;
+        return key.equals( LuceneFulltextIndex.FIELD_ANALYZED ) ? doc.get( key ) : null;
     }
 
 }

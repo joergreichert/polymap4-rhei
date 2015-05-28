@@ -39,7 +39,7 @@ import org.polymap.core.runtime.event.Event;
 import org.polymap.core.runtime.event.EventHandler;
 
 import org.polymap.rhei.fulltext.SessionHolder;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
 
 /**
  * Listen to changes of the layer and its content and update the index appropriately.
@@ -55,10 +55,10 @@ public class LayerModificationWatcher
     
     private ILayer                  layer;
 
-    private UpdateableFullTextIndex index;
+    private UpdateableFulltextIndex index;
     
    
-    public LayerModificationWatcher( SessionHolder session, UpdateableFullTextIndex index, ILayer layer ) {
+    public LayerModificationWatcher( SessionHolder session, UpdateableFulltextIndex index, ILayer layer ) {
         this.session = session;
         this.index = index;
         this.layer = layer;
@@ -66,7 +66,7 @@ public class LayerModificationWatcher
 
     
     @Override
-    protected UpdateableFullTextIndex index() {
+    protected UpdateableFulltextIndex index() {
         return index;
     }
 

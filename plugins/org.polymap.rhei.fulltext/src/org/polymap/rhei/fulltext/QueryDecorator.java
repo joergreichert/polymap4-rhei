@@ -18,18 +18,18 @@ import org.json.JSONObject;
 
 /**
  * Allows to decorate/transform search/proposal queries and results. Query decorators
- * can be applied to existing {@link FullTextIndex} instances on demand when it is
+ * can be applied to existing {@link FulltextIndex} instances on demand when it is
  * needed.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class QueryDecorator
-        implements FullTextIndex {
+        implements FulltextIndex {
 
-    protected FullTextIndex         next;
+    protected FulltextIndex         next;
     
     
-    public QueryDecorator( FullTextIndex next ) {
+    public QueryDecorator( FulltextIndex next ) {
         this.next = next;
     }
     

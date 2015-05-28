@@ -25,11 +25,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 import org.polymap.rhei.fulltext.indexing.ToStringTransformer;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
 
 import org.polymap.model2.Entity;
 import org.polymap.model2.runtime.EntityRuntimeContext.EntityStatus;
@@ -41,7 +41,7 @@ import org.polymap.model2.store.StoreUnitOfWork;
 
 /**
  * Provides a decorator for an underlying store. This decorator tracks modifications and
- * feed them into an {@link UpdateableFullTextIndex}. 
+ * feed them into an {@link UpdateableFulltextIndex}. 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -109,26 +109,26 @@ public class FulltextIndexer
     
     // instance *******************************************
     
-    private UpdateableFullTextIndex             index;
+    private UpdateableFulltextIndex             index;
     
     private List<? extends FeatureTransformer>  transformers = Lists.newArrayList( new EntityFeatureTransformer(), new ToStringTransformer() );
     
     private Predicate<Entity>                   entityFilter;
     
     
-    public FulltextIndexer( UpdateableFullTextIndex index, StoreSPI store ) {
+    public FulltextIndexer( UpdateableFulltextIndex index, StoreSPI store ) {
         this( index, ALL, store );
     }
 
     
-    public FulltextIndexer( UpdateableFullTextIndex index, Predicate<Entity> entityFilter, StoreSPI store ) {
+    public FulltextIndexer( UpdateableFulltextIndex index, Predicate<Entity> entityFilter, StoreSPI store ) {
         super( store );
         this.index = index;
         setEntityFilter( entityFilter );
     }
 
     
-    public FulltextIndexer( UpdateableFullTextIndex index, Predicate<Entity> entityFilter,
+    public FulltextIndexer( UpdateableFulltextIndex index, Predicate<Entity> entityFilter,
             List<? extends FeatureTransformer> transformers, StoreSPI store ) {
         this( index, entityFilter, store );
         setTransformers( transformers );
@@ -161,7 +161,7 @@ public class FulltextIndexer
         for (FeatureTransformer transformer : transformers) {
             transformed = transformer.apply( transformed );
         }
-        assert ((JSONObject)transformed).opt( FullTextIndex.FIELD_ID ) != null;
+        assert ((JSONObject)transformed).opt( FulltextIndex.FIELD_ID ) != null;
         log.debug( "Transformed: " + transformed.toString() );
         return (JSONObject)transformed;
     }

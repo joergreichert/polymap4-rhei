@@ -31,10 +31,10 @@ import org.polymap.rhei.fulltext.indexing.FullTextTokenizer;
 final class LuceneAnalyzer
         extends Analyzer {
 
-    private LuceneFullTextIndex     index;
+    private LuceneFulltextIndex     index;
 
 
-    public LuceneAnalyzer( LuceneFullTextIndex index ) {
+    public LuceneAnalyzer( LuceneFulltextIndex index ) {
         this.index = index;
     }
 
@@ -56,15 +56,15 @@ final class LuceneAnalyzer
         private FullTextTokenizer   tokenizer = index.tokenizer();
         
         public LuceneTokenizer( Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, in );
         }
 
         public LuceneTokenizer( AttributeSource source, Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, source, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, source, in );
         }
 
         public LuceneTokenizer( AttributeFactory factory, Reader in ) {
-            super( LuceneFullTextIndex.LUCENE_VERSION, factory, in );
+            super( LuceneFulltextIndex.LUCENE_VERSION, factory, in );
         }
 
         protected boolean isTokenChar( int c ) {

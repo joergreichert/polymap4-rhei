@@ -14,8 +14,8 @@
  */
 package org.polymap.rhei.fulltext.store.lucene;
 
-import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_ID;
-import static org.polymap.rhei.fulltext.FullTextIndex.FIELD_SRS;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_ID;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_SRS;
 
 import org.json.JSONObject;
 
@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.jface.util.Geometry;
 
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
 
 import org.polymap.recordstore.IRecordState;
 import org.polymap.recordstore.IRecordStore;
@@ -40,14 +40,14 @@ class LuceneUpdater
 
     private static Log log = LogFactory.getLog( LuceneUpdater.class );
 
-    private LuceneFullTextIndex     index;
+    private LuceneFulltextIndex     index;
 
     private LuceneRecordStore       store;
 
     private IRecordStore.Updater    updator;
     
 
-    public LuceneUpdater( LuceneFullTextIndex index ) {
+    public LuceneUpdater( LuceneFulltextIndex index ) {
         this.index = index;
         this.store = index.store;
         this.updator = store.prepareUpdate();
@@ -87,7 +87,7 @@ class LuceneUpdater
                 throw new RuntimeException( "Feature is not simple. Property: " + key + " = " + value );
             }
         }
-        record.put( LuceneFullTextIndex.FIELD_ANALYZED, buf.toString() );
+        record.put( LuceneFulltextIndex.FIELD_ANALYZED, buf.toString() );
         
         updator.store( record );
     }

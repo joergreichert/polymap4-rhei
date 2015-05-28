@@ -30,12 +30,12 @@ import org.polymap.core.runtime.FutureJobAdapter;
 import org.polymap.core.runtime.UIJob;
 import org.polymap.core.runtime.session.SessionContext;
 
-import org.polymap.rhei.fulltext.FullTextIndex;
+import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
-import org.polymap.rhei.fulltext.update.UpdateableFullTextIndex.Updater;
+import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
 
 /**
- * Helper for {@link FullTextIndex} updates. Handles {@link FeatureTransformer
+ * Helper for {@link FulltextIndex} updates. Handles {@link FeatureTransformer
  * feature transformation} and proper creating/closing the underlying {@link Updater}
  * . The update runs inside a newly created {@link UIJob}.
  * 
@@ -65,7 +65,7 @@ public abstract class FullTextIndexUpdater {
     }
     
     
-    protected abstract UpdateableFullTextIndex index();
+    protected abstract UpdateableFulltextIndex index();
     
     protected abstract void doUpdateIndex( Updater updater, IProgressMonitor monitor ) throws Exception;
 

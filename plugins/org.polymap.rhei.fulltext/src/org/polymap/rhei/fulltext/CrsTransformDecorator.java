@@ -39,7 +39,7 @@ public class CrsTransformDecorator
     private CoordinateReferenceSystem       targetCrs;
 
 
-    public CrsTransformDecorator( FullTextIndex next, CoordinateReferenceSystem targetCrs ) {
+    public CrsTransformDecorator( FulltextIndex next, CoordinateReferenceSystem targetCrs ) {
         super( next );
         assert targetCrs != null;
         this.targetCrs = targetCrs;
