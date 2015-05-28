@@ -19,10 +19,9 @@ import org.qi4j.api.concern.Concerns;
 import org.qi4j.api.entity.EntityComposite;
 import org.qi4j.api.mixin.Mixins;
 import org.qi4j.api.property.Property;
-
-import org.polymap.core.qi4j.QiEntity;
-import org.polymap.core.qi4j.event.ModelChangeSupport;
-import org.polymap.core.qi4j.event.PropertyChangeSupport;
+import org.qi4j.polymap.QiEntity;
+import org.qi4j.polymap.event.ModelChangeSupport;
+import org.qi4j.polymap.event.PropertyChangeSupport;
 
 import org.polymap.rhei.um.User;
 

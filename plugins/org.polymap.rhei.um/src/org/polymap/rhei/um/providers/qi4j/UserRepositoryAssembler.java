@@ -25,15 +25,14 @@ import org.qi4j.api.unitofwork.UnitOfWorkFactory;
 import org.qi4j.bootstrap.ApplicationAssembly;
 import org.qi4j.bootstrap.LayerAssembly;
 import org.qi4j.bootstrap.ModuleAssembly;
+import org.qi4j.polymap.QiModule;
+import org.qi4j.polymap.QiModuleAssembler;
+import org.qi4j.polymap.idgen.HRIdentityGeneratorService;
+import org.qi4j.polymap.lucene.LuceneEntityStoreInfo;
+import org.qi4j.polymap.lucene.LuceneEntityStoreQueryService;
+import org.qi4j.polymap.lucene.LuceneEntityStoreService;
 
-import org.polymap.core.qi4j.QiModule;
-import org.polymap.core.qi4j.QiModuleAssembler;
-import org.polymap.core.qi4j.idgen.HRIdentityGeneratorService;
 import org.polymap.core.runtime.Polymap;
-
-import org.polymap.rhei.data.entitystore.lucene.LuceneEntityStoreInfo;
-import org.polymap.rhei.data.entitystore.lucene.LuceneEntityStoreQueryService;
-import org.polymap.rhei.data.entitystore.lucene.LuceneEntityStoreService;
 
 /**
  *
@@ -94,7 +93,7 @@ public class UserRepositoryAssembler
         domainModule.addServices( LuceneEntityStoreService.class )
                 .setMetaInfo( new LuceneEntityStoreInfo( moduleRoot ) )
                 .instantiateOnStartup()
-                .identifiedBy( "lucene-repository" );
+                .identifiedBy( "org.qi4j.polymap.lucene-repository" );
 
         // indexer
         domainModule.addServices( LuceneEntityStoreQueryService.class )

@@ -14,6 +14,9 @@
  */
 package org.polymap.rhei.um.providers.qi4j;
 
+import static org.qi4j.api.query.QueryExpressions.eq;
+import static org.qi4j.api.query.QueryExpressions.templateFor;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -22,16 +25,15 @@ import org.apache.commons.logging.LogFactory;
 
 import org.qi4j.api.query.Query;
 import org.qi4j.api.query.grammar.BooleanExpression;
-import static org.qi4j.api.query.QueryExpressions.*;
+import org.qi4j.polymap.Qi4jPlugin;
+import org.qi4j.polymap.QiModule;
+import org.qi4j.polymap.QiModuleAssembler;
+import org.qi4j.polymap.model.CompletionException;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import org.polymap.core.model.CompletionException;
-import org.polymap.core.qi4j.Qi4jPlugin;
-import org.polymap.core.qi4j.QiModule;
-import org.polymap.core.qi4j.QiModuleAssembler;
 import org.polymap.core.runtime.entity.ConcurrentModificationException;
 
 import org.polymap.rhei.um.Entity;

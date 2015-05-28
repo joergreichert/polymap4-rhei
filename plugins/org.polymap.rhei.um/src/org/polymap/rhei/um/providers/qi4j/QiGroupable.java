@@ -20,8 +20,8 @@ import org.qi4j.api.common.Optional;
 import org.qi4j.api.common.UseDefaults;
 import org.qi4j.api.entity.EntityComposite;
 import org.qi4j.api.property.Property;
+import org.qi4j.polymap.QiEntity;
 
-import org.polymap.core.qi4j.QiEntity;
 import org.polymap.rhei.um.Groupable;
 
 /**

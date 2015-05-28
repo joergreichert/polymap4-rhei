@@ -23,11 +23,8 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 
-import com.google.common.base.Supplier;
-
 import org.polymap.core.runtime.CachedLazyInit;
 import org.polymap.core.runtime.Lazy;
-import org.polymap.core.runtime.LazyInit;
 
 /**
  * 
@@ -41,11 +38,7 @@ public class EmailService {
     private static final Lazy<EmailService>   instance = new CachedLazyInit( 1024 );
     
     public static EmailService instance() {
-        return instance.get( new Supplier<EmailService>() {
-            public EmailService get() {
-                return new EmailService();
-            }
-        });
+        return instance.get( () -> new EmailService() );
     }
 
     

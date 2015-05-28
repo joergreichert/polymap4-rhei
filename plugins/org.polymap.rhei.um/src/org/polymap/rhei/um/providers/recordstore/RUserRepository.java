@@ -28,6 +28,8 @@ import org.polymap.rhei.um.Groupable;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.providers.UserRepositorySPI;
 
+import org.polymap.recordstore.IRecordStore;
+
 /**
  * 
  *

@@ -10,7 +10,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.polymap.core;bundle-version="4.0.0",
  org.polymap.core.data;bundle-version="4.0.0",
  org.polymap.rhei.batik;bundle-version="4.0.0",
- org.polymap.rhei.form;bundle-version="4.0.0"
+ org.polymap.rhei.form;bundle-version="4.0.0",
+ qi4j-core;bundle-version="1.0.2";resolution:=optional,
+ org.polymap.model2.store.recordstore;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: javax.mail,
