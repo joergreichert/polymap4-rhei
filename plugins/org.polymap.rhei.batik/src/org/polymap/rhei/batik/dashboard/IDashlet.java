@@ -24,8 +24,16 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface IDashlet {
 
-   public void init( DashletSite site );
-    
+    public void init( DashletSite site );
+   
+    /**
+     * 
+     *
+     * @param parent
+     * @return Currently not used. May return {@code parent}. Just makes the
+     *         signature compatible with
+     *         {@link org.polymap.rhei.form.batik.FormContainer}.
+     */
    public Composite createContents( Composite parent );
    
 }

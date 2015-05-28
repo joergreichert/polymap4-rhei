@@ -80,7 +80,7 @@ public class EntityFeatureTransformer
             result.put( FullTextIndex.FIELD_ID, entity.id().toString() );
             //result.put( "_type_", entity.getClass().getName() );
 
-            // visit all simple properties
+            // process all properties
             process( entity );
 
             log.debug( "   " + result.toString( 2 ) );
@@ -95,7 +95,7 @@ public class EntityFeatureTransformer
     
     @Override
     protected void visitProperty( Property prop ) {        
-        PropertyInfo info = prop.getInfo();
+        PropertyInfo info = prop.info();
         if (honorQueryableAnnotation && !info.isQueryable()) {
             return;
         }
