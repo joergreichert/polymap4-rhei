@@ -118,7 +118,7 @@ public abstract class AbstractSearchField {
                 
                 if (!searchOnEnter) {                
                     // Job: defer refresh for 2s
-                    new UIJob( "Suchen" ) {
+                    new UIJob( "Fulltext search" ) {
 
                         String myFilterText = filterText;
 

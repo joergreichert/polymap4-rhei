@@ -77,7 +77,8 @@ public abstract class UpdateableFulltextIndex
     /**
      * 
      */
-    public interface Updater {
+    public interface Updater
+            extends AutoCloseable {
     
         /**
          * Store/update the given feature. At this point features have to be
@@ -98,6 +99,7 @@ public abstract class UpdateableFulltextIndex
          * Close this updater and dispose all associated resources. Without
          * {@link #apply()} this rolls back any modifications.
          */
+        @Override
         public abstract void close();
         
 //        protected Feature transform( Feature feature ) {
