@@ -71,6 +71,8 @@ public class PageStackLayout
 
     private LayoutSupplier          margins;
     
+    private Rectangle               cachedClientArea;
+    
 
     PageStackLayout( PageStack pageStack, LayoutSupplier margins ) {
         this.pageStack = pageStack;
@@ -92,9 +94,22 @@ public class PageStackLayout
     @Override
     protected void layout( Composite composite, boolean flushCache ) {
         assert pageStack == composite;
-        Rectangle clientArea = pageStack.getClientArea();
-        log.debug( "layout(): clientArea=" + clientArea );
 
+        Rectangle clientArea = pageStack.getClientArea();
+        log.debug( "layout(): clientArea=" + clientArea );        
+
+        Rectangle displayArea = composite.getDisplay().getBounds();
+        if (clientArea.width > displayArea.width) {
+            log.warn( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", flushCache: " + flushCache );
+            return;
+        }
+        
+        if (!flushCache && clientArea.equals( cachedClientArea )) {
+            log.warn( "Ignoring cachedClientArea: " + cachedClientArea + ", flushCache: " + flushCache );
+            return;
+        }
+        cachedClientArea = clientArea;
+        
         pageStack.preUpdateLayout();
         
         // available size
@@ -121,7 +136,7 @@ public class PageStackLayout
         boolean focusedPageSeen = false;
         
         for (Page page : topDown) {
-            page.control.setVisible( false );
+            boolean pageVisible = false;
             page.isShown = false;
 
             // focused page is the top most page shown
@@ -153,9 +168,14 @@ public class PageStackLayout
                     if (page.isShown) {
                         // just save minPageSize for next step
                         page.control.setBounds( 0, 0, prefPageWidth, prefPageSize.y );
-                        page.control.setVisible( true );
+                        page.control.setVisible( pageVisible = true );
                     }
                 }
+            }
+            // it is important to do this only on pages that are actually not visible;
+            // doing this in advance on top of the loop would remove focus from the page
+            if (!pageVisible) {
+                page.control.setVisible( false );
             }
         }
         
@@ -179,7 +199,7 @@ public class PageStackLayout
                 }
                 
                 panelX += pageWidth + margins.getSpacing();
-                log.info( "    page: " + page.control.getBounds() );                
+                log.debug( "    page: " + page.control.getBounds() );                
             }
         }
         pageStack.postUpdateLayout();

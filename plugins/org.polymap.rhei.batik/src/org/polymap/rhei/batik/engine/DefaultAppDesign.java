@@ -385,7 +385,7 @@ public class DefaultAppDesign
 
     
     /**
-     * Sets/adapts the {@link #mainWindow} layout rigth after init and before
+     * Sets/adapts the {@link #mainWindow} layout right after init and before
      * {@link #delayedRefresh()}. Override to change behaviour.
      */
     protected void updateMainWindowLayout() {
