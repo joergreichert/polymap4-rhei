@@ -38,7 +38,7 @@ import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 import org.polymap.rhei.internal.filter.FilterFieldComposite;
@@ -57,7 +57,7 @@ public abstract class FilterEditor
     /** Saved values from last dialog run for each user. */
     static Map<Principal,Map<String,Object>> defaultValues = new WeakHashMap();
     
-    private IFormEditorToolkit              toolkit;
+    private IFormToolkit              toolkit;
     
     private Map<String,FilterFieldComposite> fields = new HashMap();
     
@@ -97,11 +97,11 @@ public abstract class FilterEditor
         return isValid;
     }
 
-    public IFormEditorToolkit getToolkit() {
+    public IFormToolkit getToolkit() {
         return toolkit;
     }
     
-    void setToolkit( IFormEditorToolkit toolkit ) {
+    void setToolkit( IFormToolkit toolkit ) {
         this.toolkit = toolkit;
     }
     

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.opengis.feature.Feature;
 
-import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormPage;
 
 /**
  * 
@@ -36,7 +36,7 @@ public interface IFormPageProvider {
      * 
      * <p>Example:
      * <pre>
-     *     List<IFormEditorPage> result = new ArrayList();
+     *     List<IFormPage> result = new ArrayList();
      *     if (feature.getType().getName().getLocalPart().equalsIgnoreCase( "antrag" )) {
      *         result.add( new AntragFormEditorPage( feature, formEditor.getFeatureStore() ) );
      *     }
@@ -47,6 +47,6 @@ public interface IFormPageProvider {
      * @param feature The feature to be displayed in the pages.
      * @return List of newly created pages.
      */
-    public List<IFormEditorPage> addPages( FormEditor formEditor, Feature feature );
+    public List<IFormPage> addPages( FormEditor formEditor, Feature feature );
     
 }

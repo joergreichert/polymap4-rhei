@@ -44,18 +44,18 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.rap.rwt.graphics.Graphics;
 import org.polymap.core.ui.UIUtils;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 import org.polymap.rap.updownload.upload.Upload;
 
 /**
- * Default implementation of the {@link IFormEditorToolkit} interface.
+ * Default implementation of the {@link IFormToolkit} interface.
  * Basically this implementation delegates method calls to {@link FormToolkit}.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class FormEditorToolkit
-        implements IFormEditorToolkit {
+        implements IFormToolkit {
 
     public static final String  CUSTOM_VARIANT_VALUE = "formeditor";
 

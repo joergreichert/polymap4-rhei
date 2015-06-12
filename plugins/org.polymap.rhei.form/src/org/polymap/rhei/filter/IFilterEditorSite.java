@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * The interface that {@link FilterEditor} provides its subclasses. 
@@ -33,7 +33,7 @@ public interface IFilterEditorSite {
 
     Composite getPageBody();
 
-    IFormEditorToolkit getToolkit();
+    IFormToolkit getToolkit();
 
     Composite newFormField( Composite parent, String propName, Class propType, IFormField field, IFormFieldValidator validator );
 

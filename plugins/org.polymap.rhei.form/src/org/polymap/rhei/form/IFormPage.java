@@ -20,20 +20,19 @@ package org.polymap.rhei.form;
 import org.eclipse.jface.action.Action;
 
 /**
- * Provides a page for a {@link FormEditor}. The form content consists of form fields
- * that are created via
- * {@link IFormEditorPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)
- * IFormEditorPageSite.newFormField()}.
+ * A form page consisting of form fields created via
+ * {@link IFormPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)
+ * IFormPageSite.newFormField()}.
  * <p/>
  * If you need more control over UI elements and/or submit/load then consider the
- * {@link IFormEditorPage2} interface.
+ * {@link IFormPage2} interface.
  * <p/>
- * The abstract class {@link DefaultFormEditorPage} provides ready-to-use
+ * The abstract class {@link DefaultFormPage} provides ready-to-use
  * implementations of some methods and some useful tools.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IFormEditorPage {
+public interface IFormPage {
 
     String getTitle();
 
@@ -73,6 +72,6 @@ public interface IFormEditorPage {
      *
      * @param site The API to create fields and interact with the framework.
      */
-    void createFormContent( IFormEditorPageSite site );
+    void createFormContent( IFormPageSite site );
 
 }

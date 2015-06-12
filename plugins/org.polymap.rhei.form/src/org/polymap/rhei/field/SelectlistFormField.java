@@ -35,7 +35,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.model.ConstantWithSynonyms;
 
 /**
@@ -182,7 +182,7 @@ public class SelectlistFormField
     }
 
 
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         int comboStyle = isMultiple ? SWT.MULTI : SWT.SINGLE;
         list = toolkit.createList( parent, comboStyle | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         

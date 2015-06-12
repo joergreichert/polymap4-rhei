@@ -38,8 +38,8 @@ import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * This is the parent Composite of a form field. It consists of an {@link IFormField}
@@ -56,11 +56,11 @@ public class FormFieldComposite
     /** Identifies the editor that events belong to. */
     private Object                  editor;
     
-    private IFormEditorPageSite     pageSite;
+    private IFormPageSite     pageSite;
     
     private Property                prop;
     
-    private IFormEditorToolkit      toolkit;
+    private IFormToolkit      toolkit;
     
     private IFormField              field;
     
@@ -80,8 +80,8 @@ public class FormFieldComposite
     private String                  externalErrorMsg;
 
 
-    public FormFieldComposite( Object editor, IFormEditorPageSite pageSite, 
-            IFormEditorToolkit toolkit, Property prop, IFormField field,
+    public FormFieldComposite( Object editor, IFormPageSite pageSite, 
+            IFormToolkit toolkit, Property prop, IFormField field,
             IFormFieldLabel labeler, IFormFieldDecorator decorator, IFormFieldValidator validator ) {
         this.editor = editor;
         this.pageSite = pageSite;
@@ -216,7 +216,7 @@ public class FormFieldComposite
         prop.setValue( validator.transform2Model( value ) );
     }
 
-    public IFormEditorToolkit getToolkit() {
+    public IFormToolkit getToolkit() {
         return toolkit;
     }
 

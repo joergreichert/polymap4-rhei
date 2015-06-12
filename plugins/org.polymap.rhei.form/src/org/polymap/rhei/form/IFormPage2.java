@@ -29,8 +29,8 @@ import org.polymap.rhei.field.IFormField;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  * @version ($Revision$)
  */
-public interface IFormEditorPage2
-        extends IFormEditorPage {
+public interface IFormPage2
+        extends IFormPage {
 
     boolean isDirty();
     
@@ -60,8 +60,8 @@ public interface IFormEditorPage2
     throws Exception;
     
     /**
-     * Dispose any resource this page may have aquired in {@link #createFormContent(IFormEditorPageSite)}.
-     * Form fields that were created via {@link IFormEditorPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)}
+     * Dispose any resource this page may have aquired in {@link #createFormContent(IFormPageSite)}.
+     * Form fields that were created via {@link IFormPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)}
      * are automatically disposed and must not be disposed in this method.
      */
     void dispose();

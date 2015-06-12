@@ -27,9 +27,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
 /**
- * Provides a default layout for classes that implement {@link IFormEditorPage}.
+ * Provides a default layout for classes that implement {@link IFormPage}.
  * 
- * @deprecated I don't like this anymore. Use {@link DefaultFormEditorPage.FormFieldBuilder} instead.
+ * @deprecated I don't like this anymore. Use {@link DefaultFormPage.FormFieldBuilder} instead.
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  * @since 1.0
  */

@@ -36,7 +36,7 @@ import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.filter.FilterEditor;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * The filter form specific parent Composite of a form field, consisting of an
@@ -57,7 +57,7 @@ public class FilterFieldComposite
     
     private Class                   propType;
     
-    private IFormEditorToolkit      toolkit;
+    private IFormToolkit      toolkit;
     
     private IFormField              field;
     
@@ -78,7 +78,7 @@ public class FilterFieldComposite
     private Object                  value;
 
 
-    public FilterFieldComposite( FilterEditor editor, IFormEditorToolkit toolkit,
+    public FilterFieldComposite( FilterEditor editor, IFormToolkit toolkit,
             String propName, Class propType,
             IFormField field, IFormFieldLabel labeler, IFormFieldDecorator decorator,
             IFormFieldValidator validator ) {
@@ -195,7 +195,7 @@ public class FilterFieldComposite
     }
 
 
-    public IFormEditorToolkit getToolkit() {
+    public IFormToolkit getToolkit() {
         return toolkit;
     }
 

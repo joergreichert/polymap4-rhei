@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * A form field using a {@link Text} widget.
@@ -79,7 +79,7 @@ public class StringFormField
         text.dispose();
     }
 
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         int swt = SWT.NONE;
         for (Style style : styles) {
             swt |= style.constant;
@@ -87,7 +87,7 @@ public class StringFormField
         return createControl( parent, toolkit, swt );
     }
 
-    protected Control createControl( Composite parent, IFormEditorToolkit toolkit, int style ) {
+    protected Control createControl( Composite parent, IFormToolkit toolkit, int style ) {
         text = toolkit.createText( parent, "", style );
 
         // modify listener

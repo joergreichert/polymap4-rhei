@@ -1,6 +1,6 @@
 /*
- * polymap.org Copyright 2010, Falko Bräutigam, and other contributors as
- * indicated by the @authors tag.
+ * polymap.org 
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  * 
  * This is free software; you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free
@@ -11,10 +11,7 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
- * 
- * $Id: $
  */
-
 package org.polymap.rhei.form;
 
 import java.util.Date;
@@ -49,9 +46,8 @@ import org.polymap.rap.updownload.upload.Upload;
  * and maybe other usecases.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @version ($Revision$)
  */
-public interface IFormEditorToolkit {
+public interface IFormToolkit {
 
     public abstract Button createButton( Composite parent, String text, int style );
 

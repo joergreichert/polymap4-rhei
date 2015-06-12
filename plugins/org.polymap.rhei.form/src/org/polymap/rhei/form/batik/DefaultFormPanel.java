@@ -14,11 +14,6 @@
  */
 package org.polymap.rhei.form.batik;
 
-import java.util.Date;
-
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,22 +22,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.jface.action.Action;
 
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
-
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.field.CheckboxFormField;
-import org.polymap.rhei.field.DateTimeFormField;
-import org.polymap.rhei.field.IFormField;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.field.NumberValidator;
-import org.polymap.rhei.field.StringFormField;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.internal.form.AbstractFormPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -53,7 +39,7 @@ import org.polymap.rhei.internal.form.FormEditorToolkit;
  */
 public abstract class DefaultFormPanel
         extends DefaultPanel
-        implements IPanel, IFormEditorPage {
+        implements IPanel, IFormPage {
 
     private static Log log = LogFactory.getLog( DefaultFormPanel.class );
 
@@ -73,7 +59,7 @@ public abstract class DefaultFormPanel
     }
 
     
-    // default implementation of IFormEditorPage **********
+    // default implementation of IFormPage **********
 
     @Override
     public final String getTitle() {
@@ -100,9 +86,9 @@ public abstract class DefaultFormPanel
      *
      */
     private class PageContainer
-            extends AbstractFormEditorPageContainer {
+            extends AbstractFormPageContainer {
 
-        public PageContainer( IFormEditorPage page ) {
+        public PageContainer( IFormPage page ) {
             super( DefaultFormPanel.this, page, "_id_", "_title_" );
             setLabelWidth( 150 );
         }
@@ -115,7 +101,7 @@ public abstract class DefaultFormPanel
             return pageBody;
         }
 
-        public IFormEditorToolkit getToolkit() {
+        public IFormToolkit getToolkit() {
             return toolkit;
         }
 
@@ -129,151 +115,6 @@ public abstract class DefaultFormPanel
 
         public void setActivePage( String pageId ) {
             log.warn( "setActivePage() not supported." );
-        }
-    }
-
-    
-    /**
-     * This field builder allows to create a new form field. It provides a simple,
-     * chainable API that allows to set several aspects of the result. If an aspect
-     * is not set then a default is computed.
-     */
-    public class FormFieldBuilder {
-        
-        private String              propName;
-        
-        private Composite           parent;
-        
-        private String              label;
-        
-        private String              tooltip;
-        
-        private Feature             builderFeature;
-        
-        private Property            prop;
-        
-        private IFormField          field;
-        
-        private IFormFieldValidator validator;
-        
-        private boolean             enabled = true;
-
-        private Object              layoutData;
-
-        
-        public FormFieldBuilder( Property prop ) {
-            this.prop = prop;
-        }
-
-        public FormFieldBuilder( Composite parent, Property prop ) {
-            this.parent = parent;
-            this.prop = prop;
-        }
-
-        public FormFieldBuilder( Feature feature, String propName ) {
-            this.propName = propName;
-//            this.label = propName;
-            this.builderFeature = feature;
-        }
-
-        public FormFieldBuilder( Feature feature, String propName, Composite parent) {
-            this( feature, propName );
-            this.parent = parent;
-        }
-        
-        public FormFieldBuilder setParent( Composite parent ) {
-            this.parent = parent instanceof Section 
-                    ? (Composite)((Section)parent).getClient() : parent;
-            return this;
-        }
-
-        public FormFieldBuilder setProperty( Property prop ) {
-            this.prop = prop;
-            return this;
-        }
-
-        public FormFieldBuilder setFeature( Feature feature ) {
-            this.builderFeature = feature;
-            return this;
-        }
-        
-        public FormFieldBuilder setLabel( String label ) {
-            this.label = label;
-            return this;
-        }
-        
-        public FormFieldBuilder setToolTipText( String tooltip ) {
-            this.tooltip = tooltip;
-            return this;
-        }
-
-        public FormFieldBuilder setField( IFormField field ) {
-            this.field = field;
-            return this;
-        }
-
-        public FormFieldBuilder setValidator( IFormFieldValidator validator ) {
-            this.validator = validator;
-            return this;
-        }
-
-        public FormFieldBuilder setEnabled( boolean enabled ) {
-            this.enabled = enabled;
-            return this;
-        }
-        
-        public FormFieldBuilder setLayoutData( Object data ) {
-            this.layoutData = data;
-            return this;
-        }
-        
-        public Composite create() {
-            if (parent == null) {
-                parent = pageSite.getPageBody();
-            }
-            if (prop == null) {
-                prop = builderFeature.getProperty( propName );
-                if (prop == null) {
-                    throw new IllegalStateException( "No such property: " + propName );
-                }
-            }
-            if (field == null) {
-                Class binding = prop.getType().getBinding();
-                // Number
-                if (Number.class.isAssignableFrom( binding )) {
-                    field = new StringFormField();
-                    validator = new NumberValidator( binding, Polymap.getSessionLocale() );
-                }
-                // Date
-                else if (Date.class.isAssignableFrom( binding )) {
-                    field = new DateTimeFormField();
-                }
-                // Boolean
-                else if (Date.class.isAssignableFrom( binding )) {
-                    field = new CheckboxFormField();
-                }
-                // default: String
-                else {
-                    field = new StringFormField();
-                }
-            }
-            Composite result = pageSite.newFormField( parent, prop, field, validator, label );
-            // layoutData
-            if (layoutData != null) {
-                result.setLayoutData( layoutData );
-            }
-//            else {
-//                applyLayout( result );
-//            }
-            // tooltip
-            if (tooltip != null) {
-                result.setToolTipText( tooltip );
-            }
-            // editable
-            if (!enabled) {
-                pageSite.setFieldEnabled( prop.getName().getLocalPart(), enabled );
-            }
-            return result;
         }
     }
 

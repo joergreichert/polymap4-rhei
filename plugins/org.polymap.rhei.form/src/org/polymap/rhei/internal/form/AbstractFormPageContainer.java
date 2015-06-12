@@ -32,13 +32,12 @@ import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.field.FormFieldEvent;
-import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPage2;
-import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.FormFieldBuilder;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormPage2;
+import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 
@@ -47,14 +46,14 @@ import org.polymap.rhei.internal.DefaultFormFieldLabeler;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class AbstractFormEditorPageContainer
-        implements IFormEditorPageSite {
+public abstract class AbstractFormPageContainer
+        implements IFormPageSite {
     
-    private static Log log = LogFactory.getLog( AbstractFormEditorPageContainer.class );
+    private static Log log = LogFactory.getLog( AbstractFormPageContainer.class );
 
     private Object                          editor;
     
-    protected IFormEditorPage               page;
+    protected IFormPage               page;
     
     private Map<String,FormFieldComposite>  fields = new HashMap( 64 );
     
@@ -65,15 +64,15 @@ public abstract class AbstractFormEditorPageContainer
     private int                             labelWidth = 100;
 
     
-    public AbstractFormEditorPageContainer( Object editor, IFormEditorPage page, String id, String title ) {
+    public AbstractFormPageContainer( Object editor, IFormPage page, String id, String title ) {
         this.editor = editor;
         this.page = page;
     }
     
     
     public synchronized void dispose() {
-        if (page != null && page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).dispose();
+        if (page != null && page instanceof IFormPage2) {
+            ((IFormPage2)page).dispose();
         }
         for (FormFieldComposite field : fields.values()) {
             field.dispose();
@@ -132,8 +131,8 @@ public abstract class AbstractFormEditorPageContainer
 
     @Override
     public boolean isDirty() {
-        if (page instanceof IFormEditorPage2) {
-            if (((IFormEditorPage2)page).isDirty()) {
+        if (page instanceof IFormPage2) {
+            if (((IFormPage2)page).isDirty()) {
                 return true;
             }
         }
@@ -148,8 +147,8 @@ public abstract class AbstractFormEditorPageContainer
     
     @Override
     public boolean isValid() {
-        if (page instanceof IFormEditorPage2) {
-            if (!((IFormEditorPage2)page).isValid()) {
+        if (page instanceof IFormPage2) {
+            if (!((IFormPage2)page).isValid()) {
                 return false;
             }
         }
@@ -178,8 +177,8 @@ public abstract class AbstractFormEditorPageContainer
 
         // after form fields in order to allow subclassed Property instances
         // to be notified of submit
-        if (page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).doSubmit( monitor );
+        if (page instanceof IFormPage2) {
+            ((IFormPage2)page).doSubmit( monitor );
         }
 
         return result;
@@ -188,8 +187,8 @@ public abstract class AbstractFormEditorPageContainer
     
     public void doLoad( IProgressMonitor monitor )
     throws Exception {
-        if (page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).doLoad( monitor );
+        if (page instanceof IFormPage2) {
+            ((IFormPage2)page).doLoad( monitor );
         }
 
         try {
@@ -206,23 +205,31 @@ public abstract class AbstractFormEditorPageContainer
     }
 
     
-    // IFormEditorPageSite ****************************
+    // IFormPageSite ****************************
     
-    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator ) {
-        return newFormField( parent, prop, field, validator, null );
+    @Override
+    public FormFieldBuilder newFormField( Property property ) {
+        return new FormFieldBuilder( property ) {
+            @Override
+            protected Composite createFormField() {
+                FormFieldComposite result = new FormFieldComposite( 
+                        editor, 
+                        AbstractFormPageContainer.this, 
+                        getToolkit(), 
+                        property.get(), 
+                        field.get(),
+                        new DefaultFormFieldLabeler( labelWidth, label.get() ), 
+                        new DefaultFormFieldDecorator(), 
+                        validator.orElse( new NullValidator() ) );
+                
+                fields.put( result.getFieldName(), result );
+
+                return result.createComposite( parent.orElse( getPageBody() ), SWT.NONE );
+            }
+        };
     }
 
 
-    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label ) {
-        FormFieldComposite result = new FormFieldComposite( editor, this, getToolkit(), prop, field,
-                new DefaultFormFieldLabeler( labelWidth, label ), new DefaultFormFieldDecorator(), 
-                validator != null ? validator : new NullValidator() );
-        fields.put( result.getFieldName(), result );
-        
-        return result.createComposite( parent != null ? parent : getPageBody(), SWT.NONE );
-    }
-
-    
     @Override
     public void setFieldValue( String fieldName, Object value ) {
         FormFieldComposite field = fields.get( fieldName );

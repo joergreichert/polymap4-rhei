@@ -29,7 +29,7 @@ import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * 
@@ -242,7 +242,7 @@ class FormEditingSupport
             }
 
             @Override
-            public IFormEditorToolkit getToolkit() {
+            public IFormToolkit getToolkit() {
                 throw new RuntimeException( "not yet implemented." );
             }
 

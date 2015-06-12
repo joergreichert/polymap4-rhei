@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * A date/time form field based on the {@link DateTime} widget.
@@ -77,7 +77,7 @@ public class DateTimeFormField
     }
 
     
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         datetime = toolkit.createDateTime( parent, new Date(), SWT.MEDIUM | SWT.DROP_DOWN );
         datetime.setEnabled( enabled );
 //        datetime.setBackground( enabled ? FormEditorToolkit.textBackground : FormEditorToolkit.textBackgroundDisabled );

@@ -37,7 +37,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 import org.polymap.rap.updownload.upload.Upload;
 
@@ -47,7 +47,7 @@ import org.polymap.rap.updownload.upload.Upload;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class TableEditorToolkit
-        implements IFormEditorToolkit {
+        implements IFormToolkit {
 
 //    public static final Color   background = FormEditorToolkit.backgroundFocused;
 

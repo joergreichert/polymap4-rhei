@@ -76,7 +76,7 @@ import org.polymap.rhei.Messages;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.form.IFormEditorPage;
+import org.polymap.rhei.form.IFormPage;
 
 import org.polymap.model2.runtime.event.PropertyChangeSupport;
 
@@ -431,7 +431,7 @@ public class FormEditor
      * are called.
      */
     protected void addPages() {
-        List<IFormEditorPage> _pages = new ArrayList();
+        List<IFormPage> _pages = new ArrayList();
         
         // get all pages
         for (FormPageProviderExtension ext : FormPageProviderExtension.allExtensions()) {
@@ -463,14 +463,14 @@ public class FormEditor
         }
 
         // sort
-        Collections.sort( _pages, new Comparator<IFormEditorPage>() {
-            public int compare( IFormEditorPage p1, IFormEditorPage p2 ) {
+        Collections.sort( _pages, new Comparator<IFormPage>() {
+            public int compare( IFormPage p1, IFormPage p2 ) {
                 return -(p1.getPriority() - p2.getPriority());
             }
         });
         
         // add pages
-        for (IFormEditorPage page : _pages) {
+        for (IFormPage page : _pages) {
             try {
                 FormEditorPageContainer wrapper = new FormEditorPageContainer( page, this, page.getId(), page.getTitle() );
                 addPage( wrapper );

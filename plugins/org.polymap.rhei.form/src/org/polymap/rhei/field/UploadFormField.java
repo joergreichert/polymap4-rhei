@@ -42,7 +42,7 @@ import org.eclipse.rap.rwt.graphics.Graphics;
 import org.polymap.core.data.DataPlugin;
 import org.polymap.core.ui.StatusDispatcher;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 import org.polymap.rap.updownload.upload.IUploadHandler;
 import org.polymap.rap.updownload.upload.Upload;
@@ -96,7 +96,7 @@ public class UploadFormField
     }
 
 
-    public Control createControl( final Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( final Composite parent, IFormToolkit toolkit ) {
         Composite fileSelectionArea = toolkit.createComposite( parent, SWT.NONE );
         FormLayout layout = new FormLayout();
         layout.spacing = 5;

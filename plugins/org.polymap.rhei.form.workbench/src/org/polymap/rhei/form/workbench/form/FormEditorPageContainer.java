@@ -57,14 +57,14 @@ import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NullValidator;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPage2;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormPage2;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.form.workbench.FormEditor;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.internal.DefaultFormFieldLabeler;
-import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
+import org.polymap.rhei.internal.form.AbstractFormPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 import org.polymap.rhei.internal.form.FormFieldComposite;
 
@@ -72,21 +72,21 @@ import org.polymap.rhei.internal.form.FormFieldComposite;
  *
  * @deprecated This is the first version of a Form Page container. It is used in
  *             {@link FormEditor} only. Another version exists as
- *             {@link AbstractFormEditorPageContainer}, which is used in
+ *             {@link AbstractFormPageContainer}, which is used in
  *             {@link FormDialog}. Should be refactored into one code base.
  * @author <a href="http://www.polymap.de">Falko Br�utigam</a>
  */
 public class FormEditorPageContainer
         extends FormPage
-        implements IFormEditorPageSite {
+        implements IFormPageSite {
 
     static Log log = LogFactory.getLog( FormEditorPageContainer.class );
 
-    private IFormEditorPage             page;
+    private IFormPage             page;
 
     private IManagedForm                form;
 
-    private IFormEditorToolkit          toolkit;
+    private IFormToolkit          toolkit;
 
     private List<FormFieldComposite>    fields = new ArrayList( 32 );
 
@@ -95,15 +95,15 @@ public class FormEditorPageContainer
     private int                         labelWidth;
 
 
-    public FormEditorPageContainer( IFormEditorPage page, FormEditor editor, String id, String title ) {
+    public FormEditorPageContainer( IFormPage page, FormEditor editor, String id, String title ) {
         super( editor, id, title );
         this.page = page;
     }
 
 
     public synchronized void dispose() {
-        if (page != null && page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).dispose();
+        if (page != null && page instanceof IFormPage2) {
+            ((IFormPage2)page).dispose();
         }
         for (FormFieldComposite field : fields) {
             field.dispose();
@@ -147,8 +147,8 @@ public class FormEditorPageContainer
 
     @Override
     public boolean isDirty() {
-        if (page instanceof IFormEditorPage2) {
-            if (((IFormEditorPage2)page).isDirty()) {
+        if (page instanceof IFormPage2) {
+            if (((IFormPage2)page).isDirty()) {
                 return true;
             }
         }
@@ -163,8 +163,8 @@ public class FormEditorPageContainer
 
     @Override
     public boolean isValid() {
-        if (page instanceof IFormEditorPage2) {
-            if (!((IFormEditorPage2)page).isValid()) {
+        if (page instanceof IFormPage2) {
+            if (!((IFormPage2)page).isValid()) {
                 return false;
             }
         }
@@ -195,8 +195,8 @@ public class FormEditorPageContainer
 
         // after form fields in order to allow subclassed Property instances
         // to be notified of submit
-        if (page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).doSubmit( monitor );
+        if (page instanceof IFormPage2) {
+            ((IFormPage2)page).doSubmit( monitor );
         }
 
         return result;
@@ -205,8 +205,8 @@ public class FormEditorPageContainer
 
     public void doLoad( IProgressMonitor monitor )
     throws Exception {
-        if (page instanceof IFormEditorPage2) {
-            ((IFormEditorPage2)page).doLoad( monitor );
+        if (page instanceof IFormPage2) {
+            ((IFormPage2)page).doLoad( monitor );
         }
 
         try {
@@ -282,13 +282,13 @@ public class FormEditorPageContainer
     }
 
 
-    // IFormEditorPageSite ****************************
+    // IFormPageSite ****************************
 
     public Composite getPageBody() {
         return form.getForm().getBody();
     }
 
-    public IFormEditorToolkit getToolkit() {
+    public IFormToolkit getToolkit() {
         return toolkit;
     }
 

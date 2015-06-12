@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.model.ConstantWithSynonyms;
 
 /**
@@ -210,7 +210,7 @@ public class PicklistFormField
     }
     
     
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         int comboStyle = SWT.DROP_DOWN;
         comboStyle = !textEditable 
                 ? comboStyle | SWT.READ_ONLY

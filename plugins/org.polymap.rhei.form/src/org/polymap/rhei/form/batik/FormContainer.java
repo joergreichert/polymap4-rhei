@@ -19,12 +19,8 @@ import static org.polymap.rhei.internal.form.FormEditorToolkit.CUSTOM_VARIANT_VA
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
-
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,13 +32,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.jface.action.Action;
 
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rap.rwt.RWT;
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
@@ -50,18 +43,13 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
-import org.polymap.rhei.field.CheckboxFormField;
-import org.polymap.rhei.field.DateTimeFormField;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.field.NumberValidator;
-import org.polymap.rhei.field.StringFormField;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.internal.form.AbstractFormPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -71,7 +59,7 @@ import org.polymap.rhei.internal.form.FormEditorToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class FormContainer
-        implements IFormEditorPage {
+        implements IFormPage {
 
     public static final String  CSS_FORM = CSS_PREFIX + "-form";
     public static final String  CSS_FORM_DISABLED = CSS_PREFIX + "-form-disabled";
@@ -106,12 +94,12 @@ public abstract class FormContainer
      *
      * @param site The API to create fields and interact with the framework.
      */
-    public abstract void createFormContent( IFormEditorPageSite site );
+    public abstract void createFormContent( IFormPageSite site );
 
     
     /**
      * Creates the UI of this form by calling
-     * {@link #createFormContent(org.polymap.rhei.form.IFormEditorPageSite)}.
+     * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
      * 
      * @param parent The parent under which to create the form UI controls.
      */
@@ -122,7 +110,7 @@ public abstract class FormContainer
     
     /**
      * Creates the UI of this form by calling
-     * {@link #createFormContent(org.polymap.rhei.form.IFormEditorPageSite)}.
+     * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
      * 
      * @param parent The parent under which to create the form UI controls.
      */
@@ -165,21 +153,6 @@ public abstract class FormContainer
         }
     }
     
-    /**
-     * Creates a new field via {@link FormFieldBuilder#FormFieldBuilder(Property)}.
-     * @return Newly created {@link FormFieldBuilder}. 
-     */
-    public FormFieldBuilder createField( Property prop ) {
-        return new FormFieldBuilder( prop );
-    }
-    
-    /**
-     * Creates a new field via {@link FormFieldBuilder#FormFieldBuilder(Composite,Property)}. 
-     * @return Newly created {@link FormFieldBuilder}. 
-     */
-    public FormFieldBuilder createField( Composite parent, Property prop ) {
-        return new FormFieldBuilder( parent, prop );
-    }
     
     public void setFieldBuilderFactory( IFormFieldFactory factory ) {
         this.fieldFactory = factory;
@@ -251,7 +224,7 @@ public abstract class FormContainer
      *
      * @param listener
      * @throws IllegalStateException If the given listener is registered already.
-     * @see IFormEditorPageSite#addFieldListener(IFormFieldListener)
+     * @see IFormPageSite#addFieldListener(IFormFieldListener)
      * @see EventManager#subscribe(Object, org.polymap.core.runtime.event.EventFilter...)
      */
     public void addFieldListener( IFormFieldListener l ) {
@@ -303,7 +276,7 @@ public abstract class FormContainer
     }
     
     
-    // default implementation of IFormEditorPage **********
+    // default implementation of IFormPage **********
 
     @Override
     public final String getTitle() {
@@ -330,9 +303,9 @@ public abstract class FormContainer
      * The container for the one and only page of this form.
      */
     protected class PageContainer
-            extends AbstractFormEditorPageContainer {
+            extends AbstractFormPageContainer {
 
-        public PageContainer( IFormEditorPage page ) {
+        public PageContainer( IFormPage page ) {
             super( FormContainer.this, page, "_id_", "_title_" );
             double displayWidth = UIUtils.sessionDisplay().getBounds().width;
             // minimum 110
@@ -351,7 +324,7 @@ public abstract class FormContainer
             return pageBody;
         }
 
-        public IFormEditorToolkit getToolkit() {
+        public IFormToolkit getToolkit() {
             return toolkit;
         }
 
@@ -367,153 +340,5 @@ public abstract class FormContainer
             log.warn( "setActivePage() not supported." );
         }
     }
-
     
-    /**
-     * This field builder allows to create a new form field. It provides a simple,
-     * fluent API that allows to set several aspects of the result. If one aspect
-     * (title, field, validator, etc.) is not set then a default is computed.
-     */
-    protected class FormFieldBuilder {
-        
-        private String              propName;
-        
-        private Composite           parent;
-        
-        private String              label;
-        
-        private String              tooltip;
-        
-        private Feature             builderFeature;
-        
-        private Property            prop;
-        
-        private IFormField          field;
-        
-        private IFormFieldValidator validator;
-        
-        private boolean             fieldEnabled = true;
-
-        private Object              layoutData;
-
-        
-        public FormFieldBuilder( Property prop ) {
-            this.prop = prop;
-        }
-
-        public FormFieldBuilder( Composite parent, Property prop ) {
-            this.parent = parent;
-            this.prop = prop;
-        }
-
-        public FormFieldBuilder( Feature feature, String propName ) {
-            this.propName = propName;
-//            this.label = propName;
-            this.builderFeature = feature;
-        }
-
-        public FormFieldBuilder( Feature feature, String propName, Composite parent) {
-            this( feature, propName );
-            this.parent = parent;
-        }
-        
-        public FormFieldBuilder setParent( Composite parent ) {
-            this.parent = parent instanceof Section 
-                    ? (Composite)((Section)parent).getClient() : parent;
-            return this;
-        }
-
-        public FormFieldBuilder setProperty( Property prop ) {
-            this.prop = prop;
-            return this;
-        }
-
-        public FormFieldBuilder setFeature( Feature feature ) {
-            this.builderFeature = feature;
-            return this;
-        }
-        
-        public FormFieldBuilder setLabel( String label ) {
-            this.label = label;
-            return this;
-        }
-        
-        public FormFieldBuilder setToolTipText( String tooltip ) {
-            this.tooltip = tooltip;
-            return this;
-        }
-
-        public FormFieldBuilder setField( IFormField field ) {
-            this.field = field;
-            return this;
-        }
-
-        public FormFieldBuilder setValidator( IFormFieldValidator validator ) {
-            this.validator = validator;
-            return this;
-        }
-
-        public FormFieldBuilder setEnabled( boolean enabled ) {
-            this.fieldEnabled = enabled;
-            return this;
-        }
-        
-        public FormFieldBuilder setLayoutData( Object data ) {
-            this.layoutData = data;
-            return this;
-        }
-        
-        public Composite create() {
-            if (parent == null) {
-                parent = pageContainer.getPageBody();
-            }
-            if (prop == null) {
-                prop = builderFeature.getProperty( propName );
-                if (prop == null) {
-                    throw new IllegalStateException( "No such property: " + propName );
-                }
-            }
-            if (fieldFactory != null) {
-                field = fieldFactory.createField( prop );
-            }
-            else if (field == null) {
-                Class binding = prop.getType().getBinding();
-                // Number
-                if (Number.class.isAssignableFrom( binding )) {
-                    field = new StringFormField();
-                    validator = new NumberValidator( binding, Polymap.getSessionLocale() );
-                }
-                // Date
-                else if (Date.class.isAssignableFrom( binding )) {
-                    field = new DateTimeFormField();
-                }
-                // Boolean
-                else if (Boolean.class.isAssignableFrom( binding )) {
-                    field = new CheckboxFormField();
-                }
-                // default: String
-                else {
-                    field = new StringFormField();
-                }
-            }
-            Composite result = pageContainer.newFormField( parent, prop, field, validator, label );
-            // layoutData
-            if (layoutData != null) {
-                result.setLayoutData( layoutData );
-            }
-//            else {
-//                applyLayout( result );
-//            }
-            // tooltip
-            if (tooltip != null) {
-                result.setToolTipText( tooltip );
-            }
-            // editable
-            if (!fieldEnabled) {
-                pageContainer.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
-            }
-            return result;
-        }
-    }
-
 }

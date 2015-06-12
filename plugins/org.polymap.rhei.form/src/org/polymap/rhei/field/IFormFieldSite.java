@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.field;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * The primary interface between a form field and the {@link FormEditor}.
@@ -68,7 +68,7 @@ public interface IFormFieldSite {
      */
     public void fireEvent( Object source, int eventCode, Object newFieldValue ); 
     
-    public IFormEditorToolkit getToolkit();
+    public IFormToolkit getToolkit();
     
     /**
      *

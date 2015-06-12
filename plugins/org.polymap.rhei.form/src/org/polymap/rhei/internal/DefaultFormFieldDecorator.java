@@ -31,7 +31,7 @@ import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldDecorator;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * 
@@ -73,7 +73,7 @@ public class DefaultFormFieldDecorator
         }
     }
 
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         contents = toolkit.createComposite( parent, SWT.NONE );
         RowLayout layout = new RowLayout( SWT.HORIZONTAL );
         layout.marginWidth = 0;

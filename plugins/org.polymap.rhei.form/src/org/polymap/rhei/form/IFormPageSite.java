@@ -1,7 +1,6 @@
 /*
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,8 +11,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.form;
 
@@ -26,16 +23,14 @@ import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.field.NullValidator;
 
 /**
- * Provides the interface used inside {@link IFormEditorPage} methods to
+ * Provides the interface used inside {@link IFormPage} methods to
  * interact with the framework.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IFormEditorPageSite {
+public interface IFormPageSite {
 
     /**
      * Specifies the title of this form page. The title is usually displayed
@@ -62,26 +57,28 @@ public interface IFormEditorPageSite {
      */
     public Composite getPageBody();
 
-    public IFormEditorToolkit getToolkit();
+    public IFormToolkit getToolkit();
 
-    /**
-     *
-     * @param parent
-     * @param prop
-     * @param field
-     * @param validator A validator, or null if the {@link NullValidator} should be used.
-     * @param label
-     */
-    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label );
-
-    /**
-     *
-     * @param parent
-     * @param prop
-     * @param field
-     * @param validator A validator, or null if the {@link NullValidator} should be used.
-     */
-    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator );
+    public FormFieldBuilder newFormField( Property property );
+    
+//    /**
+//     *
+//     * @param parent
+//     * @param prop
+//     * @param field
+//     * @param validator A validator, or null if the {@link NullValidator} should be used.
+//     * @param label
+//     */
+//    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator, String label );
+//
+//    /**
+//     *
+//     * @param parent
+//     * @param prop
+//     * @param field
+//     * @param validator A validator, or null if the {@link NullValidator} should be used.
+//     */
+//    public Composite newFormField( Composite parent, Property prop, IFormField field, IFormFieldValidator validator );
 
     /**
      * Registers the given listener that is notified about changes of an {@link IFormField}.
@@ -123,17 +120,15 @@ public interface IFormEditorPageSite {
     /**
      * Reloads all fields of the editor from the backend.
      */
-    public void reloadEditor()
-    throws Exception;
+    public void reloadEditor() throws Exception;
 
     /**
      * Submits all changed fields of the editor to the backend.
      */
-    public void submitEditor()
-    throws Exception;
+    public void submitEditor() throws Exception;
 
     /**
-     * True if any field of the page is dirty and/or if {@link IFormEditorPage2}
+     * True if any field of the page is dirty and/or if {@link IFormPage2}
      * has reported that it is dirty.
      *
      * @return True if the page has unsaved changes.
@@ -143,7 +138,7 @@ public interface IFormEditorPageSite {
     
     /**
      * True if all fields of the page have valid state. If the page is an
-     * {@link IFormEditorPage2} than the page have to have valid state too.
+     * {@link IFormPage2} than the page have to have valid state too.
      * 
      * @return True if all unsaved changes of the page are valid.
      */

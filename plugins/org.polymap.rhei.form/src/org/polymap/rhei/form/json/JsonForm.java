@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright 2011-2012, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2011-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -44,26 +44,25 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.form.DefaultFormPageLayouter;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @since 3.0
  */
 public class JsonForm
-        implements IFormEditorPage {
+        implements IFormPage {
 
     private static Log log = LogFactory.getLog( JsonForm.class );
     
     private JSONObject              json;
 
-    private IFormEditorPageSite     site;
+    private IFormPageSite           site;
 
-    private IFormEditorToolkit      tk;
+    private IFormToolkit            tk;
 
     
     protected JsonForm() {
@@ -127,7 +126,7 @@ public class JsonForm
     }
 
 
-    public void createFormContent( IFormEditorPageSite _site ) {
+    public void createFormContent( IFormPageSite _site ) {
         log.debug( "createFormContent(): json= " + json );
         this.site = _site;
         this.tk = site.getToolkit();
@@ -204,9 +203,11 @@ public class JsonForm
         String name = field_json.getString( "name" );
         Object defaultValue = field_json.opt( "value" );
 
-        Composite result = site.newFormField( parent, 
-                findProperty( name, defaultValue ), formField, validator, label );
-        return result;
+        return site.newFormField( findProperty( name, defaultValue ) )
+                .field.put( formField )
+                .validator.put( validator )
+                .label.put( label )
+                .create();
     }
 
 

@@ -50,8 +50,8 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.TextFormField;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorPageSite;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.form.workbench.FormEditor;
 
 /**
@@ -65,12 +65,12 @@ public class StandardPageProvider
     private static Log log = LogFactory.getLog( StandardPageProvider.class );
 
     
-    public List<IFormEditorPage> addPages( final FormEditor formEditor, final Feature feature ) {
+    public List<IFormPage> addPages( final FormEditor formEditor, final Feature feature ) {
         log.debug( "feature= " + feature );
   
-        List<IFormEditorPage> result = new ArrayList();
+        List<IFormPage> result = new ArrayList();
         
-        result.add( new IFormEditorPage() {
+        result.add( new IFormPage() {
 
             public void dispose() {
             }
@@ -91,7 +91,7 @@ public class StandardPageProvider
                 return null;
             }
 
-            public void createFormContent( IFormEditorPageSite site ) {
+            public void createFormContent( IFormPageSite site ) {
                 site.setFormTitle( feature.getIdentifier().getID() );
                 site.setEditorTitle( StringUtils.abbreviate( feature.getIdentifier().getID(), 30 ) );
                 site.getPageBody().setLayout( new FormLayout() );

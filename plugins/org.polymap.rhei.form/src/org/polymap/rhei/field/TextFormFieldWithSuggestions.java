@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class TextFormFieldWithSuggestions
     }
 
 
-    protected Control createControl( Composite parent, IFormEditorToolkit toolkit, int style ) {
+    protected Control createControl( Composite parent, IFormToolkit toolkit, int style ) {
 
         Composite area = toolkit.createComposite( parent, SWT.NONE );
         area.setLayout( new FormLayout() );

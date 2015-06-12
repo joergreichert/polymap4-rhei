@@ -20,7 +20,7 @@ package org.polymap.rhei.field;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * The basic interface of all form field labels. 
@@ -39,7 +39,7 @@ public interface IFormFieldLabel {
 
     public void dispose();
     
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit );
+    public Control createControl( Composite parent, IFormToolkit toolkit );
     
     public int getMaxWidth();
     

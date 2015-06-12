@@ -38,9 +38,9 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.form.IFormEditorPage;
-import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.internal.form.AbstractFormEditorPageContainer;
+import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.internal.form.AbstractFormPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -59,10 +59,10 @@ public class FormEditorDialog
 
     private PageContainer               pageContainer;
 
-    private IFormEditorToolkit          toolkit;
+    private IFormToolkit          toolkit;
 
 
-    public FormEditorDialog( IFormEditorPage page ) {
+    public FormEditorDialog( IFormPage page ) {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         setShellStyle( getShellStyle() | SWT.RESIZE );
 
@@ -167,9 +167,9 @@ public class FormEditorDialog
      *
      */
     class PageContainer
-            extends AbstractFormEditorPageContainer {
+            extends AbstractFormPageContainer {
 
-        public PageContainer( IFormEditorPage page ) {
+        public PageContainer( IFormPage page ) {
             super( FormEditorDialog.this, page, "_id_", "_title_" );
         }
 
@@ -181,7 +181,7 @@ public class FormEditorDialog
             return pageBody;
         }
 
-        public IFormEditorToolkit getToolkit() {
+        public IFormToolkit getToolkit() {
             return toolkit;
         }
 

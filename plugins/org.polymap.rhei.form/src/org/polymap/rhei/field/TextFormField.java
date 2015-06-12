@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.polymap.core.ui.FormDataFactory;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  *
@@ -40,7 +40,7 @@ public class TextFormField
     }
     
     @Override
-    protected Control createControl( Composite parent, IFormEditorToolkit toolkit, int style ) {
+    protected Control createControl( Composite parent, IFormToolkit toolkit, int style ) {
         Text text = (Text)super.createControl( parent, toolkit, style | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL );
         
 //        layoutData.height = 75;

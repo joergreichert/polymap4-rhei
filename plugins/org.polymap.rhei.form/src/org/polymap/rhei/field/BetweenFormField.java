@@ -28,7 +28,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 
 /**
  * 
@@ -127,7 +127,7 @@ public class BetweenFormField
     }
 
     
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         Composite contents = toolkit.createComposite( parent );
         RowLayout layout = new RowLayout();
         layout.marginHeight = 0;
@@ -242,7 +242,7 @@ public class BetweenFormField
             return delegate.getFieldName();
         }
 
-        public IFormEditorToolkit getToolkit() {
+        public IFormToolkit getToolkit() {
             return delegate.getToolkit();
         }
 

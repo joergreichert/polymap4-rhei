@@ -33,7 +33,7 @@ import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -83,7 +83,7 @@ public class DefaultFormFieldLabeler
         site.removeChangeListener( this );
     }
 
-    public Control createControl( Composite parent, IFormEditorToolkit toolkit ) {
+    public Control createControl( Composite parent, IFormToolkit toolkit ) {
         Control result = null;
         if (labelStr != null && labelStr.equals( NO_LABEL )) {
             result = label = toolkit.createLabel( parent, "" );            
