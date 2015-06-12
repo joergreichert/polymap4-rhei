@@ -14,18 +14,26 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
+import com.google.common.base.Function;
+
 import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
 
 /**
- * A Tokenizer extracts index terms (tokens) from input text. Tokenizers are used to
- * build searchable tokens when updating an {@link UpdateableFulltextIndex} and to
- * transform a search query in searchable tokens.
- * 
+ * A FulltextTokenFilter is a {@link Function} that filters and/or transforms
+ * index tokens while updating an {@link UpdateableFulltextIndex}.
+ *
  * @see UpdateableFulltextIndex
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface FullTextTokenizer {
-
-    public boolean isTokenChar( int c );
+public interface FulltextTokenFilter
+        extends Function<String,String> {
+    
+    /**
+     * 
+     * 
+     * @return The filtered token.
+     */
+    @Override
+    public String apply( String term );
 
 }

@@ -22,8 +22,8 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
-import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
-import org.polymap.rhei.fulltext.indexing.FullTextTokenizer;
+import org.polymap.rhei.fulltext.indexing.FulltextTokenFilter;
+import org.polymap.rhei.fulltext.indexing.FulltextTokenizer;
 import org.polymap.rhei.fulltext.indexing.StandardTokenizer;
 
 /**
@@ -39,15 +39,15 @@ import org.polymap.rhei.fulltext.indexing.StandardTokenizer;
 public abstract class UpdateableFulltextIndex
         implements FulltextIndex {
 
-    protected FullTextTokenizer         tokenizer = new StandardTokenizer();
+    protected FulltextTokenizer         tokenizer = new StandardTokenizer();
     
-    protected List<FullTextTokenFilter> filters = new ArrayList();
+    protected List<FulltextTokenFilter> filters = new ArrayList();
     
     
     /**
      * 
      */
-    public UpdateableFulltextIndex addTokenFilter( FullTextTokenFilter filter ) {
+    public UpdateableFulltextIndex addTokenFilter( FulltextTokenFilter filter ) {
         assert !filters.contains( filter );
         filters.add( filter );
         return this;        
@@ -56,12 +56,12 @@ public abstract class UpdateableFulltextIndex
     /**
      * 
      */
-    public List<FullTextTokenFilter> filters() {
+    public List<FulltextTokenFilter> filters() {
         return filters;
     }
 
     
-    public FullTextTokenizer tokenizer() {
+    public FulltextTokenizer tokenizer() {
         return tokenizer;
     }
 

@@ -22,7 +22,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.util.AttributeSource;
 
-import org.polymap.rhei.fulltext.indexing.FullTextTokenizer;
+import org.polymap.rhei.fulltext.indexing.FulltextTokenizer;
 
 /**
  *
@@ -53,7 +53,7 @@ final class LuceneAnalyzer
     final class LuceneTokenizer
             extends CharTokenizer {
 
-        private FullTextTokenizer   tokenizer = index.tokenizer();
+        private FulltextTokenizer   tokenizer = index.tokenizer();
         
         public LuceneTokenizer( Reader in ) {
             super( LuceneFulltextIndex.LUCENE_VERSION, in );

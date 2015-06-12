@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.fulltext.servlet;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -25,21 +24,22 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.referencing.NamedIdentifier;
 import org.json.JSONObject;
-import org.json.simple.JSONStreamAware;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+
 import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,7 +71,7 @@ public class GeoJsonEncoder
     private CoordinateReferenceSystem   worldCRS;
     
     /** The accumulator for the encoded features until they are flushed. */
-    private FeatureCollection<SimpleFeatureType, SimpleFeature> features;
+    private DefaultFeatureCollection    features;
 
     
     public GeoJsonEncoder( OutputStream out, CoordinateReferenceSystem worldCRS )
@@ -109,7 +109,7 @@ public class GeoJsonEncoder
         assert !streamStarted;
         streamStarted = true;
 
-        this.features = FeatureCollections.newCollection();
+        this.features = new DefaultFeatureCollection( null, null );
     }
     
     
@@ -207,7 +207,7 @@ public class GeoJsonEncoder
      * 
      */
     class CRSEncoder
-            implements JSONStreamAware {
+            /*implements JSONStreamAware*/ {
         
         private FeatureJSON                 fjson;
 
@@ -269,7 +269,7 @@ public class GeoJsonEncoder
      * 
      */
     static class CollectionEncoder 
-            implements JSONStreamAware {
+            /*implements JSONStreamAware*/ {
 
         private FeatureCollection           features;
 
@@ -296,8 +296,9 @@ public class GeoJsonEncoder
             
             out.write( "[" );
             
-            try {
-                Iterator<SimpleFeature> it = features.iterator();
+            try (
+                    FeatureIterator<SimpleFeature> it = features.features();
+                ){
                 if (it.hasNext()) {
                     fjson.writeFeature( it.next(), out );
                 }
@@ -316,6 +317,7 @@ public class GeoJsonEncoder
 //                        } );
 //                        break;
 //                    }
+                    
                     // encode feature
                     out.write( "," );
                     fjson.writeFeature( it.next(), out );

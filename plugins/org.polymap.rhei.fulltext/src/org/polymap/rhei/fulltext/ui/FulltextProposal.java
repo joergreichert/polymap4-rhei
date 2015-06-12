@@ -121,6 +121,9 @@ public class FulltextProposal
 
         proposal.addContentProposalListener( new IContentProposalListener() {
             public void proposalAccepted( IContentProposal _proposal ) {
+                control.setText( _proposal.getContent() + " " );
+                control.setSelection( _proposal.getCursorPosition()+1, _proposal.getCursorPosition()+1 );
+                
                 if (eventOnAccept.get()) {
                     Event event = new Event();
                     event.keyCode = SWT.Selection;

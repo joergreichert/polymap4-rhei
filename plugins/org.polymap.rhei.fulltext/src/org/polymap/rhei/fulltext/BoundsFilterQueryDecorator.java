@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
 
 import java.io.StringReader;
 
+import org.geotools.geojson.geom.GeometryJSON;
 import org.json.JSONObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

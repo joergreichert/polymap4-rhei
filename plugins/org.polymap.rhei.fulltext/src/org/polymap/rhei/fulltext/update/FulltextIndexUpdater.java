@@ -41,9 +41,9 @@ import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex.Updater;
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class FullTextIndexUpdater {
+public abstract class FulltextIndexUpdater {
 
-    private static Log log = LogFactory.getLog( FullTextIndexUpdater.class );
+    private static Log log = LogFactory.getLog( FulltextIndexUpdater.class );
 
     private List<FeatureTransformer>    transformers = new ArrayList();
     
@@ -55,7 +55,7 @@ public abstract class FullTextIndexUpdater {
     }
     
     
-    public FullTextIndexUpdater setCommitOnException( boolean commitOnException ) {
+    public FulltextIndexUpdater setCommitOnException( boolean commitOnException ) {
         this.commitOnException = commitOnException;
         return this;
     }
@@ -84,7 +84,7 @@ public abstract class FullTextIndexUpdater {
             return session.execute( new Callable<Future<IStatus>>() {
                 @Override
                 public Future<IStatus> call() throws Exception {
-                    UIJob job = new UIJob( "FullTextIndexUpdater" ) {
+                    UIJob job = new UIJob( "FulltextIndexUpdater" ) {
                         @Override
                         protected void runWithException( IProgressMonitor monitor ) throws Exception {
                             Updater updater = index().prepareUpdate();

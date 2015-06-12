@@ -20,7 +20,7 @@ import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 
-import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
+import org.polymap.rhei.fulltext.indexing.FulltextTokenFilter;
 
 /**
  * 
@@ -32,10 +32,10 @@ public class LuceneTokenFilter
 
     private TermAttribute                   termAtt;
 
-    private Iterable<FullTextTokenFilter>   filters;
+    private Iterable<FulltextTokenFilter>   filters;
 
     
-    public LuceneTokenFilter( TokenStream in, Iterable<FullTextTokenFilter> filters ) {
+    public LuceneTokenFilter( TokenStream in, Iterable<FulltextTokenFilter> filters ) {
         super( in );
         this.filters = filters;
         this.termAtt = addAttribute( TermAttribute.class );
@@ -48,7 +48,7 @@ public class LuceneTokenFilter
             // XXX use termBuffer() for performance
             String term = termAtt.term();
             String filtered = term;
-            for (FullTextTokenFilter filter : filters) {
+            for (FulltextTokenFilter filter : filters) {
                 filtered = filter.apply( filtered );
             }
             if (filtered != term) {

@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
+import org.polymap.rhei.fulltext.indexing.FulltextTokenFilter;
 
 /**
  * Normalizes address fields.
@@ -26,7 +26,7 @@ import org.polymap.rhei.fulltext.indexing.FullTextTokenFilter;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class AddressTokenFilter
-        implements FullTextTokenFilter {
+        implements FulltextTokenFilter {
 
     private static Log log = LogFactory.getLog( AddressTokenFilter.class );
 

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Fulltext Search Capabilities
 Bundle-SymbolicName: org.polymap.rhei.fulltext
 Bundle-Version: 4.0.0.qualifier
-Bundle-Activator: org.polymap.rhei.fulltext.FullTextPlugin
+Bundle-Activator: org.polymap.rhei.fulltext.FulltextPlugin
 Bundle-Vendor: polymap.org
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="2.3.1",
  org.eclipse.rap.ui;bundle-version="2.3.1",
@@ -27,6 +27,4 @@ Bundle-ClassPath: lib/jdom-1.0.jar,
  lib/rome-0.9.jar,
  lib/georss-rome-0.9.8.jar,
  lib/json-20131018.jar,
- lib/lucene-core-3.6.2.jar,
- lib/lucene-queryparser-3.6.2.jar,
  .

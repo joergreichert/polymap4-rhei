@@ -39,7 +39,7 @@
 		<delete dir="${lib}" />
 	</target>
 
-	<target name="load_m2_deps" unless="already_downloaded">
+	<target name="load_m2_deps" depends="init" unless="already_downloaded">
 	    <artifact:remoteRepository id="central.repository" url="http://repo1.maven.org/maven2" />
 	    <artifact:localRepository id="local.repository" path="${user.home}/.m2/repository" />
 
@@ -52,9 +52,6 @@
             <dependency groupId="org.geonames" artifactId="georss-rome" version="0.9.8" />
             
 			<dependency groupId="org.json" artifactId="json" version="20131018" />
-
-            <dependency groupId="org.apache.lucene" artifactId="lucene-core" version="3.6.2" />
-            <dependency groupId="org.apache.lucene" artifactId="lucene-queryparser" version="3.6.2" />
 
             <dependency groupId="commons-collections" artifactId="commons-collections" version="3" scope="provided" />
             <dependency groupId="commons-lang" artifactId="commons-collections" version="2" scope="provided" />

@@ -75,6 +75,7 @@ public class LuceneFulltextIndex
         store = dir != null 
                 ? new LuceneRecordStore( dir, false )
                 : new LuceneRecordStore();
+                
         store.getValueCoders().clear();
         // StringValueCoder is *last*
         store.getValueCoders().addValueCoder( new StringValueCoder() );
@@ -163,7 +164,7 @@ public class LuceneFulltextIndex
             throws Exception {
         // parse query;
         // for queries containing ":" use no/simple analyzer as ordinary fields
-        // are not analyzed for before storing (see StringValueCoder for example) 
+        // are not analyzed before storing (see StringValueCoder for example) 
         QueryParser parser = isComplexQuery( queryStr )
                 ? new QueryParser( LUCENE_VERSION, FIELD_ANALYZED, new NoobAnalyzer( this ) )
                 : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, analyzer );

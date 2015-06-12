@@ -1,6 +1,6 @@
 /* 
  * polymap.org
- * Copyright (C) 2014, Falko Bräutigam. All rights reserved.
+ * Copyright (C) 2014-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -23,33 +23,34 @@ import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class StandardTokenizer
-        implements FullTextTokenizer {
+        implements FulltextTokenizer {
 
     @Override
     public boolean isTokenChar( int c ) {
         switch (c) {
-            case ' ': return false;
-            case '\t': return false;
-            case '\r': return false;
-            case '\n': return false;
-            case '.': return false;
-            case ',': return false;
-            case ';': return false;
-            case ':': return false;
-            case '-': return false;
-            case '\\': return false;
-            case '/': return false;
-            case '@': return false;
-            case '"': return false;
-            case '\'': return false;
-            case '{': return false;
-            case '}': return false;
-            case '[': return false;
-            case ']': return false;
+            case ' '    : return false;   
+            case '\t'   : return false;
+            case '\r'   : return false;
+            case '\n'   : return false;
+            case '.'    : return false;
+            case ','    : return false;
+            case ';'    : return false;
+            case ':'    : return false;
+            case '-'    : return false;
+            case '\\'   : return false;
+            case '/'    : return false;
+            case '@'    : return false;
+            case '"'    : return false;
+            case '\''   : return false;
+            case '{'    : return false;
+            case '}'    : return false;
+            case '['    : return false;
+            case ']'    : return false;
             // http://polymap.org/atlas/ticket/77
-            case '(': return false;
-            case ')': return false;
-            default: return true;
+            case '('    : return false;
+            case ')'    : return false;
+            
+            default     : return true;
         }
     }
     

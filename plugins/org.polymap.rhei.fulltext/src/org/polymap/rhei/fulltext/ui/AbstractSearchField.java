@@ -35,12 +35,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.rap.rwt.graphics.Graphics;
 
-import org.polymap.core.data.DataPlugin;
 import org.polymap.core.runtime.UIJob;
+import org.polymap.core.runtime.config.Check;
+import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Configurable;
+import org.polymap.core.runtime.config.DefaultBoolean;
+import org.polymap.core.runtime.config.DefaultInt;
+import org.polymap.core.runtime.config.NumberRangeValidator;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
 
-import org.polymap.rhei.fulltext.FullTextPlugin;
+import org.polymap.rhei.fulltext.FulltextPlugin;
 
 /**
  * A text search field with clear button and deferred search execution running inside
@@ -48,23 +53,38 @@ import org.polymap.rhei.fulltext.FullTextPlugin;
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class AbstractSearchField {
+public abstract class AbstractSearchField
+        extends Configurable {
 
     private static Log log = LogFactory.getLog( AbstractSearchField.class );
     
-    protected Composite             container;
+    protected Composite                         container;
     
-    protected Text                  searchTxt;
+    protected Text                              searchTxt;
     
-    protected Label                 clearBtn;
+    protected Label                             clearBtn;
     
-    protected String                filterText;
+    protected String                            filterText;
     
-    protected boolean               searchOnEnter = true;
+    /**
+     * True specifies that the search is performed when keyboard Enter is pressed.
+     * Otherwise the search is started automatically (after
+     * {@link #searchDelayMillis}) when input has changed.
+     */
+    @DefaultBoolean( true )
+    public Config<AbstractSearchField,Boolean>  searchOnEnter;
+
+    /**
+     * The delay before auto search starts. Only used if {@link #searchOnEnter} is
+     * set to false.
+     */
+    @DefaultInt( 750 )
+    @Check( value=NumberRangeValidator.class, args={"0","10000"} )
+    public Config<FulltextProposal,Integer>     searchDelayMillis;
 
     
     /**
-     * Constructs a new instance with {@link #setSearchOnEnter(boolean)} = true.
+     * Constructs a new instance.
      *  
      * @param _parent
      */
@@ -74,7 +94,7 @@ public abstract class AbstractSearchField {
 
         clearBtn = new Label( container, SWT.PUSH | SWT.SEARCH );
         clearBtn.setToolTipText( "Zurücksetzen" );
-        clearBtn.setImage( DataPlugin.getDefault().imageForName( "icons/etool16/delete_edit.gif" ) );
+        clearBtn.setImage( FulltextPlugin.instance().imageForName( "icons/delete_edit.gif" ) );
         clearBtn.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( 100, -5 ).left( -1 ).create() );
         clearBtn.addMouseListener( new MouseAdapter() {
             public void mouseUp( MouseEvent e ) {
@@ -116,7 +136,7 @@ public abstract class AbstractSearchField {
 
                 clearBtn.setVisible( filterText.length() > 0 );
                 
-                if (!searchOnEnter) {                
+                if (!searchOnEnter.get()) {                
                     // Job: defer refresh for 2s
                     new UIJob( "Fulltext search" ) {
 
@@ -130,14 +150,14 @@ public abstract class AbstractSearchField {
                             }
                             search( getDisplay(), filterText );
                         }
-                    }.schedule( 2000 );
+                    }.schedule( searchDelayMillis.get() );
                 }
             }
         });
         searchTxt.addKeyListener( new KeyAdapter() {
             // FullTextProposal depends on this event type "KeyUp"
             public void keyReleased( KeyEvent ev ) {
-                if (ev.keyCode == SWT.Selection && searchOnEnter) {
+                if (ev.keyCode == SWT.Selection && searchOnEnter.get()) {
                     filterText = searchTxt.getText();
                     search( searchTxt.getDisplay(), filterText );
                 }
@@ -151,7 +171,7 @@ public abstract class AbstractSearchField {
             doSearch( filterText );
         }
         catch (Exception e) {
-            FullTextPlugin.instance().handleError( "Suche konnte nicht erfolgreich beendet werden.", e );
+            FulltextPlugin.instance().handleError( "Suche konnte nicht erfolgreich beendet werden.", e );
         }
         display.asyncExec( new Runnable() {
             @Override
@@ -191,22 +211,4 @@ public abstract class AbstractSearchField {
         return searchTxt;
     }
 
-    public boolean isSearchOnEnter() {
-        return searchOnEnter;
-    }
-
-    
-    /**
-     * True specifies that the search is performed when keyboard Enter is pressed.
-     * Otherwise the search is started automatically (after delay fo 2s) when input
-     * has changed.
-     * 
-     * @return this
-     */
-    public AbstractSearchField setSearchOnEnter( boolean searchOnEnter ) {
-        this.searchOnEnter = searchOnEnter;
-        return this;
-    }
-    
-    
 }

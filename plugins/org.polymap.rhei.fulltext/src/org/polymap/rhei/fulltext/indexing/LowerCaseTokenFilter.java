@@ -24,7 +24,7 @@ import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.QueryDecorator;
 
 /**
- * Provides a {@link FullTextTokenFilter} and {@link QueryDecorator} to normalize
+ * Provides a {@link FulltextTokenFilter} and {@link QueryDecorator} to normalize
  * proposal and query strings to lower case. The proposal results are capitalized.
  * 
  * @see LowerCaseFilter
@@ -32,10 +32,10 @@ import org.polymap.rhei.fulltext.QueryDecorator;
  */
 public class LowerCaseTokenFilter
         extends QueryDecorator
-        implements FullTextTokenFilter {
+        implements FulltextTokenFilter {
 
     /**
-     * Ctor for {@link FullTextTokenFilter}.
+     * Ctor for {@link FulltextTokenFilter}.
      */
     public LowerCaseTokenFilter() {
         super( null );
@@ -57,7 +57,7 @@ public class LowerCaseTokenFilter
             return next.propose( query, maxResults, field );
         }
         else {
-            query = field == null ? query.toLowerCase() : query;
+            query = query.toLowerCase();
 
             Iterable<String> results = next.propose( query, maxResults, field );
 
