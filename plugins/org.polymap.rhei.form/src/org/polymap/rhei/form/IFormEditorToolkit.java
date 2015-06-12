@@ -40,7 +40,6 @@ import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 
 import org.polymap.rhei.filter.FilterEditor;
-import org.polymap.rhei.form.workbench.FormEditor;
 
 import org.polymap.rap.updownload.upload.Upload;
 

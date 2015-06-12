@@ -43,7 +43,7 @@ public class DefaultFormFieldDecorator
 
     private static Log log = LogFactory.getLog( DefaultFormFieldDecorator.class );
 
-    public static final Image   focusImage, dirtyImage, invalidImage;
+    public static final Image   dirtyImage, invalidImage;
     
     private IFormFieldSite      site;
     
@@ -56,11 +56,11 @@ public class DefaultFormFieldDecorator
 
     static {
         dirtyImage = ImageDescriptor.createFromURL( 
-                RheiFormPlugin.getDefault().getBundle().getResource( "icons/elcl16/field_dirty3.gif" ) ).createImage();
-        focusImage = ImageDescriptor.createFromURL( 
-                RheiFormPlugin.getDefault().getBundle().getResource( "icons/elcl16/field_dirty2.gif" ) ).createImage();
+                RheiFormPlugin.getDefault().getBundle().getResource( "icons/field_dirty.gif" ) ).createImage();
+//        focusImage = ImageDescriptor.createFromURL( 
+//                RheiFormPlugin.getDefault().getBundle().getResource( "icons/elcl16/field_dirty2.gif" ) ).createImage();
         invalidImage = ImageDescriptor.createFromURL( 
-                RheiFormPlugin.getDefault().getBundle().getResource( "icons/elcl16/field_invalid.gif" ) ).createImage();
+                RheiFormPlugin.getDefault().getBundle().getResource( "icons/field_invalid.gif" ) ).createImage();
     }
     
     public void init( IFormFieldSite _site ) {

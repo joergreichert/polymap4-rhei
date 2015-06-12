@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Workbench Forms
+Bundle-SymbolicName: org.polymap.rhei.form.workbench;singleton:=true
+Bundle-Version: 4.0.0.qualifier
+Bundle-Vendor: polymap.org
+Require-Bundle: org.polymap.rhei.form;bundle-version="4.0.0";visibility:=reexport,
+ org.polymap.core.project;bundle-version="4.0.0",
+ org.polymap.core.mapeditor
+Export-Package: org.polymap.rhei.form.workbench.filter,
+ org.polymap.rhei.form.workbench.filter.navigator,
+ org.polymap.rhei.form.workbench.form,
+ org.polymap.rhei.form.workbench.table

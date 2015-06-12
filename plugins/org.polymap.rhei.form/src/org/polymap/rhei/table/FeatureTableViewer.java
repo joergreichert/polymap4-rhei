@@ -29,8 +29,6 @@ import org.opengis.filter.Filter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.collect.Iterables;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -186,7 +184,7 @@ public class FeatureTableViewer
 
     
     public IFeatureTableElement[] getSelectedElements() {
-        return Iterables.toArray( new SelectionAdapter( getSelection() ), IFeatureTableElement.class );
+        return SelectionAdapter.on( getSelection() ).asArray( IFeatureTableElement.class ); 
     }
 
     

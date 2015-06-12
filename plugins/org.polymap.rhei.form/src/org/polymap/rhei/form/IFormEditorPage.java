@@ -19,8 +19,6 @@ package org.polymap.rhei.form;
 
 import org.eclipse.jface.action.Action;
 
-import org.polymap.rhei.form.workbench.FormEditor;
-
 /**
  * Provides a page for a {@link FormEditor}. The form content consists of form fields
  * that are created via

@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -212,10 +213,13 @@ public class UploadFormField
                     String id = System.currentTimeMillis() + "";
                     String internalFileName = id + extension;
                     File dbFile = new File( uploadDir, internalFileName );
-                    FileOutputStream out = new FileOutputStream( dbFile );
-                    // XXX oben StreamUtils ersetzen durch IOUtils
-                    StreamUtils.copyThenClose( in, out );
-                    log.info( "### copied to: " + dbFile );
+                    try (
+                        FileOutputStream out = new FileOutputStream( dbFile ); 
+                        InputStream autoCloseIn = in;
+                    ){
+                        IOUtils.copy( in, out );
+                        log.info( "### copied to: " + dbFile );
+                    }
 
                     // create a thumbnail
                     Image image = Graphics
@@ -236,7 +240,7 @@ public class UploadFormField
                     // else no need to scale
                     String thumbnailFileName = id + "_thumb" + extension;
                     dbFile = new File( uploadDir, thumbnailFileName );
-                    out = new FileOutputStream( dbFile );
+                    FileOutputStream out = new FileOutputStream( dbFile );
                     ImageLoader loader = new ImageLoader();
                     loader.data = new ImageData[] { image.getImageData().scaledTo( newX, newY ) };
                     loader.save( out, SWT.IMAGE_COPY );

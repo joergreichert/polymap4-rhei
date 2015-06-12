@@ -21,11 +21,8 @@ import org.opengis.filter.Filter;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.project.ILayer;
-
 /**
- * Provides the logic to create a concrete {@link Filter} instance for a given
- * layer (feature type).
+ * Provides the logic to create a concrete {@link Filter}.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -36,12 +33,6 @@ public interface IFilter {
     public String getLabel();
 
     public Set<String> getKeywords();
-
-    /**
-     * Returns the layer this filter is associated with.
-     */
-    public ILayer getLayer();
-
 
     /**
      * Returns true if this filter need input from the user to create the

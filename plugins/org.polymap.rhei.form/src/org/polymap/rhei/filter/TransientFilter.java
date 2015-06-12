@@ -16,8 +16,6 @@ import org.opengis.filter.Filter;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.project.ILayer;
-
 /**
  *
  *
@@ -28,8 +26,6 @@ public class TransientFilter
 
     private String                  id;
 
-    private ILayer                  layer;
-
     private String                  label;
 
     private Set<String>             keywords;
@@ -39,10 +35,9 @@ public class TransientFilter
     private int                     maxResults;
 
 
-    public TransientFilter( String id, ILayer layer, String label, Set<String> keywords, Filter filter,
+    public TransientFilter( String id, String label, Set<String> keywords, Filter filter,
             int maxResults ) {
         this.id = id;
-        this.layer = layer;
         this.label = label;
         this.keywords = keywords;
         this.filter = filter;
@@ -75,10 +70,6 @@ public class TransientFilter
 
     public int getMaxResults() {
         return maxResults;
-    }
-
-    public ILayer getLayer() {
-        return layer;
     }
 
 }
