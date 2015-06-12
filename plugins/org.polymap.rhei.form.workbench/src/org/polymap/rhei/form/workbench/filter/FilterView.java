@@ -177,7 +177,7 @@ public class FilterView
     public void showFilter( IFilter _filter ) {
         assert _filter != null && _filter.hasControl();
         filter = _filter;
-        setPartName( filter.getLayer().getLabel() + ": " + filter.getLabel() );
+        setPartName( filter.getLayer().getTitle() + ": " + filter.getTitle() );
         
         // FilterEditor
         assert filterEditor == null;

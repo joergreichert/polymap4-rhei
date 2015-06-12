@@ -56,11 +56,11 @@ public class FormFieldComposite
     /** Identifies the editor that events belong to. */
     private Object                  editor;
     
-    private IFormPageSite     pageSite;
+    private IFormPageSite           pageSite;
     
     private Property                prop;
     
-    private IFormToolkit      toolkit;
+    private IFormToolkit            toolkit;
     
     private IFormField              field;
     

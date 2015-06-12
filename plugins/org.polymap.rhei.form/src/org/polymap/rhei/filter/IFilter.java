@@ -30,7 +30,7 @@ public interface IFilter {
 
     public String getId();
 
-    public String getLabel();
+    public String getTitle();
 
     public Set<String> getKeywords();
 

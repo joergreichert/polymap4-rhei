@@ -52,7 +52,7 @@ public class TransientFilter
         return keywords;
     }
 
-    public String getLabel() {
+    public String getTitle() {
         return label;
     }
 

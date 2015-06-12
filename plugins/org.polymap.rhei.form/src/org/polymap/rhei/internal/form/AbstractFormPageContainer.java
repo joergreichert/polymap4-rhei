@@ -53,7 +53,7 @@ public abstract class AbstractFormPageContainer
 
     private Object                          editor;
     
-    protected IFormPage               page;
+    protected IFormPage                     page;
     
     private Map<String,FormFieldComposite>  fields = new HashMap( 64 );
     
@@ -161,8 +161,7 @@ public abstract class AbstractFormPageContainer
     }
     
     
-    public Map<Property,Object> doSubmit( IProgressMonitor monitor )
-    throws Exception {
+    public Map<Property,Object> doSubmit( IProgressMonitor monitor ) throws Exception {
         Map<Property,Object> result = new HashMap();
         
         for (FormFieldComposite field : fields.values()) {
@@ -185,8 +184,7 @@ public abstract class AbstractFormPageContainer
     }
 
     
-    public void doLoad( IProgressMonitor monitor )
-    throws Exception {
+    public void doLoad( IProgressMonitor monitor ) throws Exception {
         if (page instanceof IFormPage2) {
             ((IFormPage2)page).doLoad( monitor );
         }
@@ -259,14 +257,12 @@ public abstract class AbstractFormPageContainer
     }
 
     
-    public void reloadEditor()
-    throws Exception {
+    public void reloadEditor() throws Exception {
         doLoad( new NullProgressMonitor() );
     }
 
     
-    public void submitEditor()
-    throws Exception {
+    public void submitEditor() throws Exception {
         doSubmit( new NullProgressMonitor() );
     }
 

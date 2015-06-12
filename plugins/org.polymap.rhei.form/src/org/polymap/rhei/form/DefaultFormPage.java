@@ -54,27 +54,19 @@ public abstract class DefaultFormPage
     /** The default space between the sections of the page. */
     public static final int         SECTION_SPACING = 6;
 
-    /**
-     * The ID of this form.
-     */
+    /** The ID of this form. */
     protected String                id;
     
-    /**
-     * The title of this form.
-     */
+    /** The title of this form. */
     protected String                title;
     
-    /**
-     * The feature that is shown in this form.
-     */
+    /** The feature that is shown in this form. */
     protected Feature               feature;
 
-    /**
-     * The {@link FeatureStore} of the {@link #feature} of this form.
-     */
+    /** The {@link FeatureStore} of the {@link #feature} of this form.  */
     protected FeatureStore          fs;
     
-    protected IFormPageSite   pageSite;
+    protected IFormPageSite         pageSite;
 
     protected Control               lastLayoutElm;
     
@@ -192,163 +184,6 @@ public abstract class DefaultFormPage
         return field;
     }
 
-//    /**
-//     * 
-//     * 
-//     * @param parent
-//     * @param propertyName
-//     * @return A new builder that can be used to set several aspects of the form
-//     *         field and to actually {@link FormFieldBuilder#create()} the field
-//     *         inthe form.
-//     */
-//    protected FormFieldBuilder newFormField( String propertyName ) {
-//        return new FormFieldBuilder( propertyName );
-//    }
-//
-//
-//    /**
-//     * This field builder allows to create a new form field. It provides a simple,
-//     * chainable API that allows to set several aspects of the result. If an aspect
-//     * is not set then a default is computed.
-//     */
-//    public class FormFieldBuilder {
-//        
-//        private String              propName;
-//        
-//        private Composite           parent;
-//        
-//        private String              label;
-//        
-//        private String              tooltip;
-//        
-//        private Feature             builderFeature;
-//        
-//        private Property            prop;
-//        
-//        private IFormField          field;
-//        
-//        private IFormFieldValidator validator;
-//        
-//        private boolean             enabled = true;
-//
-//        private Object              layoutData;
-//        
-//        
-//        public FormFieldBuilder( String propName ) {
-//            this.propName = propName;
-//            this.label = propName;
-//            this.builderFeature = feature;
-//        }
-//
-//        public FormFieldBuilder( String propName, Composite parent) {
-//            this( propName );
-//            this.parent = parent;
-//        }
-//
-////        public FormFieldBuilder setFocus( boolean focus ) {
-////            this.focus = focus;
-////            return this;
-////        }
-//        
-//        public FormFieldBuilder setParent( Composite parent ) {
-//            this.parent = parent instanceof Section 
-//                    ? (Composite)((Section)parent).getClient() : parent;
-//            return this;
-//        }
-//
-//        public FormFieldBuilder setProperty( Property prop ) {
-//            this.prop = prop;
-//            return this;
-//        }
-//
-//        public FormFieldBuilder setFeature( Feature feature ) {
-//            this.builderFeature = feature;
-//            return this;
-//        }
-//        
-//        public FormFieldBuilder setLabel( String label ) {
-//            this.label = label;
-//            return this;
-//        }
-//        
-//        public FormFieldBuilder setToolTipText( String tooltip ) {
-//            this.tooltip = tooltip;
-//            return this;
-//        }
-//
-//        public FormFieldBuilder setField( IFormField field ) {
-//            this.field = field;
-//            return this;
-//        }
-//
-//        public FormFieldBuilder setValidator( IFormFieldValidator validator ) {
-//            this.validator = validator;
-//            return this;
-//        }
-//
-//        public FormFieldBuilder setEnabled( boolean enabled ) {
-//            this.enabled = enabled;
-//            return this;
-//        }
-//        
-//        public FormFieldBuilder setLayoutData( Object data ) {
-//            this.layoutData = data;
-//            return this;
-//        }
-//        
-//        public Composite create() {
-//            if (parent == null) {
-//                parent = pageSite.getPageBody();
-//            }
-//            if (prop == null) {
-//                prop = builderFeature.getProperty( propName );
-//                if (prop == null) {
-//                    throw new IllegalStateException( "No such property: " + propName );
-//                }
-//            }
-//            if (field == null) {
-//                Class binding = prop.getType().getBinding();
-//                // Number
-//                if (Number.class.isAssignableFrom( binding )) {
-//                    field = new StringFormField();
-//                    validator = new NumberValidator( binding, Polymap.getSessionLocale() );
-//                }
-//                // Date
-//                else if (Date.class.isAssignableFrom( binding )) {
-//                    field = new DateTimeFormField();
-//                }
-//                // Boolean
-//                else if (Date.class.isAssignableFrom( binding )) {
-//                    field = new CheckboxFormField();
-//                }
-//                // default: String
-//                else {
-//                    field = new StringFormField();
-//                }
-//            }
-//            Composite result = pageSite.newFormField( parent, prop, field, validator, label );
-//            // layoutData
-//            if (layoutData != null) {
-//                result.setLayoutData( layoutData );
-//            }
-//            else {
-//                applyLayout( result );
-//            }
-//            // tooltip
-//            if (tooltip != null) {
-//                result.setToolTipText( tooltip );
-//            }
-//            else if (!label.equals( IFormFieldLabel.NO_LABEL )) {
-//                result.setToolTipText( label );                
-//            }
-//            // editable
-//            if (!enabled) {
-//                pageSite.setFieldEnabled( prop.getName().getLocalPart(), enabled );
-//            }
-//            return result;
-//        }
-//    }
-    
     
     /**
      * Checks if the name of type of the {@link Feature} of this form contains one

@@ -83,7 +83,7 @@ public class OpenFormMapContextMenu
         for (final ILayer layer : site.getMap().getLayers()) {
             if (layer.isVisible()) {
                 setVisible( true );
-                UIJob job = new UIJob( "Find features: " + layer.getLabel() ) {
+                UIJob job = new UIJob( "Find features: " + layer.getTitle() ) {
                     protected void runWithException( IProgressMonitor monitor ) throws Exception {
                         FeatureIterator it = null;
                         try {
@@ -168,7 +168,7 @@ public class OpenFormMapContextMenu
         }
         return Messages.get( "OpenFormMapContextMenu_label", 
                 StringUtils.abbreviate( featureLabel, 0, 35 ), 
-                layer.getLabel() );
+                layer.getTitle() );
     }
 
 }

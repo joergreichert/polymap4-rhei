@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright 2011-2012, Falko Brï¿½utigam. All rights reserved.
+ * Copyright (C) 2011-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.form.workbench.form;
+package org.polymap.rhei.form;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,31 +38,27 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.form.IFormPage;
-import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.internal.form.AbstractFormPageContainer;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  *
- *
- * @author <a href="http://www.polymap.de">Falko Brï¿½utigam</a>
- * @since 1.0
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class FormEditorDialog
+public class FormDialog
         extends TitleAreaDialog
         implements IFormFieldListener {
 
-    private static Log log = LogFactory.getLog( FormEditorDialog.class );
+    private static Log log = LogFactory.getLog( FormDialog.class );
 
-    private Composite                   pageBody;
+    private Composite             pageBody;
 
-    private PageContainer               pageContainer;
+    private PageContainer         pageContainer;
 
     private IFormToolkit          toolkit;
 
 
-    public FormEditorDialog( IFormPage page ) {
+    public FormDialog( IFormPage page ) {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         setShellStyle( getShellStyle() | SWT.RESIZE );
 
@@ -95,6 +91,7 @@ public class FormEditorDialog
     }
 
 
+    @Override
     protected void okPressed() {
         log.debug( "okPressed() ..." );
         try {
@@ -109,12 +106,14 @@ public class FormEditorDialog
     }
 
 
+    @Override
     protected void cancelPressed() {
         pageContainer.dispose();
         super.cancelPressed();
     }
 
 
+    @Override
     protected Control createDialogArea( Composite parent ) {
         Composite result = (Composite)super.createDialogArea( parent );
         toolkit = new FormEditorToolkit( new FormToolkit( getParentShell().getDisplay() ) );
@@ -170,29 +169,34 @@ public class FormEditorDialog
             extends AbstractFormPageContainer {
 
         public PageContainer( IFormPage page ) {
-            super( FormEditorDialog.this, page, "_id_", "_title_" );
+            super( FormDialog.this, page, "_id_", "_title_" );
         }
 
         public void createContent() {
             page.createFormContent( this );
         }
 
+        @Override
         public Composite getPageBody() {
             return pageBody;
         }
 
+        @Override
         public IFormToolkit getToolkit() {
             return toolkit;
         }
 
+        @Override
         public void setFormTitle( String title ) {
             setMessage( title );
         }
 
+        @Override
         public void setEditorTitle( String title ) {
             setTitle( title );
         }
 
+        @Override
         public void setActivePage( String pageId ) {
             log.warn( "setActivePage() not supported." );
         }

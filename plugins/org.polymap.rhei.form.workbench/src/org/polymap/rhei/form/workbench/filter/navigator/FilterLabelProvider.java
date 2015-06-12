@@ -58,7 +58,7 @@ public class FilterLabelProvider
         }
         // filter
         else if (elm instanceof IFilter) {
-            return ((IFilter)elm).getLabel();
+            return ((IFilter)elm).getTitle();
         }
         // unknown
         else {

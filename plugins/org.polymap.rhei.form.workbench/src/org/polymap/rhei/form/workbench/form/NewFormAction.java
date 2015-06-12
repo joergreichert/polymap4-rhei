@@ -66,7 +66,7 @@ public class NewFormAction
             PipelineFeatureSource fs = PipelineFeatureSource.forLayer( layer, false );
             if (fs != null && fs.getSchema().getGeometryDescriptor() != null) {
                 MessageDialog.openInformation( PolymapWorkbench.getShellToParentOn(),
-                        Messages.get( "NewFormAction_noGeomTitle" ), Messages.get( "NewFormAction_noGeomMsg", layer.getLabel() ) );
+                        Messages.get( "NewFormAction_noGeomTitle" ), Messages.get( "NewFormAction_noGeomMsg", layer.getTitle() ) );
             }
             else {
                 NewFeatureOperation op = new NewFeatureOperation( layer, null );
