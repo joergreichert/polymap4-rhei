@@ -66,6 +66,15 @@ public class SimpleFeatureTableElement
      */
     private KeyValue                    sortedValue;          
     
+    public static class KeyValue<K,V> {
+        public K        key;
+        public V        value;
+
+        public KeyValue( K key, V value ) {
+            this.key = key;
+            this.value = value;
+        }
+    }
     
     public SimpleFeatureTableElement( Feature feature, FeatureSource fs, Cache<String,Feature> cache ) {
         super();
@@ -99,13 +108,13 @@ public class SimpleFeatureTableElement
 
 
     public Object getValue( String name ) {
-        if (sortedValue == null || !sortedValue.getKey().equals( name )) {
+        if (sortedValue == null || !sortedValue.key.equals( name )) {
             Feature feature = feature();
             if (feature != null) {
-                sortedValue = new DefaultKeyValue( name, feature.getProperty( name ).getValue() );
+                sortedValue = new KeyValue( name, feature.getProperty( name ).getValue() );
             }
         }
-        return sortedValue != null ? sortedValue.getValue() : null;
+        return sortedValue != null ? sortedValue.value : null;
     }
     
     

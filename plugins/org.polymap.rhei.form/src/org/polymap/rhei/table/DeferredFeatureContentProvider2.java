@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 
@@ -297,7 +297,6 @@ public class DeferredFeatureContentProvider2
             sortedElements = new Object[0];
 
             FeatureCollection coll = null;
-            Iterator it = null;
 
             try {
                 if (fs == null) {
@@ -309,38 +308,41 @@ public class DeferredFeatureContentProvider2
                     viewer.markTableLoading( true ); 
                 }
 
-                it = coll.iterator();
-                int chunkSize = 16;
-                List chunk = new ArrayList( chunkSize ); 
+                try ( 
+                        FeatureIterator it = coll.features() 
+                    ){
+                    int chunkSize = 16;
+                    List chunk = new ArrayList( chunkSize ); 
 
-                for (int c=0; it.hasNext() && elementCache != null; c++) {
-                    SimpleFeatureTableElement elm = new SimpleFeatureTableElement( (Feature)it.next(), fs, elementCache );
-                    chunk.add( elm );
+                    for (int c=0; it.hasNext() && elementCache != null; c++) {
+                        SimpleFeatureTableElement elm = new SimpleFeatureTableElement( it.next(), fs, elementCache );
+                        chunk.add( elm );
 
-                    // check canceled or disposed
-                    if (monitor.isCanceled() || Thread.interrupted() || elementCache == null) {
-                        break;
+                        // check canceled or disposed
+                        if (monitor.isCanceled() || Thread.interrupted() || elementCache == null) {
+                            break;
+                        }
+
+                        if (chunk.size() >= chunkSize) {
+                            addChunk( chunk, monitor );
+                            monitor.worked( chunk.size() );
+
+                            chunkSize = Math.min( 4*chunkSize, 4096 );
+                            chunk = new ArrayList( chunkSize );
+
+                            // let the UI thread update the table so that the user sees
+                            // first results quickly
+                            //log.info( "sleeping: chunkSize=" + chunkSize );
+                            //Thread.sleep( 50 );
+                        }
                     }
-
-                    if (chunk.size() >= chunkSize) {
+                    // disposed?
+                    if (elementCache != null) {
                         addChunk( chunk, monitor );
-                        monitor.worked( chunk.size() );
-
-                        chunkSize = Math.min( 4*chunkSize, 4096 );
-                        chunk = new ArrayList( chunkSize );
-
-                        // let the UI thread update the table so that the user sees
-                        // first results quickly
-                        //log.info( "sleeping: chunkSize=" + chunkSize );
-                        //Thread.sleep( 50 );
                     }
-                }
-                // disposed?
-                if (elementCache != null) {
-                    addChunk( chunk, monitor );
-                }
-                else {
-                    monitor.setCanceled( true );
+                    else {
+                        monitor.setCanceled( true );
+                    }
                 }
             }
             // NPE when disposed and variables are null; don't show to user
@@ -355,7 +357,6 @@ public class DeferredFeatureContentProvider2
                 if (viewer != null) {
                     viewer.markTableLoading( false ); 
                 }
-                if (coll != null) { coll.close( it ); }
                 
                 display.asyncExec( new Runnable() {
                     public void run() {

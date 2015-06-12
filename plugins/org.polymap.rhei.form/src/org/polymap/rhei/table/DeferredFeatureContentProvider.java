@@ -16,11 +16,11 @@ package org.polymap.rhei.table;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 
@@ -146,7 +146,6 @@ class DeferredFeatureContentProvider
                 protected IStatus run( IProgressMonitor monitor ) {
                     
                     FeatureCollection coll = null;
-                    Iterator it = null;
                     int c;
                     
                     try {
@@ -154,39 +153,42 @@ class DeferredFeatureContentProvider
                         monitor.beginTask( getName(), coll.size() );
                         viewer.markTableLoading( true );
 
-                        it = coll.iterator();
-                        List chunk = new ArrayList( 256 );
-                        int chunkSize = 8;
-                        
-                        for (c=0; it.hasNext(); c++) {
-                            SimpleFeatureTableElement elm = new SimpleFeatureTableElement( (Feature)it.next(), fs, elementCache );
-                            chunk.add( elm );
-                            sortedElements.add( elm );
-                            monitor.worked( 1 );
+                        try (
+                                FeatureIterator it = coll.features()
+                            ){
+                            List chunk = new ArrayList( 256 );
+                            int chunkSize = 8;
 
-                            if (monitor.isCanceled() || Thread.interrupted()) {
-                                return Status.CANCEL_STATUS;
+                            for (c=0; it.hasNext(); c++) {
+                                SimpleFeatureTableElement elm = new SimpleFeatureTableElement( it.next(), fs, elementCache );
+                                chunk.add( elm );
+                                sortedElements.add( elm );
+                                monitor.worked( 1 );
+
+                                if (monitor.isCanceled() || Thread.interrupted()) {
+                                    return Status.CANCEL_STATUS;
+                                }
+
+                                if (chunk.size() >= chunkSize) {
+                                    chunkSize = Math.min( 2*chunkSize, 1024 );
+                                    log.info( "adding chunk to table. size=" + chunk.size() );
+                                    listener.add( chunk.toArray() );
+                                    viewer.firePropChange( FeatureTableViewer.PROP_CONTENT_SIZE, null, c );
+                                    chunk.clear();
+
+                                    // let the UI thread update the table so that the user sees
+                                    // first results quickly
+                                    Thread.sleep( 100 );
+                                }
                             }
-                            
-                            if (chunk.size() >= chunkSize) {
-                                chunkSize = Math.min( 2*chunkSize, 1024 );
-                                log.info( "adding chunk to table. size=" + chunk.size() );
-                                listener.add( chunk.toArray() );
-                                viewer.firePropChange( FeatureTableViewer.PROP_CONTENT_SIZE, null, c );
-                                chunk.clear();
-                                
-                                // let the UI thread update the table so that the user sees
-                                // first results quickly
-                                Thread.sleep( 100 );
-                            }
+                            listener.add( chunk.toArray() );
+                            viewer.firePropChange( FeatureTableViewer.PROP_CONTENT_SIZE, null, c );
+
+                            // pre-sort elements in the Job after all chunks are sent
+                            sortedElements.getItems( true );
+
+                            return Status.OK_STATUS;
                         }
-                        listener.add( chunk.toArray() );
-                        viewer.firePropChange( FeatureTableViewer.PROP_CONTENT_SIZE, null, c );
-
-                        // pre-sort elements in the Job after all chunks are sent
-                        sortedElements.getItems( true );
-
-                        return Status.OK_STATUS;
                     }
                     catch (Exception e) {
                         log.warn( "", e );
@@ -194,7 +196,6 @@ class DeferredFeatureContentProvider
                     }
                     finally {
                         viewer.markTableLoading( false );
-                        coll.close( it );
                         monitor.done();
                     }
                 }
