@@ -64,7 +64,7 @@ import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.form.workbench.FormEditor;
 import org.polymap.rhei.internal.DefaultFormFieldDecorator;
 import org.polymap.rhei.internal.DefaultFormFieldLabeler;
-import org.polymap.rhei.internal.form.AbstractFormPageContainer;
+import org.polymap.rhei.internal.form.FormPageController;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 import org.polymap.rhei.internal.form.FormFieldComposite;
 
@@ -72,7 +72,7 @@ import org.polymap.rhei.internal.form.FormFieldComposite;
  *
  * @deprecated This is the first version of a Form Page container. It is used in
  *             {@link FormEditor} only. Another version exists as
- *             {@link AbstractFormPageContainer}, which is used in
+ *             {@link FormPageController}, which is used in
  *             {@link FormDialog}. Should be refactored into one code base.
  * @author <a href="http://www.polymap.de">Falko Br�utigam</a>
  */

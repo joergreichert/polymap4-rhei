@@ -56,7 +56,7 @@ public class TransientFilter
         return label;
     }
 
-    public Filter createFilter( IFilterEditorSite site ) {
+    public Filter createFilter( IFilterPageSite site ) {
         return filter;
     }
 
@@ -64,7 +64,7 @@ public class TransientFilter
         return false;
     }
 
-    public Composite createControl( Composite parent, IFilterEditorSite site ) {
+    public Composite createControl( Composite parent, IFilterPageSite site ) {
         throw new RuntimeException( "not implemented." );
     }
 

@@ -101,6 +101,7 @@ public class JsonForm
     }
 
     
+    @Override
     public String getId() {
         try {
             return json.getString( "id" );
@@ -111,6 +112,7 @@ public class JsonForm
     }
 
 
+    @Override
     public String getTitle() {
         try {
             return json.getString( "title" );
@@ -121,18 +123,20 @@ public class JsonForm
     }
 
     
+    @Override
     public byte getPriority() {
         return 0;
     }
 
 
+    @Override
     public void createFormContent( IFormPageSite _site ) {
         log.debug( "createFormContent(): json= " + json );
         this.site = _site;
         this.tk = site.getToolkit();
         DefaultFormPageLayouter layouter = new DefaultFormPageLayouter();
 
-        site.setFormTitle( getTitle() );
+        site.setPageTitle( getTitle() );
         site.getPageBody().setLayout( new FormLayout() );
         Composite client = site.getPageBody();
         client.setLayout( layouter.newLayout() );
@@ -224,8 +228,8 @@ public class JsonForm
         return new PropertyAdapter( propName, defaultValue );
     }
 
-
-    public Action[] getEditorActions() {
+    @Override
+    public Action[] getActions() {
         return null;
     }
 

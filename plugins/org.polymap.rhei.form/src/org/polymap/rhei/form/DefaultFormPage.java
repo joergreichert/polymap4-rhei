@@ -71,6 +71,14 @@ public abstract class DefaultFormPage
     protected Control               lastLayoutElm;
     
     
+    public DefaultFormPage() {
+    }
+
+    public DefaultFormPage( String id, String title ) {
+        this.id = id;
+        this.title = title;
+    }
+
     public DefaultFormPage( String id, String title, Feature feature, FeatureStore fs ) {
         this.id = id;
         this.title = title;
@@ -86,19 +94,23 @@ public abstract class DefaultFormPage
         this.pageSite = site;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public byte getPriority() {
         return 1;
     }
 
-    public Action[] getEditorActions() {
+    @Override
+    public Action[] getActions() {
         return null;
     }
 

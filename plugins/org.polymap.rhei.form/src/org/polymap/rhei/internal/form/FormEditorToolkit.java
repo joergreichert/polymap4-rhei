@@ -75,6 +75,14 @@ public class FormEditorToolkit
         this.delegate.setBorderStyle( SWT.BORDER );
     }
 
+    protected int stylebits( int... styles ) {
+        int result = SWT.NONE;
+        for (int style : styles) {
+            result |= style;
+        }
+        return result;
+    }
+
     public <T extends Control> T adapt( T control ) {
         UIUtils.setVariant( control, CUSTOM_VARIANT_VALUE );
         // reset colors to allow styling
@@ -83,16 +91,12 @@ public class FormEditorToolkit
         return control;
     }
 
-    public Button createButton( Composite parent, String text, int style ) {
-        return adapt( delegate.createButton( parent, text, style ) );
+    public Button createButton( Composite parent, String text, int... styles ) {
+        return adapt( delegate.createButton( parent, text, stylebits( styles ) ) );
     }
 
-    public Composite createComposite( Composite parent, int style ) {
-        return adapt( delegate.createComposite( parent, style | SWT.NO_FOCUS ) );
-    }
-
-    public Composite createComposite( Composite parent ) {
-        return createComposite( parent, SWT.DEFAULT );
+    public Composite createComposite( Composite parent, int... styles ) {
+        return adapt( delegate.createComposite( parent, stylebits( styles ) | SWT.NO_FOCUS ) );
     }
 
     public Composite createCompositeSeparator( Composite parent ) {
@@ -111,29 +115,29 @@ public class FormEditorToolkit
         return delegate.createFormText( parent, trackFocus );
     }
 
-    public Hyperlink createHyperlink( Composite parent, String text, int style ) {
-        return delegate.createHyperlink( parent, text, style | SWT.NO_FOCUS );
+    public Hyperlink createHyperlink( Composite parent, String text, int... styles ) {
+        return delegate.createHyperlink( parent, text, stylebits( styles ) | SWT.NO_FOCUS );
     }
 
-    public ImageHyperlink createImageHyperlink( Composite parent, int style ) {
-        return delegate.createImageHyperlink( parent, style | SWT.NO_FOCUS );
+    public ImageHyperlink createImageHyperlink( Composite parent, int... styles ) {
+        return delegate.createImageHyperlink( parent, stylebits( styles ) | SWT.NO_FOCUS );
     }
 
-    public Label createLabel( Composite parent, String text, int style ) {
-        Label result = adapt( delegate.createLabel( parent, text, style /*| SWT.NO_FOCUS*/ ) );
+    public Label createLabel( Composite parent, String text, int... styles ) {
+        Label result = adapt( delegate.createLabel( parent, text, stylebits( styles ) /*| SWT.NO_FOCUS*/ ) );
 //        result.setForeground( labelForeground );
         return result;
     }
 
-    public Label createLabel( Composite parent, String text ) {
-        Label result = adapt( delegate.createLabel( parent, text/*, SWT.NO_FOCUS*/ ) );
-//        result.setForeground( labelForeground );
-//        result.setFont( Graphics.getFont( result.getFont().getFontData()[0].
-        return result;
-    }
+//    public Label createLabel( Composite parent, String text ) {
+//        Label result = adapt( delegate.createLabel( parent, text/*, SWT.NO_FOCUS*/ ) );
+////        result.setForeground( labelForeground );
+////        result.setFont( Graphics.getFont( result.getFont().getFontData()[0].
+//        return result;
+//    }
 
-    public ScrolledPageBook createPageBook( Composite parent, int style ) {
-        return delegate.createPageBook( parent, style );
+    public ScrolledPageBook createPageBook( Composite parent, int... styles ) {
+        return delegate.createPageBook( parent, stylebits( styles ) );
     }
 
     public ScrolledForm createScrolledForm( Composite parent ) {
@@ -144,32 +148,27 @@ public class FormEditorToolkit
         return delegate.createSection( parent, sectionStyle | SWT.NO_FOCUS );
     }
 
-    public Label createSeparator( Composite parent, int style ) {
-        return delegate.createSeparator( parent, style | SWT.NO_FOCUS );
+    public Label createSeparator( Composite parent, int... styles ) {
+        return delegate.createSeparator( parent, stylebits( styles ) | SWT.NO_FOCUS );
     }
 
-    public Table createTable( Composite parent, int style ) {
-        return delegate.createTable( parent, style );
+    public Table createTable( Composite parent, int... styles ) {
+        return delegate.createTable( parent, stylebits( styles ) );
     }
 
-    public List createList( Composite parent, int style ) {
-        List result = adapt( new List( parent, style ) );
+    public List createList( Composite parent, int... styles ) {
+        List result = adapt( new List( parent, stylebits( styles ) ) );
 //        result.setBackground( textBackground );
         return result;
     }
 
-    public Text createText( Composite parent, String value, int style ) {
-        Text result = adapt( delegate.createText( parent, value, style ) );
+    public Text createText( Composite parent, String value, int... styles ) {
+        Text result = adapt( delegate.createText( parent, value, stylebits( styles ) ) );
         return result;
     }
 
-    public Text createText( Composite parent, String value ) {
-        Text result = adapt( delegate.createText( parent, value ) );
-        return result;
-    }
-
-    public Tree createTree( Composite parent, int style ) {
-        return delegate.createTree( parent, style );
+    public Tree createTree( Composite parent, int... styles ) {
+        return delegate.createTree( parent, stylebits( styles ) );
     }
     
     public Upload createUpload( Composite parent, int style, int flags ) {
@@ -184,8 +183,8 @@ public class FormEditorToolkit
         return createCombo( parent, values, SWT.DROP_DOWN );
     }
 
-    public Combo createCombo( Composite parent, Set<String> values, int style ) {
-        Combo combo = new Combo( parent, style );
+    public Combo createCombo( Composite parent, Set<String> values, int... styles ) {
+        Combo combo = new Combo( parent, stylebits( styles ) );
         delegate.adapt( combo );
         adapt( combo );
 //        combo.setBackground( textBackground );

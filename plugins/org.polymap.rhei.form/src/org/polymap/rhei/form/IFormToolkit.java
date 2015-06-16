@@ -49,11 +49,9 @@ import org.polymap.rap.updownload.upload.Upload;
  */
 public interface IFormToolkit {
 
-    public abstract Button createButton( Composite parent, String text, int style );
+    public abstract Button createButton( Composite parent, String text, int... styles );
 
-    public abstract Composite createComposite( Composite parent, int style );
-
-    public abstract Composite createComposite( Composite parent );
+    public abstract Composite createComposite( Composite parent, int... styles );
 
     public abstract Composite createCompositeSeparator( Composite parent );
 
@@ -64,33 +62,27 @@ public interface IFormToolkit {
 
     public abstract FormText createFormText( Composite parent, boolean trackFocus );
 
-    public abstract Hyperlink createHyperlink( Composite parent, String text, int style );
+    public abstract Hyperlink createHyperlink( Composite parent, String text, int... styles );
 
-    public abstract ImageHyperlink createImageHyperlink( Composite parent, int style );
+    public abstract ImageHyperlink createImageHyperlink( Composite parent, int... styles );
 
-    public abstract Label createLabel( Composite parent, String text, int style );
+    public abstract Label createLabel( Composite parent, String text, int... styles );
 
-    public abstract Label createLabel( Composite parent, String text );
-
-    public abstract ScrolledPageBook createPageBook( Composite parent, int style );
+    public abstract ScrolledPageBook createPageBook( Composite parent, int... styles );
 
     public abstract ScrolledForm createScrolledForm( Composite parent );
 
     public abstract Section createSection( Composite parent, int sectionStyle );
 
-    public abstract Label createSeparator( Composite parent, int style );
+    public abstract Label createSeparator( Composite parent, int... styles );
 
-    public abstract Table createTable( Composite parent, int style );
+    public abstract Table createTable( Composite parent, int... styles );
 
-    public abstract Text createText( Composite parent, String value, int style );
+    public abstract Text createText( Composite parent, String value, int... styles );
 
-    public abstract Text createText( Composite parent, String value );
+    public abstract Tree createTree( Composite parent, int... styles );
 
-    public abstract Tree createTree( Composite parent, int style );
-
-    public abstract Combo createCombo( Composite parent, Set<String> values );
-    
-    public abstract Combo createCombo( Composite parent, Set<String> values, int style );
+    public abstract Combo createCombo( Composite parent, Set<String> values, int... styles );
     
     public abstract DateTime createDateTime( Composite parent, Date value );
     
@@ -98,6 +90,6 @@ public interface IFormToolkit {
 
     public abstract Upload createUpload( Composite parent, int style, int flags );
 
-    public abstract List createList( Composite parent, int comboStyle );
+    public abstract List createList( Composite parent, int... styles );
     
 }

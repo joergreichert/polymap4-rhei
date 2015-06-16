@@ -17,26 +17,14 @@ package org.polymap.rhei.internal.filter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import org.polymap.core.runtime.event.EventFilter;
-import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.ui.UIUtils;
-
-import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldDecorator;
 import org.polymap.rhei.field.IFormFieldLabel;
-import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.filter.FilterEditor;
+import org.polymap.rhei.filter.IFilterPageSite;
 import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.internal.form.BaseFieldComposite;
 
 /**
  * The filter form specific parent Composite of a form field, consisting of an
@@ -47,211 +35,46 @@ import org.polymap.rhei.form.IFormToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class FilterFieldComposite
-        implements IFormFieldSite {
+        extends BaseFieldComposite {
 
     private static Log log = LogFactory.getLog( FilterFieldComposite.class );
-
-    private FilterEditor            editor;
     
-    private String                  propName;
+    private String      propName;
     
-    private Class                   propType;
+    private Class<?>    propType;
     
-    private IFormToolkit      toolkit;
-    
-    private IFormField              field;
-    
-    private IFormFieldDecorator     decorator;
-    
-    private IFormFieldLabel         labeler;
-    
-    private IFormFieldValidator     validator;
-    
-    private boolean                 isDirty = false;
-    
-    /** The current error, externally set or returned by the validator. */
-    private String                  errorMsg;
-    
-    /** Error message set by {@link #setErrorMessage(String)} */
-    private String                  externalErrorMsg;
-
-    private Object                  value;
+    private Object      value;
 
 
-    public FilterFieldComposite( FilterEditor editor, IFormToolkit toolkit,
-            String propName, Class propType,
+    public FilterFieldComposite( Object editor, IFilterPageSite pageSite, 
+            IFormToolkit toolkit, String propName, Class<?> propType,
             IFormField field, IFormFieldLabel labeler, IFormFieldDecorator decorator,
             IFormFieldValidator validator ) {
-        this.editor = editor;
+        super( editor, pageSite, toolkit, field, labeler, decorator, validator );
         this.propName = propName;
         this.propType = propType;
-        this.toolkit = toolkit;
-        this.field = field;
-        this.labeler = labeler;
-        this.decorator = decorator;
-        this.validator = validator;
     }
     
-    
-    public Composite createComposite( Composite parent, int style ) {
-        Composite result = toolkit.createComposite( parent, style );
-        UIUtils.setVariant( result, "formeditor-field" );
-        result.setLayout( new FormLayout() );
-        
-        // label
-        labeler.init( this );
-        Control labelControl = labeler.createControl( result, toolkit );
-        FormData layoutData = new FormData( 90, SWT.DEFAULT );
-        layoutData.left = new FormAttachment( 0 );
-        layoutData.top = new FormAttachment( 0, 4 );
-        labelControl.setLayoutData( layoutData );
-        
-        // decorator
-        decorator.init( this );
-        Control decoControl = decorator.createControl( result, toolkit );
-        layoutData = new FormData( 30, SWT.DEFAULT );
-        layoutData.left = new FormAttachment( 100, -22 );
-        layoutData.right = new FormAttachment( 100 );
-        layoutData.top = new FormAttachment( 0, 0 );
-        decoControl.setLayoutData( layoutData );
-        
-        // field
-        field.init( this );
-        Control fieldControl = field.createControl( result, toolkit );
-        layoutData = fieldControl.getLayoutData() != null
-                ? (FormData)fieldControl.getLayoutData()
-                : new FormData( 100, SWT.DEFAULT );
-        layoutData.left = new FormAttachment( labelControl, 5 );
-        layoutData.right = new FormAttachment( decoControl, -3 );
-        fieldControl.setLayoutData( layoutData );
-        
-        result.pack( true );
-        return result;
-    }
-
-
-    public void dispose() {
-        log.debug( "dispose(): ..." );
-        if (field != null) {
-            field.dispose();
-            field = null;
-        }
-        if (labeler != null) {
-            labeler.dispose();
-            labeler = null;
-        }
-        if (decorator != null) {
-            decorator.dispose();
-            decorator = null;
-        }
-    }
-
-
-    public IFormField getFormField() {
-        return field;
-    }
-
-    public boolean isDirty() {
-        return isDirty;
-    }
-
-    public boolean isValid() {
-        return errorMsg == null;       
-    }
-
-
-    /**
-     * Returns the raw value of this field. The value is not transformed to be a
-     * 'field value'.
-     */
-    public Object getValue() {
-        return value;        
+    public Object store() throws Exception {
+        super.store();
+        return value;
     }
 
     // IFormFieldSite *************************************
-        
+
+    @Override
     public String getFieldName() {
         return propName;
     }
 
-    public Class getFieldType() {
-        return propType;
-    }
-
-    public Object getFieldValue()
-    throws Exception {
+    @Override
+    public Object getFieldValue() throws Exception {
         return validator.transform2Field( value );
     }
 
-    public void setFieldValue( Object value )
-    throws Exception {
+    @Override
+    public void setFieldValue( Object value ) throws Exception {
         this.value = validator.transform2Model( value );
-    }
-
-    public void loadDefaultValue( Object defaultValue ) 
-    throws Exception {
-        this.value = defaultValue;
-        field.load();
-    }
-
-
-    public IFormToolkit getToolkit() {
-        return toolkit;
-    }
-
-    public void addChangeListener( IFormFieldListener l ) {
-        EventManager.instance().subscribe( l, new EventFilter<FormFieldEvent>() {
-            public boolean apply( FormFieldEvent ev ) {
-                return ev.getFormField() == field;
-            }
-        });
-    }
-    
-    public void removeChangeListener( IFormFieldListener l ) {
-        EventManager.instance().unsubscribe( l );
-    }
-    
-    public void fireEvent( Object source, int eventCode, Object newValue ) {
-        Object validatedNewValue = null;
-
-        errorMsg = externalErrorMsg;
-        
-        // check isDirty / isValid
-        if (eventCode == IFormFieldListener.VALUE_CHANGE && errorMsg == null) {
-            if (validator != null) {
-                errorMsg = validator.validate( newValue );
-            }
-            if (errorMsg == null) {
-                if (value == null && newValue == null) {
-                    isDirty = false;
-                }
-                else {
-                    isDirty = value == null && newValue != null ||
-                    value != null && newValue == null ||
-                    !value.equals( newValue );
-                }
-                try {
-                    validatedNewValue = validator.transform2Model( newValue );
-                }
-                catch (Exception e) {
-                    // XXX hmmm... what to do?
-                    throw new RuntimeException( e );
-                }
-            }
-        }
-        // propagate;
-        // syncPublish() helps to avoid to much UICallbacks browser which slows
-        // down form performance of text fields in particular
-        FormFieldEvent ev = new FormFieldEvent( editor, source, propName, field, eventCode, null, validatedNewValue );
-        EventManager.instance().syncPublish( ev );
-    }
-
-    public String getErrorMessage() {
-        return errorMsg;
-    }
-
-    public void setErrorMessage( String errorMsg ) {
-        this.externalErrorMsg = errorMsg;
     }
 
 }

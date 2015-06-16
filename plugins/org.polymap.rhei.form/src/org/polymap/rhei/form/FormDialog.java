@@ -38,7 +38,7 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.internal.form.AbstractFormPageContainer;
+import org.polymap.rhei.internal.form.FormPageController;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -166,7 +166,7 @@ public class FormDialog
      *
      */
     class PageContainer
-            extends AbstractFormPageContainer {
+            extends FormPageController {
 
         public PageContainer( IFormPage page ) {
             super( FormDialog.this, page, "_id_", "_title_" );
@@ -187,7 +187,7 @@ public class FormDialog
         }
 
         @Override
-        public void setFormTitle( String title ) {
+        public void setPageTitle( String title ) {
             setMessage( title );
         }
 

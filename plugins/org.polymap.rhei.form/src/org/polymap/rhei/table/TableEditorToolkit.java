@@ -51,19 +51,22 @@ public class TableEditorToolkit
 
 //    public static final Color   background = FormEditorToolkit.backgroundFocused;
 
-    @Override
-    public Composite createComposite( Composite parent, int style ) {
-        return new Composite( parent, style );
+    protected int stylebits( int... styles ) {
+        int result = SWT.NONE;
+        for (int style : styles) {
+            result |= style;
+        }
+        return result;
     }
 
     @Override
-    public Composite createComposite( Composite parent ) {
-        return new Composite( parent, SWT.NONE );
+    public Composite createComposite( Composite parent, int... styles ) {
+        return new Composite( parent, stylebits( styles ) );
     }
 
     @Override
-    public Text createText( Composite parent, String value, int style ) {
-        Text result = new Text( parent, style | SWT.BORDER );
+    public Text createText( Composite parent, String value, int... styles ) {
+        Text result = new Text( parent, stylebits( styles ) | SWT.BORDER );
 //        result.setBackground( background );
         if (value != null) {
             result.setText( value );
@@ -72,13 +75,8 @@ public class TableEditorToolkit
     }
 
     @Override
-    public Text createText( Composite parent, String value ) {
-        return createText( parent, value, SWT.NONE );
-    }
-
-    @Override
-    public Label createLabel( Composite parent, String text, int style ) {
-        Label result = new Label( parent, style );
+    public Label createLabel( Composite parent, String text, int... styles ) {
+        Label result = new Label( parent, stylebits( styles ) );
         if (text != null) {
             result.setText( text );
         }
@@ -86,25 +84,14 @@ public class TableEditorToolkit
     }
 
     @Override
-    public Label createLabel( Composite parent, String text ) {
-        return createLabel( parent, text, SWT.NONE );
-    }
-
-
-    @Override
-    public Combo createCombo( Composite parent, Set<String> values, int style ) {
-        Combo combo = new Combo( parent, style );
+    public Combo createCombo( Composite parent, Set<String> values, int... styles ) {
+        Combo combo = new Combo( parent, stylebits( styles ) );
 //        combo.setBackground( textBackground );
         combo.setVisibleItemCount( 12 );
         for (String value : values) {
             combo.add( value );
         }
         return combo;
-    }
-
-    @Override
-    public Combo createCombo( Composite parent, Set<String> values ) {
-        return createCombo( parent, values, SWT.NONE );
     }
 
     @Override
@@ -115,7 +102,7 @@ public class TableEditorToolkit
 
 
     @Override
-    public Button createButton( Composite parent, String text, int style ) {
+    public Button createButton( Composite parent, String text, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
@@ -143,21 +130,21 @@ public class TableEditorToolkit
 
 
     @Override
-    public Hyperlink createHyperlink( Composite parent, String text, int style ) {
+    public Hyperlink createHyperlink( Composite parent, String text, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
 
 
     @Override
-    public ImageHyperlink createImageHyperlink( Composite parent, int style ) {
+    public ImageHyperlink createImageHyperlink( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
 
 
     @Override
-    public ScrolledPageBook createPageBook( Composite parent, int style ) {
+    public ScrolledPageBook createPageBook( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
@@ -178,21 +165,21 @@ public class TableEditorToolkit
 
 
     @Override
-    public Label createSeparator( Composite parent, int style ) {
+    public Label createSeparator( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
 
 
     @Override
-    public Table createTable( Composite parent, int style ) {
+    public Table createTable( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
 
 
     @Override
-    public Tree createTree( Composite parent, int style ) {
+    public Tree createTree( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }
@@ -220,7 +207,7 @@ public class TableEditorToolkit
 
 
     @Override
-    public List createList( Composite parent, int comboStyle ) {
+    public List createList( Composite parent, int... styles ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }

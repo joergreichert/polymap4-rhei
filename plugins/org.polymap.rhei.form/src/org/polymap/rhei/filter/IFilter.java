@@ -43,17 +43,17 @@ public interface IFilter {
 
     /**
      * Creates UI elements in order to get the parameters of the filter
-     * from the user. The given {@link IFilterEditorSite} provides methods
+     * from the user. The given {@link IFilterPageSite} provides methods
      * to create and layout form fields.
      */
-    public Composite createControl( Composite parent, IFilterEditorSite site );
+    public Composite createControl( Composite parent, IFilterPageSite site );
 
     /**
      * Create a new {@link Filter} instance.
      *
      * @return Newly created filter instance, or null if the was an error.
      */
-    public Filter createFilter( IFilterEditorSite site );
+    public Filter createFilter( IFilterPageSite site );
 
     public int getMaxResults();
 

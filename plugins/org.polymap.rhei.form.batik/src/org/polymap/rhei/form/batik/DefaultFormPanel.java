@@ -28,7 +28,7 @@ import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.form.IFormPage;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.form.AbstractFormPageContainer;
+import org.polymap.rhei.internal.form.FormPageController;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
@@ -67,7 +67,7 @@ public abstract class DefaultFormPanel
     }
 
     @Override
-    public Action[] getEditorActions() {
+    public Action[] getActions() {
         throw new RuntimeException( "not yet implemented." );
     }
 
@@ -86,7 +86,7 @@ public abstract class DefaultFormPanel
      *
      */
     private class PageContainer
-            extends AbstractFormPageContainer {
+            extends FormPageController {
 
         public PageContainer( IFormPage page ) {
             super( DefaultFormPanel.this, page, "_id_", "_title_" );
@@ -97,22 +97,27 @@ public abstract class DefaultFormPanel
             page.createFormContent( this );
         }
 
+        @Override
         public Composite getPageBody() {
             return pageBody;
         }
 
+        @Override
         public IFormToolkit getToolkit() {
             return toolkit;
         }
 
-        public void setFormTitle( String title ) {
+        @Override
+        public void setPageTitle( String title ) {
             getSite().setTitle( title );
         }
 
+        @Override
         public void setEditorTitle( String title ) {
             getSite().setTitle( title );
         }
 
+        @Override
         public void setActivePage( String pageId ) {
             log.warn( "setActivePage() not supported." );
         }

@@ -15,20 +15,19 @@
  *
  * $Id: $
  */
-package org.polymap.rhei.form;
+package org.polymap.rhei.filter;
+
+import org.polymap.rhei.form.IBasePage;
 
 /**
  * A form page consisting of form fields created via its {@link IFormPageSite}.
  * <p/>
  * If you need more control over UI elements and/or submit/load then consider the
- * {@link IFormPage2} interface.
- * <p/>
- * The abstract class {@link DefaultFormPage} provides ready-to-use
- * implementations of some methods and some useful tools.
+ * {@link IFilterPage2} interface.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IFormPage
+public interface IFilterPage
         extends IBasePage {
 
     /**
@@ -45,6 +44,6 @@ public interface IFormPage
      *
      * @param site The API to create fields and interact with the framework.
      */
-    void createFormContent( IFormPageSite site );
+    void createFilterContents( IFilterPageSite site );
 
 }

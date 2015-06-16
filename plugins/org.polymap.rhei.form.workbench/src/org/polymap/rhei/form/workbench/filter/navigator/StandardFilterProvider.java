@@ -49,7 +49,7 @@ import org.polymap.rhei.field.IFormFieldValidator;
 import org.polymap.rhei.field.NumberValidator;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.filter.IFilter;
-import org.polymap.rhei.filter.IFilterEditorSite;
+import org.polymap.rhei.filter.IFilterPageSite;
 import org.polymap.rhei.filter.IFilterProvider;
 import org.polymap.rhei.filter.TransientFilter;
 
@@ -111,7 +111,7 @@ public class StandardFilterProvider
         }
 
         
-        public Composite createControl( Composite parent, IFilterEditorSite site ) {
+        public Composite createControl( Composite parent, IFilterPageSite site ) {
             Composite result = site.createStandardLayout( parent );
 
             for (PropertyDescriptor descriptor : schema.getDescriptors()) {
@@ -162,7 +162,7 @@ public class StandardFilterProvider
         }
 
         
-        public Filter createFilter( IFilterEditorSite site ) {
+        public Filter createFilter( IFilterPageSite site ) {
             List<Filter> propFilters = new ArrayList();
             
             for (PropertyDescriptor descriptor : schema.getDescriptors()) {

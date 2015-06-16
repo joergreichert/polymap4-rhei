@@ -50,7 +50,7 @@ import org.polymap.rhei.internal.filter.FilterFieldComposite;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class FilterEditor
-        implements IFilterEditorSite, IFormFieldListener {
+        implements IFilterPageSite, IFormFieldListener {
 
     private static Log log = LogFactory.getLog( FilterEditor.class );
 

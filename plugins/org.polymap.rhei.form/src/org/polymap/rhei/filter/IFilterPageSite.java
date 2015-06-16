@@ -17,11 +17,8 @@
  */
 package org.polymap.rhei.filter;
 
-import org.eclipse.swt.widgets.Composite;
-
-import org.polymap.rhei.field.IFormField;
-import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.form.FieldBuilder;
+import org.polymap.rhei.form.IBasePageSite;
 
 /**
  * The interface that {@link FilterEditor} provides its subclasses. 
@@ -29,20 +26,9 @@ import org.polymap.rhei.form.IFormToolkit;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  * @version ($Revision$)
  */
-public interface IFilterEditorSite {
+public interface IFilterPageSite
+        extends IBasePageSite {
 
-    Composite getPageBody();
-
-    IFormToolkit getToolkit();
-
-    Composite newFormField( Composite parent, String propName, Class propType, IFormField field, IFormFieldValidator validator );
-
-    Composite newFormField( Composite parent, String propName, Class propType, IFormField field, IFormFieldValidator validator, String label );
-
-    <T> T getFieldValue( String propName );
-
-    Composite createStandardLayout( Composite parent );
-
-    void addStandardLayout( Composite composite );
+    public FieldBuilder newFilterField( String propName, Class<?> propType );
 
 }

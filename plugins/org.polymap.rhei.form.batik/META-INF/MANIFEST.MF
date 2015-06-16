@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Batik Forms
+Bundle-SymbolicName: org.polymap.rhei.form.batik
+Bundle-Version: 4.0.0.qualifier
+Bundle-Vendor: polymap.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.polymap.rhei.form.batik
+Require-Bundle: org.polymap.rhei.form;bundle-version="4.0.0",
+ org.polymap.rhei.batik;bundle-version="4.0.0"
