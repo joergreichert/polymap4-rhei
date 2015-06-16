@@ -29,8 +29,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.util.Geometry;
 
 /**
+ * <p/>
+ * TODO: Flatten JSON hierarchy
  * 
- *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class ToStringTransformer
@@ -74,4 +75,28 @@ public class ToStringTransformer
         }
         return result;
     }
+    
+//    class Executor {
+//        
+//        private JSONObject      result = new JSONObject();
+//
+//
+//        public JSONObject transform( JSONObject json ) {
+//            json.keySet().forEach( key -> {
+//                Object value = json.get( (String)key );
+//                if (value instanceof JSONArray) {
+//
+//                }
+//            });
+//        }
+//
+//
+//        protected StringBuilder processArray( Object value ) {
+//            ret
+//        }
+//        protected StringBuilder processArray( JSONArray array ) {
+//            array.
+//        }
+//    }
+
 }
