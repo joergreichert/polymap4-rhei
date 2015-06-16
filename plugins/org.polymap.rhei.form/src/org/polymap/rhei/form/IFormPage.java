@@ -45,6 +45,6 @@ public interface IFormPage
      *
      * @param site The API to create fields and interact with the framework.
      */
-    void createFormContent( IFormPageSite site );
+    void createFormContents( IFormPageSite site );
 
 }

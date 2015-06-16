@@ -96,7 +96,7 @@ public class BatikFormContainer
 
     /**
      * Creates the UI of this form by calling
-     * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
+     * {@link #createFormContents(org.polymap.rhei.form.IFormPageSite)}.
      * 
      * @param parent The parent under which to create the form UI controls.
      */

@@ -39,7 +39,7 @@ public abstract class FormPageContainer
 
     /**
      * Creates the UI of this form by calling
-     * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
+     * {@link #createFormContents(org.polymap.rhei.form.IFormPageSite)}.
      * 
      * @param parent The parent under which to create the form UI controls.
      */
@@ -47,7 +47,7 @@ public abstract class FormPageContainer
     public final void createContents( Composite parent ) {
         super.createContents( parent );
         try {
-            page.createFormContent( pageController );
+            page.createFormContents( pageController );
             updateEnabled();
             pageController.doLoad( new NullProgressMonitor() );
         }
@@ -62,7 +62,7 @@ public abstract class FormPageContainer
         pageBody = parent.pageBody;
         pageController = parent.pageController;
 
-        page.createFormContent( pageController );
+        page.createFormContents( pageController );
         updateEnabled();
     }
 

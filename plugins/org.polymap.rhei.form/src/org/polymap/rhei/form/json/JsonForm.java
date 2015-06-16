@@ -130,7 +130,7 @@ public class JsonForm
 
 
     @Override
-    public void createFormContent( IFormPageSite _site ) {
+    public void createFormContents( IFormPageSite _site ) {
         log.debug( "createFormContent(): json= " + json );
         this.site = _site;
         this.tk = site.getToolkit();

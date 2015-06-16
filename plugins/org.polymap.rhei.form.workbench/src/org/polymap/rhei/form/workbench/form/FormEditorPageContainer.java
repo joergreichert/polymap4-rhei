@@ -229,7 +229,7 @@ public class FormEditorPageContainer
         
         try {
             // ask the delegate to create content
-            page.createFormContent( this );
+            page.createFormContents( this );
             doLoad( new NullProgressMonitor() );
         }
         catch (Exception e) {

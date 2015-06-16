@@ -91,7 +91,7 @@ public class StandardPageProvider
                 return null;
             }
 
-            public void createFormContent( IFormPageSite site ) {
+            public void createFormContents( IFormPageSite site ) {
                 site.setFormTitle( feature.getIdentifier().getID() );
                 site.setEditorTitle( StringUtils.abbreviate( feature.getIdentifier().getID(), 30 ) );
                 site.getPageBody().setLayout( new FormLayout() );

@@ -18,8 +18,6 @@ import org.opengis.filter.Filter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import org.polymap.rhei.form.IFormPageSite;
-
 /**
  * 
  *
@@ -48,8 +46,8 @@ public interface IFilterPage2
     public Filter doBuildFilter( Filter filter, IProgressMonitor monitor ) throws Exception;
 
     /**
-     * Dispose any resource this page may have aquired in {@link #createFormContent(IFormPageSite)}.
-     * Form fields that were created via {@link IFormPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)}
+     * Dispose any resource this page may have aquired in {@link #createFilterContents(IFilterPageSite)}
+     * Form fields that were created via {@link IFilterPageSite#newFilterField(String, Class)}
      * are automatically disposed and must not be disposed in this method.
      */
     void dispose();

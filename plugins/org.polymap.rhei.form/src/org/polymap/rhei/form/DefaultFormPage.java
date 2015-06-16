@@ -39,7 +39,7 @@ import org.polymap.core.ui.FormDataFactory;
  * Provides some defaults to implement a form editor page.
  * <p/>
  * The <b>layout</b> is based on {@link FormLayout}. In order to get this working the
- * {@link #createFormContent(IFormPageSite)} should be called from sub-classes.
+ * {@link #createFormContents(IFormPageSite)} should be called from sub-classes.
  * <p/>
  * The default priority is 1, showing "above" any unspecific standard page. The priority
  * might be adjusted by overriding {@link #getPriority()}.  
@@ -89,7 +89,7 @@ public abstract class DefaultFormPage
     /**
      * Initializes the layout. Sub-classes must call this.
      */
-    public void createFormContent( IFormPageSite site ) {
+    public void createFormContents( IFormPageSite site ) {
         site.getPageBody().setLayout( new FormLayout() );
         this.pageSite = site;
     }

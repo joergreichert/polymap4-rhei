@@ -54,8 +54,8 @@ public interface IFormPage2
     void doSubmit( IProgressMonitor monitor ) throws Exception;
     
     /**
-     * Dispose any resource this page may have aquired in {@link #createFormContent(IFormPageSite)}.
-     * Form fields that were created via {@link IFormPageSite#newFormField(org.eclipse.swt.widgets.Composite, org.opengis.feature.Property, org.polymap.rhei.field.IFormField, org.polymap.rhei.field.IFormFieldValidator)}
+     * Dispose any resource this page may have aquired in {@link #createFormContents(IFormPageSite)}
+     * Form fields that were created via {@link IFormPageSite#newFormField(org.opengis.feature.Property)}
      * are automatically disposed and must not be disposed in this method.
      */
     void dispose();

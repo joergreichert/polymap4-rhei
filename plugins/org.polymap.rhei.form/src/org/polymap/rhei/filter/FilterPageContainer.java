@@ -24,7 +24,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import org.polymap.core.ui.StatusDispatcher;
+
 import org.polymap.rhei.form.BasePageContainer;
+import org.polymap.rhei.form.IFormPage;
 import org.polymap.rhei.internal.filter.FilterPageController;
 
 /**
@@ -40,7 +42,7 @@ public abstract class FilterPageContainer
 
     /**
      * Creates the UI of this form by calling
-     * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
+     * {@link IFormPage#createFormContents(org.polymap.rhei.form.IFormPageSite)}.
      * 
      * @param parent The parent under which to create the form UI controls.
      */
