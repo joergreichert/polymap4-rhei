@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
@@ -38,7 +39,28 @@ public interface IPanelToolkit
 
 //    @Override
 //    public void close();
-    
+
+    public <T extends Composite> T adapt( T composite );
+
+    /**
+     * Adapts a control to be used in a form that is associated with this toolkit.
+     * This involves adjusting colors and optionally adding handlers to ensure focus
+     * tracking and keyboard management.
+     *
+     * @param control a control to adapt
+     * @param trackFocus if <code>true</code>, form will be scrolled horizontally
+     *        and/or vertically if needed to ensure that the control is visible when
+     *        it gains focus. Set it to <code>false</code> if the control is not
+     *        capable of gaining focus.
+     * @param trackKeyboard if <code>true</code>, the control that is capable of
+     *        gaining focus will be tracked for certain keys that are important to
+     *        the underlying form (for example, PageUp, PageDown, ScrollUp,
+     *        ScrollDown etc.). Set it to <code>false</code> if the control is not
+     *        capable of gaining focus or these particular key event are already used
+     *        by the control.
+     */
+    public <T extends Control> T adapt( T control, boolean trackFocus, boolean trackKeyboard );
+
     /**
      *
      * @see Label#Label(Composite, int)
@@ -48,7 +70,6 @@ public interface IPanelToolkit
      * @return Newly created control instance.
      */
     public Label createLabel( Composite parent, String text, int... styles );
-
     
     /**
      * Creates a flow text element. Flow text allows HTML markup and <a

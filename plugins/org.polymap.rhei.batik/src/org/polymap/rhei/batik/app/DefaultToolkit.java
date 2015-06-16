@@ -422,7 +422,7 @@ public class DefaultToolkit
     }
 
     
-    protected <T extends Composite> T adapt( T composite ) {
+    public <T extends Composite> T adapt( T composite ) {
         UIUtils.setVariant( composite, CSS_PREFIX );
 
 //        composite.setBackground( colors.getBackground() );
