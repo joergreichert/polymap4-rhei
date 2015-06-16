@@ -34,6 +34,6 @@ public interface IDashlet {
      *         signature compatible with
      *         {@link org.polymap.rhei.form.batik.FormContainer}.
      */
-   public Composite createContents( Composite parent );
+   public void createContents( Composite parent );
    
 }
