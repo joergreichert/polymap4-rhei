@@ -40,7 +40,9 @@ import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.form.FormPageContainer;
 import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.internal.form.BaseFieldComposite;
+import org.polymap.rhei.internal.form.FormPageController;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the
@@ -64,9 +66,33 @@ public class BatikFormContainer
 
 
     public BatikFormContainer( IFormPage page ) {
-        super( page );
+        this.page = page;
+        this.pageController = new FormPageController( page ) {
+            @Override
+            public Composite getPageBody() {
+                return pageBody;
+            }
+            @Override
+            public IFormToolkit getToolkit() {
+                return toolkit;
+            }
+            @Override
+            public void setPageTitle( String title ) {
+            }
+            @Override
+            public void setEditorTitle( String title ) {
+            }
+            @Override
+            public void setActivePage( String pageId ) {
+                throw new UnsupportedOperationException( "This is a single page container." );
+            }
+            @Override
+            protected Object getEditor() {
+                return BatikFormContainer.this;
+            }
+        };
     }
-
+    
 
     /**
      * Creates the UI of this form by calling
@@ -74,8 +100,8 @@ public class BatikFormContainer
      * 
      * @param parent The parent under which to create the form UI controls.
      */
-    public final Composite createContents( ILayoutContainer parent ) {
-        return createContents( parent.getBody() );
+    public final void createContents( ILayoutContainer parent ) {
+        createContents( parent.getBody() );
     }
 
     

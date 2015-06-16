@@ -20,8 +20,13 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.runtime.event.EventFilter;
+import org.polymap.core.runtime.config.Check;
+import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.ConfigurationFactory;
+import org.polymap.core.runtime.config.Mandatory;
+import org.polymap.core.runtime.config.NumberRangeValidator;
 import org.polymap.core.runtime.event.EventManager;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
@@ -37,43 +42,47 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
     
     private static Log log = LogFactory.getLog( BasePageController.class );
 
-    protected Object                        editor;
-    
     protected Map<String,FC>                fields = new HashMap( 64 );
     
     protected Map<String,Object>            values = new HashMap( 64 );
 
     private volatile boolean                blockEvents;
     
-    protected int                           labelWidth = 100;
+    /** Default is calculated dependent on display width between 110 and 150. */
+    @Mandatory
+    @Check( value=NumberRangeValidator.class, args={"0","1000"} )
+    public Config<BasePageController,Integer> labelWidth;
 
     
-    public BasePageController( Object editor, String id, String title ) {
-        this.editor = editor;
+    public BasePageController() {
+        ConfigurationFactory.inject( this );
+        
+        // label width
+        double displayWidth = UIUtils.sessionDisplay().getBounds().width;
+        // minimum 110
+        double width = 110;
+        // plus 10px per 100 pixel display width
+        if (displayWidth > 1000) {
+            width += (displayWidth - 1000) * 0.1;
+        }
+        // but not more than 160 :)
+        width = Math.min( 150, width );
+        log.info( "labelWidth: " + width );
+        labelWidth.set( (int)width );
     }
     
 
+    protected abstract Object getEditor();
+    
+    
     public synchronized void dispose() {
         fields.values().forEach( field -> field.dispose() );
         fields.clear();
     }
 
     
-    public int getLabelWidth() {
-        return labelWidth;
-    }
-    
-    public void setLabelWidth( int labelWidth ) {
-        this.labelWidth = labelWidth;
-    }
-
-
     public void addFieldListener( IFormFieldListener l ) {
-        EventManager.instance().subscribe( l, new EventFilter<FormFieldEvent>() {
-            public boolean apply( FormFieldEvent ev ) {
-                return !blockEvents && ev.getEditor() == editor;
-            }
-        });
+        EventManager.instance().subscribe( l, ev -> !blockEvents && ((FormFieldEvent)ev).getEditor() == getEditor() );
     }
     
 
@@ -99,7 +108,7 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
         if (!blockEvents) {
             // syncPublish() helps to avoid to much UICallbacks from browser,
             // which slow down form performance
-            FormFieldEvent ev = new FormFieldEvent( editor, source, 
+            FormFieldEvent ev = new FormFieldEvent( getEditor(), source, 
                     fieldName, fields.get( fieldName ).getField(), eventCode, newFieldValue, newModelValue );
             log.debug( "" + ev );
             EventManager.instance().syncPublish( ev );

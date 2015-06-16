@@ -19,6 +19,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.widgets.Composite;
+
 import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.Defaults;
@@ -27,6 +29,8 @@ import org.polymap.rhei.batik.dashboard.DashletSite;
 import org.polymap.rhei.batik.dashboard.IDashlet;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;
 import org.polymap.rhei.form.IFormPage;
+import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.internal.form.FormPageController;
 
 
 /**
@@ -51,6 +55,32 @@ public class BatikFormDashlet
     public BatikFormDashlet( IFormPage page ) {
         super( page );
         ConfigurationFactory.inject( this );
+
+        this.pageController = new FormPageController( page ) {
+            @Override
+            public Composite getPageBody() {
+                return pageBody;
+            }
+            @Override
+            public IFormToolkit getToolkit() {
+                return toolkit;
+            }
+            @Override
+            public void setPageTitle( String title ) {
+                dashletSite.title.set( title );
+            }
+            @Override
+            public void setEditorTitle( String title ) {
+            }
+            @Override
+            public void setActivePage( String pageId ) {
+                throw new UnsupportedOperationException( "This is a single page container." );
+            }
+            @Override
+            protected Object getEditor() {
+                return BatikFormDashlet.this;
+            }
+        };
     }
 
 

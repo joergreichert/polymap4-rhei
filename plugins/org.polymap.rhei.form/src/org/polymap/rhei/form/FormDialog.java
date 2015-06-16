@@ -30,8 +30,6 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-
 import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
 
@@ -51,19 +49,56 @@ public class FormDialog
 
     private static Log log = LogFactory.getLog( FormDialog.class );
 
-    private Composite             pageBody;
+    private IFormPage               page;
+    
+    private Composite               pageBody;
 
-    private PageContainer         pageContainer;
+    private DialogFormContainer     pageContainer;
 
-    private IFormToolkit          toolkit;
+    private IFormToolkit            toolkit;
 
 
+    class DialogFormContainer
+            extends FormPageContainer {
+        
+        public DialogFormContainer( IFormPage page ) {
+            this.page = page;
+            this.pageController = new FormPageController( page ) {
+                @Override
+                public Composite getPageBody() {
+                    return pageBody;
+                }
+                @Override
+                public IFormToolkit getToolkit() {
+                    return toolkit;
+                }
+                @Override
+                public void setPageTitle( String title ) {
+                }
+                @Override
+                public void setEditorTitle( String title ) {
+                }
+                @Override
+                public void setActivePage( String pageId ) {
+                    throw new UnsupportedOperationException( "This is a single page container." );
+                }
+                @Override
+                protected Object getEditor() {
+                    return DialogFormContainer.this;
+                }
+            };
+        }
+    }
+    
     public FormDialog( IFormPage page ) {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         setShellStyle( getShellStyle() | SWT.RESIZE );
 
-        pageContainer = new PageContainer( page );
+        this.page = page;
+        this.pageContainer = new DialogFormContainer( page );
+        
         pageContainer.addFieldListener( this );
+        
         // init button state after fields and dialog have been initialized
         UIUtils.sessionDisplay().asyncExec( new Runnable() {
             public void run() {
@@ -95,7 +130,7 @@ public class FormDialog
     protected void okPressed() {
         log.debug( "okPressed() ..." );
         try {
-            pageContainer.doSubmit( new NullProgressMonitor() );
+            pageContainer.submit();
             pageContainer.dispose();
 
             super.okPressed();
@@ -129,9 +164,9 @@ public class FormDialog
         pageBody = new Composite( container, SWT.NONE );
         pageBody.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        pageContainer.createContent();
+        pageContainer.createContents( pageBody );
         try {
-            pageContainer.doLoad( new NullProgressMonitor() );
+            pageContainer.reloadEditor();
         }
         catch (Exception e) {
             StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, e.getLocalizedMessage(), e );
@@ -162,45 +197,45 @@ public class FormDialog
     }
 
 
-    /**
-     *
-     */
-    class PageContainer
-            extends FormPageController {
-
-        public PageContainer( IFormPage page ) {
-            super( FormDialog.this, page, "_id_", "_title_" );
-        }
-
-        public void createContent() {
-            page.createFormContent( this );
-        }
-
-        @Override
-        public Composite getPageBody() {
-            return pageBody;
-        }
-
-        @Override
-        public IFormToolkit getToolkit() {
-            return toolkit;
-        }
-
-        @Override
-        public void setPageTitle( String title ) {
-            setMessage( title );
-        }
-
-        @Override
-        public void setEditorTitle( String title ) {
-            setTitle( title );
-        }
-
-        @Override
-        public void setActivePage( String pageId ) {
-            log.warn( "setActivePage() not supported." );
-        }
-
-    }
+//    /**
+//     *
+//     */
+//    class PageContainer
+//            extends FormPageController {
+//
+//        public PageContainer( IFormPage page ) {
+//            super( FormDialog.this, page, "_id_", "_title_" );
+//        }
+//
+//        public void createContent() {
+//            page.createFormContent( this );
+//        }
+//
+//        @Override
+//        public Composite getPageBody() {
+//            return pageBody;
+//        }
+//
+//        @Override
+//        public IFormToolkit getToolkit() {
+//            return toolkit;
+//        }
+//
+//        @Override
+//        public void setPageTitle( String title ) {
+//            setMessage( title );
+//        }
+//
+//        @Override
+//        public void setEditorTitle( String title ) {
+//            setTitle( title );
+//        }
+//
+//        @Override
+//        public void setActivePage( String pageId ) {
+//            log.warn( "setActivePage() not supported." );
+//        }
+//
+//    }
 
 }

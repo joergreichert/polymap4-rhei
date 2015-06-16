@@ -18,12 +18,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
+
 import org.polymap.core.ui.StatusDispatcher;
-import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.form.IFormPage;
-import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.internal.form.FormPageController;
 
 /**
@@ -37,11 +37,6 @@ public abstract class FormPageContainer
     private static Log log = LogFactory.getLog( FormPageContainer.class );
     
 
-    public FormPageContainer( IFormPage page ) {
-        super( page );
-    }
-
-
     /**
      * Creates the UI of this form by calling
      * {@link #createFormContent(org.polymap.rhei.form.IFormPageSite)}.
@@ -49,14 +44,8 @@ public abstract class FormPageContainer
      * @param parent The parent under which to create the form UI controls.
      */
     @Override
-    public final Composite createContents( Composite parent ) {
-        Composite result = super.createContents( parent );
-        
-        // allow sub classes to preset
-        if (pageController == null) {
-            pageController = new PageController( page );
-        }
-
+    public final void createContents( Composite parent ) {
+        super.createContents( parent );
         try {
             page.createFormContent( pageController );
             updateEnabled();
@@ -65,7 +54,6 @@ public abstract class FormPageContainer
         catch (Exception e) {
             StatusDispatcher.handleError( "An error occured while creating the new page.", e );
         }
-        return result;
     }
 
     
@@ -86,54 +74,6 @@ public abstract class FormPageContainer
     
     public void reloadEditor() throws Exception {
         pageController.reloadEditor();
-    }
-
-
-    /**
-     * The container for the one and only page of this form.
-     */
-    protected class PageController
-            extends FormPageController {
-
-        public PageController( IFormPage page ) {
-            super( FormPageContainer.this, page, "_id_", "_title_" );
-            double displayWidth = UIUtils.sessionDisplay().getBounds().width;
-            // minimum 110
-            double width = 110;
-            // plus 10px per 100 pixel display width
-            if (displayWidth > 1000) {
-                width += (displayWidth - 1000) * 0.1;
-            }
-            // but not more than 160 :)
-            width = Math.min( 150, width );
-            log.info( "labelWidth: " + width );
-            setLabelWidth( (int)width );
-        }
-
-        @Override
-        public Composite getPageBody() {
-            return pageBody;
-        }
-
-        @Override
-        public IFormToolkit getToolkit() {
-            return toolkit;
-        }
-
-        @Override
-        public void setPageTitle( String title ) {
-            throw new RuntimeException( "not yet implemented." );
-        }
-
-        @Override
-        public void setEditorTitle( String title ) {
-            throw new RuntimeException( "not yet implemented." );
-        }
-
-        @Override
-        public void setActivePage( String pageId ) {
-            log.warn( "setActivePage() not supported." );
-        }
     }
 
 }

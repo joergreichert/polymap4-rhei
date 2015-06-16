@@ -60,21 +60,16 @@ public abstract class BasePageContainer<P extends IBasePage,C extends BasePageCo
     protected boolean               enabled = true;
 
     
-    public BasePageContainer( P page ) {
-        assert page != null;
-        this.page = page;
-    }
-
-    
     /**
      * Creates the UI of this form.
      * 
      * @param parent The parent under which to create the form UI controls.
      */
-    public Composite createContents( Composite parent ) {
+    public void createContents( Composite parent ) {
+        assert page != null : "";
+        assert pageController != null : "";
         toolkit = new FormEditorToolkit( new FormToolkit( UIUtils.sessionDisplay() ) );
         pageBody = createBody( parent );
-        return pageBody;
     }
 
     

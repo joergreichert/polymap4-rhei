@@ -50,8 +50,7 @@ public abstract class FormPageController
     private IFormPage               page;
     
     
-    public FormPageController( Object editor, IFormPage page, String id, String title ) {
-        super( editor, id, title );
+    public FormPageController( IFormPage page ) {
         this.page = page;
     }
     
@@ -141,12 +140,12 @@ public abstract class FormPageController
             @Override
             protected Composite createFormField() {
                 FormFieldComposite result = new FormFieldComposite( 
-                        editor, 
+                        getEditor(),
                         FormPageController.this, 
                         getToolkit(), 
                         property, 
                         field.get(),
-                        new DefaultFormFieldLabeler( labelWidth, label.get() ), 
+                        new DefaultFormFieldLabeler( labelWidth.get(), label.get() ), 
                         new DefaultFormFieldDecorator(), 
                         validator.orElse( new NullValidator() ) );
                 

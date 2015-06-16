@@ -46,8 +46,7 @@ public abstract class FilterPageController
     private IFilterPage             page;
     
     
-    public FilterPageController( Object editor, IFilterPage page, String id, String title ) {
-        super( editor, id, title );
+    public FilterPageController( IFilterPage page ) {
         this.page = page;
     }
     
@@ -135,12 +134,12 @@ public abstract class FilterPageController
             @Override
             protected Composite createFormField() {
                 FilterFieldComposite result = new FilterFieldComposite( 
-                        editor, 
+                        getEditor(), 
                         FilterPageController.this, 
                         getToolkit(), 
                         propName, propType, 
                         field.get(),
-                        new DefaultFormFieldLabeler( labelWidth, label.get() ), 
+                        new DefaultFormFieldLabeler( labelWidth.get(), label.get() ), 
                         new DefaultFormFieldDecorator(), 
                         validator.orElse( new NullValidator() ) );
                 
