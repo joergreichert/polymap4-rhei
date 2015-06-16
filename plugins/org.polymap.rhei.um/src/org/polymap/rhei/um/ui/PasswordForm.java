@@ -27,8 +27,8 @@ import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.batik.FormContainer;
+import org.polymap.rhei.form.DefaultFormPage;
+import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.internal.Messages;
 
@@ -38,7 +38,7 @@ import org.polymap.rhei.um.internal.Messages;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class PasswordForm
-        extends FormContainer { 
+        extends DefaultFormPage {
 
     private static Log log = LogFactory.getLog( PasswordForm.class );
 
@@ -56,22 +56,24 @@ public class PasswordForm
 
 
     @Override
-    public void createFormContent( IFormEditorPageSite site ) {
+    public void createFormContents( IFormPageSite site ) {
         Composite body = site.getPageBody();
         if (body.getLayout() == null) {
             body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
         }
         
-        new FormFieldBuilder( body, new PlainValuePropertyAdapter( "pwd1", "" ) ).setLabel( i18n.get( "password1" ) )
-                .setField( new StringFormField( Style.PASSWORD ) )
+        site.newFormField( new PlainValuePropertyAdapter( "pwd1", "" ) )
+                .label.put( i18n.get( "password1" ) )
+                .field.put( new StringFormField( Style.PASSWORD ) )
 //                .setValidator( new PasswordValidator() )
-                .setValidator( new NotEmptyValidator() )
+                .validator.put( new NotEmptyValidator() )
                 .create();
 
-        new FormFieldBuilder( body, new PlainValuePropertyAdapter( "pwd2", "" ) ).setLabel( i18n.get( "password2" ) )
-                .setField( new StringFormField( Style.PASSWORD ) )
+        site.newFormField( new PlainValuePropertyAdapter( "pwd2", "" ) )
+                .label.put( i18n.get( "password2" ) )
+                .field.put( new StringFormField( Style.PASSWORD ) )
 //                .setValidator( new PasswordValidator() )
-                .setValidator( new NotEmptyValidator() )
+                .validator.put( new NotEmptyValidator() )
                 .create();
     }
 

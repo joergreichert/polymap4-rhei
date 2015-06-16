@@ -30,8 +30,8 @@ import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PicklistFormField;
 import org.polymap.rhei.field.Validators;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.batik.FormContainer;
+import org.polymap.rhei.form.DefaultFormPage;
+import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Person;
 import org.polymap.rhei.um.Property;
@@ -44,7 +44,7 @@ import org.polymap.rhei.um.internal.Messages;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class PersonForm
-        extends FormContainer { 
+        extends DefaultFormPage {
 
     private static Log log = LogFactory.getLog( PersonForm.class );
 
@@ -69,7 +69,7 @@ public class PersonForm
 
 
     @Override
-    public void createFormContent( IFormEditorPageSite site ) {
+    public void createFormContents( IFormPageSite site ) {
         body = site.getPageBody();
         if (body.getLayout() == null) {
             body.setLayout( ColumnLayoutFactory.defaults().spacing( 5 ).margins( 20, 20 ).create() );
@@ -79,43 +79,47 @@ public class PersonForm
         Composite salu = site.getToolkit().createComposite( body );
         salu.setLayout( new FillLayout( SWT.HORIZONTAL) );
         Property<String> prop = person.salutation();
-        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( i18n.get( "firstname" ) )
-                .setField( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
-                .setValidator( new NotEmptyValidator() ).create().setFocus();
+        site.newFormField( new PropertyAdapter( prop ) )
+                .label.put( i18n.get( "firstname" ) )
+                .field.put( new PicklistFormField( new String[] {"Herr", "Frau", "Firma"} ) )
+                .validator.put( new NotEmptyValidator() ).create().setFocus();
 
         prop = person.firstname();
-        new FormFieldBuilder( salu, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL ).create();
+        site.newFormField( new PropertyAdapter( prop ) )
+                .label.put( IFormFieldLabel.NO_LABEL ).create();
         
         prop = person.name();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotEmptyValidator() ).create();
+        site.newFormField( new PropertyAdapter( prop ) )
+                .label.put( i18n.get( prop.name() ) )
+                .validator.put( new NotEmptyValidator() ).create();
 
         if (person instanceof User) {
             prop = ((User)person).company();
-            new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();            
+            site.newFormField( new PropertyAdapter( prop ) )
+                    .label.put( i18n.get( prop.name() ) ).create();            
         }
         
         prop = person.email();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) )
-                .setLabel( i18n.get( prop.name() ) )
-                .setToolTipText( i18n.get( prop.name()+"Tip" ) )
-                .setValidator( Validators.AND( new EMailAddressValidator(), new NotEmptyValidator() ) )
+        site.newFormField( new PropertyAdapter( prop ) )
+                .label.put( i18n.get( prop.name() ) )
+                .tooltip.put( i18n.get( prop.name()+"Tip" ) )
+                .validator.put( Validators.AND( new EMailAddressValidator(), new NotEmptyValidator() ) )
                 .create();
 
         prop = person.phone();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        site.newFormField( new PropertyAdapter( prop ) ).label.put( i18n.get( prop.name() ) ).create();
         
         prop = person.mobilePhone();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        site.newFormField( new PropertyAdapter( prop ) ).label.put( i18n.get( prop.name() ) ).create();
         
         prop = person.fax();
-        new FormFieldBuilder( body, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) ).create();
+        site.newFormField( new PropertyAdapter( prop ) ).label.put( i18n.get( prop.name() ) ).create();
         
         
         // address
         //site.getToolkit().createLabel( body, null, SWT.SEPARATOR | SWT.HORIZONTAL );
         Address address = person.address().get();
-        new AddressForm( panelSite, address ).createContents( this );
+        new AddressForm( panelSite, address ).createFormContents( site );
     }
 
 }

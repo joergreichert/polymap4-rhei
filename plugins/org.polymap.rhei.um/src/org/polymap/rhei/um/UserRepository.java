@@ -25,7 +25,6 @@ import org.polymap.core.runtime.session.SessionContext;
 import org.polymap.core.runtime.session.SessionSingleton;
 
 import org.polymap.rhei.um.providers.UserRepositorySPI;
-import org.polymap.rhei.um.providers.qi4j.QiUserRepository;
 
 /**
  * 
@@ -53,8 +52,8 @@ public class UserRepository
      * Creates a new instance of the current session.
      */
     protected UserRepository() {
-        // XXX
-        provider = QiUserRepository.instance();
+        // FIXME
+        throw new RuntimeException( "not yet implemented: provider = QiUserRepository.instance();" );
     }
     
     

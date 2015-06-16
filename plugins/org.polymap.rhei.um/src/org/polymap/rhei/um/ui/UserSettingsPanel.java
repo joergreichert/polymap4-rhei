@@ -36,7 +36,6 @@ import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
 import org.polymap.rhei.batik.DefaultPanel;
-import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -44,6 +43,7 @@ import org.polymap.rhei.batik.toolkit.MinWidthConstraint;
 import org.polymap.rhei.batik.toolkit.PriorityConstraint;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.form.batik.BatikFormContainer;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -56,8 +56,7 @@ import org.polymap.rhei.um.operations.ChangePasswordOperation;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class UserSettingsPanel
-        extends DefaultPanel
-        implements IPanel {
+        extends DefaultPanel {
 
     private static Log log = LogFactory.getLog( UserSettingsPanel.class );
 
@@ -71,7 +70,7 @@ public class UserSettingsPanel
     
     private Button                      okBtn;
 
-    private PersonForm                  personForm;
+    private BatikFormContainer          personForm;
 
     private User                        user;
 
@@ -79,7 +78,7 @@ public class UserSettingsPanel
 
     private PasswordFormListener        pwdFormListener;
 
-    private PasswordForm                pwdForm;
+    private BatikFormContainer          pwdForm;
 
     private Button                      pwdBtn;
     
@@ -111,7 +110,7 @@ public class UserSettingsPanel
         // welcome section
         IPanelSection pwdSection = tk.createPanelSection( parent, i18n.get( "pwdSectionTitle" ) );
         pwdSection.getBody().setLayout( ColumnLayoutFactory.defaults().spacing( 20 ).columns( 1, 1 ).create() );
-        pwdForm = new PasswordForm( getSite(), user );
+        pwdForm = new BatikFormContainer( new PasswordForm( getSite(), user ) );
         pwdForm.createContents( pwdSection );
         pwdForm.addFieldListener( pwdFormListener = new PasswordFormListener() );
 
@@ -144,7 +143,7 @@ public class UserSettingsPanel
         Composite body = personSection.getBody();
         body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).columns( 1, 1 ).create() );
 
-        personForm = new PersonForm( getSite(), user );
+        personForm = new BatikFormContainer( new PersonForm( getSite(), user ) );
         personForm.createContents( personSection );
         personForm.addFieldListener( personFormListener = new PersonFormListener() );
 

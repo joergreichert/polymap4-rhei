@@ -45,6 +45,7 @@ import org.polymap.rhei.batik.toolkit.MinWidthConstraint;
 import org.polymap.rhei.batik.toolkit.PriorityConstraint;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.form.batik.BatikFormContainer;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -66,13 +67,13 @@ public class RegisterPanel
 
     public static final IMessages       i18n = Messages.forPrefix( "RegisterPanel" );
 
-    private Context<UserPrincipal> userPrincipal;
+    private Context<UserPrincipal>      userPrincipal;
 
     private IPanelToolkit               tk;
     
     private Button                      okBtn;
 
-    private PersonForm                  personForm;
+    private BatikFormContainer          personForm;
 
     private User                        user;
 
@@ -129,11 +130,11 @@ public class RegisterPanel
 
         user = UserRepository.instance().newUser();
         
-        personForm = new PersonForm( getSite(), user );
+        personForm = new BatikFormContainer( new PersonForm( getSite(), user ) );
         personForm.createContents( personSection );
 
         // btn
-        okBtn = tk.createButton( personForm.getBody(), i18n.get( "okBtn" ), SWT.PUSH );
+        okBtn = tk.createButton( personForm.getContents(), i18n.get( "okBtn" ), SWT.PUSH );
         okBtn.setEnabled( false );
         okBtn.addSelectionListener( new SelectionAdapter() {
             public void widgetSelected( SelectionEvent ev ) {

@@ -26,9 +26,9 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.NotEmptyValidator;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.IFormEditorToolkit;
-import org.polymap.rhei.form.batik.FormContainer;
+import org.polymap.rhei.form.DefaultFormPage;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.um.Address;
 import org.polymap.rhei.um.Property;
 import org.polymap.rhei.um.internal.Messages;
@@ -39,7 +39,7 @@ import org.polymap.rhei.um.internal.Messages;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class AddressForm
-        extends FormContainer { 
+        extends DefaultFormPage {
 
     private static Log log = LogFactory.getLog( AddressForm.class );
 
@@ -47,7 +47,7 @@ public class AddressForm
 
     private IPanelSite              panelSite;
 
-    private IFormEditorPageSite     site;
+    private IFormPageSite           site;
     
     private Address                 address;
 
@@ -58,9 +58,9 @@ public class AddressForm
     }
 
 
-    public void createFormContent( final IFormEditorPageSite _site ) {
+    public void createFormContents( final IFormPageSite _site ) {
         this.site = _site;
-        IFormEditorToolkit tk = site.getToolkit();
+        IFormToolkit tk = site.getToolkit();
         Composite body = site.getPageBody();
         //body.setLayout( ColumnLayoutFactory.defaults().spacing( 10 ).margins( 20, 20 ).create() );
 
@@ -73,15 +73,20 @@ public class AddressForm
 
         Composite field = null;
         Property<String> prop = address.street();
-        field = new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new NotEmptyValidator() )
+        field = _site.newFormField( new PropertyAdapter( prop ) )
+                .parent.put( str )
+                .label.put( i18n.get( prop.name() ) )
+                .validator.put( new NotEmptyValidator() )
                 .create();
         field.setLayoutData( FormDataFactory.filled().right( 75 ).create() );
         
         prop = address.number();
-        new FormFieldBuilder( str, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
-                .setValidator( new NotEmptyValidator() )
-                .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
+        _site.newFormField( new PropertyAdapter( prop ) )
+                .parent.put( str )
+                .label.put( IFormFieldLabel.NO_LABEL )
+                .validator.put( new NotEmptyValidator() )
+                .create()
+                .setLayoutData( FormDataFactory.filled().left( field ).create() );
 
         // postalCode / city
         Composite city = tk.createComposite( body );
@@ -90,15 +95,20 @@ public class AddressForm
         //city.setLayout( RowLayoutFactory.fillDefaults().spacing( 5 ).pack( false ).create() );
         
         prop = address.postalCode();
-        field = new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( i18n.get( prop.name() ) )
-                .setValidator( new PlzValidator())
+        field = _site.newFormField( new PropertyAdapter( prop ) )
+                .parent.put( city )
+                .label.put( i18n.get( prop.name() ) )
+                .validator.put( new PlzValidator())
                 .create();
         field.setLayoutData( FormDataFactory.filled().right( 50 ).create() );
 
         prop = address.city();
-        new FormFieldBuilder( city, new PropertyAdapter( prop ) ).setLabel( IFormFieldLabel.NO_LABEL )
-                .setValidator( new NotEmptyValidator() )
-                .create().setLayoutData( FormDataFactory.filled().left( field ).create() );
+        _site.newFormField( new PropertyAdapter( prop ) )
+                .parent.put( city )
+                .label.put( IFormFieldLabel.NO_LABEL )
+                .validator.put( new NotEmptyValidator() )
+                .create()
+                .setLayoutData( FormDataFactory.filled().left( field ).create() );
         
 //        // country 
 //        prop = address.country();

@@ -57,8 +57,9 @@ import org.polymap.rhei.field.NotEmptyValidator;
 import org.polymap.rhei.field.PlainValuePropertyAdapter;
 import org.polymap.rhei.field.StringFormField;
 import org.polymap.rhei.field.StringFormField.Style;
-import org.polymap.rhei.form.IFormEditorPageSite;
-import org.polymap.rhei.form.batik.FormContainer;
+import org.polymap.rhei.form.DefaultFormPage;
+import org.polymap.rhei.form.IFormPageSite;
+import org.polymap.rhei.form.batik.BatikFormContainer;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
@@ -98,7 +99,7 @@ public class LoginPanel
         
         IPanelSection section = tk.createPanelSection( panelBody, "Anmelden" );
         
-        new LoginForm( getContext(), getSite(), user ) {
+        LoginForm loginForm = new LoginForm( getContext(), getSite(), user ) {
             protected boolean login( String name, String passwd ) {
                 if (super.login( name, passwd )) {
                     getContext().closePanel( getSite().getPath() );
@@ -110,7 +111,8 @@ public class LoginPanel
                 }
             }
             
-        }.createContents( section );
+        };
+        new BatikFormContainer( loginForm ).createContents( section );
     }
     
     
@@ -118,31 +120,31 @@ public class LoginPanel
      * 
      */
     public static class LoginForm
-            extends FormContainer {
+            extends DefaultFormPage {
 
         private static final IMessages          i18n = Messages.forPrefix( "LoginForm" );
         
-        protected Context<UserPrincipal> user;
+        protected Context<UserPrincipal>        user;
 
-        protected Button                         loginBtn;
+        protected Button                        loginBtn;
 
-        protected String                         username, password;
+        protected String                        username, password;
 
-        protected boolean                        storeLogin;
+        protected boolean                       storeLogin;
         
-        private IAppContext                      context;
+        private IAppContext                     context;
 
-        protected IFormEditorPageSite            formSite;
+        protected IFormPageSite                 formSite;
         
-        protected IPanelSite                     panelSite;
+        protected IPanelSite                    panelSite;
         
-        private IFormFieldListener               fieldListener;
+        private IFormFieldListener              fieldListener;
         
-        private boolean                          showRegisterLink;
+        private boolean                         showRegisterLink;
 
-        private boolean                          showStoreCheck;
+        private boolean                         showStoreCheck;
         
-        private boolean                          showLostLink;
+        private boolean                         showLostLink;
 
         
         public LoginForm( IAppContext context, IPanelSite panelSite, Context<UserPrincipal> user ) {
@@ -180,34 +182,34 @@ public class LoginPanel
 
 
         @Override
-        public void createFormContent( final IFormEditorPageSite site ) {
+        public void createFormContents( final IFormPageSite site ) {
             formSite = site;
             Composite body = site.getPageBody();
             body.setLayout( ColumnLayoutFactory.defaults()
                     .spacing( 5 /*panelSite.getLayoutPreference( LAYOUT_SPACING_KEY ) / 4*/ )
                     .margins( panelSite.getLayoutPreference().getSpacing() / 2 ).create() );
             // username
-            new FormFieldBuilder( body, new PlainValuePropertyAdapter( "username", username ) )
-                    .setField( new StringFormField() ).setValidator( new NotEmptyValidator() )
-                    .setLabel( i18n.get( "username" ) ).setToolTipText( i18n.get( "usernameTip" ) )
+            site.newFormField( new PlainValuePropertyAdapter( "username", username ) )
+                    .field.put( new StringFormField() ).validator.put( new NotEmptyValidator() )
+                    .label.put( i18n.get( "username" ) ).tooltip.put( i18n.get( "usernameTip" ) )
                     .create().setFocus();
             // password
-            new FormFieldBuilder( body, new PlainValuePropertyAdapter( "password", password ) )
-                    .setField( new StringFormField( Style.PASSWORD ) )
-                    .setValidator( new NotEmptyValidator() {
+            site.newFormField( new PlainValuePropertyAdapter( "password", password ) )
+                    .field.put( new StringFormField( Style.PASSWORD ) )
+                    .validator.put( new NotEmptyValidator() {
                         @Override
                         public String validate( Object passwd ) {
                             return validatePasswd( (String)passwd ) ? null : "Passwort ist nicht korrekt";
                         }
                     })
-                    .setLabel( i18n.get( "password" ) )
+                    .label.put( i18n.get( "password" ) )
                     .create();
 
             // store login
             if (showStoreCheck) {
-                new FormFieldBuilder( body, new PlainValuePropertyAdapter( "store", storeLogin ) )
-                        .setField( new CheckboxFormField() )
-                        .setLabel( i18n.get( "storeLogin" ) ).setToolTipText( i18n.get( "storeLoginTip" ) )
+                site.newFormField( new PlainValuePropertyAdapter( "store", storeLogin ) )
+                        .field.put( new CheckboxFormField() )
+                        .label.put( i18n.get( "storeLogin" ) ).tooltip.put( i18n.get( "storeLoginTip" ) )
                         .create();
             }
             // btn
