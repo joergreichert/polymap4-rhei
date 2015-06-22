@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Batik Forms
-Bundle-SymbolicName: org.polymap.rhei.form.batik
+Bundle-SymbolicName: org.polymap.rhei.form.batik;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: polymap.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

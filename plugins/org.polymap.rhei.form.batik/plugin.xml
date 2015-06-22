@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.rap.ui.themes">
+      <themeContribution
+            file="resources/css/batik-form.css"
+            themeId="org.polymap.rhei.batik.theme">
+      </themeContribution>
+   </extension>
+
+</plugin>
