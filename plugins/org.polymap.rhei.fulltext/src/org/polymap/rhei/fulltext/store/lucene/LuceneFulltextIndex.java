@@ -170,6 +170,7 @@ public class LuceneFulltextIndex
                 : new ComplexPhraseQueryParser( LUCENE_VERSION, FIELD_ANALYZED, analyzer );
                 
         parser.setAllowLeadingWildcard( true );
+        parser.setLowercaseExpandedTerms( false );
         parser.setDefaultOperator( QueryParser.AND_OPERATOR );
         Query query = parser.parse( queryStr );
         log.info( "    ===> Lucene query: " + query );
