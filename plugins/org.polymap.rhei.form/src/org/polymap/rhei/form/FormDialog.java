@@ -36,6 +36,7 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.RheiFormPlugin;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
+import org.polymap.rhei.internal.form.BaseFieldComposite;
 import org.polymap.rhei.internal.form.FormPageController;
 import org.polymap.rhei.internal.form.FormEditorToolkit;
 
@@ -85,6 +86,10 @@ public class FormDialog
                 @Override
                 protected Object getEditor() {
                     return DialogFormContainer.this;
+                }
+                @Override
+                protected Composite createFieldComposite( Composite parent ) {
+                    return UIUtils.setVariant( toolkit.createComposite( parent ), BaseFieldComposite.CUSTOM_VARIANT_VALUE );
                 }
             };
         }

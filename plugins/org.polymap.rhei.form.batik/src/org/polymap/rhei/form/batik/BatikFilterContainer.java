@@ -82,6 +82,10 @@ public class BatikFilterContainer
             protected Object getEditor() {
                 return BatikFilterContainer.this;
             }
+            @Override
+            protected Composite createFieldComposite( Composite parent ) {
+                return UIUtils.setVariant( toolkit.createComposite( parent ), BatikFormContainer.CSS_FORMFIELD );
+            }
         };
     }
 

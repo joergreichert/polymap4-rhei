@@ -31,6 +31,7 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -41,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.layout.RowDataFactory;
+import org.eclipse.jface.resource.JFaceResources;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
@@ -282,6 +284,9 @@ public class DefaultAppDesign
         title.setData( "_type_", CSS_PANEL_HEADER );
         title.setText( Optional.ofNullable( panel.getSite().getTitle() ).orElse( "..." ) );
         title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 4 ).create() );
+
+        FontData fontData = title.getFont().getFontData()[0];
+        title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
         
         // panel
         Composite panelParent = new Composite( parent, SWT.NO_FOCUS );

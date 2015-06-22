@@ -26,8 +26,6 @@ import org.eclipse.swt.widgets.Control;
 
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldDecorator;
@@ -49,7 +47,7 @@ import org.polymap.rhei.form.IFormToolkit;
 public abstract class BaseFieldComposite
         implements IFormFieldSite {
 
-    public static final String      CUSTOM_VARIANT_VALUE = "formeditor-field";
+    public static final String        CUSTOM_VARIANT_VALUE = "formeditor-field";
     
     /** Identifies the editor that events belong to. */
     protected Object                  editor;
@@ -89,9 +87,9 @@ public abstract class BaseFieldComposite
     }
     
     
-    public Composite createComposite( Composite parent, int style ) {
-        final Composite result = toolkit.createComposite( parent, style );
-        UIUtils.setVariant( result, CUSTOM_VARIANT_VALUE );
+    public void createComposite( Composite result, int style ) {
+//        final Composite result = toolkit.createComposite( parent, style );
+//        UIUtils.setVariant( result, CUSTOM_VARIANT_VALUE );
         result.setLayout( new FormLayout() );
         
         labeler.init( this );
@@ -139,7 +137,6 @@ public abstract class BaseFieldComposite
 //        });
         
         result.pack( true );
-        return result;
     }
 
 

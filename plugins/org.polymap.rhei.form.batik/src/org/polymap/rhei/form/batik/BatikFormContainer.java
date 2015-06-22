@@ -86,9 +86,12 @@ public class BatikFormContainer
             public void setActivePage( String pageId ) {
                 throw new UnsupportedOperationException( "This is a single page container." );
             }
-            @Override
             protected Object getEditor() {
                 return BatikFormContainer.this;
+            }
+            @Override
+            protected Composite createFieldComposite( Composite parent ) {
+                return UIUtils.setVariant( toolkit.createComposite( parent ), CSS_FORMFIELD );
             }
         };
     }

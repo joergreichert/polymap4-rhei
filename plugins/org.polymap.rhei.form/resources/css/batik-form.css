@@ -29,8 +29,8 @@ Composite.batik-panel-form-disabled {
   border-radius: 3px;
 }
 Composite.batik-panel-formfield {
-  background-color: #e5e9ec;
-}
+  background-color: #f2f2f2;
+  
 Composite.batik-panel-formfield-disabled {
   background-color: #e5e9ec; 
 }

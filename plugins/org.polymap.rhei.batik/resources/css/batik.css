@@ -151,7 +151,7 @@ Composite[BORDER].batik-panel-section {
   border: 1px solid #ddd;
 }
 Label.batik-panel-section-title {
-  /*font: 22px/100% sans-serif;*/
+  font: 22px/100% sans-serif;
   border: none;
 }
 Label:disabled.batik-panel-section-title {

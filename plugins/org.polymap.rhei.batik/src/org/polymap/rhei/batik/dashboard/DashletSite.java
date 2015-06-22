@@ -16,9 +16,12 @@ package org.polymap.rhei.batik.dashboard;
 
 import java.util.List;
 
+import org.polymap.core.runtime.config.Concern;
+import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.Defaults;
 import org.polymap.core.runtime.config.Mandatory;
 import org.polymap.core.runtime.config.Property;
+import org.polymap.core.runtime.config.PropertyChangeSupport;
 
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -29,9 +32,11 @@ import org.polymap.rhei.batik.toolkit.LayoutConstraint;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class DashletSite {
+public abstract class DashletSite
+        extends Configurable {
 
     @Defaults
+    @Concern(PropertyChangeSupport.class)
     public Property<String>                 title;
 
     @Mandatory

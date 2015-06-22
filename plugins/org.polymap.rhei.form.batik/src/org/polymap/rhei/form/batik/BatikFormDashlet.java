@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.Defaults;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.dashboard.DashletSite;
 import org.polymap.rhei.batik.dashboard.IDashlet;
@@ -79,6 +80,10 @@ public class BatikFormDashlet
             @Override
             protected Object getEditor() {
                 return BatikFormDashlet.this;
+            }
+            @Override
+            protected Composite createFieldComposite( Composite parent ) {
+                return UIUtils.setVariant( toolkit.createComposite( parent ), CSS_FORMFIELD );
             }
         };
     }

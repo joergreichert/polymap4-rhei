@@ -19,13 +19,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import java.beans.PropertyChangeEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.runtime.config.ConfigurationFactory;
+import org.polymap.core.runtime.event.EventHandler;
+import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
@@ -68,6 +71,9 @@ public class Dashboard {
         for (Entry<IDashlet,DashletSite> entry : dashlets.entrySet()) {
             DashletSite dashletSite = entry.getValue();
             IDashlet dashlet = entry.getKey();
+
+            // listen to changes of the site made by the dashlet
+            EventManager.instance().subscribe( this, ev -> ev.getSource() == dashletSite );
             
             String title = dashletSite.title.get();
             int border = dashletSite.isBoxStyle.get() ? SWT.BORDER : SWT.NONE;
@@ -78,8 +84,16 @@ public class Dashboard {
             section.addConstraint( constraints.toArray( new LayoutConstraint[constraints.size()]) );
             
             dashlet.createContents( section.getBody() );
-        }
+        }        
         return parent;
+    }
+    
+    
+    @EventHandler
+    protected void sitePropertyChanged( PropertyChangeEvent ev ) {
+        if (ev.getPropertyName().equals( "title" )) {
+           log.warn( "!!! Dashlet TITLE changed! !!!" );    
+        }
     }
     
     
@@ -89,13 +103,9 @@ public class Dashboard {
     class DashletSiteImpl
             extends DashletSite {
 
-        protected DashletSiteImpl() {
-            ConfigurationFactory.inject( this );
-        }
-
         @Override
         public IPanelSite panelSite() {
-            return panelSite();
+            return panelSite;
         }
 
         @Override

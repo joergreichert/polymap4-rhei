@@ -145,9 +145,14 @@ public abstract class FilterPageController
                 
                 fields.put( result.getFieldName(), result );
 
-                return result.createComposite( parent.orElse( getPageBody() ), SWT.NONE );
+                Composite fieldComposite = createFieldComposite( parent.orElse( getPageBody() ) );
+                result.createComposite( fieldComposite, SWT.NONE );
+                return fieldComposite;
             }
         };
     }
+
+    
+    protected abstract Composite createFieldComposite( Composite parent );
 
 }

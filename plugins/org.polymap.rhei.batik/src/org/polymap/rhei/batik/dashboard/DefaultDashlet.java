@@ -22,11 +22,11 @@ package org.polymap.rhei.batik.dashboard;
 public abstract class DefaultDashlet
         implements IDashlet {
 
-    protected DashletSite          site;
+    protected DashletSite          dashletSite;
 
     @Override
-    public void init( @SuppressWarnings("hiding") DashletSite site ) {
-        this.site = site;
+    public void init( DashletSite site ) {
+        this.dashletSite = site;
     }
 
 }

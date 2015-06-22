@@ -98,6 +98,7 @@ public class DefaultFormFieldLabeler
             UIUtils.setVariant( result, CUSTOM_VARIANT_VALUE );
             label = toolkit.createLabel( (Composite)result, 
                     labelStr != null ? labelStr : StringUtils.capitalize( site.getFieldName() ), SWT.WRAP );
+           // label.setFont( JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT ) );
             label.setLayoutData( FormDataFactory.filled().top( 0, 4 ).create() );
         }
     
@@ -113,11 +114,11 @@ public class DefaultFormFieldLabeler
         if (ev.getEventCode() == FOCUS_GAINED) {
             label.setForeground( FormEditorToolkit.labelForegroundFocused );
             orig = label.getFont();
-//            label.setFont( JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT ) );
+            //label.setFont( JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT ) );
         }
         else if (ev.getEventCode() == FOCUS_LOST) {
             label.setForeground( FormEditorToolkit.labelForeground );
-//            label.setFont( orig );
+            label.setFont( orig );
         }
     }
     
