@@ -15,7 +15,7 @@
  *
  * $Id: $
  */
-package org.polymap.rhei.internal;
+package org.polymap.rhei.engine;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,12 +29,12 @@ import org.eclipse.swt.widgets.Label;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.engine.form.FormEditorToolkit;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldLabel;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * 

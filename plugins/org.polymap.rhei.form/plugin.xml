@@ -203,7 +203,7 @@
             id="org.polymap.rhei.form.NewFeatureOperationConcern">
       </concern>
       <concern
-            class="org.polymap.rhei.internal.form.CopyFeaturesOperationConcern"
+            class="org.polymap.rhei.engine.form.CopyFeaturesOperationConcern"
             id="org.polymap.rhei.form.CopyFeaturesOperationConcern">
       </concern>
    </extension>

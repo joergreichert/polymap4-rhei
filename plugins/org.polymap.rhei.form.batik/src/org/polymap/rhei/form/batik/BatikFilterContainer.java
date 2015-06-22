@@ -34,13 +34,13 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
+import org.polymap.rhei.engine.filter.FilterPageController;
+import org.polymap.rhei.engine.form.BaseFieldComposite;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.filter.FilterPageContainer;
 import org.polymap.rhei.filter.IFilterPage;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.filter.FilterPageController;
-import org.polymap.rhei.internal.form.BaseFieldComposite;
 
 /**
  * A container for Rhei filter.

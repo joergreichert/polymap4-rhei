@@ -34,11 +34,11 @@ import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.RheiFormPlugin;
+import org.polymap.rhei.engine.form.BaseFieldComposite;
+import org.polymap.rhei.engine.form.FormEditorToolkit;
+import org.polymap.rhei.engine.form.FormPageController;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
-import org.polymap.rhei.internal.form.BaseFieldComposite;
-import org.polymap.rhei.internal.form.FormPageController;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  *

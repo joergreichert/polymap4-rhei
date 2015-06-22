@@ -29,9 +29,9 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.dashboard.DashletSite;
 import org.polymap.rhei.batik.dashboard.IDashlet;
 import org.polymap.rhei.batik.toolkit.LayoutConstraint;
+import org.polymap.rhei.engine.form.FormPageController;
 import org.polymap.rhei.form.IFormPage;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.form.FormPageController;
 
 
 /**

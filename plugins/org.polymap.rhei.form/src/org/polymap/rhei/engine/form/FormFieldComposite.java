@@ -1,6 +1,7 @@
 /* 
  * polymap.org
- * Copyright 2010-2012, Falko Bräutigam. All rights reserved.
+ * Copyright 2010, 2012 Falko Bräutigam, and other contributors as
+ * indicated by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -12,69 +13,61 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.filter;
+package org.polymap.rhei.engine.form;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opengis.feature.Property;
 
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldDecorator;
 import org.polymap.rhei.field.IFormFieldLabel;
-import org.polymap.rhei.field.IFormFieldSite;
 import org.polymap.rhei.field.IFormFieldValidator;
-import org.polymap.rhei.filter.IFilterPageSite;
+import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.form.BaseFieldComposite;
 
 /**
- * The filter form specific parent Composite of a form field, consisting of an
- * {@link IFormField}, an {@link IFormFieldLabel} and an
- * {@link IFormFieldDecorator}. The FilterFieldComposite provides them a context
- * via the {@link IFormFieldSite}.
+ * This is the parent Composite of a form field.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class FilterFieldComposite
+public class FormFieldComposite
         extends BaseFieldComposite {
 
-    private static Log log = LogFactory.getLog( FilterFieldComposite.class );
+    private Property                prop;
     
-    private String      propName;
-    
-    private Class<?>    propType;
-    
-    private Object      value;
 
-
-    public FilterFieldComposite( Object editor, IFilterPageSite pageSite, 
-            IFormToolkit toolkit, String propName, Class<?> propType,
-            IFormField field, IFormFieldLabel labeler, IFormFieldDecorator decorator,
-            IFormFieldValidator validator ) {
+    public FormFieldComposite( Object editor, IFormPageSite pageSite, 
+            IFormToolkit toolkit, Property prop, IFormField field,
+            IFormFieldLabel labeler, IFormFieldDecorator decorator, IFormFieldValidator validator ) {
         super( editor, pageSite, toolkit, field, labeler, decorator, validator );
-        this.propName = propName;
-        this.propType = propType;
+        this.prop = prop;
     }
     
+    
+    public Property getProperty() {
+        return prop;
+    }
+
     public Object store() throws Exception {
         super.store();
-        return value;
+        return prop.getValue();
     }
+
 
     // IFormFieldSite *************************************
 
     @Override
     public String getFieldName() {
-        return propName;
+        return prop.getName().getLocalPart();
     }
 
     @Override
     public Object getFieldValue() throws Exception {
-        return validator.transform2Field( value );
+        return validator.transform2Field( prop.getValue() );
     }
 
     @Override
     public void setFieldValue( Object value ) throws Exception {
-        this.value = validator.transform2Model( value );
+        prop.setValue( validator.transform2Model( value ) );
     }
 
 }

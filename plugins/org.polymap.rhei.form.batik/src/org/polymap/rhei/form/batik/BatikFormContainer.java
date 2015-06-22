@@ -36,13 +36,13 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.ILayoutContainer;
+import org.polymap.rhei.engine.form.BaseFieldComposite;
+import org.polymap.rhei.engine.form.FormPageController;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.form.FormPageContainer;
 import org.polymap.rhei.form.IFormPage;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.internal.form.BaseFieldComposite;
-import org.polymap.rhei.internal.form.FormPageController;
 
 /**
  * A container for Rhei forms. Sub-classes can use the Rhei form API the

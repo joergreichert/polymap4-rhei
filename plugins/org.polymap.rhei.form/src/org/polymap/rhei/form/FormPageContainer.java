@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import org.polymap.core.ui.StatusDispatcher;
 
+import org.polymap.rhei.engine.form.FormPageController;
 import org.polymap.rhei.form.IFormPage;
-import org.polymap.rhei.internal.form.FormPageController;
 
 /**
  * Base class for one-page form containers.

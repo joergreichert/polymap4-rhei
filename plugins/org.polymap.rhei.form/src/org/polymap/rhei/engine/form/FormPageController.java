@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.form;
+package org.polymap.rhei.engine.form;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +28,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import org.polymap.rhei.engine.DefaultFormFieldDecorator;
+import org.polymap.rhei.engine.DefaultFormFieldLabeler;
 import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.form.FieldBuilder;
 import org.polymap.rhei.form.IFormPage;
 import org.polymap.rhei.form.IFormPage2;
 import org.polymap.rhei.form.IFormPageSite;
-import org.polymap.rhei.internal.DefaultFormFieldDecorator;
-import org.polymap.rhei.internal.DefaultFormFieldLabeler;
 
 /**
  * 

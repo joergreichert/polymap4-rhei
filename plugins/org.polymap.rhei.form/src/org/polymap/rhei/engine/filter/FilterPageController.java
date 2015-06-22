@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.internal.filter;
+package org.polymap.rhei.engine.filter;
 
 import org.opengis.filter.Filter;
 
@@ -23,14 +23,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+
+import org.polymap.rhei.engine.DefaultFormFieldDecorator;
+import org.polymap.rhei.engine.DefaultFormFieldLabeler;
+import org.polymap.rhei.engine.form.BasePageController;
 import org.polymap.rhei.field.NullValidator;
 import org.polymap.rhei.filter.IFilterPage;
 import org.polymap.rhei.filter.IFilterPage2;
 import org.polymap.rhei.filter.IFilterPageSite;
 import org.polymap.rhei.form.FieldBuilder;
-import org.polymap.rhei.internal.DefaultFormFieldDecorator;
-import org.polymap.rhei.internal.DefaultFormFieldLabeler;
-import org.polymap.rhei.internal.form.BasePageController;
 
 /**
  * 

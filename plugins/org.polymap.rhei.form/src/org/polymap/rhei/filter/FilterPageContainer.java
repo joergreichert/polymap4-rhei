@@ -25,9 +25,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import org.polymap.core.ui.StatusDispatcher;
 
+import org.polymap.rhei.engine.filter.FilterPageController;
 import org.polymap.rhei.form.BasePageContainer;
 import org.polymap.rhei.form.IFormPage;
-import org.polymap.rhei.internal.filter.FilterPageController;
 
 /**
  * Base class for one-page filter containers.

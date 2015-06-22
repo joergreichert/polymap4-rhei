@@ -34,11 +34,11 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.ColumnLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.engine.form.BasePageController;
+import org.polymap.rhei.engine.form.FormEditorToolkit;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.form.IFormPageSite;
-import org.polymap.rhei.internal.form.BasePageController;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 /**
  * Base class for one-page UI containers like dialog or Batik forms/filters.
