@@ -147,14 +147,14 @@ public abstract class DefaultFormPage
         section.setClient( client );
         
         if (relative == null) {
-            section.setLayoutData( new FormDataFactory( SECTION_SPACING )
+            section.setLayoutData( FormDataFactory.defaults().offset( SECTION_SPACING )
                     .left( 0 ).right( 100 ).top( 0, 0 ).create() );
         }
         else if (rightOf) {
             FormData data = (FormData)relative.getLayoutData();
             data.right = new FormAttachment( section );
             
-            section.setLayoutData( new FormDataFactory( SECTION_SPACING )
+            section.setLayoutData( FormDataFactory.defaults().offset( SECTION_SPACING )
                     .left( 50 ).right( 100 ).top( 0, 0 ).create() );
         }
         return section;
@@ -174,7 +174,7 @@ public abstract class DefaultFormPage
         else if (field.getParent().getLayout() instanceof FormLayout) {
             // width defines the minimum width of the entire form
             // before horiz. scrollbar starts to appear
-            FormDataFactory formData = new FormDataFactory().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
+            FormDataFactory formData = FormDataFactory.defaults().width( 40 ).left( 0, 3 ).right( 100, -3 ).top( 0 );
             if (lastLayoutElm != null) {
                 formData.top( lastLayoutElm, 3 );
             }

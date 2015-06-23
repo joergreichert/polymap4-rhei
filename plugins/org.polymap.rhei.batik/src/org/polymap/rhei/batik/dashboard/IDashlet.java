@@ -30,9 +30,6 @@ public interface IDashlet {
      * 
      *
      * @param parent
-     * @return Currently not used. May return {@code parent}. Just makes the
-     *         signature compatible with
-     *         {@link org.polymap.rhei.form.batik.FormContainer}.
      */
    public void createContents( Composite parent );
    

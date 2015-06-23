@@ -52,6 +52,11 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.RheiFormPlugin;
+import org.polymap.rhei.engine.DefaultFormFieldDecorator;
+import org.polymap.rhei.engine.DefaultFormFieldLabeler;
+import org.polymap.rhei.engine.form.FormEditorToolkit;
+import org.polymap.rhei.engine.form.FormFieldComposite;
+import org.polymap.rhei.engine.form.FormPageController;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
@@ -62,11 +67,6 @@ import org.polymap.rhei.form.IFormPage2;
 import org.polymap.rhei.form.IFormPageSite;
 import org.polymap.rhei.form.IFormToolkit;
 import org.polymap.rhei.form.workbench.FormEditor;
-import org.polymap.rhei.internal.DefaultFormFieldDecorator;
-import org.polymap.rhei.internal.DefaultFormFieldLabeler;
-import org.polymap.rhei.internal.form.FormPageController;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
-import org.polymap.rhei.internal.form.FormFieldComposite;
 
 /**
  *

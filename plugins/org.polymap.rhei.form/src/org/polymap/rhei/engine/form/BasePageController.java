@@ -168,7 +168,15 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
     
     @Override
     public void clearFields() {
-        throw new RuntimeException( "not yet implemented." );
+        fields.values().forEach( field -> {
+            try {
+                field.setFormFieldValue( null );
+            }
+            catch (Exception e) {
+                throw new RuntimeException( e );
+            } 
+        });
+
 //        dispose();
 //        
 //        // dispose any left sections and stuff

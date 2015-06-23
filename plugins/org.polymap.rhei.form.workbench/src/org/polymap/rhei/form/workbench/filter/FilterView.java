@@ -51,12 +51,12 @@ import org.polymap.core.runtime.Polymap;
 import org.polymap.core.workbench.PolymapWorkbench;
 
 import org.polymap.rhei.RheiFormPlugin;
+import org.polymap.rhei.engine.form.FormEditorToolkit;
 import org.polymap.rhei.field.FormFieldEvent;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.filter.FilterEditor;
 import org.polymap.rhei.filter.IFilter;
 import org.polymap.rhei.form.workbench.filter.navigator.OpenFilterAction;
-import org.polymap.rhei.internal.form.FormEditorToolkit;
 
 
 /**

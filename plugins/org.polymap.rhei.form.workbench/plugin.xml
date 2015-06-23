@@ -84,7 +84,7 @@
             id="org.polymap.rhei.featureTableContribution"
             targetID="org.polymap.core.data.FeatureSelectionView">
          <!--action
-               class="org.polymap.rhei.internal.form.NewFormAction"
+               class="org.polymap.rhei.engine.form.NewFormAction"
                icon="icons/elcl16/add_co.gif"
                id="org.polymap.rhei.NewFormAction"
                label="%actions_newForm"
@@ -93,7 +93,7 @@
                tooltip="%actions_newFormTip">
          </action-->
          <!--action
-               class="org.polymap.rhei.internal.csv.DownloadCSVAction"
+               class="org.polymap.rhei.engine.csv.DownloadCSVAction"
                icon="icons/etool16/export_csv.gif"
                id="org.polymap.rhei.DownloadCsvAction"
                label="%actions_downloadCsv"
@@ -147,7 +147,7 @@
    <extension
          point="org.polymap.rhei.form.pageProviders">
       <pageProvider
-            class="org.polymap.rhei.internal.forms.StandardPageProvider"
+            class="org.polymap.rhei.engine.forms.StandardPageProvider"
             id="org.polymap.rhei.form.StandardPageProvider"
             isStandard="true"
             name="StandardPageProvider2">
