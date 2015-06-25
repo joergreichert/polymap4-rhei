@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -288,11 +289,39 @@ public class DefaultAppDesign
         FontData fontData = title.getFont().getFontData()[0];
         title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
         
+        // scrolled
+        ScrolledComposite scrolled = new ScrolledComposite( parent, SWT.NO_FOCUS|SWT.V_SCROLL ) {
+//            @Override
+//            public void setBounds( Rectangle bounds ) {
+//                if (bounds.height > 10 && getContent() != null) {
+//                    Point panelSize = getContent().computeSize( bounds.width, SWT.DEFAULT, true );
+//                    setMinHeight( panelSize.y );
+//                }
+//                super.setBounds( bounds );
+//                super.layout();
+//            }
+        };
+        scrolled.addControlListener( new ControlAdapter() {
+            @Override
+            public void controlResized( ControlEvent ev ) {
+                if (scrolled.getContent() != null) {
+                    Rectangle r = scrolled.getClientArea();
+                    scrolled.setMinSize( scrolled.getContent().computeSize( r.width, SWT.DEFAULT ) );
+                }
+            }
+        });
+        scrolled.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
+        scrolled.setExpandVertical( true );
+        scrolled.setTouchEnabled( true );        
+
         // panel
         Composite panelParent = new Composite( parent, SWT.NO_FOCUS );
-        panelParent.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
         panelParent.setLayout( new ConstraintLayout( getPanelLayoutPreferences() ) );
         panel.createContents( panelParent );
+        panelParent.setLayoutData( FormDataFactory.filled().top( 0, 0 ).create() );
+
+        scrolled.setContent( panelParent );
+        scrolled.layout();
     }
     
     

@@ -195,7 +195,6 @@ public class PageStackLayout
                 if (page.control instanceof ScrolledComposite) {
                     Point pageSize = page.control.computeSize( pageWidth, SWT.DEFAULT );
                     ((ScrolledComposite)page.control).setMinHeight( pageSize.y );
-                    ((ScrolledComposite)page.control).setMinWidth( pageWidth );
                 }
                 
                 panelX += pageWidth + margins.getSpacing();

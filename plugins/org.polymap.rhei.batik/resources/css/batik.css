@@ -46,8 +46,9 @@ Button[TOGGLE]:hover.atlas-panel-header {
   background-color: #6BBAE1;
 }
 Label.atlas-panel-header {
-  /*font: 14px Helvetica, Arial, sans-serif;*/
+  font: 14px sans-serif;
   color: #5993AE;
+  text-shadow: 1px 1px 0px #ffffff;
 }
  
 /**********************************************************

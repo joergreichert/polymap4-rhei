@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.engine;
 
+import org.polymap.core.runtime.config.Configurable;
+
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.app.IAppManager;
 
@@ -27,7 +29,8 @@ import org.polymap.rhei.batik.app.IAppManager;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class PanelOp {
+public abstract class PanelOp
+        extends Configurable {
 
     protected DefaultAppManager     manager;
     

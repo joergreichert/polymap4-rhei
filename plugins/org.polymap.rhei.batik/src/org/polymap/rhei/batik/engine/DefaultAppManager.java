@@ -35,7 +35,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.Closer;
-import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.UIUtils;
 
@@ -121,7 +120,6 @@ public class DefaultAppManager
         try {
             T instance = type.newInstance();
             instance.manager = this;
-            ConfigurationFactory.inject( instance );
             initializer.accept( instance );
             instance.execute();
         }
