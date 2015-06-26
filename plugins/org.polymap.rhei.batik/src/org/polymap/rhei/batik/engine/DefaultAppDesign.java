@@ -27,7 +27,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -58,7 +57,6 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
@@ -66,7 +64,6 @@ import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.DefaultToolkit;
 import org.polymap.rhei.batik.app.IAppDesign;
-import org.polymap.rhei.batik.app.IAppManager;
 import org.polymap.rhei.batik.engine.PageStack.Page;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -87,7 +84,7 @@ public class DefaultAppDesign
     public static final String          CSS_BREADCRUMP = CSS_PREFIX + "-breadcrump";
     public static final String          CSS_SWITCHER = CSS_PREFIX + "-switcher";
     
-    private IAppManager                 appManager;
+    private DefaultAppManager           appManager;
 
     protected Shell                     mainWindow;
     
@@ -106,7 +103,7 @@ public class DefaultAppDesign
 
     @Override
     public void init() {
-        appManager = BatikApplication.instance().getAppManager();
+        appManager = (DefaultAppManager)BatikApplication.instance().getAppManager();
 
         browserHistory = RWT.getClient().getService( BrowserNavigation.class );
         browserHistory.addBrowserNavigationListener( this );
@@ -128,7 +125,7 @@ public class DefaultAppDesign
      */
     @Override
     public void navigated( BrowserNavigationEvent ev ) {
-        log.info( "navigated(): " + ev.getState() );
+        log.debug( "navigated(): " + ev.getState() );
         if (!ev.getState().equals( "start" )) {
             IAppContext context = appManager.getContext();
             context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) );
@@ -171,7 +168,7 @@ public class DefaultAppDesign
         panelContainer.setLayoutData( FormDataFactory.filled().top( headerContainer, 0 ).create() );
 
         // status manager
-        statusManager = new StatusManager2( (DefaultAppManager)appManager );
+        statusManager = new StatusManager2( appManager );
         statusManager.createContents( mainWindow );
         
         appManager.getContext().addListener( this, ev -> ev.getType().isOnOf( EventType.LIFECYCLE, EventType.TITLE ) );
@@ -237,7 +234,7 @@ public class DefaultAppDesign
                             // PanelStatus (>= VISIBLE); however, layout may decide to show pages when more space
                             // becomes available, those panels have status < VISIBLE and need to be updated
                             if (page.isShown && VISIBLE.ge( panelStatus )) {
-                                appManager.getContext().r).updatePanelStatus( p, VISIBLE );                                 
+                                appManager.updatePanelStatus( p, VISIBLE );                                 
                             }
                             // XXX
 //                            if (!page.isShown && panelStatus.ge( VISIBLE )) {
@@ -288,39 +285,29 @@ public class DefaultAppDesign
         FontData fontData = title.getFont().getFontData()[0];
         title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
         
-        // scrolled
-        ScrolledComposite scrolled = new ScrolledComposite( parent, SWT.NO_FOCUS|SWT.V_SCROLL ) {
+//        // scrolled
+//        ScrolledComposite scrolled = new ScrolledComposite( parent, SWT.NO_FOCUS|SWT.V_SCROLL );
+//        scrolled.addControlListener( new ControlAdapter() {
 //            @Override
-//            public void setBounds( Rectangle bounds ) {
-//                if (bounds.height > 10 && getContent() != null) {
-//                    Point panelSize = getContent().computeSize( bounds.width, SWT.DEFAULT, true );
-//                    setMinHeight( panelSize.y );
+//            public void controlResized( ControlEvent ev ) {
+//                if (scrolled.getContent() != null) {
+//                    Rectangle r = scrolled.getClientArea();
+//                    scrolled.setMinSize( scrolled.getContent().computeSize( r.width, SWT.DEFAULT ) );
 //                }
-//                super.setBounds( bounds );
-//                super.layout();
 //            }
-        };
-        scrolled.addControlListener( new ControlAdapter() {
-            @Override
-            public void controlResized( ControlEvent ev ) {
-                if (scrolled.getContent() != null) {
-                    Rectangle r = scrolled.getClientArea();
-                    scrolled.setMinSize( scrolled.getContent().computeSize( r.width, SWT.DEFAULT ) );
-                }
-            }
-        });
-        scrolled.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
-        scrolled.setExpandVertical( true );
-        scrolled.setTouchEnabled( true );        
+//        });
+//        scrolled.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
+//        scrolled.setExpandVertical( true );
+//        scrolled.setTouchEnabled( true );        
 
         // panel
         Composite panelParent = new Composite( parent, SWT.NO_FOCUS );
         panelParent.setLayout( new ConstraintLayout( getPanelLayoutPreferences() ) );
         panel.createContents( panelParent );
-        panelParent.setLayoutData( FormDataFactory.filled().top( 0, 0 ).create() );
+        panelParent.setLayoutData( FormDataFactory.filled().top( 0, /*0*/35 ).create() );
 
-        scrolled.setContent( panelParent );
-        scrolled.layout();
+//        scrolled.setContent( panelParent );
+//        scrolled.layout();
     }
     
     
@@ -352,7 +339,6 @@ public class DefaultAppDesign
                 .stream()
                 .sorted( reverseOrder( comparing( p -> p.getSite().getStackPriority() ) ) )
                 .forEach( p -> {
-                        IPanelSite panelSite = p.getSite();
                         
                         int btnCount = switcher.getChildren().length;
                         Button btn = createSwitcherButton( switcher, p );
@@ -360,7 +346,8 @@ public class DefaultAppDesign
                                 ? FormDataFactory.filled().clearRight().create()
                                         : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
 
-                        btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
+//                        IPanelSite panelSite = p.getSite();
+//                        btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
 
                         btn.addSelectionListener( new SelectionAdapter() {
                             public void widgetSelected( SelectionEvent ev ) {
@@ -528,7 +515,7 @@ public class DefaultAppDesign
         UIUtils.activateCallback( DefaultAppDesign.class.getName() );
         mainWindow.getDisplay().timerExec( 1000, new Runnable() {
             public void run() {
-                log.info( "layout..." );
+                log.debug( "layout..." );
 
                 mainWindow.layout( true );
                 panelsArea.reflow( true );

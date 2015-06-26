@@ -55,7 +55,7 @@ public interface IAppContext {
      * @param panelId The id of the panel to open
      * @return Null if the given panels was not found.
      */
-    public IPanel openPanel( PanelPath panelPath, PanelIdentifier panelId );
+    public IPanel openPanel( PanelPath parentPath, PanelIdentifier panelId );
 
     /**
      * Closes the panel with the given path. This panel must be the current top/active
@@ -68,7 +68,7 @@ public interface IAppContext {
     /**
      * List of panels that want to be shown on top of the given parent.
      */
-    public List<IPanel> wantToBeShown( PanelPath parent );
+    public List<IPanel> wantToBeShown( PanelPath parentPath );
     
     
     /**

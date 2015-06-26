@@ -35,16 +35,34 @@ public interface IPanel {
 
     public void setSite( IPanelSite site, IAppContext context );
     
+    
     /**
      * This method is called before {@link #init(IPanelSite, IAppContext)} in order
-     * to check if the panel wants to be displayed as sibling in the given context.
-     * All context properties are initialized when the methos is called.
+     * to check if the panel wants to be displayed on top of the current panel in the
+     * given context. All context properties are initialized when the method is
+     * called.
      * <p/>
      * This method should be lightweight and should not initialize anything, except
      * for the title and icon which is shown in the navigation bar.
      * <p/>
-     * Check for <code>site.getPath().size() == 1;</code> to see if this is the
-     * first/root panel.
+     * <h2>Examples:</h2>
+     * Check if the panel is right above the start panel:
+     * 
+     * <pre>
+     * site.getPath().size() == 1;
+     * </pre>
+     * 
+     * Check if parent is instance of particular type:
+     * 
+     * <pre>
+     * IPanel parent = getContext().getPanel( getSite().getPath().removeLast( 1 ) );
+     * if (parent instanceof ProjectPanel) {
+     *     getSite().setTitle( ... );
+     *     return true;
+     * }
+     * return false;
+     * 
+     * </pre>
      *
      * @param site
      * @param context
