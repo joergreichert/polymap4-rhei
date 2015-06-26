@@ -12,65 +12,68 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.engine;
+package org.polymap.rhei.batik.engine.panelops;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.polymap.core.runtime.Predicates;
+import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.Mandatory;
-import org.polymap.core.runtime.config.Property;
 
+import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.engine.BatikFactory;
+import org.polymap.rhei.batik.engine.DefaultAppContext;
+import org.polymap.rhei.batik.engine.DefaultAppManager;
+import org.polymap.rhei.batik.engine.PanelContextInjector;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class CreatePanelAndSiblingsOp
-        extends PanelOp {
+public class WantToBeShownOp
+        extends PanelOp<List<IPanel>> {
 
-    private static Log log = LogFactory.getLog( CreatePanelAndSiblingsOp.class );
-
-    @Mandatory
-    public Property<PanelPath>          prefix;
+    private static Log log = LogFactory.getLog( WantToBeShownOp.class );
 
     @Mandatory
-    public Property<PanelIdentifier>    panelId;
+    public Config<WantToBeShownOp,PanelPath>   parentPath;
 
 
     @Override
-    public void execute() {
+    public List<IPanel> execute( IPanelOpSite site ) {
+        DefaultAppManager manager = (DefaultAppManager)BatikApplication.instance().getAppManager();
         DefaultAppContext context = (DefaultAppContext)manager.getContext();
+        PanelIdentifier panelId = parentPath.get().lastSegment();
         
         // create, filter, init, add panels
-        BatikFactory.instance().allPanelExtensionPoints()
+        return BatikFactory.instance().allPanelExtensionPoints()
                 // sort in order to initialize main panel context first
                 .sorted( Collections.reverseOrder( Comparator.comparing( ep -> ep.stackPriority ) ) )
                 // initialize, then filter
                 .filter( ep -> {
                         new PanelContextInjector( ep.panel, context ).run();
-                        PanelPath path = prefix.get().append( ep.panel.id() );
-                        IPanelSite site = manager.getOrCreateSite( path, ep.stackPriority );
-                        ep.panel.setSite( site, context );
+                        PanelPath path = parentPath.get().append( ep.panel.id() );
+                        IPanelSite panelSite = site.getOrCreatePanelSite( path, ep.stackPriority );
+                        ep.panel.setSite( panelSite, context );
                         if (ep.panel.getSite() == null) {
                             throw new IllegalStateException( "Panel.getSite() == null after setSite()!");
                         }
-                        return ep.panel.id().equals( panelId.get() ) || ep.panel.wantsToBeShown(); 
+                        return ep.panel.id().equals( panelId ) || ep.panel.wantsToBeShown(); 
                 })
                 .filter( Predicates.notNull() )
                 .map( ep -> ep.panel )
-                .forEach( panel -> {
-                        context.addPanel( panel, prefix.get().append( panel.id() ) );
-                        manager.updatePanelStatus( panel, PanelStatus.CREATED );
-                });
+                .collect( Collectors.toList() );
     }
     
 }

@@ -12,47 +12,38 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.engine;
+package org.polymap.rhei.batik.engine.panelops;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.runtime.config.Check;
+import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.Mandatory;
-import org.polymap.core.runtime.config.Property;
-
-import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelPath;
 
 /**
- * Closes the specified panel. 
+ * Closes all panels down to the given target panel. 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class ClosePanelOp
+public class ClosePanelsOp
         extends PanelOp {
 
-    private static Log log = LogFactory.getLog( ClosePanelOp.class );
+    private static Log log = LogFactory.getLog( ClosePanelsOp.class );
     
     @Mandatory
-    @Check(PanelExists.class)
-    public Property<PanelPath>      panelPath;
+    public Config<ClosePanelsOp,PanelPath>  panelPath;
 
     
     @Override
-    public void execute() {
-        DefaultAppContext context = (DefaultAppContext)manager.getContext();
-        IPanel panel = context.getPanel( panelPath.get() );
-        try {
-            panel.dispose();
-        }
-        catch (Exception e) {
-            log.warn( "", e );
-        }
-        
-        context.removePanel( panelPath.get() );
-        manager.panelSites.remove( panelPath );
-        manager.updatePanelStatus( panel, null );
+    public Object execute( IPanelOpSite site ) {
+        int pathSize = panelPath.get().size();
+        site.findPanels( panel -> panel.getSite().getPath().size() > pathSize )
+                .forEach( panel -> {
+                        PanelPath path = panel.getSite().getPath();
+                        site.runOp( new ClosePanelOp().panelPath.put( path ) );                        
+                });
+        return null;
     }
     
 }

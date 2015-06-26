@@ -64,7 +64,6 @@ import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
-import org.polymap.rhei.batik.Panels;
 import org.polymap.rhei.batik.app.DefaultToolkit;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.app.IAppManager;
@@ -231,14 +230,14 @@ public class DefaultAppDesign
                         .filter( page -> page.isShown != previousShown.contains( page ) )
                         .forEach( page -> {
                             PanelPath panelPath = page.key;
-                            IPanel p = appManager.getContext().getPanel( panelPath );
+                            IPanel p = appManager.getPanel( panelPath );
                             PanelStatus panelStatus = p.getSite().getPanelStatus();
                             
                             // new or focused pages are explicitly set isShown=true, they already have proper
                             // PanelStatus (>= VISIBLE); however, layout may decide to show pages when more space
                             // becomes available, those panels have status < VISIBLE and need to be updated
                             if (page.isShown && VISIBLE.ge( panelStatus )) {
-                                ((DefaultAppManager)appManager).updatePanelStatus( p, VISIBLE );                                 
+                                appManager.getContext().r).updatePanelStatus( p, VISIBLE );                                 
                             }
                             // XXX
 //                            if (!page.isShown && panelStatus.ge( VISIBLE )) {
@@ -336,7 +335,7 @@ public class DefaultAppDesign
             closeBtn.addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
-                    appManager.closePanel( panel.getSite().getPath() );
+                    appManager.getContext().closePanel( panel.getSite().getPath() );
                 }
             });
         }
@@ -347,26 +346,27 @@ public class DefaultAppDesign
         switcher.setLayout( FormLayoutFactory.defaults().spacing( 15 ).margins( 1, 1 ).create() );
         UIUtils.setVariant( switcher, CSS_SWITCHER );
 
-        PanelPath prefix = panel.getSite().getPath().removeLast( 1 );
-        appManager.getContext()
-                .findPanels( Panels.withPrefix( prefix ) ).stream()
+        PanelPath panelPath = panel.getSite().getPath();
+        //PanelPath prefix = panel.getSite().getPath().removeLast( 1 );
+        appManager.getContext().wantToBeShown( panelPath )
+                .stream()
                 .sorted( reverseOrder( comparing( p -> p.getSite().getStackPriority() ) ) )
                 .forEach( p -> {
-                    IPanelSite panelSite = p.getSite();
+                        IPanelSite panelSite = p.getSite();
                         
-                    int btnCount = switcher.getChildren().length;
-                    Button btn = createSwitcherButton( switcher, p );
-                    btn.setLayoutData( btnCount == 0
-                            ? FormDataFactory.filled().clearRight().create()
-                            : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
-  
-                    btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
+                        int btnCount = switcher.getChildren().length;
+                        Button btn = createSwitcherButton( switcher, p );
+                        btn.setLayoutData( btnCount == 0
+                                ? FormDataFactory.filled().clearRight().create()
+                                        : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
 
-                    btn.addSelectionListener( new SelectionAdapter() {
-                        public void widgetSelected( SelectionEvent ev ) {
-                            appManager.openPanel( p.id() );
-                        }
-                    });
+                        btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
+
+                        btn.addSelectionListener( new SelectionAdapter() {
+                            public void widgetSelected( SelectionEvent ev ) {
+                                appManager.getContext().openPanel( panelPath, p.id() );
+                            }
+                        });
                 });
 
         Point size = switcher.computeSize( SWT.DEFAULT, 30, true );

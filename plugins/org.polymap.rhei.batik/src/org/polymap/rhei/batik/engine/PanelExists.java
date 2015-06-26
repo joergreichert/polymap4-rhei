@@ -31,7 +31,7 @@ public class PanelExists
     @Override
     public boolean test( PanelPath panelPath ) {
         IAppManager manager = BatikApplication.instance().getAppManager();
-        return manager.getContext().getPanel( panelPath ) != null;
+        return manager.getPanel( panelPath ) != null;
     }
     
 }

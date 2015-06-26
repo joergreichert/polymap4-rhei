@@ -12,11 +12,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.engine;
+package org.polymap.rhei.batik.engine.panelops;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 import org.polymap.core.runtime.config.Configurable;
 
+import org.polymap.rhei.batik.IPanel;
+import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
+import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.IAppManager;
 
 /**
@@ -29,11 +35,32 @@ import org.polymap.rhei.batik.app.IAppManager;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class PanelOp
+public abstract class PanelOp<R>
         extends Configurable {
 
-    protected DefaultAppManager     manager;
+    public abstract R execute( IPanelOpSite site );
     
-    public abstract void execute();
+    
+    /**
+     * This interface allows the operation to manipulate the panels of the
+     * {@link IAppManager} it is working for.
+     */
+    public interface IPanelOpSite {
+        
+        public <V> V runOp( PanelOp op );
+        
+        public IPanel getPanel( PanelPath panelPath );
+        
+//        public void addPanel( PanelPath path, IPanel panel );
+//        
+//        public void removePanel( PanelPath path );
+
+        public List<IPanel> findPanels( Predicate<IPanel> filter );
+
+        public IPanelSite getOrCreatePanelSite( PanelPath path, int stackPriority );
+
+        public void updatePanelStatus( IPanel panel, PanelStatus panelStatus );
+
+    }
     
 }

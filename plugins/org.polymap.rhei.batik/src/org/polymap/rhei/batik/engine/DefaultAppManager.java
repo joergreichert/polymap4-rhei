@@ -18,15 +18,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -35,8 +34,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.Closer;
+import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Mandatory;
 import org.polymap.core.runtime.event.EventManager;
-import org.polymap.core.ui.UIUtils;
+import org.polymap.core.ui.UIThreadExecutor;
 
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
@@ -49,8 +50,14 @@ import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.app.IAppManager;
+import org.polymap.rhei.batik.engine.panelops.ClosePanelsOp;
+import org.polymap.rhei.batik.engine.panelops.CreatePanelOp;
+import org.polymap.rhei.batik.engine.panelops.PanelOp;
+import org.polymap.rhei.batik.engine.panelops.RaisePanelStatusOp;
+import org.polymap.rhei.batik.engine.panelops.WantToBeShownOp;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
+//import org.polymap.core.ui.UIThreadExecutor;
 
 /**
  * 
@@ -62,7 +69,7 @@ public class DefaultAppManager
 
     private static Log log = LogFactory.getLog( DefaultAppManager.class );
 
-    protected DefaultAppContext         context = new PanelAppContext();
+    protected DefaultAppContext         context = new AppContext();
 
     protected IAppDesign                design;
 
@@ -71,44 +78,23 @@ public class DefaultAppManager
     
     protected PanelPath                 top = PanelPath.ROOT;
     
+    /** The panel hierarchy. */
+    private Map<PanelPath,IPanel>       panels = new HashMap();
+
 
     @Override
     public void init() {
         design = BatikApplication.instance().getAppDesign();
         
         // open root panel / after main window is created
-        UIUtils.sessionDisplay().asyncExec( new Runnable() {
-            public void run() {
-                openPanel( new PanelIdentifier( "start" ) );
-            }
-        });
+        UIThreadExecutor.async( () -> context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) ) );
     }
 
 
     @Override
     public void close() {
-    }
+    }    
 
-
-    protected IPanelSite getOrCreateSite( PanelPath path, int stackPriority ) {
-        PanelSite result = panelSites.get( path );
-        if (result == null) {
-            result = new PanelSite( path, stackPriority );
-            if (panelSites.put( path, result ) != null) {
-                throw new IllegalStateException();
-            }
-        }
-        return result;
-    }
-    
-    
-    protected void updatePanelStatus( IPanel panel, PanelStatus panelStatus ) {
-        PanelSite panelSite = (PanelSite)panel.getSite();
-        PanelStatus previous = panelSite.panelStatus;
-        panelSite.panelStatus = panelStatus;
-        fireEvent( panel, EventType.LIFECYCLE, panelSite.panelStatus, previous );
-    }
-    
     
     protected <T> void fireEvent( IPanel panel, EventType eventType, T newValue, T previousValue  ) {
         // XXX avoid race conditions; EventManager does not seem to always handle display events properly
@@ -116,76 +102,19 @@ public class DefaultAppManager
     }
 
     
-    protected <T extends PanelOp> void runOp( Class<T> type, Consumer<T> initializer ) {
-        try {
-            T instance = type.newInstance();
-            instance.manager = this;
-            initializer.accept( instance );
-            instance.execute();
-        }
-        catch (RuntimeException e) {
-            throw e;
-        }
-        catch (Exception e) {
-            throw new RuntimeException( e );
-        }
-    }
-    
-    
-    /**
-     * Creates a new {@link IPanel} and its siblings on top of the currently
-     * {@link #focusedPanel} and adds them to the context. The panel for the given
-     * panelId is then {@link #focusPanel(PanelIdentifier)}.
-     *
-     * @param panelId
-     * @throws IllegalStateException If no panel could be found for the given id.
-     */
     @Override
-    public IPanel openPanel( final PanelIdentifier panelId ) {
-        // create panel and siblings
-        runOp( CreatePanelAndSiblingsOp.class, op -> { 
-            op.prefix.set( top ); 
-            op.panelId.set( panelId );
-        });
-
-        // set top 
-        top = top.append( panelId );
-
-        // raise top's panel status
-        IPanel panel = context.getPanel( top );
-        runOp( RaisePanelStatusOp.class, op -> {
-            op.panel.set( panel );
-            op.targetStatus.set( PanelStatus.FOCUSED );
-        });
-        return panel;
-    }
-
-    
-    @Override
-    public void hidePanel( PanelPath panelPath ) {
-        IPanel panel = context.getPanel( panelPath );
-        updatePanelStatus( panel, PanelStatus.INITIALIZED );
+    public IPanel getPanel( PanelPath path ) {
+        return panels.get( path );
     }
 
 
     @Override
-    public void closePanel( PanelPath panelPath ) {                
-        // close all children and siblings
-        PanelPath parentPath = panelPath.removeLast( 1 );
-        runOp( ClosePanelsOp.class, op -> op.panelPath.set( parentPath ) );
-
-        // set top 
-        top = parentPath;
-
-        // raise top's panel status
-        IPanel panel = context.getPanel( top );
-        runOp( RaisePanelStatusOp.class, op -> {
-            op.panel.set( panel );
-            op.targetStatus.set( PanelStatus.FOCUSED );
-        });
+    public List<IPanel> findPanels( Predicate<IPanel> filter ) {
+        // make a copy so that contents is stable while iterating (remove)
+        return panels.values().stream().filter( filter ).collect( Collectors.toList() );
     }
 
-    
+
     @Override
     public IAppContext getContext() {
         return context;
@@ -193,38 +122,127 @@ public class DefaultAppManager
 
     
     /**
+     * Provides the default logic for opening a panel:
+     * <ul>
+     * </ul>
+     */
+    protected class OpenPanelOp 
+            extends PanelOp<IPanel> {
+        
+        @Mandatory
+        public Config<OpenPanelOp,PanelPath>        parentPath;
+        
+        @Mandatory
+        public Config<OpenPanelOp,PanelIdentifier>  panelId;
+        
+        @Override
+        public IPanel execute( IPanelOpSite site ) {
+            // close every panel down to parent
+            site.runOp( new ClosePanelsOp()
+                    .panelPath.put( parentPath.get() ) );
+            
+            // create panel
+            IPanel panel = site.runOp( new CreatePanelOp()
+                    .parentPath.put( parentPath.get() ) 
+                    .panelId.put( panelId.get() ) );
+            panels.put(  )
+
+            // raise panel status
+            site.runOp( new RaisePanelStatusOp()
+                    .panel.put( panel )
+                    .targetStatus.put( PanelStatus.FOCUSED ) );
+
+            // set top
+            top = panel.getSite().getPath();
+            return panel;
+        }
+    }
+
+    
+    /**
      * 
      */
-    static class UIThreadRunnable
-            implements Runnable {
+    protected class ClosePanelOp 
+            extends PanelOp {
         
-        static <T> T exec( boolean async, Callable<T> task ) {
-            UIThreadRunnable runnable = new UIThreadRunnable( task );
-            if (async) {
-                UIUtils.sessionDisplay().asyncExec( runnable );
-                return null;
-            }
-            else if (Display.getCurrent() == null) {
-                UIUtils.sessionDisplay().syncExec( runnable );
-                return (T)runnable.result;
-            }            
-            else {
-                runnable.run();
-                return (T)runnable.result;
-            }            
-        }
+        @Mandatory
+        public Config<OpenPanelOp,PanelPath>    panelPath;
         
-        public Callable         delegate;
-        public Object           result;
+        @Override
+        public Object execute( IPanelOpSite site ) {
+            // close all children and siblings
+            PanelPath parentPath = panelPath.get().removeLast( 1 );
+            site.runOp( new ClosePanelsOp().panelPath.put( parentPath ) );
 
-        public UIThreadRunnable( Callable delegate ) {
-            this.delegate = delegate;
+            // set top 
+            top = parentPath;
+
+            // raise top's panel status
+            IPanel panel = getPanel( top );
+            site.runOp( new RaisePanelStatusOp()
+                    .panel.put( panel )
+                    .targetStatus.put( PanelStatus.FOCUSED ) );
+            return null;
+        }
+    }
+
+    
+    /**
+     * 
+     */
+    protected class PanelOpSite
+            implements PanelOp.IPanelOpSite {
+    
+        @Override
+        public IPanel getPanel( PanelPath path ) {
+            return DefaultAppManager.this.getPanel( path );
         }
 
         @Override
-        public void run() {
+        public List<IPanel> findPanels( Predicate<IPanel> filter ) {
+            return DefaultAppManager.this.findPanels( filter );
+        }
+        
+//        @Override
+//        public void addPanel( PanelPath path, IPanel panel ) {
+//            if (panels.put( path, panel ) != null) {
+//                throw new IllegalStateException( "Panel already exists at: " + path );
+//            }
+//        }
+//    
+//        @Override
+//        public void removePanel( PanelPath path ) {
+//            if (panels.remove( path ) == null) {
+//                throw new IllegalStateException( "No Panel exists at: " + path );
+//            }
+//            panelSites.remove( path );
+//        }
+
+        @Override
+        public IPanelSite getOrCreatePanelSite( PanelPath path, int stackPriority ) {
+            PanelSite result = panelSites.get( path );
+            if (result == null) {
+                result = new PanelSite( path, stackPriority );
+                if (panelSites.put( path, result ) != null) {
+                    throw new IllegalStateException();
+                }
+            }
+            return result;
+        }
+        
+        
+        @Override
+        public void updatePanelStatus( IPanel panel, PanelStatus panelStatus ) {
+            PanelSite panelSite = (PanelSite)panel.getSite();
+            PanelStatus previous = panelSite.panelStatus;
+            panelSite.panelStatus = panelStatus;
+            fireEvent( panel, EventType.LIFECYCLE, panelSite.panelStatus, previous );
+        }
+
+        @Override
+        public <RR> RR runOp( PanelOp op ) {
             try {
-                result = delegate.call();
+                return (RR)op.execute( this );
             }
             catch (RuntimeException e) {
                 throw e;
@@ -234,12 +252,12 @@ public class DefaultAppManager
             }
         }
     }
-    
+
 
     /**
      * Facade of the global {@link DefaultAppManager#context}.
      */
-    class PanelAppContext
+    protected class AppContext
             extends DefaultAppContext {
         
         @Override
@@ -254,20 +272,27 @@ public class DefaultAppManager
 
         @Override
         public IPanel openPanel( final PanelPath panelPath, final PanelIdentifier panelId ) {
-            return UIThreadRunnable.exec( false, () -> {
-                // close all panels above
-                runOp( ClosePanelsOp.class, op -> op.panelPath.set( panelPath ) );
-                
-                return DefaultAppManager.this.openPanel( panelId );
-            });
+            return new PanelOpSite().runOp( new OpenPanelOp().panelId.put( panelId ) );
         }
 
         @Override
         public void closePanel( final PanelPath panelPath ) {
-            UIThreadRunnable.exec( false, () -> { 
-                DefaultAppManager.this.closePanel( panelPath ); 
-                return null;
-            });
+            new PanelOpSite().runOp( new ClosePanelOp().panelPath.put( panelPath ) );
+        }
+        
+        @Override
+        public IPanel getPanel( PanelPath path ) {
+            return DefaultAppManager.this.getPanel( path );
+        }
+
+        @Override
+        public List<IPanel> findPanels( Predicate<IPanel> filter ) {
+            return DefaultAppManager.this.findPanels( filter );
+        }
+        
+        @Override
+        public List<IPanel> wantToBeShown( PanelPath parent ) {
+            return new PanelOpSite().runOp( new WantToBeShownOp().parentPath.put( parent ) );
         }
     }
 
@@ -327,7 +352,7 @@ public class DefaultAppManager
 
         @Override
         public void setStatus( IStatus status ) {
-            IPanel panel = context.getPanel( path );
+            IPanel panel = getPanel( path );
             IStatus previous = this.status;
             this.status = status;
             fireEvent( panel, EventType.STATUS, this.status, previous );
@@ -356,7 +381,7 @@ public class DefaultAppManager
         public void setTitle( String title ) {
             String previous = this.title;
             this.title = title;
-            IPanel panel = context.getPanel( path );
+            IPanel panel = getPanel( path );
             if (panel != null) {
                 fireEvent( panel, EventType.TITLE, this.title, previous );
             }
@@ -374,7 +399,7 @@ public class DefaultAppManager
         public void setIcon( Image icon ) {
             Image previous = this.icon;
             this.icon = icon;
-            IPanel panel = context.getPanel( path );
+            IPanel panel = getPanel( path );
             fireEvent( panel, EventType.TITLE, this.icon, previous );
         }
 

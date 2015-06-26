@@ -14,12 +14,15 @@
  */
 package org.polymap.rhei.batik.app;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
-import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.Panels;
 
 /**
  * There is one IAppManager per application. It manages the {@link IAppContext}, the
@@ -39,12 +42,22 @@ public interface IAppManager
     
     public IAppContext getContext();
 
-    public IPanel openPanel( PanelIdentifier panelId );
+//    public IPanel openPanel( PanelIdentifier panelId );
+//
+////    public IPanel focusPanel( PanelIdentifier panelId );
+//
+//    public void hidePanel( PanelPath path );
+//
+//    public void closePanel( PanelPath panelPath );
 
-//    public IPanel focusPanel( PanelIdentifier panelId );
+    public IPanel getPanel( PanelPath panelPath );
 
-    public void hidePanel( PanelPath path );
-
-    public void closePanel( PanelPath panelPath );
+    /**
+     * All direct children of the given path.
+     *
+     * @see Panels
+     * @param path
+     */
+    public List<IPanel> findPanels( Predicate<IPanel> filter );
 
 }

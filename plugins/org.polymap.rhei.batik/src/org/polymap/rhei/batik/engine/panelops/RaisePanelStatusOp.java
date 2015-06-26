@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.engine;
+package org.polymap.rhei.batik.engine.panelops;
 
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.CREATED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.FOCUSED;
@@ -22,9 +22,8 @@ import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.Mandatory;
-import org.polymap.core.runtime.config.Property;
-
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 
@@ -39,27 +38,28 @@ public class RaisePanelStatusOp
     private static Log log = LogFactory.getLog( RaisePanelStatusOp.class );
     
     @Mandatory
-    public Property<IPanel>         panel;
+    public Config<RaisePanelStatusOp,IPanel>      panel;
     
     @Mandatory
-    public Property<PanelStatus>    targetStatus;
+    public Config<RaisePanelStatusOp,PanelStatus> targetStatus;
 
 
     @Override
-    public void execute() {
+    public Object execute( IPanelOpSite site ) {
         // initialize
         if (panel.get().getSite().getPanelStatus() == CREATED && targetStatus.get().ge( INITIALIZED )) {
             panel.get().init();
-            manager.updatePanelStatus( panel.get(), INITIALIZED );
+            site.updatePanelStatus( panel.get(), INITIALIZED );
         }
         // make visible
         if (panel.get().getSite().getPanelStatus() == INITIALIZED && targetStatus.get().ge( VISIBLE )) {
-            manager.updatePanelStatus( panel.get(), VISIBLE );
+            site.updatePanelStatus( panel.get(), VISIBLE );
         }
         // make active
         if (panel.get().getSite().getPanelStatus() == VISIBLE && targetStatus.get().ge( FOCUSED )) {
-            manager.updatePanelStatus( panel.get(), FOCUSED );
+            site.updatePanelStatus( panel.get(), FOCUSED );
         }
+        return null;
     }
     
 }

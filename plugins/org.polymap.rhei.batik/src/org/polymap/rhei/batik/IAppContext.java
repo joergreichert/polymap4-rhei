@@ -65,16 +65,11 @@ public interface IAppContext {
      */
     public void closePanel( PanelPath panelPath );
 
-    public IPanel getPanel( PanelPath panelPath );
-
     /**
-     * All direct children of the given path.
-     *
-     * @see Panels
-     * @param path
+     * List of panels that want to be shown on top of the given parent.
      */
-    public List<IPanel> findPanels( Predicate<IPanel> filter );
-
+    public List<IPanel> wantToBeShown( PanelPath parent );
+    
     
     /**
      * Registers the given {@link EventHandler annotated event handler} for
@@ -90,9 +85,9 @@ public interface IAppContext {
      *
      * @see EventHandler
      * @see EventManager
-     * @param annotated The annotated event handler instane.
+     * @param handler The annotated event handler instane.
      */
-    public void addListener( Object annotated, EventFilter<PanelChangeEvent>... filters );
+    public void addListener( Object handler, EventFilter<PanelChangeEvent>... filters );
 
     public void removeListener( Object handler );
 
@@ -104,5 +99,9 @@ public interface IAppContext {
      * @param panel
      */
     public <T> T propagate( T target );
-    
+
+    public IPanel getPanel( PanelPath panelPath );
+
+    public List<IPanel> findPanels( Predicate<IPanel> filter );
+
 }

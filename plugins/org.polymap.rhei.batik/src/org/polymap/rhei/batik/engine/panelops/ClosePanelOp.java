@@ -12,41 +12,47 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.engine;
+package org.polymap.rhei.batik.engine.panelops;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.polymap.core.runtime.config.Check;
+import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.Mandatory;
-import org.polymap.core.runtime.config.Property;
 
+import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.engine.PanelExists;
 
 /**
- * Closes all panels down to the given target panel. 
+ * Closes the specified panel. 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class ClosePanelsOp
+public class ClosePanelOp
         extends PanelOp {
 
-    private static Log log = LogFactory.getLog( ClosePanelsOp.class );
+    private static Log log = LogFactory.getLog( ClosePanelOp.class );
     
     @Mandatory
-    public Property<PanelPath>      panelPath;
+    @Check(PanelExists.class)
+    public Config<ClosePanelOp,PanelPath>   panelPath;
 
     
     @Override
-    public void execute() {
-        int pathSize = panelPath.get().size();
-        manager.getContext()
-                .findPanels( panel -> panel.getSite().getPath().size() > pathSize )
-                .forEach( panel -> closePanel( panel.getSite().getPath() ) );
-    }
-    
-    
-    protected void closePanel( PanelPath _panelPath ) {
-        manager.runOp( ClosePanelOp.class, op -> op.panelPath.set( _panelPath ) );    
+    public Object execute( IPanelOpSite site ) {
+        IPanel panel = site.getPanel( panelPath.get() );
+        try {
+            panel.dispose();
+        }
+        catch (Exception e) {
+            log.warn( "", e );
+        }
+        
+        site.removePanel( panelPath.get() );
+        site.updatePanelStatus( panel, null );
+        return false;
     }
     
 }
