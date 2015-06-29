@@ -47,6 +47,9 @@ public abstract class DashletSite
     @Defaults
     public Property<List<LayoutConstraint>> constraints;
 
+    @Defaults
+    public Property<Boolean>                isExpandable;
+    
     public abstract IPanelSite panelSite();
     
     public abstract IPanelToolkit toolkit();

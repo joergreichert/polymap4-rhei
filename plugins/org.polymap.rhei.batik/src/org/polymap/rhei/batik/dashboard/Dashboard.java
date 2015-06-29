@@ -77,7 +77,7 @@ public class Dashboard {
             
             String title = dashletSite.title.get();
             int border = dashletSite.isBoxStyle.get() ? SWT.BORDER : SWT.NONE;
-            int expandable = SWT.NONE;
+            int expandable = dashletSite.isExpandable.get() ? IPanelSection.EXPANDABLE : SWT.NONE;
             IPanelSection section = tk.createPanelSection( parent, title, border, expandable );
             
             List<LayoutConstraint> constraints = dashletSite.constraints.get();
