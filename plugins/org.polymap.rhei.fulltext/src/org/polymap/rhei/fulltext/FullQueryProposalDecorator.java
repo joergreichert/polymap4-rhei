@@ -27,6 +27,12 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
+import org.polymap.core.runtime.config.Check;
+import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.ConfigurationFactory;
+import org.polymap.core.runtime.config.DefaultInt;
+import org.polymap.core.runtime.config.NumberRangeValidator;
+
 /**
  * Allows for proposals for query strings consisting of multiple terms. For example:
  * "Renate Bies" is transformed into proposal request "Bies", the results are joined
@@ -38,12 +44,26 @@ public class FullQueryProposalDecorator
         extends QueryDecorator {
 
     public final static String      SEPARATOR = " ";
+
+    /**
+     * For multiple terms just the last term is a proposal requested for, the results
+     * are then checked and may be discarded if it doen't actually find something.
+     * So, in order to find maxResults at the end we need to request more than
+     * maxResults proposals.
+     * <p/> 
+     * XXX Implement automatic solution.
+     */
+    @DefaultInt(3)
+    @Check(value=NumberRangeValidator.class, args={"1","100"})
+    public Config<FullQueryProposalDecorator,Integer> proposalIncreaseFactor;
     
     
     public FullQueryProposalDecorator( FulltextIndex next ) {
         super( next );
+        ConfigurationFactory.inject( this );
     }
 
+    
     @Override
     public Iterable<String> propose( String query, int maxResults, String field )
             throws Exception {
@@ -63,7 +83,7 @@ public class FullQueryProposalDecorator
             else {
                 // request more than maxResults proposals if prefix present, as we later
                 // filter proposals that are not correct for the given prefix
-                Iterable<String> results = next.propose( term, maxResults*3, field );
+                Iterable<String> results = next.propose( term, maxResults*proposalIncreaseFactor.get(), field );
 
                 // join prefix and proposal
                 final String finalPrefix = prefix;
