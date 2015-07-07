@@ -20,8 +20,6 @@ import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +39,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.Closer;
-import org.polymap.core.runtime.Predicates;
+import org.polymap.core.runtime.StreamIterable;
 import org.polymap.core.runtime.event.EventManager;
+import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIThreadExecutor;
 
 import org.polymap.rhei.batik.BatikApplication;
@@ -136,25 +135,48 @@ public class DefaultAppManager
     }
     
     
-    protected List<IPanel> wantToBeShown( PanelPath parentPath ) {
-        // create, filter, init, add panels
-        return BatikFactory.instance().allPanelExtensionPoints()
-                // sort in order to initialize main panel context first
-                .sorted( Collections.reverseOrder( Comparator.comparing( ep -> ep.stackPriority ) ) )
-                // initialize, then filter
-                .filter( ep -> {
-                        new PanelContextInjector( ep.panel, context ).run();
-                        PanelPath path = parentPath.append( ep.panel.id() );
-                        IPanelSite panelSite = getOrCreatePanelSite( path, ep.stackPriority );
-                        ep.panel.setSite( panelSite, context );
-                        if (ep.panel.getSite() == null) {
-                            throw new IllegalStateException( "Panel.getSite() == null after setSite()!");
-                        }
-                        return ep.panel.wantsToBeShown(); 
+    protected IPanel createPanel( PanelExtensionPoint ep, PanelPath parentPath ) {
+        try {
+            IPanel panel = ep.createPanel();
+            new PanelContextInjector( panel, context ).run();
+            PanelPath path = parentPath.append( panel.id() );
+            IPanelSite panelSite = getOrCreatePanelSite( path, ep.getStackPriority() );
+            panel.setSite( panelSite, context );
+            if (panel.getSite() == null) {
+                throw new IllegalStateException( "Panel.getSite() == null after setSite()!");
+            }
+            return panel; //panel.wantsToBeShown() ? panel : null;
+        }
+        catch (Exception e) {
+            StatusDispatcher.handleError( "Error while initializing panel", e );
+            return null;
+        }         
+    }
+    
+    
+    protected IPanel createPanel( PanelPath parentPath, PanelIdentifier panelId ) {
+        return BatikFactory.instance().allPanelExtensionPoints().stream()
+                .map( ep -> createPanel( ep, parentPath ) )
+                .filter( panel -> panel.id().equals( panelId ) )
+                .peek( panel -> {
+                        log.info( "CREATE panel: " + panel.getSite().getPath() );
+                        panels.put( panel.getSite().getPath(), panel );
+                        updatePanelStatus( panel, PanelStatus.CREATED );
                 })
-                .filter( Predicates.notNull() )
-                .map( ep -> ep.panel )
-                .collect( Collectors.toList() );
+                .findFirst()
+                .orElseThrow( () -> new IllegalStateException( "No such panel: " + panelId ) );
+    }
+
+
+    protected StreamIterable<IPanel> wantToBeShown( PanelPath parentPath ) {
+        // create, filter, init, add panels
+        return StreamIterable.of( 
+                BatikFactory.instance().allPanelExtensionPoints().stream()
+                // sort in order to initialize main panel context first
+//                .sorted( Collections.reverseOrder( Comparator.comparing( ep -> ep.stackPriority ) ) )
+                // initialize, then filter
+                .map( ep -> createPanel( ep, parentPath ) )
+                .filter( panel -> panel.wantsToBeShown() ) );
     }
 
     
@@ -172,49 +194,30 @@ public class DefaultAppManager
     }
 
     
-    protected IPanel createPanel( PanelPath parentPath, PanelIdentifier panelId ) {
-        // create, filter, init, add panels
-        PanelExtensionPoint ep = BatikFactory.instance().allPanelExtensionPoints()
-                .filter( _ep -> _ep.panel.id().equals( panelId ) )
-                .findFirst().orElseThrow( () -> new IllegalStateException( "No such panel: " + panelId ) );
-                
-        new PanelContextInjector( ep.panel, context ).run();
-        PanelPath path = parentPath.append( ep.panel.id() );
-        IPanelSite panelSite = getOrCreatePanelSite( path, ep.stackPriority );
-        ep.panel.setSite( panelSite, context );
-        if (ep.panel.getSite() == null) {
-            throw new IllegalStateException( "Panel.getSite() == null after setSite()!");
-        }
-
-        panels.put( path, ep.panel );
-        updatePanelStatus( ep.panel, PanelStatus.CREATED );
-        return ep.panel;
-    }
-
-    
-    protected void disposePanels( PanelPath panelPath ) {
-        int pathSize = panelPath.size();
-        findPanels( panel -> panel.getSite().getPath().size() > pathSize )
-                .forEach( panel -> {
-                        PanelPath path = panel.getSite().getPath();
-                        disposePanel( path );                        
-                });
+    protected void disposePanels( PanelPath parentPath ) {
+        int pathSize = parentPath.size();
+        panels.values().stream()
+                .filter( panel -> panel.getSite().getPath().size() > pathSize )
+                .collect( Collectors.toList() )  // keep stable while removing
+                .forEach( panel -> disposePanel( panel ) );
     }
     
     
-    protected void disposePanel( PanelPath panelPath ) {
-        IPanel panel = getPanel( panelPath );
+    protected void disposePanel( IPanel panel ) {
+        log.info( "DISPOSE panel: " + panel.getSite().getPath() );
         try {
             panel.dispose();
         }
         catch (Exception e) {
             log.warn( "", e );
         }
+        PanelPath panelPath = panel.getSite().getPath();
         if (panels.remove( panelPath ) == null) {
             throw new IllegalStateException( "No Panel exists at: " + panelPath );
         }
         panelSites.remove( panelPath );
         updatePanelStatus( panel, null );
+        log.info( "    " + panels.values().toString() );
     }
         
     
@@ -294,7 +297,7 @@ public class DefaultAppManager
         }
         
         @Override
-        public List<IPanel> wantToBeShown( PanelPath parent ) {
+        public Iterable<IPanel> wantToBeShown( PanelPath parent ) {
             return DefaultAppManager.this.wantToBeShown( parent );
         }
     }

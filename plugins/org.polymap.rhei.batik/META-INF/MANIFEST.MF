@@ -18,7 +18,8 @@ Export-Package: org.polymap.rhei.batik,
  org.polymap.rhei.batik.dashboard,
  org.polymap.rhei.batik.engine,
  org.polymap.rhei.batik.internal,
- org.polymap.rhei.batik.toolkit
+ org.polymap.rhei.batik.toolkit,
+ org.polymap.rhei.batik.tx
 Bundle-ClassPath: lib/asm-4.1.jar,
  lib/asm-analysis-4.1.jar,
  lib/asm-tree-4.1.jar,

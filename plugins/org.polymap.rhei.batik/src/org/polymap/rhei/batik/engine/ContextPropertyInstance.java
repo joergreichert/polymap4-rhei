@@ -17,6 +17,7 @@ package org.polymap.rhei.batik.engine;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.event.EventFilter;
@@ -48,7 +49,22 @@ public class ContextPropertyInstance<T>
     }
 
     
-//    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isPresent() {
+        return context.getPropertyValue( this ) != null;
+    }
+
+
+    @Override
+    public void ifPresent( Consumer<T> consumer ) {
+        T value = context.getPropertyValue( this );
+        if (value != null) {
+            consumer.accept( value );
+        }
+    }
+
+
+    //    @SuppressWarnings("deprecation")
     @Override
     public T get() {
         T result = context.getPropertyValue( this );

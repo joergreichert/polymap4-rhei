@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.engine;
 
 import static java.util.Collections.reverseOrder;
 import static java.util.Comparator.comparing;
+import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 
 import java.util.Optional;
@@ -32,7 +33,6 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -43,13 +43,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.layout.RowDataFactory;
-import org.eclipse.jface.resource.JFaceResources;
-
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
 
+import org.polymap.core.runtime.StreamIterable;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
@@ -227,20 +226,20 @@ public class DefaultAppDesign
                 getPages().stream()
                         .filter( page -> page.isShown != previousShown.contains( page ) )
                         .forEach( page -> {
-                            PanelPath panelPath = page.key;
-                            IPanel p = appManager.getPanel( panelPath );
-                            PanelStatus panelStatus = p.getSite().getPanelStatus();
-                            
-                            // new or focused pages are explicitly set isShown=true, they already have proper
-                            // PanelStatus (>= VISIBLE); however, layout may decide to show pages when more space
-                            // becomes available, those panels have status < VISIBLE and need to be updated
-                            if (page.isShown && VISIBLE.ge( panelStatus )) {
-                                appManager.updatePanelStatus( p, VISIBLE );                                 
-                            }
-                            // XXX
-//                            if (!page.isShown && panelStatus.ge( VISIBLE )) {
-//                                ((DefaultAppManager)appManager).updatePanelStatus( p, INITIALIZED );                                
-//                            }
+                                PanelPath panelPath = page.key;
+                                IPanel p = appManager.getPanel( panelPath );
+                                PanelStatus panelStatus = p.getSite().getPanelStatus();
+
+                                // new or focused pages are explicitly set isShown=true, they already have proper
+                                // PanelStatus (>= VISIBLE); however, layout may decide to show pages when more space
+                                // becomes available, those panels have status < VISIBLE and need to be updated
+                                if (page.isShown && VISIBLE.ge( panelStatus )) {
+                                    appManager.updatePanelStatus( p, VISIBLE );                                 
+                                }
+                                //
+                                if (!page.isShown && panelStatus.ge( VISIBLE )) {
+                                    appManager.updatePanelStatus( p, INITIALIZED );                                
+                                }
                         });
             }
         };
@@ -283,8 +282,8 @@ public class DefaultAppDesign
         title.setText( Optional.ofNullable( panel.getSite().getTitle() ).orElse( "..." ) );
         title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 4 ).create() );
 
-        FontData fontData = title.getFont().getFontData()[0];
-        title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
+//        FontData fontData = title.getFont().getFontData()[0];
+//        title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
         
         // scrolled
         ScrolledComposite scrolled = new ScrolledComposite( parent, SWT.NO_FOCUS|SWT.V_SCROLL );
@@ -337,11 +336,10 @@ public class DefaultAppDesign
 
         PanelPath panelPath = panel.getSite().getPath();
         //PanelPath prefix = panel.getSite().getPath().removeLast( 1 );
-        appManager.getContext().wantToBeShown( panelPath )
+        StreamIterable.of( appManager.getContext().wantToBeShown( panelPath ) )
                 .stream()
                 .sorted( reverseOrder( comparing( p -> p.getSite().getStackPriority() ) ) )
                 .forEach( p -> {
-                        
                         int btnCount = switcher.getChildren().length;
                         Button btn = createSwitcherButton( switcher, p );
                         btn.setLayoutData( btnCount == 0

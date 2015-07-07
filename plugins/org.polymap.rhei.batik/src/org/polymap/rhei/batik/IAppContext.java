@@ -14,11 +14,11 @@
  */
 package org.polymap.rhei.batik;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 import org.eclipse.jface.action.IAction;
 
+import org.polymap.core.runtime.StreamIterable;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
@@ -51,7 +51,7 @@ public interface IAppContext {
      * <code>panelPath</code>. Any children of the given parent panel are closed
      * before opening the new child.
      *
-     * @param panelPath The path of the parent panel to open the new panel for.
+     * @param parentPath The path of the parent panel to open the new panel for.
      * @param panelId The id of the panel to open
      * @return Null if the given panels was not found.
      */
@@ -67,9 +67,10 @@ public interface IAppContext {
 
     /**
      * List of panels that want to be shown on top of the given parent.
+     * 
+     * @return {@link StreamIterable} of panels.
      */
-    public List<IPanel> wantToBeShown( PanelPath parentPath );
-    
+    public Iterable<IPanel> wantToBeShown( PanelPath parentPath );
     
     /**
      * Registers the given {@link EventHandler annotated event handler} for
@@ -90,7 +91,6 @@ public interface IAppContext {
     public void addListener( Object handler, EventFilter<PanelChangeEvent>... filters );
 
     public void removeListener( Object handler );
-
     
     /**
      * Propagates this context by injecting {@link Context} instances into
@@ -102,6 +102,11 @@ public interface IAppContext {
 
     public IPanel getPanel( PanelPath panelPath );
 
-    public List<IPanel> findPanels( Predicate<IPanel> filter );
+    /**
+     *
+     * @param filter
+     * @return {@link StreamIterable} of panels matching the given predicate.
+     */
+    public Iterable<IPanel> findPanels( Predicate<IPanel> filter );
 
 }

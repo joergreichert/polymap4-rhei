@@ -37,7 +37,8 @@ public abstract class DefaultPanel
 
     @Override
     public void setSite( IPanelSite site, IAppContext context ) {
-        assert this.site == null && this.context == null;
+        assert this.site == null : "site is not null";
+        assert this.context == null : "context is not null";
         this.site = site;
         this.context = context;
     }

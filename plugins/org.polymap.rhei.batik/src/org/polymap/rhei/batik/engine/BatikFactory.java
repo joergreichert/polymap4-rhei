@@ -16,8 +16,6 @@ package org.polymap.rhei.batik.engine;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +25,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.rap.rwt.RWT;
 
+import org.polymap.core.runtime.StreamIterable;
 import org.polymap.core.runtime.session.SessionSingleton;
 
 import org.polymap.rhei.batik.BatikPlugin;
@@ -96,11 +95,11 @@ public class BatikFactory
     /**
      * 
      */
-    public static class PanelExtensionPoint {
+    public static abstract class PanelExtensionPoint {
         
-        public IPanel               panel;
+        public abstract IPanel createPanel() throws CoreException;
         
-        public Integer              stackPriority;
+        public abstract Integer getStackPriority();
         
     }
 
@@ -111,26 +110,33 @@ public class BatikFactory
      *
      * @param parent
      * @param name The panel name to filter, or null to get all panels.
-     * @return Newly created panel instance.
+     * @return {@link StreamIterable} of newly created panel instance.
      */
-    public Stream<PanelExtensionPoint> allPanelExtensionPoints() {
+    public StreamIterable<PanelExtensionPoint> allPanelExtensionPoints() {
         IConfigurationElement[] elms = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor( BatikPlugin.PLUGIN_ID, PANEL_EXTENSION_POINT );
 
-        return Arrays.asList( elms ).stream()
+        return StreamIterable.of( 
+                Arrays.asList( elms ).stream()
                 .<PanelExtensionPoint>map( elm -> {
-                    try {
-                        PanelExtensionPoint result = new PanelExtensionPoint();
-                        result.panel = (IPanel)elm.createExecutableExtension( "class" );
-                        result.stackPriority = Integer.parseInt( 
-                                Optional.ofNullable( elm.getAttribute( "stackPriority" ) ).orElse( "0" ) );
-                        return result;
-                    }
-                    catch (Exception e) {
-                        log.error( "Error while initializing panel: " + elm.getName(), e );
-                        return null;
-                    }
-                });
+                        try {
+                            return new PanelExtensionPoint() {
+                                @Override
+                                public IPanel createPanel() throws CoreException {
+                                    return (IPanel)elm.createExecutableExtension( "class" );
+                                }
+                                @Override
+                                public Integer getStackPriority() {
+                                    return Integer.parseInt( 
+                                            Optional.ofNullable( elm.getAttribute( "stackPriority" ) ).orElse( "0" ) );
+                                }
+                            };
+                        }
+                        catch (Exception e) {
+                            log.error( "Error while initializing panel: " + elm.getName(), e );
+                            return null;
+                        }
+                }));
     }
 
 }

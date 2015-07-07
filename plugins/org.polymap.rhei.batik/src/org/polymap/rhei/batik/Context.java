@@ -15,6 +15,7 @@
 package org.polymap.rhei.batik;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.polymap.core.runtime.event.EventFilter;
 
@@ -34,6 +35,10 @@ import org.polymap.core.runtime.event.EventFilter;
  */
 public interface Context<T> {
 
+    public boolean isPresent();
+    
+    public void ifPresent( Consumer<T> consumer );
+    
     public T get();
     
     public T getOrWait( int time, TimeUnit unit );
