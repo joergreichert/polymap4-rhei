@@ -87,7 +87,7 @@ public class FeatureTests {
         fb.set( "date", new Date() );
         fb.set( "isCool", true );
         fb.set( "age", 100 );
-        JSONObject feature = new Feature2JsonTransformer( null ).apply( fb.buildFeature( "1" ) );
+        JSONObject feature = new Feature2JsonTransformer().apply( fb.buildFeature( "1" ) );
         feature = new ToStringTransformer().apply( feature );
         feature = new AddressFeatureTransformer().apply( feature );
         log.info( "Transformed feature: " + feature );

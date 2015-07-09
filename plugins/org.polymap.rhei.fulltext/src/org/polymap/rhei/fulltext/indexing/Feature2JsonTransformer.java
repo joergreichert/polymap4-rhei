@@ -26,9 +26,6 @@ import com.google.common.base.Joiner;
 import com.vividsolutions.jts.geom.Geometry;
 
 import org.polymap.core.data.util.Geometries;
-import org.polymap.core.project.ILayer;
-import org.polymap.core.project.Labeled;
-
 import static org.polymap.rhei.fulltext.FulltextIndex.*;
 
 /**
@@ -46,11 +43,11 @@ public class Feature2JsonTransformer
 
     private static Log log = LogFactory.getLog( Feature2JsonTransformer.class );
 
-    private ILayer                  layer;
+//    private ILayer                  layer;
 
     
-    public Feature2JsonTransformer( ILayer layer ) {
-        this.layer = layer;
+    public Feature2JsonTransformer( /*ILayer layer*/ ) {
+//        this.layer = layer;
     }
 
 
@@ -90,12 +87,12 @@ public class Feature2JsonTransformer
             log.warn( "Feature already has field: " + FIELD_CATEGORIES );
         }
         StringBuilder categories = new StringBuilder( 128 );
-        if (layer != null) {
-            layer.as( Labeled.class ).ifPresent( labeled -> {
-                categories.append( labeled.label.get() ).append( ' ' );
-                categories.append( Joiner.on( ' ' ).join( labeled.keywords ) ).append( ' ' );                
-            } );
-        }
+//        if (layer != null) {
+//            layer.as( Labeled.class ).ifPresent( labeled -> {
+//                categories.append( labeled.label.get() ).append( ' ' );
+//                categories.append( Joiner.on( ' ' ).join( labeled.keywords ) ).append( ' ' );                
+//            } );
+//        }
         result.put( FIELD_CATEGORIES, categories.toString() );
         return result;
     }
