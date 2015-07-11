@@ -189,7 +189,7 @@ public class PageStackLayout
                         ? clientArea.width - panelX - margins.getMarginRight() 
                         : minSize.width;
                 
-                page.control.setBounds( panelX, margins.getMarginTop(), pageWidth, availHeight );
+                page.control.setBounds( panelX, 0 /*margins.getMarginTop()*/, pageWidth, clientArea.height /*availHeight*/ );
                 page.control.layout( flushCache );
                 
                 if (page.control instanceof ScrolledComposite) {

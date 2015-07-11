@@ -184,7 +184,7 @@ public class DefaultAppDesign
         result.setLayout( FormLayoutFactory.defaults().margins( 0, 0 ).create() );
         Label l = new Label( result, SWT.NONE );
         UIUtils.setVariant( l, IAppDesign.CSS_HEADER );
-        l.setText( "mapzone" );
+        l.setText( "Batik Application" );
         return result;
     }
 

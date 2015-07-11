@@ -103,4 +103,12 @@ public abstract class DefaultPanel
         return context;
     }
 
+    
+    /**
+     * Returns the parent panel, or null. 
+     */
+    protected IPanel parentPanel() {
+        return getContext().getPanel( getSite().getPath().removeLast( 1 ) );
+    }
+    
 }
