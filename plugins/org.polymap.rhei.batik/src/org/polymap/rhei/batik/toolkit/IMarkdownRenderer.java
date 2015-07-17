@@ -16,8 +16,6 @@ package org.polymap.rhei.batik.toolkit;
 
 import org.eclipse.swt.widgets.Widget;
 
-import org.polymap.rhei.batik.app.DefaultToolkit;
-
 /**
  * Allows to render links and images in Markdown and later maybe other special nodes.
  * <p/>

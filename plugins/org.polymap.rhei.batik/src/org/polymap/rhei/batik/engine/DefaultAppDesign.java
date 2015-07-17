@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.layout.RowDataFactory;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
@@ -62,10 +63,10 @@ import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
-import org.polymap.rhei.batik.app.DefaultToolkit;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.engine.PageStack.Page;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
+import org.polymap.rhei.batik.toolkit.DefaultToolkit;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
@@ -270,7 +271,7 @@ public class DefaultAppDesign
         
         // head
         Composite head = UIUtils.setVariant( new Composite( parent, SWT.BORDER | SWT.NO_FOCUS ), CSS_PANEL_HEADER );
-        head.setLayoutData( FormDataFactory.filled().clearBottom().height( 28 ).create() );
+        head.setLayoutData( FormDataFactory.filled().clearBottom().height( 32 ).create() );
         head.setLayout( FormLayoutFactory.defaults().margins( 2 ).spacing( 2 ).create() );
 
         // decoration
@@ -319,7 +320,7 @@ public class DefaultAppDesign
             closeBtn.setText( "x" );
             //closeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/close3.gif" ) );
             closeBtn.setToolTipText( "Dieses Panel schließen" );
-            closeBtn.setLayoutData( FormDataFactory.filled().clearRight().width( 20 ).create() );
+            closeBtn.setLayoutData( FormDataFactory.filled().clearRight().width( 27 ).create() );
             closeBtn.addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
@@ -331,7 +332,7 @@ public class DefaultAppDesign
         // switcher
         Composite switcher = new Composite( head, SWT.NONE );
 //        switcher.setLayout( RowLayoutFactory.fillDefaults().margins( 1, 1 ).spacing( 5 ).fill( false ).create() );
-        switcher.setLayout( FormLayoutFactory.defaults().spacing( 15 ).margins( 1, 1 ).create() );
+        switcher.setLayout( FormLayoutFactory.defaults().spacing( 5 ).margins( 1, 1 ).create() );
         UIUtils.setVariant( switcher, CSS_SWITCHER );
 
         PanelPath panelPath = panel.getSite().getPath();

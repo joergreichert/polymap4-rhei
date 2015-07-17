@@ -12,27 +12,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.dashboard;
+package org.polymap.rhei.batik.toolkit.md;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.engine.DefaultAppDesign;
+import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
- * 
+ * Material design ofr Batik applications.
  *
+ * @see <a href="http://www.google.com/design/spec/">Material Design</a>
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class DefaultDashlet
-        implements IDashlet {
+public class MdAppDesign
+        extends DefaultAppDesign {
 
-    protected DashletSite          dashletSite;
+    private static Log log = LogFactory.getLog( MdAppDesign.class );
 
-    
+
     @Override
-    public void init( DashletSite site ) {
-        this.dashletSite = site;
-    }
-
-    
-    protected DashletSite getSite() {
-        return dashletSite;
+    public IPanelToolkit createToolkit( PanelPath panelPath ) {
+        return new MdToolkit( panelPath );
     }
     
 }

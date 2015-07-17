@@ -12,27 +12,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.dashboard;
+package org.polymap.rhei.batik.toolkit.md;
 
 /**
+ * Expandable list.
  * 
- *
+ * @see <a href="http://www.google.com/design/spec/components/lists.html">Material Design</a>
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class DefaultDashlet
-        implements IDashlet {
+public class MdListViewer {
 
-    protected DashletSite          dashletSite;
-
-    
-    @Override
-    public void init( DashletSite site ) {
-        this.dashletSite = site;
-    }
-
-    
-    protected DashletSite getSite() {
-        return dashletSite;
-    }
-    
 }

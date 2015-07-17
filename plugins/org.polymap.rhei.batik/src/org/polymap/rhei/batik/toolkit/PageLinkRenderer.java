@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.toolkit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -29,10 +29,6 @@ import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
-import org.polymap.rhei.batik.toolkit.ILinkAction;
-import org.polymap.rhei.batik.toolkit.IMarkdownNode;
-import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
-import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
 
 /**
  * Render @action/page style links.

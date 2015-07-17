@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.toolkit;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -58,14 +58,6 @@ import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.PanelPath;
-import org.polymap.rhei.batik.toolkit.IBusyIndicator;
-import org.polymap.rhei.batik.toolkit.ILayoutContainer;
-import org.polymap.rhei.batik.toolkit.ILinkAction;
-import org.polymap.rhei.batik.toolkit.IMarkdownNode;
-import org.polymap.rhei.batik.toolkit.IMarkdownRenderer;
-import org.polymap.rhei.batik.toolkit.IPanelSection;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit;
-import org.polymap.rhei.batik.toolkit.MarkdownRenderOutput;
 
 /**
  *

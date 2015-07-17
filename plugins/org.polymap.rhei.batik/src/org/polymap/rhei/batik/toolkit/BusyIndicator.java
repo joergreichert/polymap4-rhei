@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.toolkit;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import org.polymap.rhei.batik.BatikApplication;
-import org.polymap.rhei.batik.toolkit.IBusyIndicator;
 
 /**
  * 

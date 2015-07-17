@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.form.batik;
 
-import static org.polymap.rhei.batik.app.DefaultToolkit.CSS_PREFIX;
+import static org.polymap.rhei.batik.toolkit.DefaultToolkit.CSS_PREFIX;
 
 import java.util.Arrays;
 import java.util.Collections;

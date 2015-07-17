@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.app;
+package org.polymap.rhei.batik.toolkit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,11 +29,7 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
-import org.polymap.rhei.batik.toolkit.ConstraintData;
-import org.polymap.rhei.batik.toolkit.ConstraintLayout;
-import org.polymap.rhei.batik.toolkit.ILayoutElement;
-import org.polymap.rhei.batik.toolkit.IPanelSection;
-import org.polymap.rhei.batik.toolkit.LayoutConstraint;
+import org.polymap.rhei.batik.app.IAppDesign;
 
 /**
  * 
