@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 
+import org.eclipse.rap.rwt.client.ClientFile;
 import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.data.DataPlugin;
@@ -129,7 +130,7 @@ public class UploadFormField
 //
 //            @Override
 //            public void widgetSelected( SelectionEvent e ) {
-//                String url = DownloadServiceHandler.registerContent( new ContentProvider() {
+//                String url = DownloadService.registerContent( new ContentProvider() {
 //
 //                    @Override
 //                    public String getFilename() {
@@ -184,11 +185,12 @@ public class UploadFormField
         // uploadlistener
         upload.setHandler( new IUploadHandler() {
             @Override
-            public void uploadStarted( String name, String contentType, int contentLength, InputStream in ) throws Exception {
+            public void uploadStarted( ClientFile clientFile, InputStream in ) throws Exception {
                 try {
-                    log.debug( "Uploaded: " + name );
+                    log.debug( "Uploaded: " + clientFile.getName() );
 
                     // check for images
+                    String contentType = clientFile.getType();
                     if (!("image/jpeg".equalsIgnoreCase( contentType )
                             || "image/png".equalsIgnoreCase( contentType ) 
                             || "image/gif".equalsIgnoreCase( contentType ) 
@@ -203,7 +205,7 @@ public class UploadFormField
                     }
 
                     // dont use the filename here
-                    String fileName = name;
+                    String fileName = clientFile.getName();
                     int index = fileName.lastIndexOf( '.' );
                     String extension = ".jpg";
                     if (index != -1) {
