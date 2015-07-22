@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik;
 
+import java.util.Optional;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -105,10 +107,10 @@ public abstract class DefaultPanel
 
     
     /**
-     * Returns the parent panel, or null. 
+     * The parent of this panel, or empty if panel is on level 1. 
      */
-    protected IPanel parentPanel() {
-        return getContext().getPanel( getSite().getPath().removeLast( 1 ) );
+    protected Optional<IPanel> parentPanel() {
+        return Optional.ofNullable( getContext().getPanel( getSite().getPath().removeLast( 1 ) ) );
     }
     
 }

@@ -1,0 +1,11 @@
+/**
+ * Load Roboto font from our server.
+ *
+ * Include this as "additionalHeaders" under Branding with rel=stylesheet and href=../batikres/css/roboto.css
+ */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url(../fonts/Roboto.woff2) format('woff2'), url(../fonts/Roboto.woff) format('woff');
+}
