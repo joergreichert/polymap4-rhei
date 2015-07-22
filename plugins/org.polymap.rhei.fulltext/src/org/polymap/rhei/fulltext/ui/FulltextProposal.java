@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.polymap.core.runtime.UIJob;
 import org.polymap.core.runtime.config.Check;
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.DefaultBoolean;
 import org.polymap.core.runtime.config.DefaultInt;
@@ -64,7 +64,7 @@ public class FulltextProposal
      * For {@link AbstractSearchField} this triggers the search to be performed.
      */
     @DefaultBoolean( true )
-    public Config<FulltextProposal,Boolean> eventOnAccept;
+    public Config2<FulltextProposal,Boolean> eventOnAccept;
 
     /**
      * The delay before the proposal job gets started. So, the time the popup is
@@ -72,7 +72,7 @@ public class FulltextProposal
      */
     @DefaultInt( 750 )
     @Check( value=NumberRangeValidator.class, args={"0","10000"} )
-    public Config<FulltextProposal,Integer> activationDelayMillis;
+    public Config2<FulltextProposal,Integer> activationDelayMillis;
     
     /**
      * By default the popup size is calculated based on the shell. This may cause
@@ -83,7 +83,7 @@ public class FulltextProposal
      * {@link FulltextProposal}.
      */
     @Immutable
-    public Config<FulltextProposal,Point>   popupSize;
+    public Config2<FulltextProposal,Point>   popupSize;
     
     private FulltextIndex                   index;
     

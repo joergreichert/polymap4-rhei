@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.Defaults;
 import org.polymap.core.ui.UIUtils;
@@ -47,10 +47,10 @@ public class BatikFormDashlet
     
     protected DashletSite                   dashletSite;
     
-    public Config<BatikFormDashlet,String>  title;
+    public Config2<BatikFormDashlet,String>  title;
 
     @Defaults
-    public Config<BatikFormDashlet,List<LayoutConstraint>> constraints;
+    public Config2<BatikFormDashlet,List<LayoutConstraint>> constraints;
 
     
     public BatikFormDashlet( IFormPage page ) {

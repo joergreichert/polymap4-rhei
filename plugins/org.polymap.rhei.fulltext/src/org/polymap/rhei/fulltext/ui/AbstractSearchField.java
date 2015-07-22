@@ -37,7 +37,7 @@ import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.runtime.UIJob;
 import org.polymap.core.runtime.config.Check;
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.DefaultBoolean;
 import org.polymap.core.runtime.config.DefaultInt;
@@ -72,7 +72,7 @@ public abstract class AbstractSearchField
      * {@link #searchDelayMillis}) when input has changed.
      */
     @DefaultBoolean( true )
-    public Config<AbstractSearchField,Boolean>  searchOnEnter;
+    public Config2<AbstractSearchField,Boolean>  searchOnEnter;
 
     /**
      * The delay before auto search starts. Only used if {@link #searchOnEnter} is
@@ -80,7 +80,7 @@ public abstract class AbstractSearchField
      */
     @DefaultInt( 750 )
     @Check( value=NumberRangeValidator.class, args={"0","10000"} )
-    public Config<FulltextProposal,Integer>     searchDelayMillis;
+    public Config2<FulltextProposal,Integer>     searchDelayMillis;
 
     
     /**

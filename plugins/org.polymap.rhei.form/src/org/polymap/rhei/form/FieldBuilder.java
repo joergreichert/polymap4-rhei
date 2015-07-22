@@ -22,9 +22,10 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.runtime.Polymap;
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.DefaultBoolean;
+
 import org.polymap.rhei.field.CheckboxFormField;
 import org.polymap.rhei.field.DateTimeFormField;
 import org.polymap.rhei.field.IFormField;
@@ -43,20 +44,20 @@ public abstract class FieldBuilder
     private static Log log = LogFactory.getLog( FieldBuilder.class );
 
     /** The parent to create the field for. If not set the page body is used. */
-    public Config<FieldBuilder,Composite>           parent;
+    public Config2<FieldBuilder,Composite>          parent;
     
-    public Config<FieldBuilder,String>              label;
+    public Config2<FieldBuilder,String>             label;
     
-    public Config<FieldBuilder,String>              tooltip;
+    public Config2<FieldBuilder,String>             tooltip;
     
-    public Config<FieldBuilder,IFormField>          field;
+    public Config2<FieldBuilder,IFormField>         field;
     
-    public Config<FieldBuilder,IFormFieldValidator> validator;
+    public Config2<FieldBuilder,IFormFieldValidator> validator;
     
     @DefaultBoolean( true )
-    public Config<FieldBuilder,Boolean>             fieldEnabled;
+    public Config2<FieldBuilder,Boolean>            fieldEnabled;
 
-    public Config<FieldBuilder,Object>              layoutData;
+    public Config2<FieldBuilder,Object>             layoutData;
 
     
     protected abstract Class<?> propBinding();

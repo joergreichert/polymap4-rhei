@@ -20,7 +20,7 @@ import org.polymap.core.runtime.config.Concern;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.Defaults;
 import org.polymap.core.runtime.config.Mandatory;
-import org.polymap.core.runtime.config.Property;
+import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.PropertyChangeSupport;
 
 import org.polymap.rhei.batik.IPanelSite;
@@ -37,18 +37,18 @@ public abstract class DashletSite
 
     @Defaults
     @Concern(PropertyChangeSupport.class)
-    public Property<String>                 title;
+    public Config<String>                 title;
 
     @Mandatory
     @Defaults
-    public Property<Boolean>                isBoxStyle;
+    public Config<Boolean>                isBoxStyle;
     
     @Mandatory
     @Defaults
-    public Property<List<LayoutConstraint>> constraints;
+    public Config<List<LayoutConstraint>> constraints;
 
     @Defaults
-    public Property<Boolean>                isExpandable;
+    public Config<Boolean>                isExpandable;
     
     public abstract IPanelSite panelSite();
     

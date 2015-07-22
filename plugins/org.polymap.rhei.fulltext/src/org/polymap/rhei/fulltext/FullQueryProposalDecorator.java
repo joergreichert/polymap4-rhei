@@ -28,7 +28,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 import org.polymap.core.runtime.config.Check;
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.DefaultInt;
 import org.polymap.core.runtime.config.NumberRangeValidator;
@@ -55,7 +55,7 @@ public class FullQueryProposalDecorator
      */
     @DefaultInt(3)
     @Check(value=NumberRangeValidator.class, args={"1","100"})
-    public Config<FullQueryProposalDecorator,Integer> proposalIncreaseFactor;
+    public Config2<FullQueryProposalDecorator,Integer> proposalIncreaseFactor;
     
     
     public FullQueryProposalDecorator( FulltextIndex next ) {

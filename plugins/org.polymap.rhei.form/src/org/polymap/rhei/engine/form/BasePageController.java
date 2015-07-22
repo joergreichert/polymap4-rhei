@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.polymap.core.runtime.config.Check;
-import org.polymap.core.runtime.config.Config;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.Mandatory;
 import org.polymap.core.runtime.config.NumberRangeValidator;
@@ -51,7 +51,7 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
     /** Default is calculated dependent on display width between 110 and 150. */
     @Mandatory
     @Check( value=NumberRangeValidator.class, args={"0","1000"} )
-    public Config<BasePageController,Integer> labelWidth;
+    public Config2<BasePageController,Integer> labelWidth;
 
     
     public BasePageController() {
