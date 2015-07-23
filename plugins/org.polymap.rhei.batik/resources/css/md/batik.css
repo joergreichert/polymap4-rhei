@@ -1,0 +1,179 @@
+/*
+ * polymap.org
+ * Copyright 2015, Falko Bräutigam. All rights reserved.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3.0 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
+/*
+ * Material Design: Batik specific elements like Navigation and Status
+ *
+ *    Background grey: #f3f3f3 
+ *    Action blue: background-color: #5a9cbd;
+ */
+ 
+/**********************************************************
+/* Panel header
+ */
+Composite[BORDER].atlas-panel-header {
+  border-radius: 5px;
+  border: 0px solid #e8e8e8;
+  background-image: gradient(linear, left top, left bottom, from(#E2EdF5), to(#ffffff));
+}
+Button[PUSH].atlas-panel-header,
+Button[TOGGLE].atlas-panel-header {
+  font: 14px 'Roboto', 'Noto', sans-serif;
+  border-radius: 5px;
+  padding: 0px 5px;
+  spacing: 0px;
+  background-color: #ffffff;
+/*  background-image : url( resources/icons/close3.gif );*/
+  border: 1px solid #6BBAE1;
+  color: #6BBAE1;
+}
+Button[PUSH]:hover.atlas-panel-header,
+Button[TOGGLE]:hover.atlas-panel-header {
+  color: #ffffff;
+/*  background-image : url( resources/icons/close_hover.gif );*/
+  border: none;  /*1px solid #e03000;*/
+  background-color: #6BBAE1;
+}
+Label.atlas-panel-header {
+  font: 14px 'Roboto', 'Noto', sans-serif;
+  color: #5993AE;
+  text-shadow: 1px 1px 0px #ffffff;
+}
+ 
+/**********************************************************
+ * Navigation/Action Buttons
+ */
+Button[TOGGLE].atlas-navi, 
+Button[PUSH].atlas-navi {
+  color: #4a8aaf;
+  background-color: #f3f3f3;
+  background-image: none;
+  border: none;
+}
+Button[TOGGLE]:selected.atlas-navi, 
+Button[TOGGLE]:hover.atlas-navi, 
+Button[PUSH]:hover.atlas-navi {
+  background-color: #fcfcff;
+  background-image: none;
+  border: 1px solid #6BBAE1;
+}
+Button[TOGGLE]:selected.atlas-navi { 
+  color: #606060;
+  border: 1px solid #a0a0a0;
+}
+Composite.atlas-navi/*, Composite.atlas-status, CLabel.atlas-status*/ {
+  /*background-color: #f3f3f3;*/
+}
+Composite[BORDER].atlas-actions {
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  border: 1px solid #e8e8e8;
+  border-top-color: #ffffff;
+}
+Composite[BORDER].atlas-header {
+  background-color: #ffffff;
+  border-radius: 0px;
+  border: none;
+}
+Label.atlas-header {
+  font: bold 32px Helvetica, Arial, sans-serif;
+/*  color: #60A7CA;*/
+  color: #666;
+}
+Composite.atlas-panel,
+Composite[BORDER].atlas-panel, 
+Composite.atlas-navi-switcher, 
+Composite[BORDER].atlas-navi-switcher {
+  animation: fadeIn 700ms ease-in, fadeOut 500ms ease-out;    
+}
+
+/* ********************************************************
+ * ToolTip 
+ */
+ToolTip, Shell.batik-status-tooltip {
+  cursor: default;
+  border-radius: 3px;
+  padding: 3px 3px;
+  opacity: 1;
+  /*background-image : gradient(linear, left top, right top, from(#fffae5), to(#fff5ce));*/
+  
+  border: 1px solid #6FA1DA;
+  background-color: #f8f8f8;
+  /*background-color: #FFFEDB;*/
+  /*background-image: gradient(linear, left top, left bottom, from(#888), to(#363532));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#ffffff), to(#e5e9ec));*/
+  /*background-image: gradient(linear, left top, left bottom, from(#f6f8fa), to(#dde0e1));*/
+
+  color: #f0f0f0;
+  /*animation: fadeIn 200ms linear, fadeOut 500ms ease-out;*/
+  animation: flyInTop 500ms ease-out, flyOutTop 500ms ease-in;
+  box-shadow: 0px 1px 4px #808080;
+
+  /*  
+  border: 2px solid #6eb02e;
+  background-color: #f5f5f5;
+  color: #444;
+  animation: flyInRight 500ms ease-out, flyOutRight 500ms ease-in;
+  box-shadow: 0px 1px 5px #cdcdcd;
+  background-image: gradient(linear, left top, left bottom, from(#fff), to(#f5f5f5));
+  */
+}
+ToolTip-Text, 
+Label.batik-status-tooltip-text {
+  color: #f8f8f8;
+  text-shadow: none;
+}
+ToolTip-Message, 
+Label.batik-status-tooltip-message {
+  color: #e8e8e8;
+  text-shadow: none;
+}
+
+/**********************************************************
+ * Section
+ */
+Composite[BORDER].batik-panel-section-client {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+Composite[BORDER].batik-panel-section {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+Label.batik-panel-section-title {
+  font: 22px 'Roboto', 'Noto', sans-serif;
+  border: none;
+}
+Label:disabled.batik-panel-section-title {
+  opacity: 0.3;
+}
+Label[SEPARATOR], 
+Label[SEPARATOR].batik-panel-section-separator, 
+Label.batik-panel-section-separator {
+  background-color: #303030;
+  color: #f8f8f8;
+}
+Label-SeparatorLine, 
+Label-SeparatorLine.batik-panel-section-separator {
+  background-image: none;
+  background-color: #c8c8c8; /* ! */
+  border: 0px solid #000000;
+  width: 1px;
+  color: #000000;
+}
+
+/* Label.batik-panel-section-separator {
+  opacity: 0;
+}*/

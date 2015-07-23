@@ -87,6 +87,8 @@ public class DefaultAppDesign
     
     private DefaultAppManager           appManager;
 
+    protected Display                   display;
+    
     protected Shell                     mainWindow;
     
     protected BrowserNavigation         browserHistory;
@@ -141,7 +143,8 @@ public class DefaultAppDesign
 
 
     @Override
-    public Shell createMainWindow( Display display ) {
+    public Shell createMainWindow( @SuppressWarnings("hiding") Display display ) {
+        this.display = display;
         mainWindow = new Shell( display, SWT.NO_TRIM );
         mainWindow.setMaximized( true );
         UIUtils.setVariant( mainWindow, IAppDesign.CSS_SHELL );

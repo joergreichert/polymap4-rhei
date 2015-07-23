@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
+import static org.polymap.rhei.batik.toolkit.md.dp.dp;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,6 +41,7 @@ import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
 
 /**
  * Expandable list. Use the {@link Config} properties to configure the viewer.
@@ -105,8 +108,9 @@ public class MdListViewer
             customized = true;
             Template template = new Template();
 
-            int left = iconProvider.isPresent() ? 56 : 0;
-            int tileHeight = 0;
+            // 16dp used for the tree node handle
+            dp left = iconProvider.isPresent() ? dp( 56 ) : dp( 0 );
+            dp tileHeight = dp( 0 );
             int colCount = 0;
             
             // first line
@@ -116,11 +120,14 @@ public class MdListViewer
 
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_FIRSTLINE );
-                cell.setLeft( left-16 ).setRight( 50 ).setTop( 16 ).setHeight( 16 ).setHorizontalAlignment( SWT.LEFT );
+                cell.setLeft( left.pix() ).setRight( 50 )
+                        .setTop( dp( 11 ).pix() ).setHeight( 18 )
+                        .setHorizontalAlignment( SWT.LEFT );
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
+                cell.setFont( MdAppDesign.font( FontStyle.Subhead ) );
                 
-                tileHeight = 48;
+                tileHeight = dp( 48 );
             }
             // second line
             if (secondLineLabelProvider.isPresent()) {
@@ -129,10 +136,10 @@ public class MdListViewer
 
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_SECONDLINE );
-                cell.setLeft( left-16 ).setRight( 50 ).setTop( 32 ).setHeight( 15 );
+                cell.setLeft( left.pix() ).setRight( 50 ).setTop( dp( 39 ).pix() ).setHeight( 15 );
                 cell.setBindingIndex( colCount++ );
 
-                tileHeight = 72;
+                tileHeight = dp( 72 );
             }
             // third line
             if (thirdLineLabelProvider.isPresent()) {
@@ -151,7 +158,8 @@ public class MdListViewer
 
                 ImageCell cell = new ImageCell( template );
                 cell.setName( CELL_ICON );
-                cell.setLeft( 0 ).setWidth( 56 ).setTop( 0 ).setHeight( tileHeight )
+                cell.setLeft( 0 ).setWidth( dp( 56 ).pix() )
+                        .setTop( 0 ).setHeight( tileHeight.pix() )
                         .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
@@ -159,25 +167,13 @@ public class MdListViewer
             
             // expandable
             if (true) {
-//                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
-//                col.setLabelProvider( secondLineLabelProvider );
-
                 ImageCell cell = new ImageCell( template );
                 cell.setName( "expand" );
-                cell.setRight( 1 ).setWidth( 30 ).setTop( 0 ).setHeight( 30 )
-                        .setVerticalAlignment( SWT.CENTER )
-                        .setHorizontalAlignment( SWT.CENTER );
+                cell.setRight( 1 ).setWidth( dp( 56 ).pix() ).setTop( 0 ).setHeight( tileHeight.pix() )
+                        .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
                 cell.setImage( BatikPlugin.instance().imageForName( "resources/icons/md/chevron-down.png" ) );
                 cell.setScaleMode( ImageCell.ScaleMode.NONE );
                 cell.setSelectable( true );
-
-//                TextCell cell = new TextCell( template );
-//                cell.setName( CELL_EXPAND );
-//                cell.setRight( 1 ).setWidth( 30 ).setTop( 0 ).setHeight( 30 )
-//                        .setVerticalAlignment( SWT.CENTER )
-//                        .setHorizontalAlignment( SWT.CENTER );
-//                cell.setText( "V" );
-//                cell.setSelectable( true );
             }
             
             getTree().addSelectionListener( new SelectionAdapter() {
@@ -198,7 +194,7 @@ public class MdListViewer
             });
 
             getTree().setData( RWT.ROW_TEMPLATE, template );        
-            getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, MdAppDesign.dp( tileHeight ) );
+            getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, tileHeight.pix() );
         }
     }
     
