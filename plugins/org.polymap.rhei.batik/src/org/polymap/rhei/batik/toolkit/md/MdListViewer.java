@@ -28,8 +28,11 @@ import org.eclipse.swt.widgets.Item;
 
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 
@@ -77,6 +80,8 @@ public class MdListViewer
     public Config<CellLabelProvider>   thirdLineLabelProvider;
     
     private boolean                 customized = false;
+
+    private boolean openListenerPresent;
     
     /**
      * 
@@ -125,7 +130,7 @@ public class MdListViewer
                         .setTop( dp( 11 ).pix() ).setHeight( 18 )
                         .setHorizontalAlignment( SWT.LEFT );
                 cell.setBindingIndex( colCount++ );
-                cell.setSelectable( true );
+                cell.setSelectable( openListenerPresent );
                 cell.setFont( MdAppDesign.font( FontStyle.Subhead ) );
                 
                 tileHeight = dp( 48 );
@@ -180,15 +185,21 @@ public class MdListViewer
             getTree().addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
+                    Object elm = ev.item.getData();
+                    // expand
                     if (CELL_EXPAND.equals( ev.text )) {
                         if (!getExpanded( (Item)ev.item )) {
-                            log.info( "EXPAND: " + ev.item.getData() );
-                            expandToLevel( ev.item.getData(), 1 );
+                            log.info( "EXPAND: " + elm );
+                            expandToLevel( elm, 1 );
                         }
                         else {
-                            log.info( "COLLAPSE: " + ev.item.getData() );
-                            collapseToLevel( ev.item.getData(), 1 );
+                            log.info( "COLLAPSE: " + elm );
+                            collapseToLevel( elm, 1 );
                         }
+                    }
+                    // open
+                    else {
+                        fireOpen( new OpenEvent( MdListViewer.this, new StructuredSelection( elm ) ) );
                     }
                 }
             });
@@ -203,8 +214,42 @@ public class MdListViewer
             getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, tileHeight.pix() );
         }
     }
-    
 
+    
+    public MdListViewer toggleItemExpand( Object elm ) {
+        if (!getExpandedState( elm )) {
+            expandToLevel( elm, 1 );
+        }
+        else {
+            collapseToLevel( elm, 1 );
+        }
+        return this;
+    }
+        
+    
+    /**
+     * Adds a listener for selection-open in this viewer. Has no effect if an
+     * identical listener is already registered. On touch devices this is a single
+     * tap. On desktop the first line is displayed a a link. Single click on this
+     * link fires an event. Clicking else where in the entry also fires an event.
+     */
+    @Override
+    public void addOpenListener( IOpenListener listener ) {
+        this.openListenerPresent = true;
+        super.addOpenListener( listener );        
+    }
+
+    
+//    /**
+//     * 
+//     */
+//    @Override
+//    public void addSelectionChangedListener( ISelectionChangedListener listener ) {
+//        this.selectionListenerPresent = true;
+//        super.addSelectionChangedListener( listener );
+//    }
+
+    
     @Override
     public void setLabelProvider( IBaseLabelProvider labelProvider ) {
         throw new UnsupportedOperationException( "The Material Design list supports multiple lines of text, for example call #setFirstLineLabelProvider()." );
