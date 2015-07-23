@@ -24,6 +24,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Item;
 
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -179,10 +180,15 @@ public class MdListViewer
             getTree().addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
-                    log.info( "selection: " + ev );
                     if (CELL_EXPAND.equals( ev.text )) {
-                        log.info( "data: " + ev.item.getData() );
-                        expandToLevel( ev.item.getData(), 1 );
+                        if (!getExpanded( (Item)ev.item )) {
+                            log.info( "EXPAND: " + ev.item.getData() );
+                            expandToLevel( ev.item.getData(), 1 );
+                        }
+                        else {
+                            log.info( "COLLAPSE: " + ev.item.getData() );
+                            collapseToLevel( ev.item.getData(), 1 );
+                        }
                     }
                 }
             });
