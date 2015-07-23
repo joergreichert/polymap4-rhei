@@ -15,6 +15,7 @@
 
 /*
  * Font definitions for Material Design's regular Roboto.
+ * @deprecated: fonts are now right in the main *css files
  */
 Display {
   rwt-fontlist: 12px 'Roboto', 'Noto', sans-serif;
