@@ -79,9 +79,9 @@ public class MdListViewer
     
     public Config<CellLabelProvider>   thirdLineLabelProvider;
     
-    private boolean                 customized = false;
+    private boolean                    customized = false;
 
-    private boolean openListenerPresent;
+    private boolean                    openListenerPresent;
     
     /**
      * 
