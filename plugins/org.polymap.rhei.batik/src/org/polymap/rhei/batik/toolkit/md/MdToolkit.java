@@ -14,12 +14,20 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
+import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
+import org.polymap.core.ui.FormDataFactory;
+import org.polymap.core.ui.UIUtils;
+
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
 
 /**
@@ -31,10 +39,15 @@ public class MdToolkit
         extends DefaultToolkit {
 
     private static Log log = LogFactory.getLog( MdToolkit.class );
+    
+    public static final String              CSS_FAB = CSS_PREFIX + "-fab";
+    
+    private PageStack<PanelPath>.Page       panelPage;
 
     
-    public MdToolkit( PanelPath panelPath ) {
+    public MdToolkit( PanelPath panelPath, PageStack<PanelPath>.Page panelPage  ) {
         super( panelPath );
+        this.panelPage = panelPage;
     }
     
     
@@ -46,8 +59,14 @@ public class MdToolkit
      *      Design</a>.
      */
     @SuppressWarnings("javadoc")
-    public Button createFab( Composite parent ) {
-        throw new RuntimeException( "not yet..." );
+    public Button createFab() {
+        Button result = createButton( panelPage.control, "+", SWT.PUSH );
+        result.moveAbove( null );
+        UIUtils.setVariant( result, CSS_FAB );
+        result.setLayoutData( FormDataFactory.defaults()
+                .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
+                .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        return result;
     }
 
     

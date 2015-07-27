@@ -1,0 +1,22 @@
+/* FAB theme */
+
+Button.batik-panel-fab {
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-radius: 30px;
+  padding: 5px 15px;
+  spacing: 3px;
+  cursor: pointer;
+  animation: none;
+  opacity: 1;
+  text-decoration: none;
+  box-shadow: 0px 3px 4px #c0c0c0;
+  background-color: #81CC39;  /*#60A7CA;*/  /*5a9cbd;*/
+}
+Button:hover.batik-panel-fab {
+  background-color: #6eb02e; /*#a0a0a0;*/  /*5a9cbd;*/
+}
+Button:pressed.batik-panel-fab {
+}

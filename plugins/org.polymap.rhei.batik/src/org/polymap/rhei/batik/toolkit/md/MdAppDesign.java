@@ -33,6 +33,7 @@ import org.eclipse.rap.rwt.internal.service.ContextProvider;
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.DefaultAppDesign;
+import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
@@ -129,7 +130,8 @@ public class MdAppDesign
 
     @Override
     public IPanelToolkit createToolkit( PanelPath panelPath ) {
-        return new MdToolkit( panelPath );
+        PageStack<PanelPath>.Page panelParent = panelsArea.getPage( panelPath );
+        return new MdToolkit( panelPath, panelParent );
     }
     
     

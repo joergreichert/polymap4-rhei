@@ -324,6 +324,7 @@ public class DefaultAppManager
         
         private PanelStatus         panelStatus;
         
+        /** Lazy init by {@link #toolkit()} to let page parent create. */
         private IPanelToolkit       toolkit;
         
         private int                 preferredWidth = SWT.DEFAULT;
@@ -333,7 +334,6 @@ public class DefaultAppManager
             assert path != null;
             this.path = path;
             this.stackPriority = stackPriority;
-            this.toolkit = design.createToolkit( path );
         }
 
         @Override
@@ -411,6 +411,9 @@ public class DefaultAppManager
 
         @Override
         public IPanelToolkit toolkit() {
+            if (toolkit == null) {
+                toolkit = design.createToolkit( path );
+            }
             return toolkit;
         }
 
