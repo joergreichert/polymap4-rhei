@@ -18,6 +18,7 @@ import static java.util.Collections.reverseOrder;
 import static java.util.Comparator.comparing;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
+import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import java.util.Optional;
 import java.util.Set;
@@ -274,7 +275,7 @@ public class DefaultAppDesign
         
         // head
         Composite head = UIUtils.setVariant( new Composite( parent, SWT.BORDER | SWT.NO_FOCUS ), CSS_PANEL_HEADER );
-        head.setLayoutData( FormDataFactory.filled().clearBottom().height( 32 ).create() );
+        head.setLayoutData( FormDataFactory.filled().clearBottom().height( dp( 54 ) ).create() );
         head.setLayout( FormLayoutFactory.defaults().margins( 2 ).spacing( 2 ).create() );
 
         // decoration
@@ -323,7 +324,7 @@ public class DefaultAppDesign
             closeBtn.setText( "x" );
             //closeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/close3.gif" ) );
             closeBtn.setToolTipText( "Dieses Panel schließen" );
-            closeBtn.setLayoutData( FormDataFactory.filled().clearRight().width( 27 ).create() );
+            closeBtn.setLayoutData( FormDataFactory.filled().clearRight().width( dp( 50 ) ).create() );
             closeBtn.addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
@@ -516,7 +517,7 @@ public class DefaultAppDesign
           panelsArea.reflow( true );
         
         // FIXME HACK! force re-layout after font sizes are known (?)
-        UIUtils.activateCallback( DefaultAppDesign.class.getName() );
+//        UIUtils.activateCallback( DefaultAppDesign.class.getName() );
         mainWindow.getDisplay().timerExec( 1000, new Runnable() {
             public void run() {
                 log.debug( "layout..." );
@@ -525,7 +526,7 @@ public class DefaultAppDesign
                 panelsArea.reflow( true );
                 //((Composite)scrolled.getCurrentPage()).layout();
                 
-                UIUtils.deactivateCallback( DefaultAppDesign.class.getName() );
+//                UIUtils.deactivateCallback( DefaultAppDesign.class.getName() );
             }
         });
     }

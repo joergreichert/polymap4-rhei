@@ -33,7 +33,7 @@ import org.polymap.rhei.batik.PanelPath;
  * Provides a {@link Context} variable that holds a transaction and allows to
  * {@link Propagation propagate} to child panels.
  *
- *@param <T> The actual transaction type mahaged by this provider.
+ * @param <T> The actual transaction type managed by this provider.
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public abstract class TxProvider<T> {
@@ -84,23 +84,23 @@ public abstract class TxProvider<T> {
      */
     public static enum Completion {
         /**
-         * {@link UnitOfWork#commit() Commit} and {@link UnitOfWork#close() close}
-         * the {@link UnitOfWork} of this panel.
+         * Commit all modifications of a transaction but do not close the transaction.
          */
         COMMIT,
         /**
-         * {@link UnitOfWork#rollback() Revert} all modification and
-         * {@link UnitOfWork#close() close} the {@link UnitOfWork} of this panel.
+         * Rollback all modifications of a transaction but do not close the transaction.
          */
         REVERT
     }
 
     
     /**
-     * Supplier of the actual underlying transaction.
+     * Wrapper and Supplier of the actual underlying transaction.
+     * 
+     * @param <T> The type of the underlying transaction. 
      */
     public class Tx
-            implements Supplier<T> {
+            implements Supplier<T>, AutoCloseable {
 
         private IPanel                  panel;
         
@@ -184,12 +184,23 @@ public abstract class TxProvider<T> {
             else {
                 throw new IllegalStateException( "Unhandled completion type: " + completion );
             }
-            closeTx( t );
-            t = null;
-            propagation = null;
             return this;
         }        
         
+        
+        /**
+         * Closes the transaction. This effectively discards all modifications if
+         * {@link #endTx(Completion)} has not been called before.
+         */
+        @Override
+        public void close() {
+            if (t != null) {
+                TxProvider.this.closeTx( t );
+                t = null;
+                propagation = null;
+            }
+        }
+
         protected Optional<Tx> parentTx() {
             PanelPath panelPath = panel.getSite().getPath();
             if (panelPath.size() <= 1) {
@@ -218,7 +229,7 @@ public abstract class TxProvider<T> {
     }
 
     /**
-     * 
+     * SPI: 
      *
      * @param parent The parent transaction, or null.
      * @return
@@ -232,6 +243,18 @@ public abstract class TxProvider<T> {
     protected abstract void closeTx( T tx );
     
     
+    /**
+     * Example:
+     * <pre>
+     * try (TxProvider&lt;UnitOfWork&gt;.Tx localTx = provider.start( Propagation.REQUIRES_NEW )) {
+     *     ... do the work ...
+     *     localTx.endTx( Completion.COMMIT );
+     * }
+     * </pre>
+     *
+     * @param panel
+     * @return
+     */
     public Tx newTx( IPanel panel ) {
         Tx result = new Tx( panel );
         if (panels.put( panel, result ) != null) {
