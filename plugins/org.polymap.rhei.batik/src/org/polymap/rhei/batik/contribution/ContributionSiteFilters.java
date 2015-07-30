@@ -26,9 +26,9 @@ import org.polymap.rhei.batik.IPanel;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class ContributionFilters {
+public class ContributionSiteFilters {
 
-    private static Log log = LogFactory.getLog( ContributionFilters.class );
+    private static Log log = LogFactory.getLog( ContributionSiteFilters.class );
     
     
     public static Predicate<IContributionSite> panelType( Class<? extends IPanel> type ) {

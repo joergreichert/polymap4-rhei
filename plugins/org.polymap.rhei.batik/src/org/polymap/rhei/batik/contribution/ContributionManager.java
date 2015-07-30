@@ -14,16 +14,15 @@
  */
 package org.polymap.rhei.batik.contribution;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.collect.MapMaker;
-
+import org.polymap.core.runtime.Streams;
 import org.polymap.core.runtime.session.SessionSingleton;
 
 import org.polymap.rhei.batik.BatikApplication;
@@ -33,7 +32,7 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
- * 
+ * Registry for contribution providers and API to contribute to UI. 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -46,43 +45,39 @@ public class ContributionManager
         return instance( ContributionManager.class );
     }
     
-    private static Set<Class<? extends IContributionFactory>> staticFactories = Collections.newSetFromMap( 
-            new MapMaker().concurrencyLevel( 2 ).weakKeys().makeMap() );
+    private static List<Supplier<IContributionFactory>> staticSuppliers = new CopyOnWriteArrayList();
     
     
-    public static boolean addContribution( Class<? extends IContributionFactory> factory ) {
-        return staticFactories.add( factory );
+    public static boolean addStaticSupplier( Supplier<IContributionFactory> supplier ) {
+        return staticSuppliers.add( supplier );
     }
     
     
-    public boolean removeContribution( Class<IContributionFactory> factory ) {
-        return staticFactories.remove( factory );        
+    public static boolean removeStaticSupplier( Supplier<IContributionFactory> supplier ) {
+        return staticSuppliers.remove( supplier );
     }
-
+    
     
     // instance *******************************************
+
+    private static List<Supplier<IContributionFactory>> suppliers = new CopyOnWriteArrayList();
+    
     
     public void contributeFab( IPanel panel ) {
-        for (IContributionFactory factory : factories()) {
-            factory.fillFab( newSite( panel ) );
-        }
+        factories().forEach( factory -> factory.fillFab( newSite( panel ) ) );
     }
 
     
     protected Iterable<IContributionFactory> factories() {
         IAppContext context = BatikApplication.instance().getContext();
-        List<IContributionFactory> result = new ArrayList();
-        for (Class<? extends IContributionFactory> cl : staticFactories) {
-            try {
-                IContributionFactory factory = cl.newInstance();
-                context.propagate( factory );
-                result.add( factory );
-            }
-            catch (Exception e) {
-                throw new RuntimeException( e );
-            }
-        }
-        return result;
+        
+        return Streams.iterable(
+                Stream.concat( staticSuppliers.stream(), suppliers.stream() )
+                .map( supplier -> {
+                    IContributionFactory factory = supplier.get();
+                    context.propagate( factory );
+                    return factory;
+                }));
     }
 
     

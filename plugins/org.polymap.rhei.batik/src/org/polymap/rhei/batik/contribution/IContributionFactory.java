@@ -16,7 +16,7 @@ package org.polymap.rhei.batik.contribution;
 
 /**
  * 
- *
+ * @see DefaultContribution
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface IContributionFactory {
