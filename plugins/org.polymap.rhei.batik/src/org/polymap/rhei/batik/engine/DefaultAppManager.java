@@ -40,9 +40,9 @@ import org.eclipse.core.runtime.Status;
 
 import org.polymap.core.runtime.Closer;
 import org.polymap.core.runtime.StreamIterable;
+import org.polymap.core.runtime.UIThreadExecutor;
 import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.StatusDispatcher;
-import org.polymap.core.ui.UIThreadExecutor;
 
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
