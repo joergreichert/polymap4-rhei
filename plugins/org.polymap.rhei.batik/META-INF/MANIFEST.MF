@@ -15,6 +15,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.batik,
  org.polymap.rhei.batik.app,
+ org.polymap.rhei.batik.contribution,
  org.polymap.rhei.batik.dashboard,
  org.polymap.rhei.batik.engine,
  org.polymap.rhei.batik.internal,
