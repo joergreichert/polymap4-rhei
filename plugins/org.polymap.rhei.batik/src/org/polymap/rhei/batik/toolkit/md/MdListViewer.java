@@ -35,6 +35,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.ImageCell;
@@ -63,10 +64,11 @@ public class MdListViewer
     public static final String      CELL_SECONDLINE = "secondLine";
     public static final String      CELL_THIRDLINE = "thirdLine";
     public static final String      CELL_EXPAND = "expand";
+    public static final String      CELL_FIRSTACTION = "firstAction";
     
     
     /**
-     * This label provider is responsible to provide the primary icon if any.
+     * Provides the primary icon if any.
      */
     public Config<CellLabelProvider>   iconProvider;
 
@@ -78,6 +80,8 @@ public class MdListViewer
     public Config<CellLabelProvider>   secondLineLabelProvider;
     
     public Config<CellLabelProvider>   thirdLineLabelProvider;
+    
+    public Config<ActionProvider>      firstSecondaryActionProvider;
     
     private boolean                    customized = false;
 
@@ -170,18 +174,41 @@ public class MdListViewer
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
-            
-            // expandable
-            if (true) {
+            // first action
+            if (firstSecondaryActionProvider.isPresent()) {
+                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
+                col.setLabelProvider( firstSecondaryActionProvider.get() );
+
                 ImageCell cell = new ImageCell( template );
-                cell.setName( "expand" );
-                cell.setRight( 1 ).setWidth( dp( 56 ).pix() ).setTop( 0 ).setHeight( tileHeight.pix() )
+                cell.setName( CELL_FIRSTACTION );
+                cell.setRight( dp( 56 ).pix() ).setWidth( dp( 56 ).pix() )
+                        .setTop( 0 ).setHeight( tileHeight.pix() )
                         .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
-                cell.setImage( BatikPlugin.instance().imageForName( "resources/icons/md/chevron-down.png" ) );
-                cell.setScaleMode( ImageCell.ScaleMode.NONE );
+                cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
             
+            // expandable
+            if (true) {
+                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
+                col.setLabelProvider( new CellLabelProvider() {
+                    @Override
+                    public void update( ViewerCell cell ) {
+                        cell.setImage( getExpandedState( cell.getElement() )
+                                ? BatikPlugin.instance().imageForName( "resources/icons/md/chevron-up.png" )
+                                : BatikPlugin.instance().imageForName( "resources/icons/md/chevron-down.png" ));
+                    }
+                });
+                
+                ImageCell cell = new ImageCell( template );
+                cell.setName( CELL_EXPAND );
+                cell.setRight( 1 ).setWidth( dp( 56 ).pix() ).setTop( 0 ).setHeight( tileHeight.pix() )
+                        .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
+                cell.setBindingIndex( colCount++ );
+                cell.setSelectable( true );
+            }
+    
+            //
             getTree().addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
@@ -196,6 +223,10 @@ public class MdListViewer
                             log.info( "COLLAPSE: " + elm );
                             collapseToLevel( elm, 1 );
                         }
+                    }
+                    //
+                    else if (CELL_FIRSTACTION.equals( ev.text )) {
+                        firstSecondaryActionProvider.get().perform( MdListViewer.this, elm );
                     }
                     // open
                     else {
@@ -225,12 +256,24 @@ public class MdListViewer
         }
         return this;
     }
-        
+
+    @Override
+    public void expandToLevel(Object elementOrTreePath, int level) {
+        super.expandToLevel( elementOrTreePath, level );
+        update( elementOrTreePath, null );  // update chevron icon state
+    }
+    
+    @Override
+    public void collapseToLevel(Object elementOrTreePath, int level) {
+        super.collapseToLevel( elementOrTreePath, level );
+        update( elementOrTreePath, null );  // update chevron icon state
+    }
+
     
     /**
      * Adds a listener for selection-open in this viewer. Has no effect if an
      * identical listener is already registered. On touch devices this is a single
-     * tap. On desktop the first line is displayed a a link. Single click on this
+     * tap. On desktop the first line is displayed as a link. Single click on this
      * link fires an event. Clicking else where in the entry also fires an event.
      */
     @Override
