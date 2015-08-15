@@ -16,6 +16,9 @@ package org.polymap.rhei.batik;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -32,7 +35,6 @@ public class PanelPath
     private static Log log = LogFactory.getLog( PanelPath.class );
 
     public static final PanelPath       ROOT = new PanelPath();
-
 
     private ArrayList<PanelIdentifier>  segments = new ArrayList();
 
@@ -102,6 +104,10 @@ public class PanelPath
         return Iterators.unmodifiableIterator( segments.iterator() );
     }
 
+    public Stream<PanelIdentifier> stream() {
+        return StreamSupport.stream( spliterator(), false );
+    }
+    
     @Override
     public int hashCode() {
         return segments.hashCode();

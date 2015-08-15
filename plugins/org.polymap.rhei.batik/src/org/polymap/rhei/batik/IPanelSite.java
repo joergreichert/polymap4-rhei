@@ -57,6 +57,8 @@ public interface IPanelSite {
     
     public PanelStatus getPanelStatus();
     
+    public Memento getMemento();
+    
     /**
      * The whole path of the panel including the name of the panel as last segment.
      */

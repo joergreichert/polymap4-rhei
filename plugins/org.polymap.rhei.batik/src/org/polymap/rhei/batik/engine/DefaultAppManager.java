@@ -26,6 +26,17 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,6 +46,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.XMLMemento;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -45,10 +60,12 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
+import org.polymap.rhei.batik.Memento;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelIdentifier;
@@ -81,11 +98,33 @@ public class DefaultAppManager
     /** The panel hierarchy. */
     private Map<PanelPath,IPanel>       panels = new HashMap();
 
+    private XMLMemento                  memento;
+
+    private File                        mementoFile;
+
 
     @Override
     public void init() {
         design = BatikApplication.instance().getAppDesign();
-        
+
+        IPath path = BatikPlugin.instance().getStateLocation();
+        // FIXME state per user
+        // FIXME multiple session for the same user
+        mementoFile = new File( path.toFile(), "panels-memento.xml" );
+        log.info( "State file: " +  mementoFile.getAbsolutePath() );
+
+        if (mementoFile.exists()) {
+            try (InputStream in = new BufferedInputStream( new FileInputStream( mementoFile ) )) {
+                memento = XMLMemento.createReadRoot( new InputStreamReader( in, "utf-8" ) );
+            }
+            catch (Exception e) {
+                throw new RuntimeException( e );
+            }
+        }
+        else {
+            memento = XMLMemento.createWriteRoot( "panel-memento" );
+        }
+
         // open root panel / after main window is created
         UIThreadExecutor.async( 
                 () -> context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) ),
@@ -95,6 +134,7 @@ public class DefaultAppManager
 
     @Override
     public void close() {
+        disposePanels( PanelPath.ROOT );
     }    
 
     
@@ -207,6 +247,7 @@ public class DefaultAppManager
         log.info( "DISPOSE panel: " + panel.getSite().getPath() );
         try {
             panel.dispose();
+            saveMemento();
         }
         catch (Exception e) {
             log.warn( "", e );
@@ -257,6 +298,18 @@ public class DefaultAppManager
         PanelStatus previous = panelSite.panelStatus;
         panelSite.panelStatus = panelStatus;
         fireEvent( panel, EventType.LIFECYCLE, panelSite.panelStatus, previous );
+    }
+
+
+    protected void saveMemento() {
+        try (
+            OutputStream out = new BufferedOutputStream( new FileOutputStream( mementoFile ) )
+        ){
+            memento.save( new OutputStreamWriter( out, "utf-8" ) );
+        }
+        catch (IOException e) {
+            log.warn( "", e );
+        }
     }
 
     
@@ -339,6 +392,19 @@ public class DefaultAppManager
         @Override
         protected void finalize() throws Throwable {
             toolkit = Closer.create().closeAndNull( toolkit );
+        }
+
+        @Override
+        public Memento getMemento() {
+            // "/" is not allowed as key
+            String key = path.stream()
+                    .map( id -> id.id() )
+                    .reduce( "", (lhs, rhs) -> lhs + "_" + rhs );
+            IMemento result = memento.getChild( key );
+            if (result == null) {
+                result = memento.createChild( key );
+            }
+            return new Memento( result );
         }
 
         @Override
