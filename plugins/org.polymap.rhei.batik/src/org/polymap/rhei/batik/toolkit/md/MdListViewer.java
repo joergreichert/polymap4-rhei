@@ -82,7 +82,11 @@ public class MdListViewer
     public Config<CellLabelProvider>   thirdLineLabelProvider;
     
     public Config<ActionProvider>      firstSecondaryActionProvider;
-    
+
+    public Config<ActionProvider>      secondSecondaryActionProvider;
+
+    public Config<ActionProvider>      thirdSecondaryActionProvider;
+
     private boolean                    customized = false;
 
     private boolean                    openListenerPresent;
@@ -174,20 +178,57 @@ public class MdListViewer
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
+            int actionCount = 0;
+            if(firstSecondaryActionProvider.isPresent()) {
+                actionCount++;
+                if(secondSecondaryActionProvider.isPresent()) {
+                    actionCount++;
+                    if(secondSecondaryActionProvider.isPresent()) {
+                        actionCount++;
+                    }
+                }
+            }
+            int fromRight = 112;
             // first action
             if (firstSecondaryActionProvider.isPresent()) {
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( firstSecondaryActionProvider.get() );
 
-                ImageCell cell = new ImageCell( template );
+                TextCell cell = new TextCell( template );
                 cell.setName( CELL_FIRSTACTION );
-                cell.setRight( dp( 56 ).pix() ).setWidth( dp( 56 ).pix() )
+                cell.setRight( dp( actionCount*fromRight ).pix() ).setWidth( dp( actionCount*fromRight ).pix() )
                         .setTop( 0 ).setHeight( tileHeight.pix() )
                         .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
-            
+
+            if (secondSecondaryActionProvider.isPresent()) {
+                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
+                col.setLabelProvider( secondSecondaryActionProvider.get() );
+
+                TextCell cell = new TextCell( template );
+                cell.setName( CELL_FIRSTACTION );
+                cell.setRight( dp( --actionCount*fromRight ).pix() ).setWidth( dp( actionCount*fromRight ).pix() )
+                        .setTop( 0 ).setHeight( tileHeight.pix() )
+                        .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
+                cell.setBindingIndex( colCount++ );
+                cell.setSelectable( true );
+            }
+
+            if (thirdSecondaryActionProvider.isPresent()) {
+                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
+                col.setLabelProvider( thirdSecondaryActionProvider.get() );
+
+                TextCell cell = new TextCell( template );
+                cell.setName( CELL_FIRSTACTION );
+                cell.setRight( dp( --actionCount*fromRight ).pix() ).setWidth( dp( actionCount*fromRight ).pix() )
+                        .setTop( 0 ).setHeight( tileHeight.pix() )
+                        .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
+                cell.setBindingIndex( colCount++ );
+                cell.setSelectable( true );
+            }
+
             // expandable
             if (true) {
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
