@@ -20,6 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ILazyTreeContentProvider;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -189,7 +191,11 @@ public class MdListViewer
                 @Override
                 public void update( ViewerCell cell ) {
                     if(cell.getElement() != null) {
-                        boolean expandable = ((ITreeContentProvider) MdListViewer.this.getContentProvider()).hasChildren( cell.getElement() );
+                        IContentProvider contentProvider = MdListViewer.this.getContentProvider();
+                        boolean expandable = true;
+                        if(contentProvider instanceof ITreeContentProvider) {
+                            expandable = ((ITreeContentProvider) contentProvider).hasChildren( cell.getElement() );
+                        }
                         if(expandable) {
                             cell.setImage( getExpandedState( cell.getElement() )
                                     ? BatikPlugin.instance().imageForName( "resources/icons/md/chevron-up.png" )
