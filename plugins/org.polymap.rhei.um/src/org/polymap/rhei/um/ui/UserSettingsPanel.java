@@ -30,8 +30,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.service.ISettingStore;
 
 import org.polymap.core.operation.OperationSupport;
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.i18n.IMessages;
+import org.polymap.core.security.SecurityContext;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 
@@ -88,7 +88,7 @@ public class UserSettingsPanel
         super.init();
         tk = getSite().toolkit();
         // XXX sort out context property issues
-        UserPrincipal loggedIn = (UserPrincipal)Polymap.instance().getUser(); //userPrincipal.get();
+        UserPrincipal loggedIn = (UserPrincipal)SecurityContext.instance().getUser(); //userPrincipal.get();
         user = loggedIn != null ? UserRepository.instance().findUser( loggedIn.getName() ) : null;        
     }
 

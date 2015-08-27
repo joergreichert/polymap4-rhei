@@ -22,6 +22,7 @@ Export-Package: javax.mail,
  javax.mail.util,
  org.apache.commons.mail,
  org.polymap.rhei.um,
+ org.polymap.rhei.um.auth,
  org.polymap.rhei.um.email,
  org.polymap.rhei.um.operations,
  org.polymap.rhei.um.ui

@@ -14,11 +14,11 @@
  */
 package org.polymap.rhei.fulltext;
 
-import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.entity.EntityStateEvent;
 import org.polymap.core.runtime.session.DefaultSessionContext;
 import org.polymap.core.runtime.session.DefaultSessionContextProvider;
 import org.polymap.core.runtime.session.SessionContext;
+import org.polymap.core.security.SecurityContext;
 import org.polymap.core.security.SecurityUtils;
 import org.polymap.core.security.UserPrincipal;
 
@@ -71,10 +71,10 @@ public class SessionHolder {
     public void mapServiceContext() {
         contextProvider.mapContext( serviceContext.getSessionKey(), true );
 
-        if (Polymap.instance().getPrincipals().isEmpty()) {
+        if (SecurityContext.instance().getPrincipals().isEmpty()) {
             // allow the indexers to access all maps and layers
             // during startup
-            Polymap.instance().addPrincipal( new UserPrincipal( SecurityUtils.ADMIN_USER ) {
+            SecurityContext.instance().addPrincipal( new UserPrincipal( SecurityUtils.ADMIN_USER ) {
                 public String getPassword() {
                     throw new RuntimeException( "not yet implemented." );
                 }

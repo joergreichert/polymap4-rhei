@@ -16,8 +16,6 @@ package org.polymap.rhei.um.ui;
 
 import java.io.IOException;
 
-import javax.security.auth.login.LoginException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,6 +36,7 @@ import org.eclipse.rap.rwt.service.ISettingStore;
 import org.polymap.core.operation.OperationSupport;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.runtime.i18n.IMessages;
+import org.polymap.core.security.SecurityContext;
 import org.polymap.core.security.UserPrincipal;
 import org.polymap.core.ui.ColumnLayoutFactory;
 import org.polymap.core.ui.FormLayoutFactory;
@@ -63,11 +62,13 @@ import org.polymap.rhei.form.batik.BatikFormContainer;
 import org.polymap.rhei.um.UmPlugin;
 import org.polymap.rhei.um.User;
 import org.polymap.rhei.um.UserRepository;
+import org.polymap.rhei.um.auth.UmSecurityConfiguration;
 import org.polymap.rhei.um.internal.Messages;
 import org.polymap.rhei.um.operations.NewPasswordOperation;
 
 /**
- * 
+ * <p/>
+ * Register {@link UmSecurityConfiguration} in order to make this work.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -118,6 +119,8 @@ public class LoginPanel
     
     /**
      * 
+     * <p/>
+     * Register {@link UmSecurityConfiguration} in order to make this work.
      */
     public static class LoginForm
             extends DefaultFormPage {
@@ -196,12 +199,12 @@ public class LoginPanel
             // password
             site.newFormField( new PlainValuePropertyAdapter( "password", password ) )
                     .field.put( new StringFormField( Style.PASSWORD ) )
-                    .validator.put( new NotEmptyValidator() {
+                    .validator.put( new NotEmptyValidator() /*{
                         @Override
                         public String validate( Object passwd ) {
                             return validatePasswd( (String)passwd ) ? null : "Passwort ist nicht korrekt";
                         }
-                    })
+                    }*/)
                     .label.put( i18n.get( "password" ) )
                     .create();
 
@@ -272,9 +275,9 @@ public class LoginPanel
         }
 
         
-        protected boolean validatePasswd( String passwd ) {
-            return passwd != null && Polymap.instance().validatePassword( username, passwd );
-        }
+//        protected boolean validatePasswd( String passwd ) {
+//            return passwd != null && Polymap.instance().validatePassword( username, passwd );
+//        }
 
         
         /**
@@ -293,13 +296,12 @@ public class LoginPanel
          * @return True, if sucessfully logged in.
          */
         protected boolean login( final String name, final String passwd ) {
-            try {
-                Polymap.instance().login( name, passwd );
-                user.set( (UserPrincipal)Polymap.instance().getUser() );
+            SecurityContext sc = SecurityContext.instance();
+            if (sc.login( name, passwd )) {
+                user.set( (UserPrincipal)sc.getUser() );
                 return true;
             }
-            catch (LoginException e) {
-                log.warn( "Login exception: " + e.getLocalizedMessage(), e );
+            else {
                 return false;
             }
         }
