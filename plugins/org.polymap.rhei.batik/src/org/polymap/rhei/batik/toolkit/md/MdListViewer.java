@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ILazyTreeContentProvider;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -54,6 +53,7 @@ import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
  */
 public class MdListViewer
         extends TreeViewer {
+    private static final long serialVersionUID = -1298343345289877130L;
 
     private static Log log = LogFactory.getLog( MdListViewer.class );
     
@@ -63,6 +63,8 @@ public class MdListViewer
     public static final String      CELL_THIRDLINE = "thirdLine";
     public static final String      CELL_EXPAND = "expand";
     public static final String      CELL_FIRSTACTION = "firstAction";
+    public static final String      CELL_SECONDACTION = "secondAction";
+    public static final String      CELL_THIRDACTION = "thirdAction";
     
     
     /**
@@ -80,7 +82,11 @@ public class MdListViewer
     public Config<CellLabelProvider>   thirdLineLabelProvider;
     
     public Config<ActionProvider>      firstSecondaryActionProvider;
-    
+
+    public Config<ActionProvider>      secondSecondaryActionProvider;
+
+    public Config<ActionProvider>      thirdSecondaryActionProvider;
+
     private boolean                    customized = false;
 
     private boolean                    openListenerPresent;
@@ -172,18 +178,17 @@ public class MdListViewer
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
-            // first action
+            int actionCount = getActionCount();
+            int fromRight = 56;
+            // actions
+            if (thirdSecondaryActionProvider.isPresent()) {
+                createActionCell(template, thirdSecondaryActionProvider.get(), CELL_THIRDACTION, actionCount--*fromRight, tileHeight, colCount++);                
+            }
+            if (secondSecondaryActionProvider.isPresent()) {
+                createActionCell(template, secondSecondaryActionProvider.get(), CELL_SECONDACTION, actionCount--*fromRight, tileHeight, colCount++);                
+            }
             if (firstSecondaryActionProvider.isPresent()) {
-                TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
-                col.setLabelProvider( firstSecondaryActionProvider.get() );
-
-                ImageCell cell = new ImageCell( template );
-                cell.setName( CELL_FIRSTACTION );
-                cell.setRight( dp( 56 ).pix() ).setWidth( dp( 56 ).pix() )
-                        .setTop( 0 ).setHeight( tileHeight.pix() )
-                        .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
-                cell.setBindingIndex( colCount++ );
-                cell.setSelectable( true );
+                createActionCell(template, firstSecondaryActionProvider.get(), CELL_FIRSTACTION,  actionCount--*fromRight, tileHeight, colCount++);                
             }
 
             TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
@@ -234,6 +239,12 @@ public class MdListViewer
                     else if (CELL_FIRSTACTION.equals( ev.text )) {
                         firstSecondaryActionProvider.get().perform( MdListViewer.this, elm );
                     }
+                    else if (CELL_SECONDACTION.equals( ev.text )) {
+                        secondSecondaryActionProvider.get().perform( MdListViewer.this, elm );
+                    }
+                    else if (CELL_THIRDACTION.equals( ev.text )) {
+                        thirdSecondaryActionProvider.get().perform( MdListViewer.this, elm );
+                    }
                     // open
                     else {
                         fireOpen( new OpenEvent( MdListViewer.this, new StructuredSelection( elm ) ) );
@@ -250,6 +261,37 @@ public class MdListViewer
             getTree().setData( RWT.ROW_TEMPLATE, template );        
             getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, tileHeight.pix() );
         }
+    }
+    
+    
+    private void createActionCell(Template template, ActionProvider actionProvider, String cellName, int width, dp tileHeight, int colCount) {
+        TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
+        col.setLabelProvider( actionProvider );
+
+        ImageCell cell = new ImageCell( template );
+        cell.setName( cellName );
+        cell.setRight( dp( width ).pix() ).setWidth( dp( width ).pix() )
+            .setTop( 0 ).setHeight( tileHeight.pix() )
+            .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
+        cell.setBindingIndex( colCount );
+        cell.setSelectable( true );
+    }
+
+
+    private int getActionCount() {
+        int actionCount = 0;
+        if(firstSecondaryActionProvider.isPresent()) {
+            actionCount++;
+            if(secondSecondaryActionProvider.isPresent()) {
+                actionCount++;
+                if(thirdSecondaryActionProvider.isPresent()) {
+                    actionCount++;
+                }
+            } else if(thirdSecondaryActionProvider.isPresent()) {
+                actionCount++;
+            }
+        }
+        return actionCount;
     }
 
     
