@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.runtime.event.EventManager;
 
+import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -60,6 +61,7 @@ public class Dashboard {
     public Dashboard addDashlet( IDashlet dashlet ) {
         DashletSite site = new DashletSiteImpl();
         dashlet.init( site );
+        BatikApplication.instance().getContext().propagate( dashlet );
         dashlets.put( dashlet, site );
         return this;
     }

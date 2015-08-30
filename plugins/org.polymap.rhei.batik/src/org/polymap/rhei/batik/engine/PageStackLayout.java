@@ -100,12 +100,12 @@ public class PageStackLayout
 
         Rectangle displayArea = composite.getDisplay().getBounds();
         if (clientArea.width > displayArea.width) {
-            log.warn( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", flushCache: " + flushCache );
+            log.info( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", flushCache: " + flushCache );
             return;
         }
         
         if (!flushCache && clientArea.equals( cachedClientArea )) {
-            log.warn( "Ignoring cachedClientArea: " + cachedClientArea + ", flushCache: " + flushCache );
+            log.info( "Ignoring cachedClientArea: " + cachedClientArea + ", flushCache: " + flushCache );
             return;
         }
         cachedClientArea = clientArea;

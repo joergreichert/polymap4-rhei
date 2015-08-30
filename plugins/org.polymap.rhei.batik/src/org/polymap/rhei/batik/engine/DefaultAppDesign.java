@@ -57,12 +57,10 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
-import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
-import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.engine.PageStack.Page;
@@ -129,11 +127,13 @@ public class DefaultAppDesign
      */
     @Override
     public void navigated( BrowserNavigationEvent ev ) {
-        log.debug( "navigated(): " + ev.getState() );
-        if (!ev.getState().equals( "start" )) {
-            IAppContext context = appManager.getContext();
-            context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) );
-        }
+        // XXX start is not always the name of the first panel, this causes the first panel
+        // to created, disposed and created again
+        log.info( "navigated: " + ev.getState() + " - NOT SUPPORTED CURRENTLY!" );
+//        if (!ev.getState().equals( "start" )) {
+//            IAppContext context = appManager.getContext();
+//            context.openPanel( PanelPath.ROOT, new PanelIdentifier( "start" ) );
+//        }
     }
 
 

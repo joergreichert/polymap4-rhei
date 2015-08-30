@@ -56,6 +56,16 @@ public class ConstraintLayout
         this.margins = margins;
     }
 
+    
+    public LayoutSupplier getMargins() {
+        return margins;
+    }
+
+    
+    public void setMargins( LayoutSupplier margins ) {
+        this.margins = margins;
+    }
+
 
     @Override
     protected void layout( Composite composite, boolean flushCache ) {
@@ -122,7 +132,7 @@ public class ConstraintLayout
             }
             Rectangle displayArea = composite.getDisplay().getBounds();
             if (clientArea.width > displayArea.width) {
-                log.warn( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", fluschCache: " + flushCache );
+                log.info( "Invalid client area: " + clientArea + ", display width: " + displayArea.width + ", fluschCache: " + flushCache );
                 return false;
             }
 
