@@ -17,6 +17,10 @@ package org.polymap.rhei.field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.polymap.core.runtime.config.Config2;
+import org.polymap.core.runtime.config.Configurable;
+import org.polymap.core.runtime.config.DefaultString;
+
 /**
  * Validates against a regex pattern that ensures email addresses like: a@pl.de.
  * An empty field value is valid too.
@@ -24,10 +28,16 @@ import java.util.regex.Pattern;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class EMailAddressValidator
+        extends Configurable
         implements IFormFieldValidator {
 
     public static final Pattern pattern = Pattern.compile( "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE );
     
+    /**
+     * The message to be returned if validation fails.
+     */
+    @DefaultString("Not a valid email address")
+    public Config2<EMailAddressValidator,String>    msg;
     
     @Override
     public String validate( Object fieldValue ) {
@@ -36,7 +46,7 @@ public class EMailAddressValidator
         }
         else {
             Matcher matcher = pattern.matcher( fieldValue.toString() );
-            return !matcher.matches() ? "Keine gültige E-Mail-Adresse: " + fieldValue : null;
+            return !matcher.matches() ? msg.get() /*+ fieldValue*/ : null;
         }
     }
 

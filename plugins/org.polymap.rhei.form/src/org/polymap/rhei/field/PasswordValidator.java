@@ -17,24 +17,60 @@ package org.polymap.rhei.field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.polymap.core.runtime.config.Config2;
+import org.polymap.core.runtime.config.Configurable;
+import org.polymap.core.runtime.config.DefaultBoolean;
+import org.polymap.core.runtime.config.DefaultInt;
+import org.polymap.core.runtime.config.Mandatory;
+
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class PasswordValidator
+        extends Configurable
         implements IFormFieldValidator {
-
-    public static final Pattern pattern = Pattern.compile( 
-            "^" +                // start-of-string
-            "(?=.*[0-9])" +      // a digit must occur at least once
-            "(?=.*[a-z])" +      // a lower case letter must occur at least once
-            "(?=.*[A-Z])" +      // an upper case letter must occur at least once
-           // "(?=.*[@#$%^&+=])" + // a special character must occur at least once
-            "(?=\\S+$)" +        // no whitespace allowed in the entire string
-            ".{8,}" +            // anything, at least eight places though
-            "$" );               // end-of-string
     
+    @Mandatory
+    @DefaultBoolean(true)
+    public Config2<PasswordValidator,Boolean>   oneDigit;
+    
+    @Mandatory
+    @DefaultBoolean(true)
+    public Config2<PasswordValidator,Boolean>   oneLowerCase;
+    
+    @Mandatory
+    @DefaultBoolean(true)
+    public Config2<PasswordValidator,Boolean>   oneUpperCase;
+    
+    @Mandatory
+    @DefaultBoolean(false)
+    public Config2<PasswordValidator,Boolean>   oneSpecial;
+    
+    @Mandatory
+    @DefaultBoolean(true)
+    public Config2<PasswordValidator,Boolean>   noWhitespace;
+
+    @Mandatory
+    @DefaultInt(8)
+    public Config2<PasswordValidator,Integer>   minLength;
+
+    private Pattern                             pattern;
+    
+
+    public PasswordValidator() {
+        pattern = Pattern.compile(
+                "^" +   
+                (oneDigit.get()     ? "(?=.*[0-9])" : "") +
+                (oneLowerCase.get() ? "(?=.*[a-z])" : "") +
+                (oneUpperCase.get() ? "(?=.*[A-Z])" : "") +
+                (oneSpecial.get()   ? "(?=.*[@#$%^&+=])" : "") +
+                (noWhitespace.get() ? "(?=\\S+$)" : "") +
+                ".{" + minLength.get() + ",}" +
+                "$" );
+    }
+
     @Override
     public String validate( Object fieldValue ) {
         Matcher matcher = pattern.matcher( fieldValue != null ? fieldValue.toString() : "_dontMatch_" );

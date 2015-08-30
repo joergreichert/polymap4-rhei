@@ -86,8 +86,10 @@ public abstract class DefaultFormPage
         this.fs = fs;
     }
 
+    
     /**
-     * Initializes the layout. Sub-classes must call this.
+     * This default implementation initializes the layout. Sub-classe should call
+     * this.
      */
     public void createFormContents( IFormPageSite site ) {
         site.getPageBody().setLayout( new FormLayout() );
