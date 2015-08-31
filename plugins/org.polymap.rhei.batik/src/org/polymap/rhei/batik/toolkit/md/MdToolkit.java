@@ -18,14 +18,11 @@ import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
@@ -38,19 +35,19 @@ import org.polymap.rhei.batik.toolkit.DefaultToolkit;
 public class MdToolkit
         extends DefaultToolkit {
 
-    private static Log log = LogFactory.getLog( MdToolkit.class );
-    
-    public static final String              CSS_FAB = CSS_PREFIX + "-fab";
-    
-    private PageStack<PanelPath>.Page       panelPage;
+    private static Log                log     = LogFactory.getLog( MdToolkit.class );
 
-    
-    public MdToolkit( PanelPath panelPath, PageStack<PanelPath>.Page panelPage  ) {
+    public static final String        CSS_FAB = CSS_PREFIX + "-fab";
+
+    private PageStack<PanelPath>.Page panelPage;
+
+
+    public MdToolkit( PanelPath panelPath, PageStack<PanelPath>.Page panelPage ) {
         super( panelPath );
         this.panelPage = panelPage;
     }
-    
-    
+
+
     /**
      * Creates a Floating Action Button.
      * 
@@ -63,20 +60,31 @@ public class MdToolkit
         Button result = createButton( panelPage.control, "+", SWT.PUSH );
         result.moveAbove( null );
         UIUtils.setVariant( result, CSS_FAB );
-        result.setLayoutData( FormDataFactory.defaults()
-                .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
-                .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        result.setLayoutData( FormDataFactory.defaults().top( 0, dp( 72 ) ).right( 100, -dp( 40 ) ).width( dp( 72 ) )
+                .height( dp( 72 ) ).create() );
         return result;
     }
 
-    
+
+    /**
+     * Creates a floating snack bar.
+     * 
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
+     *      Design</a>.
+     */
+    public Snackbar createFloatingSnackbar(int styleBits) {
+        return new Snackbar(this, panelPage.control, styleBits);
+    }    
+
+
     public Composite createCard( Composite parent ) {
         throw new RuntimeException( "not yet..." );
     }
-    
-    
+
+
     public MdListViewer createListViewer( Composite parent, int... styles ) {
         return new MdListViewer( parent, stylebits( styles ) );
     }
-    
+
 }

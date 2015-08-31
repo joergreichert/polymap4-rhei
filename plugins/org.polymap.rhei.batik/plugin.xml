@@ -48,6 +48,14 @@
             file="resources/css/md/fab.css"
             themeId="org.polymap.rhei.batik.materialDesign">
       </themeContribution>
+      <themeContribution
+            file="resources/css/md/tree.css"
+            themeId="org.polymap.rhei.batik.materialDesign">
+      </themeContribution>
+      <themeContribution
+            file="resources/css/md/messages.css"
+            themeId="org.polymap.rhei.batik.materialDesign">
+      </themeContribution>
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">
