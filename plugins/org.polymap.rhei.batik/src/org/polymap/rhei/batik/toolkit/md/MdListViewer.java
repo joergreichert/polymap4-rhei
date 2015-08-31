@@ -117,6 +117,15 @@ public class MdListViewer
     }
     
     
+    /**
+     * @see ListTreeContentProvider
+     */
+    @Override
+    public void setContentProvider( IContentProvider provider ) {
+        super.setContentProvider( provider );
+    }
+
+
     protected void customizeTree() {
         if (!customized) {
             customized = true;

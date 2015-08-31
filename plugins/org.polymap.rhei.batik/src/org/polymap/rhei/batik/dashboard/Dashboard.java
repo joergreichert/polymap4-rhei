@@ -60,8 +60,8 @@ public class Dashboard {
     
     public Dashboard addDashlet( IDashlet dashlet ) {
         DashletSite site = new DashletSiteImpl();
-        dashlet.init( site );
         BatikApplication.instance().getContext().propagate( dashlet );
+        dashlet.init( site );
         dashlets.put( dashlet, site );
         return this;
     }

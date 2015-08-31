@@ -14,21 +14,34 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import org.polymap.core.runtime.StreamIterable;
+
 /**
  * A content provider for use with {@link MdListViewer} that provides no hierarchy,
- * just a single list of elements.
+ * just a single list of elements. Supports {@link Collection} and array of elements
+ * as input.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public abstract class ListTreeContentProvider
+public class ListTreeContentProvider
         implements ITreeContentProvider {
 
+    private Object[]            input;
+    
     @Override
     public Object[] getChildren( Object parent ) {
         return getElements( parent );
+    }
+
+    @Override
+    public Object[] getElements( Object inputElement ) {
+        return input;
     }
 
     @Override
@@ -47,6 +60,18 @@ public abstract class ListTreeContentProvider
 
     @Override
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {
+        if (newInput instanceof Collection) {
+            this.input = ((Collection)newInput).toArray();
+        }
+        else if (newInput instanceof Iterable) {
+            input = StreamIterable.of( (Iterable<Object>)newInput ).stream().collect( Collectors.toList() ).toArray();
+        }
+        else if (newInput.getClass().isArray()) {
+            this.input = (Object[])newInput;
+        }
+        else {
+            throw new RuntimeException( "Unsupported input: " + input );
+        }
     }
     
 }
