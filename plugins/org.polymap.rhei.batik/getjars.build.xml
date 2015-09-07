@@ -56,6 +56,11 @@
             <remoteRepository refid="central.repository" />
 
             <dependency groupId="org.pegdown" artifactId="pegdown" version="1.4.2"/>
+			
+			<!-- sass compiler -->
+			<dependency groupId="org.jruby" artifactId="jruby-complete" version="9.0.0.0"/>
+			<dependency groupId="org.w3c.css" artifactId="css-validator" version="20100131"/>
+			<dependency groupId="org.w3c.jigsaw" artifactId="jigsaw" version="2.2.6"/>
 		</artifact:dependencies>
 	</target>
 

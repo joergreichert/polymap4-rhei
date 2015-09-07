@@ -1,0 +1,119 @@
+/* Table default theme */
+
+Table {
+/*  background-color: #ffffff;
+  background-image: none;
+  color: #4a4a4a;
+  border: none;*/
+}
+
+/*Table[BORDER] {
+  border: 1px solid #bdbdbd;
+}*/
+
+TableColumn {
+  background-color: #f1f4f6;
+  padding: 4px 10px 4px 10px;
+  background-image: none;
+  border-bottom: 1px solid #cacfd2;
+  text-shadow: 0 1px 0 #ffffff;
+}
+
+TableColumn:hover {
+  background-color: #e1e4e6;
+  animation: hoverOut 400ms ease-out;
+}
+
+TableItem,
+TableItem:linesvisible:even:rowtemplate {
+  background-color: transparent;
+  color: inherit;
+  text-decoration: none;
+  text-shadow: none;
+  background-image: none;
+  border-bottom: 1px solid #edf1f3;
+}
+
+TableItem:linesvisible:even {
+  /*background-color: #f0f0f0;*/
+}
+
+Table-RowOverlay {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}
+Table-RowOverlay:hover,
+Table-RowOverlay:linesvisible:even:hover {
+  color: #0f1c23;
+  background-color: #f1f4f6;
+  text-shadow: 0 1px 0 #ffffff;
+}
+Table-RowOverlay:selected,
+Table-RowOverlay:selected:unfocused {
+  color: #0f1c23;
+  background-color: #e5e9ec;
+}
+Table-RowOverlay:linesvisible:even:selected,
+Table-RowOverlay:linesvisible:even:selected:unfocused {
+  color: #0f1c23;
+  background-color: #e5e9ec;
+}
+
+TableColumn-SortIndicator {
+  background-image: none;
+}
+TableColumn-SortIndicator:up {
+  background-image: url( resource/widget/rap/column/sort-indicator-up.png );
+}
+
+TableColumn-SortIndicator:down {
+  background-image: url( resource/widget/rap/column/sort-indicator-down.png );
+}
+
+Table-Cell {
+  spacing: 3px;
+  padding: 4px 10px 4px 10px;
+}
+
+Table-GridLine,
+Table-GridLine:vertical,
+Table-GridLine:vertical:rowtemplate {
+  color: transparent;
+}
+
+Table-GridLine:header,
+Table-GridLine:horizontal,
+Table-GridLine:horizontal:rowtemplate {
+  color: #edf1f3;
+}
+
+Table-Checkbox {
+  /*
+  For backward compatibility we have to keep the width property.
+  Deprecated, use "margin" instead.
+  */
+  width: 21px;
+  margin: 0 0 0 4px;
+  background-image: url( resource/widget/rap/button/check-unselected.png );
+}
+
+Table-Checkbox:hover {
+  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
+}
+
+Table-Checkbox:checked {
+  background-image: url( resource/widget/rap/button/check-selected.png );
+}
+
+Table-Checkbox:checked:hover {
+  background-image: url( resource/widget/rap/button/check-selected-hover.png );
+}
+
+Table-Checkbox:checked:grayed {
+  background-image: url( resource/widget/rap/button/check-grayed.png );
+}
+
+Table-Checkbox:checked:grayed:hover {
+  background-image: url( resource/widget/rap/button/check-grayed-hover.png );
+}
