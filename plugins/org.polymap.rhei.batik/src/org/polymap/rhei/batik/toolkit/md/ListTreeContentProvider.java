@@ -60,7 +60,10 @@ public class ListTreeContentProvider
 
     @Override
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {
-        if (newInput instanceof Collection) {
+        if (newInput == null) {
+            input = null;
+        }
+        else if (newInput instanceof Collection) {
             this.input = ((Collection)newInput).toArray();
         }
         else if (newInput instanceof Iterable) {

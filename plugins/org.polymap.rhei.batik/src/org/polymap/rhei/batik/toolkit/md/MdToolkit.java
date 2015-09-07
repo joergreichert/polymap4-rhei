@@ -18,11 +18,14 @@ import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
+
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
@@ -60,8 +63,9 @@ public class MdToolkit
         Button result = createButton( panelPage.control, "+", SWT.PUSH );
         result.moveAbove( null );
         UIUtils.setVariant( result, CSS_FAB );
-        result.setLayoutData( FormDataFactory.defaults().top( 0, dp( 72 ) ).right( 100, -dp( 40 ) ).width( dp( 72 ) )
-                .height( dp( 72 ) ).create() );
+        result.setLayoutData( FormDataFactory.defaults()
+                .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
+                .width( dp( 72 ) ).height( dp( 72 ) ).create() );
         return result;
     }
 
@@ -73,6 +77,7 @@ public class MdToolkit
      *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
      *      Design</a>.
      */
+    @SuppressWarnings("javadoc")
     public Snackbar createFloatingSnackbar(int styleBits) {
         return new Snackbar(this, panelPage.control, styleBits);
     }    

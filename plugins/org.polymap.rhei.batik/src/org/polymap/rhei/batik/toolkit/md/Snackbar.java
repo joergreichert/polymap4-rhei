@@ -14,7 +14,6 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
-import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,21 +22,20 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.rap.rwt.service.ServerPushSession;
+
 import org.polymap.core.runtime.Callback;
-import org.polymap.core.runtime.ThreadAsync;
-import org.polymap.core.runtime.UIThreadExecutor;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
 /**
  * A floating snack bar.
  * 
- * @see <a
- *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
- *      Design</a>.
- * 
+ * @see <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material Design</a>.
  * @author Joerg Reichert <joerg@mapzone.io>
  */
+@SuppressWarnings("javadoc")
 public class Snackbar
         extends SelectionAdapter {
 
@@ -149,7 +147,7 @@ public class Snackbar
 
 
     public void showIssueAndOfferAction( MessageType messageStyle, String message, String actionName,
-            Callback<?> callback ) {
+            @SuppressWarnings("hiding") Callback<?> callback ) {
         internalShowIssue( messageStyle, message );
         button.setText( actionName );
         setVisibleForAll( true );

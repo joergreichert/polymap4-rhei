@@ -57,6 +57,11 @@
       <themeContribution
             file="resources/css_old/md/messages.css"
             themeId="org.polymap.rhei.batik.materialDesign">
+      </themeContribution>
+      </themeContribution>
+      <themeContribution
+            file="resources/css/default/text.css"
+            themeId="org.polymap.rhei.batik.materialDesign">
       </themeContribution-->
    </extension>
    <extension
