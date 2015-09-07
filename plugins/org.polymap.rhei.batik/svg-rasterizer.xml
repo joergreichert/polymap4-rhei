@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<project default="rasterize" basedir=".">
+	<property name="library.path" value="${basedir}/lib" />
+
+	<path id="icons.classpath">
+		<fileset dir="${library.path}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="rasterize">
+		<!-- requires that Svg2PngTask has been already compiled -->
+		<taskdef name="svg2Png" classname="org.polymap.rhei.batik.image.Svg2PngTask" classpath="build/eclipse" classpathref="icons.classpath"/>
+		<svg2Png svgPath="src-test/org/polymap/rhei/batik/image" pngPath="build/icons_conv"
+			scale="64, 128">
+			<imageConfig name="gray" colorType="gray" />
+			<imageConfig name="monochrom" colorType="monochrom" />
+			<imageConfig name="blue_by_rgb" rgb="#0000ff" />
+			<imageConfig name="white_by_rgb" rgb="#ffffff" />
+			<imageConfig name="blue_by_hsb" adjHue="0.6" />
+			<imageConfig name="blue_by_hsb_adj" adjHue="0.6" adjSaturation="0.2" adjBrightness="0.1" />
+			<imageConfig name="blue_by_hsb_dep1bit" adjHue="0.6" depth="1" />
+			<imageConfig name="blue_by_hsb_dep2bit" adjHue="0.6" depth="2" />
+			<imageConfig name="blue_by_hsb_dep4bit" adjHue="0.6" depth="4" />
+			<imageConfig name="blue_by_hsb_dep8bit" adjHue="0.6" depth="8" />
+		</svg2Png>	
+	</target>
+
+</project>
