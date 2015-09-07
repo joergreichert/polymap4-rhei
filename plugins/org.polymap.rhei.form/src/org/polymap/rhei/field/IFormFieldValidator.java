@@ -1,19 +1,16 @@
 /* 
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
+ * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
  *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.field;
 
@@ -27,12 +24,13 @@ package org.polymap.rhei.field;
  * {@link NumberValidator} can be combined with a string field in order to check
  * user input and transform the string to a float value.
  *
+ * @param <F> The type of the field values.
+ * @param <M> The type of the model values.
+ * @see FormFieldValidator2
  * @see Validators
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IFormFieldValidator {
-
-    public static final Object          INVALID = new Object();
+public interface IFormFieldValidator<F,M> {
 
     /**
      * Check the given user provided value for validity.
@@ -41,7 +39,7 @@ public interface IFormFieldValidator {
      * @return Null if the value is valid, or the error message if the value is
      *         invalid.
      */
-    public String validate( Object fieldValue );
+    public String validate( F fieldValue );
     
     /**
      * Transforms the given user input value to model value.
@@ -50,10 +48,8 @@ public interface IFormFieldValidator {
      * @return Transformed value, or null if fieldValue is null.
      * @throws Exception
      */
-    public Object transform2Model( Object fieldValue )
-    throws Exception;
+    public M transform2Model( F fieldValue ) throws Exception;
     
-    public Object transform2Field( Object modelValue )
-    throws Exception;
+    public F transform2Field( M modelValue ) throws Exception;
     
 }

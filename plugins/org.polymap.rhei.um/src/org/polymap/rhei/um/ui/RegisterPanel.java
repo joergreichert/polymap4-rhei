@@ -176,10 +176,10 @@ public class RegisterPanel
             okBtn.setEnabled( false );            
 
             if (ev.getFieldName().equals( "email" )) {
-                email = (String)ev.getNewModelValue().orNull();
+                email = (String)ev.getNewModelValue().orElse( null );
             }
             if (ev.getFieldName().equals( "name" )) {
-                name = (String)ev.getNewModelValue().orNull();
+                name = (String)ev.getNewModelValue().orElse( null );
             }
             
             if (personForm.isValid()

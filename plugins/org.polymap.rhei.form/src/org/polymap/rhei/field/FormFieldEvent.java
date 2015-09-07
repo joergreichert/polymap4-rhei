@@ -15,8 +15,7 @@
 package org.polymap.rhei.field;
 
 import java.util.EventObject;
-
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import org.polymap.rhei.filter.FilterEditor;
 
@@ -70,13 +69,20 @@ public class FormFieldEvent
         return formField;
     }
 
+    /**
+     * The type of the vent.
+     * 
+     * @see IFormFieldListener#VALUE_CHANGE
+     * @see IFormFieldListener#FOCUS_GAINED
+     * @see IFormFieldListener#FOCUS_LOST
+     */
     public int getEventCode() {
         return eventCode;
     }
     
     /**
      * The value that would be stored in the underlying Property on submit. Type and
-     * value my differ from the value that was actually entered in the
+     * value may differ from the value that was actually entered in the
      * {@link IFormField}, it depends on the {@link IFormFieldValidator} of the form
      * field.
      * 
@@ -86,7 +92,7 @@ public class FormFieldEvent
      *         validated.
      */
     public <T> Optional<T> getNewModelValue() {
-        return Optional.fromNullable( (T)newModelValue );
+        return Optional.ofNullable( (T)newModelValue );
     }
 
     /**
