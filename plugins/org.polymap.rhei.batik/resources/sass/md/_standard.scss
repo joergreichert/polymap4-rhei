@@ -1,0 +1,32 @@
+/*
+ * _standard.scss:
+ * Font and color definitions for Material Design standard theme
+ */
+ 
+$font:                  'Roboto', 'Noto', sans-serif;
+$font-size-button:      15px;      
+$font-button:           $font-size-button $font;
+$font-size-caption:     12px;      
+$font-size-body1:       13px;  /* Regular; 14px on Device */      
+$font-size-body2:       13px;  /* Medium; 14px on Device */      
+$font-size-subhead:     15px;  /* Regular; 16px on Device */      
+$font-size-title:       20px;  /* Medium */      
+$font-size-headline:    24px;  /* Regular */      
+
+$text-color:            #4a4a4a;
+$text-color-disabled:   #CFCFCF;
+$link-color:            #5a9cbd;
+
+$action-bg:             #6BBAE1;
+$action-fg:             #ffffff;
+
+$header-bg:             #E2EdF5;
+
+$fab-bg:                #81CC39;
+$fab-fg:                #ffffff;
+$fab-hover:             #6eb02e;
+
+/*
+ *    Background grey: #f3f3f3 
+ *    Action blue: background-color: #5a9cbd;
+ */

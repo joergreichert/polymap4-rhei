@@ -9,23 +9,28 @@
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
 
-/* Default theme for all widgets */
+/****************************************************************************** 
+ Originally this was taken from RAP 2.3 default theme.
 
-/* Modified for Batik:
+ Modified for Batik:
   - font declarations removed for all widgets
   - default font: 13px/14
   - "*" and Composite background-color: transparent 
-*/
+
+ Please note the imports at the end of the file!
+******************************************************************************/
+
+@import "standard";
 
 * {
-  color: #4a4a4a;
+  color: $text-color;
   background-color: transparent;
   background-image: none;
-  font: 13px 'Roboto', 'Noto', sans-serif;
+  font: 13px $font;
 }
 
 *:disabled {
-  color: #CFCFCF;
+  color: $text-color-disabled;
 }
 
 Widget-ToolTip {
@@ -2240,3 +2245,12 @@ Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
   padding: 0;
   box-shadow: 0 0 4px #ababab;
 }
+
+
+@import "batik";
+@import "button";
+@import "fab";
+@import "tree";
+@import "messages";
+@import "text";
+@import "table";

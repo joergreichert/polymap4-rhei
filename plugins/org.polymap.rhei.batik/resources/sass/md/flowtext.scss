@@ -17,9 +17,11 @@
  * Batik default definitions for flowtext
  */
 
+@import "standard";
+
 a {
   /*color: #50D225; */
-  color: #5a9cbd;
+  color: $link-color;
   text-decoration: none;
 }
 a:hover {
@@ -28,41 +30,40 @@ a:hover {
   text-decoration: underline;
 }
 p {
-  color: #606060;
-  font-size: 13px;
+  color: $text-color;
+  font-size: $font-size-body1;
   line-height: 14px;
   text-align: justify;
   margin: 3px 0 3px 0;
 }
 ul {
-  color: #606060;
-  font-size: 13px;
+  color: $text-color;
+  font-size: $font-size-body1;
   margin: 3px 0 3px 0;
   padding-left: 30px;
 }
 h1 {
-  font-size: 24px;
+  font-size: $font-size-headline;
   font-weight: normal;
   margin: 30px 0 8px 0;
 }
 h2 {
-  font-size: 22px;
-  font-weight: normal;
+  font-size: $font-size-headline;
+  font-weight: medium;
   margin: 20px 0 5px 0;
 }
 h3 {
-  font-size: 19px;
+  font-size: $font-size-subhead;
   font-weight: normal;
   margin: 10px 0 3px 0;
 }
 h4 {
-  font-size: 16px;
-  font-weight: normal;
+  font-size: $font-size-body2;
+  font-weight: medium;
   margin: 5px 0 0px 0;
 }
 hr {
   height: 0px;
   border: none;
   border-top: 1px solid #c8c8c8;
-  
 }

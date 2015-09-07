@@ -23,8 +23,9 @@ Button[PUSH][BORDER],
 Button[TOGGLE][BORDER],
 Button[PUSH][FLAT],
 Button[TOGGLE][FLAT] {
-  color: #ffffff;
-  background-color: #60A7CA;  /*5a9cbd;*/
+  font: $font-button;
+  color: $action-fg;
+  background-color: $action-bg;
   padding: 5px 15px;
   cursor: pointer;
 }

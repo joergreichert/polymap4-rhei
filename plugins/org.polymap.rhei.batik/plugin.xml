@@ -37,7 +37,7 @@
             themeId="org.polymap.rhei.batik.theme">
       </themeContribution-->
       <theme
-            file="resources/css/md/default-rap23.css"
+            file="resources/css/md/md-standard.css"
             id="org.polymap.rhei.batik.materialDesign"
             name="Material Design">
       </theme>
@@ -68,7 +68,7 @@
          point="org.eclipse.rap.ui.branding">
       <branding
             id="org.polymap.rhei.batik.branding"
-            themeId="org.polymap.rhei.batik.theme"
+            themeId="org.polymap.rhei.batik.materialDesign"
             title="Batik">
       </branding>
    </extension>

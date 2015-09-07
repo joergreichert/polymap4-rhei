@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<project default="default" basedir=".">
+<project name="org.polymap.rhei.batik.sass" default="build" basedir=".">
 	
-	<target name="default" depends="sass" />
+	<target name="build" depends="sass" />
 
 	<property name="library.path" value="${basedir}/lib" />
 	<property name="library.static.path" value="${basedir}/lib-static" />
@@ -40,11 +40,13 @@
 
 	<target name="sass" depends="init" unless="css.uptodate">
 		<copy file="${library.path}/css-validator-20100131.jar" tofile="${library.path}/css-validator.jar"/>
+	    
 		<java fork="true" failonerror="true" classpathref="jruby.classpath" classname="org.jruby.Main">
 			<arg line="-S compass compile --sass-dir ${sass.path} --css-dir ${css.path} --force" />
 		</java>
-		<java fork="true" failonerror="true" classpathref="css.validator.classpath" classname="org.w3c.css.css.CssValidator">
-			<arg line="file://${basedir}/resources/css/md/default-rap23.css -output html" />
+		
+	    <!--java fork="true" failonerror="true" classpathref="css.validator.classpath" classname="org.w3c.css.css.CssValidator">
+			<arg line="file://${basedir}/resources/css/md/md-standard.css -output html" />
 			<redirector output="error.html" alwayslog="true">
 				<outputfilterchain>
 					<linecontains negate="true">
@@ -55,7 +57,7 @@
 					</linecontains>
 				</outputfilterchain>
 			</redirector>
-		</java>
+		</java-->
 	</target>
 
 </project>

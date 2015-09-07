@@ -15,9 +15,6 @@
 
 /*
  * Material Design: Batik specific elements like Navigation and Status
- *
- *    Background grey: #f3f3f3 
- *    Action blue: background-color: #5a9cbd;
  */
  
 /**********************************************************
@@ -26,18 +23,18 @@
 Composite[BORDER].atlas-panel-header {
   border-radius: 5px;
   border: 0px solid #e8e8e8;
-  background-image: gradient(linear, left top, left bottom, from(#E2EdF5), to(#ffffff));
+  background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));
 }
 Button[PUSH].atlas-panel-header,
 Button[TOGGLE].atlas-panel-header {
-  font: 14px 'Roboto', 'Noto', sans-serif;
+  font: $font-size-button $font;
   border-radius: 5px;
   padding: 0px 5px;
   spacing: 0px;
   background-color: #ffffff;
 /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid #6BBAE1;
-  color: #6BBAE1;
+  border: 1px solid $action-bg;
+  color: $action-bg;
 }
 Button[PUSH]:hover.atlas-panel-header,
 Button[TOGGLE]:hover.atlas-panel-header {
@@ -47,7 +44,7 @@ Button[TOGGLE]:hover.atlas-panel-header {
   background-color: #6BBAE1;
 }
 Label.atlas-panel-header {
-  font: 14px 'Roboto', 'Noto', sans-serif;
+  font: $font-size-button $font;
   color: #5993AE;
   text-shadow: 1px 1px 0px #ffffff;
 }
