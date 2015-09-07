@@ -19,7 +19,8 @@
             id="org.polymap.rhei.batik.theme"
             name="Batik Default">
       </theme>
-      <themeContribution
+      <!-- Done via SASS import -->
+      <!--themeContribution
             file="resources/css/default/batik.css"
             themeId="org.polymap.rhei.batik.theme">
       </themeContribution>
@@ -34,28 +35,29 @@
       <themeContribution
             file="resources/css/default/table.css"
             themeId="org.polymap.rhei.batik.theme">
-      </themeContribution>
+      </themeContribution-->
       <theme
             file="resources/css/md/default-rap23.css"
             id="org.polymap.rhei.batik.materialDesign"
             name="Material Design">
       </theme>
-      <themeContribution
-            file="resources/css/md/batik.css"
+      <!-- Done via SASS import -->
+      <!--themeContribution
+            file="resources/css_old/md/batik.css"
             themeId="org.polymap.rhei.batik.materialDesign">
       </themeContribution>
       <themeContribution
-            file="resources/css/md/fab.css"
+            file="resources/css_old/md/fab.css"
             themeId="org.polymap.rhei.batik.materialDesign">
       </themeContribution>
       <themeContribution
-            file="resources/css/md/tree.css"
+            file="resources/css_old/md/tree.css"
             themeId="org.polymap.rhei.batik.materialDesign">
       </themeContribution>
       <themeContribution
-            file="resources/css/md/messages.css"
+            file="resources/css_old/md/messages.css"
             themeId="org.polymap.rhei.batik.materialDesign">
-      </themeContribution>
+      </themeContribution-->
    </extension>
    <extension
          point="org.eclipse.rap.ui.branding">

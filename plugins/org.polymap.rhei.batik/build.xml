@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<project default="default" basedir=".">
+	
+	<target name="default" depends="sass" />
+
+	<property name="library.path" value="${basedir}/lib" />
+	<property name="library.static.path" value="${basedir}/lib-static" />
+	<property name="resources.path" value="${basedir}/resources/" />
+	<property name="sass.path" value="${resources.path}/sass/" />
+	<property name="css.path" value="${resources.path}/css/" />
+
+	<target name="init">
+		<uptodate property="css.uptodate">
+	    	<srcfiles dir="${sass.path}" includes="**/*.scss"/>
+			<!-- FIXME: mapper seems not to work correctly, if fixed, then set Eclipse ANT builder to run also for auto build --> 
+			<!--mapper type="regexp" from="(.*)/sass/(.*)(\.scss)" to="\1/css/\2.css" /-->
+	    	<!--mapper type="glob" from="${sass.path}/**/*.scss" to="${css.path}/**/*.css"/-->
+	    	<mapper type="glob" from="*.scss" to="${css.path}/**/*.css"/>
+	    </uptodate>
+	</target>
+
+	<path id="jruby.classpath">
+		<fileset dir="${library.path}">
+			<include name="jruby-complete-9.0.0.0.jar" />
+		</fileset>
+		<fileset dir="${library.static.path}">
+			<include name="compass-gems-latest.jar" />
+		</fileset>
+	</path>
+
+	<path id="css.validator.classpath">
+		<fileset dir="${library.path}">
+			<include name="css-validator.jar" />
+			<include name="jigsaw-2.2.6.jar" />
+			<include name="velocity-1.6.1.jar" /> 
+			<include name="commons-collections-3.2.1.jar" />
+			<include name="commons-lang-2.4.jar" />
+		</fileset>
+	</path>
+
+	<target name="sass" depends="init" unless="css.uptodate">
+		<copy file="${library.path}/css-validator-20100131.jar" tofile="${library.path}/css-validator.jar"/>
+		<java fork="true" failonerror="true" classpathref="jruby.classpath" classname="org.jruby.Main">
+			<arg line="-S compass compile --sass-dir ${sass.path} --css-dir ${css.path} --force" />
+		</java>
+		<java fork="true" failonerror="true" classpathref="css.validator.classpath" classname="org.w3c.css.css.CssValidator">
+			<arg line="file://${basedir}/resources/css/md/default-rap23.css -output html" />
+			<redirector output="error.html" alwayslog="true">
+				<outputfilterchain>
+					<linecontains negate="true">
+						<contains value="Picked up" />
+					</linecontains>
+					<linecontains negate="true">
+						<contains value="{output=html"/>	
+					</linecontains>
+				</outputfilterchain>
+			</redirector>
+		</java>
+	</target>
+
+</project>
