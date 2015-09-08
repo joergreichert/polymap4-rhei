@@ -15,10 +15,16 @@
 package org.polymap.rhei.batik.ant;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.RGBImageFilter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -45,6 +52,7 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.SVGConstants;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.commons.io.FilenameUtils;
+import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
 import org.w3c.dom.Document;
 
 /**
@@ -53,117 +61,7 @@ import org.w3c.dom.Document;
  */
 public class Svg2Png {
 
-    enum COLOR_DEPTH {
-        B1(1), B2(2), B4(4), B8(8);
-
-        private final int bit;
-
-
-        COLOR_DEPTH( int bit ) {
-            this.bit = bit;
-        }
-
-
-        private int getBit() {
-            return bit;
-        }
-
-
-        /**
-         * @param depth
-         * @return
-         */
-        public static COLOR_DEPTH getAsDepth( int depth ) {
-            for (COLOR_DEPTH value : values()) {
-                if (value.getBit() == depth) {
-                    return value;
-                }
-            }
-            throw new IllegalArgumentException( depth + " is an unsupported color depth." );
-        }
-    }
-
-
-    enum SCALE {
-
-        P8(8f, 8f), P16(16f, 16f), P24(24f, 24f), P32(32f, 32f), P48(48f, 48f), P64(64f, 64f), P128(128f, 128f);
-
-        private final float width;
-
-        private final float height;
-
-
-        SCALE( float width, float height ) {
-            this.width = width;
-            this.height = height;
-        }
-
-
-        public float getWidth() {
-            return width;
-        }
-
-
-        public float getHeight() {
-            return height;
-        }
-
-
-        public static SCALE getAsScale( int number ) {
-            for (SCALE value : values()) {
-                if (value.getWidth() == number && value.getHeight() == number) {
-                    return value;
-                }
-            }
-            throw new IllegalArgumentException( number + " is an unsupported pixel scale." );
-        }
-
-
-        public float getWidth( Bounds bounds ) {
-            if (bounds.getWidth() >= getWidth()) {
-                if (bounds.getHeight() < bounds.getWidth()) {
-                    return getWidth();
-                }
-                else {
-                    return bounds.getWidth() * getWidth() / bounds.getHeight();
-                }
-            }
-            else {
-                if (bounds.getHeight() < bounds.getWidth()) {
-                    return getWidth();
-                }
-                else {
-                    return getHeight() * bounds.getWidth() / bounds.getHeight();
-                }
-            }
-        }
-
-
-        public float getHeight( Bounds bounds ) {
-            if (bounds.getHeight() >= getHeight()) {
-                if (bounds.getWidth() < bounds.getHeight()) {
-                    return getHeight();
-                }
-                else {
-                    return bounds.getHeight() * getHeight() / bounds.getWidth();
-                }
-            }
-            else {
-                if (bounds.getHeight() > bounds.getWidth()) {
-                    return getHeight();
-                }
-                else if (bounds.getHeight() >= bounds.getWidth()) {
-                    return getHeight();
-                }
-                else {
-                    return getWidth() * bounds.getHeight() / bounds.getWidth();
-                }
-            }
-        }
-    }
-
-
-    public void transcode( String pngPath, List<File> svgFiles, List<SCALE> scales,
+    public void transcode( String pngPath, List<File> svgFiles, List<Scale> scales,
             List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
         for (File svgFile : svgFiles) {
             try (FileInputStream fis = new FileInputStream( svgFile )) {
@@ -189,7 +87,7 @@ public class Svg2Png {
     }
 
 
-    public void transcode( String absolutePngPath, String svgFileName, InputStream svgInput, List<SCALE> scales,
+    public void transcode( String absolutePngPath, String svgFileName, InputStream svgInput, List<Scale> scales,
             List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
         byte[] bytes = getImageAsBytes( svgInput );
         Bounds bounds = getInitialSVGBounds( svgFileName, new ByteArrayInputStream( bytes ) );
@@ -206,28 +104,33 @@ public class Svg2Png {
 
 
     public Bounds getInitialSVGBounds( String url, InputStream svgInput ) throws IOException {
-        String parser = XMLResourceDescriptor.getXMLParserClassName();
-        SAXSVGDocumentFactory f = new SAXSVGDocumentFactory( parser );
-        Document doc = f.createDocument( url, svgInput );
-        BridgeContext ctx = new BridgeContext( new UserAgentAdapter() );
-        GVTBuilder builder = new GVTBuilder();
-        GraphicsNode gvtRoot = builder.build( ctx, doc );
-        Rectangle2D rc = gvtRoot.getSensitiveBounds();
-        if (rc == null) {
-            System.err.println( url + " has no bounding box." );
-            return new Bounds( 0f, 0f );
+        try {
+            String parser = XMLResourceDescriptor.getXMLParserClassName();
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory( parser );
+            Document doc = f.createDocument( url, svgInput );
+            BridgeContext ctx = new BridgeContext( new UserAgentAdapter() );
+            GVTBuilder builder = new GVTBuilder();
+            GraphicsNode gvtRoot = builder.build( ctx, doc );
+            Rectangle2D rc = gvtRoot.getSensitiveBounds();
+            if (rc == null) {
+                System.err.println( url + " has no bounding box." );
+                return new Bounds( 0f, 0f );
+            }
+            else {
+                return new Bounds( Double.valueOf( rc.getWidth() ).floatValue(), Double.valueOf( rc.getHeight() )
+                        .floatValue() );
+            }
         }
-        else {
-            return new Bounds( Double.valueOf( rc.getWidth() ).floatValue(), Double.valueOf( rc.getHeight() )
-                    .floatValue() );
+        finally {
+            svgInput.close();
         }
     }
 
 
-    private void transcode( String pngPath, String svgFileName, byte[] imageBytes, Bounds bounds, List<SCALE> scales,
+    private void transcode( String pngPath, String svgFileName, byte[] imageBytes, Bounds bounds, List<Scale> scales,
             List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
         for (ImageConfiguration imageConfiguration : imageConfigurations) {
-            for (SCALE scale : scales) {
+            for (Scale scale : scales) {
                 TranscoderInput input = new TranscoderInput( new ByteArrayInputStream( imageBytes ) );
                 try {
                     PNGTranscoder transcoder = new PNGTranscoder();
@@ -266,6 +169,7 @@ public class Svg2Png {
                         }
                     }
                     catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 catch (Exception e) {
@@ -298,8 +202,11 @@ public class Svg2Png {
         else if (imageConfiguration.getColorType() == COLOR_TYPE.GRAY) {
             imageType = BufferedImage.TYPE_BYTE_GRAY;
         }
-        else {
+        else if (imageConfiguration.getColorType() == COLOR_TYPE.RGB) {
             imageType = BufferedImage.TYPE_INT_RGB;
+        }
+        else {
+            imageType = BufferedImage.TYPE_INT_ARGB;
         }
 
         BufferedImage finalThresholdImage = new BufferedImage( width, height, imageType );
@@ -317,7 +224,7 @@ public class Svg2Png {
             saturationDelta = imageConfiguration.getAdjSaturation();
             brightnessDelta = imageConfiguration.getAdjBrightness();
         }
-        
+
         if (hueDelta == null) {
             hueDelta = 0f;
         }
@@ -331,28 +238,15 @@ public class Svg2Png {
             try {
                 for (int y = 0; y < height; y++) {
                     int rgb = img.getRGB( x, y );
-                    int red = (rgb >> 16) & 0xFF;
-                    int green = (rgb >> 8) & 0xFF;
-                    int blue = rgb & 0xFF;
-
-                    float[] hsb = new float[3];
-
-                    Color.RGBtoHSB( red, green, blue, hsb );
-                    float adjustedHue = 0;
-                    float adjustedSaturation = 0;
-                    float adjustedBrightness = 0;
-                    if (imageConfiguration.isRelative()) {
-                        adjustedHue = makeInRange(hsb[0] + hueDelta);
-                        adjustedSaturation = makeInRange(hsb[1] + saturationDelta);
-                        adjustedBrightness = makeInRange(hsb[2] + brightnessDelta);
-                    }
-                    else {
-                        adjustedHue = hueDelta;
-                        adjustedSaturation = saturationDelta;
-                        adjustedBrightness = hsb[2];
-                    }
-                    int newRGB = Color.HSBtoRGB( adjustedHue, adjustedSaturation, adjustedBrightness );
+                    Color color = new Color( rgb );
+                    float[] hsb = getHsb( imageConfiguration, color );
+                    hsb = applyDeltas( imageConfiguration, hueDelta, saturationDelta, brightnessDelta, hsb );
+                    hsb = replaceColors( imageConfiguration, color, hsb );
+                    int newRGB = Color.HSBtoRGB( hsb[0], hsb[1], hsb[2] );
                     finalThresholdImage.setRGB( x, y, newRGB );
+                    setAlpha( finalThresholdImage, x, y, rgb );
+                    finalThresholdImage = makeColorsTransparent( finalThresholdImage, imageConfiguration, new Color(
+                            newRGB ) );
                 }
             }
             catch (Exception e) {
@@ -361,6 +255,111 @@ public class Svg2Png {
         }
 
         return finalThresholdImage;
+    }
+
+
+    /**
+     * @param imageConfiguration
+     * @param color
+     * @param newRGB
+     * @return
+     */
+    private static BufferedImage makeColorsTransparent( BufferedImage finalThresholdImage,
+            ImageConfiguration imageConfiguration, Color color ) {
+        boolean found = imageConfiguration
+                .getTransparenceConfigurations()
+                .stream()
+                .anyMatch( tc -> tc.red == color.getRed() && tc.green == color.getGreen() && tc.blue == color.getBlue() );
+        if (found) {
+            finalThresholdImage = makeColorTransparent( finalThresholdImage, color );
+        }
+        return finalThresholdImage;
+    }
+
+
+    public static BufferedImage makeColorTransparent( BufferedImage im, final Color color ) {
+        ImageFilter filter = new RGBImageFilter() {
+
+            private int shift                = 0xFF000000;
+
+            public int  rgbToMakeTransparent = color.getRGB() | shift;
+
+
+            public final int filterRGB( int x, int y, int rgb ) {
+                if ((rgb | shift) == rgbToMakeTransparent) {
+                    return 0x00FFFFFF & rgb;
+                }
+                return rgb;
+            }
+        };
+        Image newImage = Toolkit.getDefaultToolkit().createImage( new FilteredImageSource( im.getSource(), filter ) );
+        BufferedImage bufferedImage = new BufferedImage( newImage.getWidth( null ), newImage.getHeight( null ),
+                BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g2 = bufferedImage.createGraphics();
+        g2.drawImage( newImage, 0, 0, null );
+        g2.dispose();
+        return bufferedImage;
+    }
+
+
+    private static void setAlpha( BufferedImage finalThresholdImage, int x, int y, int rgb ) {
+        int bands = finalThresholdImage.getAlphaRaster().getSampleModel().getNumBands();
+        int alpha = (rgb >> 24) & 0xFF;
+        for (int b = 0; b < bands; b++) {
+            finalThresholdImage.getAlphaRaster().setSample( x, y, b, alpha );
+        }
+    }
+
+
+    private static float[] getHsb( ImageConfiguration imageConfiguration, Color color ) {
+        float[] hsb = new float[3];
+        if (imageConfiguration.isInvert()) {
+            Color.RGBtoHSB( 255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue(), hsb );
+        }
+        else {
+            Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
+        }
+        return hsb;
+    }
+
+
+    private static float[] replaceColors( ImageConfiguration imageConfiguration, Color color, final float[] currentHsb ) {
+        float[] hsb;
+        Optional<ReplaceConfiguration> config = imageConfiguration
+                .getReplaceConfigurations()
+                .stream()
+                .filter(
+                        rc -> rc.getFrom() != null && rc.getTo() != null && rc.getFrom().red == color.getRed()
+                                && rc.getFrom().green == color.getGreen() && rc.getFrom().blue == color.getBlue() )
+                .findFirst();
+        if (config.isPresent()) {
+            hsb = config.get().getTo().getHSB();
+        }
+        else {
+            hsb = currentHsb;
+        }
+        return hsb;
+    }
+
+
+    private static float[] applyDeltas( ImageConfiguration imageConfiguration, Float hueDelta, Float saturationDelta,
+            Float brightnessDelta, float[] hsb ) {
+        float adjustedHue = 0;
+        float adjustedSaturation = 0;
+        float adjustedBrightness = 0;
+        if (imageConfiguration.isRelative()) {
+            adjustedHue = makeInRange( hsb[0] + hueDelta );
+            adjustedSaturation = makeInRange( hsb[1] + saturationDelta );
+            adjustedBrightness = makeInRange( hsb[2] + brightnessDelta );
+        }
+        else {
+            adjustedHue = hueDelta;
+            adjustedSaturation = saturationDelta;
+            adjustedBrightness = hsb[2];
+        }
+
+        final float[] currentHsb = new float[] { adjustedHue, adjustedSaturation, adjustedBrightness };
+        return currentHsb;
     }
 
 
@@ -390,7 +389,7 @@ public class Svg2Png {
     }
 
 
-    private TranscodingHints createTranscodingHints( Bounds bounds, COLOR_DEPTH depth ) {
+    private TranscodingHints createTranscodingHints( Bounds bounds, ColorDepth depth ) {
         TranscodingHints transcoderHints = new TranscodingHints();
         transcoderHints.put( ImageTranscoder.KEY_XML_PARSER_VALIDATING, Boolean.FALSE );
         transcoderHints.put( ImageTranscoder.KEY_DOM_IMPLEMENTATION, SVGDOMImplementation.getDOMImplementation() );
@@ -430,154 +429,6 @@ public class Svg2Png {
 
 
     enum COLOR_TYPE {
-        MONOCHROM, GRAY, RGB
-    }
-
-
-    public static class ImageConfiguration {
-
-        private String                       name;
-
-        private COLOR_DEPTH                  depth;
-
-        private Float                        adjHue;
-
-        private Float                        adjSaturation;
-
-        private Float                        adjBrightness;
-
-        private COLOR_TYPE                   colorType;
-
-        private Boolean                      relative = true;
-
-        private org.eclipse.swt.graphics.RGB rgb;
-
-
-        /**
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-
-        /**
-         * @param name the name to set
-         */
-        public void setName( String name ) {
-            this.name = name;
-        }
-
-
-        /**
-         * @return the depth
-         */
-        public COLOR_DEPTH getDepth() {
-            return depth;
-        }
-
-
-        /**
-         * @param depth the depth to set
-         */
-        public void setDepth( COLOR_DEPTH depth ) {
-            this.depth = depth;
-        }
-
-
-        /**
-         * @return the adjHue
-         */
-        public Float getAdjHue() {
-            return adjHue;
-        }
-
-
-        /**
-         * @param adjHue the adjHue to set
-         */
-        public void setAdjHue( Float adjHue ) {
-            this.adjHue = adjHue;
-        }
-
-
-        /**
-         * @return the adjSaturation
-         */
-        public Float getAdjSaturation() {
-            return adjSaturation;
-        }
-
-
-        /**
-         * @param adjSaturation the adjSaturation to set
-         */
-        public void setAdjSaturation( Float adjSaturation ) {
-            this.adjSaturation = adjSaturation;
-        }
-
-
-        /**
-         * @return the adjBrightness
-         */
-        public Float getAdjBrightness() {
-            return adjBrightness;
-        }
-
-
-        /**
-         * @param adjBrightness the adjBrightness to set
-         */
-        public void setAdjBrightness( Float adjBrightness ) {
-            this.adjBrightness = adjBrightness;
-        }
-
-
-        /**
-         * @return the colorType
-         */
-        public COLOR_TYPE getColorType() {
-            return colorType;
-        }
-
-
-        /**
-         * @return the rgb
-         */
-        public org.eclipse.swt.graphics.RGB getRgb() {
-            return rgb;
-        }
-
-
-        /**
-         * @param colorType the colorType to set
-         */
-        public void setColorType( COLOR_TYPE colorType ) {
-            this.colorType = colorType;
-        }
-
-
-        /**
-         * @return the relative
-         */
-        public Boolean isRelative() {
-            return relative;
-        }
-
-
-        /**
-         * @param relative the relative to set
-         */
-        public void setRelative( Boolean relative ) {
-            this.relative = relative;
-        }
-
-
-        /**
-         * @param typedRGB
-         */
-        public void setRGB( org.eclipse.swt.graphics.RGB rgb ) {
-            this.rgb = rgb;
-        }
+        MONOCHROM, GRAY, RGB, ARGB
     }
 }

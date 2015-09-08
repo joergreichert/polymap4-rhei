@@ -13,8 +13,12 @@
 		<taskdef name="svg2Png" classname="org.polymap.rhei.batik.ant.Svg2PngTask" classpath="build/eclipse" classpathref="icons.classpath"/>
 		<svg2Png svgPath="resources/svg/md" pngPath="resources/icons2"
 			scale="24, 48">
-            <imageConfig name="white" rgb="#ffffff" />
-            <imageConfig name="gray" adjBrightness="0.2" />
+            <imageConfig name="white" rgb="#000000">
+            	<replaceConfig sourceRGB="#000000" targetRGB="#ffffff" />
+			</imageConfig>	
+            <imageConfig name="gray" rgb="#000000">
+            	<replaceConfig sourceRGB="#000000" targetRGB="#555555" />
+			</imageConfig>	
 		    
 			<!--imageConfig name="gray" colorType="gray" />
 			<imageConfig name="monochrom" colorType="monochrom" />
