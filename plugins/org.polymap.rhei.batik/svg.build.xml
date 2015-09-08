@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<project name="org.polymap.rhei.batik.svg" default="build" basedir=".">
+	<property name="library.path" value="${basedir}/lib" />
+
+	<path id="icons.classpath">
+		<fileset dir="${library.path}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="build">
+		<!-- requires that Svg2PngTask has been already compiled -->
+		<taskdef name="svg2Png" classname="org.polymap.rhei.batik.ant.Svg2PngTask" classpath="build/eclipse" classpathref="icons.classpath"/>
+		<svg2Png svgPath="resources/svg/md" pngPath="resources/icons2"
+			scale="24, 48">
+            <imageConfig name="white" rgb="#ffffff" />
+            <imageConfig name="gray" adjBrightness="0.2" />
+		    
+			<!--imageConfig name="gray" colorType="gray" />
+			<imageConfig name="monochrom" colorType="monochrom" />
+			<imageConfig name="blue_by_rgb" rgb="#0000ff" />
+			<imageConfig name="white_by_rgb" rgb="#ffffff" />
+			<imageConfig name="blue_by_hsb" adjHue="0.6" />
+			<imageConfig name="blue_by_hsb_adj" adjHue="0.6" adjSaturation="0.2" adjBrightness="0.1" />
+			<imageConfig name="blue_by_hsb_dep1bit" adjHue="0.6" depth="1" />
+			<imageConfig name="blue_by_hsb_dep2bit" adjHue="0.6" depth="2" />
+			<imageConfig name="blue_by_hsb_dep4bit" adjHue="0.6" depth="4" />
+			<imageConfig name="blue_by_hsb_dep8bit" adjHue="0.6" depth="8" /-->
+		</svg2Png>	
+	</target>
+
+</project>
