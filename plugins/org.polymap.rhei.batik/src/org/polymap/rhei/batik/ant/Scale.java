@@ -16,7 +16,7 @@ package org.polymap.rhei.batik.ant;
 
 import org.polymap.rhei.batik.ant.Svg2Png.Bounds;
 
-enum Scale {
+public enum Scale {
 
     P8(8f, 8f), P16(16f, 16f), P24(24f, 24f), P32(32f, 32f), P48(48f, 48f), P64(64f, 64f), P128(128f, 128f);
 

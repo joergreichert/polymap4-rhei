@@ -14,6 +14,7 @@ Require-Bundle: javax.servlet;bundle-version="3.0.0",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.polymap.rhei.batik,
+ org.polymap.rhei.batik.ant,
  org.polymap.rhei.batik.app,
  org.polymap.rhei.batik.contribution,
  org.polymap.rhei.batik.dashboard,
