@@ -16,19 +16,14 @@ package org.polymap.rhei.batik.toolkit.md;
 
 import org.eclipse.swt.widgets.Composite;
 
+
 /**
- * A floating snack bar.
- * 
- * @see <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material Design</a>.
  * @author Joerg Reichert <joerg@mapzone.io>
+ *
  */
-@SuppressWarnings("javadoc")
-public class Snackbar
-        extends AbstractFeedbackComponent {
+public class Toast extends AbstractFeedbackComponent {
 
-    private static final long serialVersionUID = -4892328447169729063L;
-
-    public Snackbar( MdToolkit tk, Composite parent, int style ) {
-        super( tk, parent, 90, 100, style );
+    public Toast( MdToolkit tk, Composite parent, int verticalPosition, int style ) {
+        super( tk, parent, verticalPosition, 80, style );
     }
 }

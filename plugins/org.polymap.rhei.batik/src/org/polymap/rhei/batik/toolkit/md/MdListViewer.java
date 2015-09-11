@@ -18,35 +18,32 @@ import static org.polymap.rhei.batik.toolkit.md.dp.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
-
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.ImageCell;
 import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.template.TextCell;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Item;
-
 import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
-
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
@@ -146,6 +143,8 @@ public class MdListViewer
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( firstLineLabelProvider.get() );
 
+                handleLabelProviderListener(firstLineLabelProvider.get());
+
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_FIRSTLINE );
                 cell.setLeft( left.pix() ).setRight( 50 )
@@ -162,6 +161,8 @@ public class MdListViewer
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( secondLineLabelProvider.get() );
 
+                handleLabelProviderListener(secondLineLabelProvider.get());
+
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_SECONDLINE );
                 cell.setLeft( left.pix() ).setRight( 50 ).setTop( dp( 39 ).pix() ).setHeight( 15 );
@@ -173,6 +174,8 @@ public class MdListViewer
             if (thirdLineLabelProvider.isPresent()) {
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( thirdLineLabelProvider.get() );
+
+                handleLabelProviderListener(thirdLineLabelProvider.get());
 
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_THIRDLINE );
@@ -275,11 +278,29 @@ public class MdListViewer
                     log.info( "selection: " + ev );
                 }
             });
-
+            
             getTree().setData( RWT.ROW_TEMPLATE, template );        
             getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, tileHeight.pix() );
         }
     }
+
+
+    private void handleLabelProviderListener(CellLabelProvider labelProvider ) {
+        if (labelProvider != null) {
+            labelProvider.addListener(this.labelProviderListener);
+        }
+        refresh();
+    }
+    
+    private final ILabelProviderListener labelProviderListener = new ILabelProviderListener() {
+
+        public void labelProviderChanged(LabelProviderChangedEvent event) {
+            Control control = getControl();
+            if (!(control == null || control.isDisposed())) {
+                MdListViewer.this.handleLabelProviderChanged(event);
+            }
+        }
+    };    
     
     
     private ImageCell createActionCell( Template template, ActionProvider actionProvider, String cellName, dp right, dp tileHeight ) {
@@ -361,6 +382,7 @@ public class MdListViewer
     
     @Override
     public void setLabelProvider( IBaseLabelProvider labelProvider ) {
+//        super.setLabelProvider( labelProvider );
         throw new UnsupportedOperationException( "The Material Design list supports multiple lines of text, for example call #setFirstLineLabelProvider()." );
     }
      
