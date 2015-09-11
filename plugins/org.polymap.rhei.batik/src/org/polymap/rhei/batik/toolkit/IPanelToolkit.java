@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.toolkit;
 
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -24,9 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
-
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.polymap.rhei.batik.IPanel;
 
 /**
@@ -103,7 +102,10 @@ public interface IPanelToolkit
     public Link createLink( Composite parent, String text, int... styles );
 
     public Button createButton( Composite parent, String text, int... styles );
-
+    
+    public Button createButton( Composite parent, Image image, int... styles );
+    
+    public Button createButton( Composite parent, Image image, String text, int... styles );
     
     /**
      * Creates a new {@link Composite} under the given parent.

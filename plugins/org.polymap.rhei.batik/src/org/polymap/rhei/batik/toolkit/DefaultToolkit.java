@@ -17,26 +17,15 @@ package org.polymap.rhei.batik.toolkit;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import org.pegdown.FastEncoder;
-import org.pegdown.LinkRenderer;
-import org.pegdown.LinkRenderer.Rendering;
-import org.pegdown.PegDownProcessor;
-import org.pegdown.ast.AutoLinkNode;
-import org.pegdown.ast.ExpImageNode;
-import org.pegdown.ast.ExpLinkNode;
-import org.pegdown.ast.RefLinkNode;
-import org.pegdown.ast.WikiLinkNode;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.google.common.base.Joiner;
-
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -46,18 +35,24 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
-
 import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.forms.widgets.Section;
-
-import org.eclipse.rap.rwt.RWT;
-
+import org.pegdown.FastEncoder;
+import org.pegdown.LinkRenderer;
+import org.pegdown.LinkRenderer.Rendering;
+import org.pegdown.PegDownProcessor;
+import org.pegdown.ast.AutoLinkNode;
+import org.pegdown.ast.ExpImageNode;
+import org.pegdown.ast.ExpLinkNode;
+import org.pegdown.ast.RefLinkNode;
+import org.pegdown.ast.WikiLinkNode;
 import org.polymap.core.runtime.Lazy;
 import org.polymap.core.runtime.LockedLazyInit;
 import org.polymap.core.runtime.Polymap;
 import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.batik.PanelPath;
+
+import com.google.common.base.Joiner;
 
 /**
  *
@@ -306,7 +301,26 @@ public class DefaultToolkit
         }
         return control;
     }
+
+    @Override
+    public Button createButton( Composite parent, Image image, int... styles ) {
+        Button control = adapt( new Button( parent, stylebits( styles ) ), true, true );
+        if (image != null) {
+            control.setImage( image );
+        }
+        return control;
+    }
+
     
+    @Override
+    public Button createButton( Composite parent, Image image, String text, int... styles ) {
+        Button control = createButton( parent, text, styles );
+        if (image != null) {
+            control.setImage( image );
+        }
+        return control;
+    }
+
     @Override
     public Text createText( Composite parent, String defaultText, int... styles ) {
         Text control = adapt( new Text( parent, stylebits( styles ) ), true, true );

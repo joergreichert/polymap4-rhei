@@ -32,7 +32,9 @@ import org.polymap.core.ui.UIUtils;
 /**
  * A floating snack bar.
  * 
- * @see <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material Design</a>.
+ * @see <a
+ *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
+ *      Design</a>.
  * @author Joerg Reichert <joerg@mapzone.io>
  */
 @SuppressWarnings("javadoc")
@@ -103,7 +105,7 @@ public class Snackbar
 
     public void showIssue( MessageType messageStyle, String message ) {
         internalShowIssue( messageStyle, message );
-        
+
         final Display display = Display.getCurrent();
 
         final ServerPushSession pushSession = new ServerPushSession();
@@ -138,7 +140,7 @@ public class Snackbar
 
     private void internalShowIssue( MessageType messageStyle, String message ) {
         UIUtils.setVariant( comp, messageStyle.getBoxCssName() );
-        UIUtils.setVariant( label, messageStyle.getBoxCssName() );
+        UIUtils.setVariant( label, messageStyle.getLabelCssName() );
         label.setText( message );
         button.setVisible( false );
         this.callback = null;
@@ -147,7 +149,7 @@ public class Snackbar
 
 
     public void showIssueAndOfferAction( MessageType messageStyle, String message, String actionName,
-            @SuppressWarnings("hiding") Callback<?> callback ) {
+            Callback<?> callback ) {
         internalShowIssue( messageStyle, message );
         button.setText( actionName );
         setVisibleForAll( true );

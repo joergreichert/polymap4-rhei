@@ -2725,6 +2725,22 @@ Button:hover.batik-panel-fab {
   background-color: #6eb02e;
 }
 
+/* line 18, ../../sass/md/_fab.scss */
+Composite.batik-panel-fab {
+  border: none;
+  border-radius: 30px;
+  padding: 5px 15px;
+  spacing: 3px;
+  box-shadow: 0px 3px 4px #c0c0c0;
+  background-color: #81CC39;
+  color: #ffffff;
+}
+
+/* line 27, ../../sass/md/_fab.scss */
+Composite:hover.batik-panel-fab {
+  background-color: #6eb02e;
+}
+
 /* 
  * polymap.org
  * Copyright (C) 2014, Polymap GmbH. All rights reserved.

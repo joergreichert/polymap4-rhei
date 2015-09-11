@@ -15,28 +15,6 @@
    <extension
          point="org.eclipse.rap.ui.themes">
       <theme
-            file="resources/css/default/default-rap23.css"
-            id="org.polymap.rhei.batik.theme"
-            name="Batik Default">
-      </theme>
-      <!-- Done via SASS import -->
-      <!--themeContribution
-            file="resources/css/default/batik.css"
-            themeId="org.polymap.rhei.batik.theme">
-      </themeContribution>
-      <themeContribution
-            file="resources/css/default/button.css"
-            themeId="org.polymap.rhei.batik.theme">
-      </themeContribution>
-      <themeContribution
-            file="resources/css/default/text.css"
-            themeId="org.polymap.rhei.batik.theme">
-      </themeContribution>
-      <themeContribution
-            file="resources/css/default/table.css"
-            themeId="org.polymap.rhei.batik.theme">
-      </themeContribution-->
-      <theme
             file="resources/css/md/md-standard.css"
             id="org.polymap.rhei.batik.materialDesign"
             name="Material Design">

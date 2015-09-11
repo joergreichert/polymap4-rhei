@@ -18,14 +18,14 @@ import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.eclipse.rap.rwt.widgets.FileUpload;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
+import org.eclipse.swt.widgets.Control;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
@@ -50,6 +50,15 @@ public class MdToolkit
         this.panelPage = panelPage;
     }
 
+    public FileUpload createFileUploadFab( String label, int position, int... styles ) {
+        FileUpload result = new FileUpload( panelPage.control, stylebits( styles ) );
+        result.setText( label );
+        result.moveAbove( null );
+        UIUtils.setVariant( result, CSS_FAB );
+        posControl( result, position );
+        return result;
+    }
+
 
     /**
      * Creates a Floating Action Button.
@@ -58,18 +67,61 @@ public class MdToolkit
      *      href="http://www.google.com/design/spec/components/buttons-floating-action-button.html">Material
      *      Design</a>.
      */
-    @SuppressWarnings("javadoc")
     public Button createFab() {
+        return createFab("+", SWT.UP | SWT.RIGHT);
+    }
+
+    /**
+     * Creates a Floating Action Button with the given label.
+     * 
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/buttons-floating-action-button.html">Material
+     *      Design</a>.
+     */
+    public Button createFab(String label, int position) {
         Button result = createButton( panelPage.control, "+", SWT.PUSH );
         result.moveAbove( null );
         UIUtils.setVariant( result, CSS_FAB );
-        result.setLayoutData( FormDataFactory.defaults()
-                .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
-                .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        posControl( result, position );
+        return result;
+    }
+
+    /**
+     * Creates a Floating Action Button with the given image.
+     * 
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/buttons-floating-action-button.html">Material
+     *      Design</a>.
+     */
+    public Button createFab(Image image, int position) {
+        Button result = createButton( panelPage.control, image, SWT.PUSH );
+        result.moveAbove( null );
+        UIUtils.setVariant( result, CSS_FAB );
+        posControl( result, position );
         return result;
     }
 
 
+    private void posControl( Control result, int position ) {
+        if(position == (SWT.UP | SWT.RIGHT)) {
+            result.setLayoutData( FormDataFactory.defaults()
+                    .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
+                    .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        } else if(position == (SWT.DOWN | SWT.RIGHT)) {
+            result.setLayoutData( FormDataFactory.defaults()
+                    .bottom( 100, -dp( 72 ) ).right( 100, -dp( 40 ) )
+                    .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        } else if(position == (SWT.UP | SWT.LEFT)) {
+            result.setLayoutData( FormDataFactory.defaults()
+                    .top( 0, dp( 72 ) ).left( 100, dp( 40 ) )
+                    .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        } else if(position == (SWT.DOWN | SWT.LEFT)) {
+            result.setLayoutData( FormDataFactory.defaults()
+                    .bottom( 100, dp( -72 ) ).left( 100, dp( 40 ) )
+                    .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        }
+    }
+    
     /**
      * Creates a floating snack bar.
      * 
@@ -77,7 +129,6 @@ public class MdToolkit
      *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
      *      Design</a>.
      */
-    @SuppressWarnings("javadoc")
     public Snackbar createFloatingSnackbar(int styleBits) {
         return new Snackbar(this, panelPage.control, styleBits);
     }    
@@ -91,5 +142,4 @@ public class MdToolkit
     public MdListViewer createListViewer( Composite parent, int... styles ) {
         return new MdListViewer( parent, stylebits( styles ) );
     }
-
 }
