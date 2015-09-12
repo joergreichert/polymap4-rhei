@@ -53,7 +53,6 @@ import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
  */
 public class MdListViewer
         extends TreeViewer {
-    private static final long serialVersionUID = -1298343345289877130L;
 
     private static Log log = LogFactory.getLog( MdListViewer.class );
     
@@ -204,17 +203,18 @@ public class MdListViewer
             col.setLabelProvider( new CellLabelProvider() {
                 @Override
                 public void update( ViewerCell cell ) {
-                    if(cell.getElement() != null) {
+                    if (cell.getElement() != null) {
                         IContentProvider contentProvider = MdListViewer.this.getContentProvider();
                         boolean expandable = true;
-                        if(contentProvider instanceof ITreeContentProvider) {
-                            expandable = ((ITreeContentProvider) contentProvider).hasChildren( cell.getElement() );
+                        if (contentProvider instanceof ITreeContentProvider) {
+                            expandable = ((ITreeContentProvider)contentProvider).hasChildren( cell.getElement() );
                         }
-                        if(expandable) {
+                        if (expandable) {
                             cell.setImage( getExpandedState( cell.getElement() )
-                                    ? BatikPlugin.instance().imageForName( "resources/icons/md/chevron-up.png" )
-                                            : BatikPlugin.instance().imageForName( "resources/icons/md/chevron-down.png" ));
-                        } else {
+                                    ? BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/chevron-up.png" )
+                                    : BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/chevron-down.png" ) );
+                        }
+                        else {
                             cell.setImage( null );
                         }
                     }
