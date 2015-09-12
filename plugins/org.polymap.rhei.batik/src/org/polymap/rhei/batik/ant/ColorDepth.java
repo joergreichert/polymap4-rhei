@@ -14,7 +14,7 @@
  */
 package org.polymap.rhei.batik.ant;
 
-enum ColorDepth {
+public enum ColorDepth {
     B1(1), B2(2), B4(4), B8(8);
 
     private final int bit;

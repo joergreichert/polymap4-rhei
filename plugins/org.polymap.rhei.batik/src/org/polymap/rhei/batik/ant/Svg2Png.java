@@ -53,7 +53,12 @@ import org.apache.batik.util.SVGConstants;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.commons.io.FilenameUtils;
 import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
-import org.w3c.dom.Document;
+import org.w3c.dom.svg.SVGAnimatedLength;
+import org.w3c.dom.svg.SVGAnimatedRect;
+import org.w3c.dom.svg.SVGDocument;
+import org.w3c.dom.svg.SVGRect;
+
+import com.google.common.base.Strings;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
@@ -107,19 +112,28 @@ public class Svg2Png {
         try {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
             SAXSVGDocumentFactory f = new SAXSVGDocumentFactory( parser );
-            Document doc = f.createDocument( url, svgInput );
-            BridgeContext ctx = new BridgeContext( new UserAgentAdapter() );
-            GVTBuilder builder = new GVTBuilder();
-            GraphicsNode gvtRoot = builder.build( ctx, doc );
-            Rectangle2D rc = gvtRoot.getSensitiveBounds();
-            if (rc == null) {
-                System.err.println( url + " has no bounding box." );
-                return new Bounds( 0f, 0f );
+            SVGDocument doc = (SVGDocument) f.createDocument( url, svgInput );
+            String widthStr = doc.getRootElement().getAttribute( "width" );
+            String heightStr = doc.getRootElement().getAttribute( "height" );
+            if(!Strings.isNullOrEmpty( widthStr) && !Strings.isNullOrEmpty( heightStr)) {
+                int width = Integer.valueOf(doc.getRootElement().getAttribute( "width" ));
+                int height = Integer.valueOf(doc.getRootElement().getAttribute( "height" ));
+                return new Bounds( width, height );
+            } else {
+                BridgeContext ctx = new BridgeContext( new UserAgentAdapter() );
+                GVTBuilder builder = new GVTBuilder();
+                GraphicsNode gvtRoot = builder.build( ctx, doc );
+                Rectangle2D rc = gvtRoot.getSensitiveBounds();
+                if (rc == null) {
+                    System.err.println( url + " has no bounding box." );
+                    return new Bounds( 0f, 0f );
+                }
+                else {
+                    return new Bounds( Double.valueOf( rc.getWidth() ).floatValue(), Double.valueOf( rc.getHeight() )
+                            .floatValue() );
+                }
             }
-            else {
-                return new Bounds( Double.valueOf( rc.getWidth() ).floatValue(), Double.valueOf( rc.getHeight() )
-                        .floatValue() );
-            }
+            
         }
         finally {
             svgInput.close();
@@ -428,7 +442,7 @@ public class Svg2Png {
     }
 
 
-    enum COLOR_TYPE {
+    public enum COLOR_TYPE {
         MONOCHROM, GRAY, RGB, ARGB
     }
 }
