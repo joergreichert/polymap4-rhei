@@ -36,9 +36,9 @@ public abstract class CheckboxActionProvider
 
     private static Log log = LogFactory.getLog( CheckboxActionProvider.class );
 
-    private Image           selectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/checkbox-marked.png" );
+    private Image           selectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/checkbox-marked.png" );
 
-    private Image           unselectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/checkbox-blank-outline.png" );
+    private Image           unselectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/checkbox-blank-outline.png" );
 
     protected Map<Object,Boolean>   selected = new HashMap( 32 );
     
