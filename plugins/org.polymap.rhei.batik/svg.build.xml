@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <project name="org.polymap.rhei.batik.svg" default="build" basedir=".">
+    
 	<property name="svg.build.xml.folder" value="." />
 	<property name="svg.build.xml" value="svgbase.build.xml" />
 	
-	<property name="svg-input" value="resources/svg/md" />
-	<property name="png-output" value="resources/icons/md" />
+	<property name="svg-input" value="resources/icons/rap/svg" />
+	<property name="png-output" value="resources/icons/rap/png" />
 	
 	<target name="build">
 		<ant antfile="${svg.build.xml}" target="build" />

@@ -12,13 +12,16 @@
 		<!-- requires that Svg2PngTask has been already compiled -->
 		<taskdef name="svg2Png" classname="org.polymap.rhei.batik.ant.Svg2PngTask" classpath="${svg.build.xml.folder}/build/eclipse" classpathref="icons.classpath"/>
 		<svg2Png svgPath="${svg-input}" pngPath="${png-output}"
-			scale="24, 48">
+			scale="20, 24">
             <imageConfig name="white" rgb="#000000">
             	<replaceConfig sourceRGB="#000000" targetRGB="#ffffff" />
 			</imageConfig>	
-            <imageConfig name="gray" rgb="#000000">
-            	<replaceConfig sourceRGB="#000000" targetRGB="#808080" />
-			</imageConfig>
+            <imageConfig name="normal" rgb="#000000">
+                <replaceConfig sourceRGB="#000000" targetRGB="#b0b0b0" />
+            </imageConfig>
+            <imageConfig name="hover" rgb="#000000">
+                <replaceConfig sourceRGB="#000000" targetRGB="#808080" />
+            </imageConfig>
 		    
 			<!--imageConfig name="gray" colorType="gray" />
 			<imageConfig name="monochrom" colorType="monochrom" />

@@ -24,7 +24,7 @@
  * Font and color definitions for Material Design standard theme
  */
 /* Regular; 14px on Device */
-/* Medium; 14px on Device */
+/* Medium; orig: 13px, 14px on Device */
 /* Regular; 16px on Device */
 /* Medium */
 /* Regular */
@@ -2622,75 +2622,75 @@ Button[RADIO][BORDER] {
 
 /* line 117, ../../sass/md/_button.scss */
 Button-CheckIcon {
-  background-image: url(resource/widget/rap/button/check-unselected.png);
+  background-image: url(resources/icons/rap/png/normal/24//checkbox-blank-circle-outline.png);
 }
 
-/* line 121, ../../sass/md/_button.scss */
+/* line 124, ../../sass/md/_button.scss */
 Button-CheckIcon:hover {
-  background-image: url(resource/widget/rap/button/check-unselected-hover.png);
-}
-
-/* line 125, ../../sass/md/_button.scss */
-Button-CheckIcon:selected {
-  background-image: url(resource/widget/rap/button/check-selected.png);
+  background-image: url(resources/icons/rap/png/hover/24//checkbox-blank-circle-outline.png);
 }
 
 /* line 129, ../../sass/md/_button.scss */
+Button-CheckIcon:selected {
+  background-image: url(resources/icons/rap/png/normal/24//checkbox-marked-circle.png);
+}
+
+/* line 134, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:hover {
   background-image: url(resource/widget/rap/button/check-selected-hover.png);
 }
 
-/* line 133, ../../sass/md/_button.scss */
+/* line 138, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed {
   background-image: url(resource/widget/rap/button/check-grayed.png);
 }
 
-/* line 137, ../../sass/md/_button.scss */
+/* line 142, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
 
-/* line 141, ../../sass/md/_button.scss */
+/* line 146, ../../sass/md/_button.scss */
 Button-RadioIcon {
   background-image: url(resource/widget/rap/button/radio-unselected.png);
 }
 
-/* line 145, ../../sass/md/_button.scss */
+/* line 150, ../../sass/md/_button.scss */
 Button-RadioIcon:hover {
   background-image: url(resource/widget/rap/button/radio-unselected-hover.png);
 }
 
-/* line 149, ../../sass/md/_button.scss */
+/* line 154, ../../sass/md/_button.scss */
 Button-RadioIcon:selected {
   background-image: url(resource/widget/rap/button/radio-selected.png);
 }
 
-/* line 153, ../../sass/md/_button.scss */
+/* line 158, ../../sass/md/_button.scss */
 Button-RadioIcon:selected:hover {
   background-image: url(resource/widget/rap/button/radio-selected-hover.png);
 }
 
-/* line 157, ../../sass/md/_button.scss */
+/* line 162, ../../sass/md/_button.scss */
 Button-ArrowIcon[UP] {
   background-image: url(resource/widget/rap/button/arrow-up.png);
 }
 
-/* line 161, ../../sass/md/_button.scss */
+/* line 166, ../../sass/md/_button.scss */
 Button-ArrowIcon[DOWN] {
   background-image: url(resource/widget/rap/button/arrow-down.png);
 }
 
-/* line 165, ../../sass/md/_button.scss */
+/* line 170, ../../sass/md/_button.scss */
 Button-ArrowIcon[LEFT] {
   background-image: url(resource/widget/rap/button/arrow-left.png);
 }
 
-/* line 169, ../../sass/md/_button.scss */
+/* line 174, ../../sass/md/_button.scss */
 Button-ArrowIcon[RIGHT] {
   background-image: url(resource/widget/rap/button/arrow-right.png);
 }
 
-/* line 173, ../../sass/md/_button.scss */
+/* line 178, ../../sass/md/_button.scss */
 Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2699,7 +2699,7 @@ Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator
   opacity: 1;
 }
 
-/* line 181, ../../sass/md/_button.scss */
+/* line 186, ../../sass/md/_button.scss */
 Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
