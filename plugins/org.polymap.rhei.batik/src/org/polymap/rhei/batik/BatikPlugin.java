@@ -37,12 +37,14 @@ import org.eclipse.ui.statushandlers.StatusManager.INotificationListener;
 
 import org.eclipse.core.runtime.IStatus;
 
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
+
 /**
- * The activator class controls the plug-in life cycle
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class BatikPlugin extends AbstractUIPlugin {
+public class BatikPlugin 
+        extends AbstractUIPlugin {
 
     private static final Log log = LogFactory.getLog( BatikPlugin.class );
     
@@ -51,22 +53,34 @@ public class BatikPlugin extends AbstractUIPlugin {
     public static final String          CSS_PREFIX = "batik-";
     public static final String          CSS_TABLE_ACTION = CSS_PREFIX + "table-action";
     
-    private static BatikPlugin          plugin;
+    private static BatikPlugin          instance;
     
     public static BatikPlugin instance() {
-        return plugin;
+        return instance;
     }
 
-    
+    /**
+     * Shortcut for <code>instance().images</code>.
+     */
+    public static SvgImageRegistryHelper images() {
+        return instance().images;
+    }
+
+
     // instance *******************************************
 
     private ServiceTracker              httpServiceTracker;
-
     
+    public SvgImageRegistryHelper       images;
+
+
     @Override
     public void start( BundleContext context ) throws Exception {
         super.start( context );
-        plugin = this;
+        instance = this;
+        
+        // images
+        images = new SvgImageRegistryHelper( this );
 
         // StatusManager of the desktop layout registers itself as ProgressProvider
         
@@ -105,7 +119,7 @@ public class BatikPlugin extends AbstractUIPlugin {
         httpServiceTracker = null;
         
         super.stop( context );
-        plugin = null;
+        instance = null;
     }
 
     

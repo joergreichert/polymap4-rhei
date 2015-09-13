@@ -42,14 +42,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import org.polymap.core.data.DataPlugin;
-import org.polymap.core.data.operation.DefaultOperationContext;
-import org.polymap.core.data.operation.FeatureOperationFactory;
-import org.polymap.core.data.operation.FeatureOperationFactory.IContextProvider;
 import org.polymap.core.project.ILayer;
 import org.polymap.core.runtime.CachedLazyInit;
 import org.polymap.core.runtime.LazyInit;
-import org.polymap.core.workbench.PolymapWorkbench;
-
 import org.polymap.rhei.Messages;
 
 /**
@@ -113,8 +108,7 @@ public class FeatureOperationsItem
                         // icon
                         ImageDescriptor descriptor = action.getImageDescriptor();
                         if (descriptor != null) {
-                            Image icon2 = DataPlugin.getDefault().imageForDescriptor( 
-                                    descriptor, action.getText() + "_icon" );
+                            Image icon2 = DataPlugin.images().image( descriptor, action.getText() + "_icon" );
                             menuItem.setImage( icon2 );
                         }
 

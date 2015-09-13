@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.engine;
 
+import static org.polymap.rhei.batik.app.SvgImageRegistryHelper.NORMAL24;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +40,7 @@ import org.eclipse.rap.rwt.graphics.Graphics;
 import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.FormLayoutFactory;
+
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelIdentifier;
@@ -117,7 +120,7 @@ public class DefaultUserPreferences
         btn = new Button( parent, SWT.PUSH );
         btn.setLayoutData( FormDataFactory.filled().left( 100, -50 ).create() );
 //        UIUtils.setVariant( btn, DefaultAppNavigator.CSS_PREFIX );
-        btn.setImage( BatikPlugin.instance().imageForName( "resources/icons/cog.png" ) );
+        btn.setImage( BatikPlugin.images().svgImage( "settings.svg", NORMAL24 ) );
         btn.setToolTipText( i18n.get( "menuTip" ) );
         
         btn.addSelectionListener( new SelectionAdapter() {

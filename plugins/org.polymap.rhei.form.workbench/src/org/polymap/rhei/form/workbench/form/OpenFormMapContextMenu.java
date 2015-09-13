@@ -40,8 +40,6 @@ import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import org.polymap.core.data.PipelineFeatureSource;
-import org.polymap.core.mapeditor.contextmenu.ContextMenuSite;
-import org.polymap.core.mapeditor.contextmenu.IContextMenuContribution;
 import org.polymap.core.project.ILayer;
 import org.polymap.core.runtime.BlockingReference2;
 import org.polymap.core.runtime.UIJob;
@@ -130,7 +128,7 @@ public class OpenFormMapContextMenu
                 FormEditor.open( fs, feature, layer, true );
             }            
         };
-        action.setImageDescriptor( RheiFormPlugin.getDefault().imageDescriptor( "icons/etool16/open_form_editor.gif" ) );
+        action.setImageDescriptor( RheiFormPlugin.images().imageDescriptor( "icons/etool16/open_form_editor.gif" ) );
         
         // await and actually fill menu
         final Menu menu = menuRef.waitAndGet();

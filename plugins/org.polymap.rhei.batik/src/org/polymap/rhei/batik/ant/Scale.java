@@ -18,7 +18,7 @@ import org.polymap.rhei.batik.ant.Svg2Png.Bounds;
 
 public enum Scale {
 
-    P8(8f, 8f), P16(16f, 16f), P24(24f, 24f), P32(32f, 32f), P48(48f, 48f), P64(64f, 64f), P128(128f, 128f);
+    P8(8f, 8f), P16(16f, 16f), P20(20f, 20f), P24(24f, 24f), P32(32f, 32f), P48(48f, 48f), P64(64f, 64f), P128(128f, 128f);
 
     private final float width;
 
