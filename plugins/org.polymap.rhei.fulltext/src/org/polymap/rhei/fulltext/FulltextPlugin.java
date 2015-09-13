@@ -16,10 +16,6 @@ package org.polymap.rhei.fulltext;
 
 import org.osgi.framework.BundleContext;
 
-import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import org.polymap.core.ui.ImageRegistryHelper;
@@ -42,7 +38,14 @@ public class FulltextPlugin
     	return instance;
     }
 
-	
+    /**
+     * Use this to create frequently used images used by this plugin.
+     */
+    public static ImageRegistryHelper images() {
+        return instance().images;
+    }
+
+    
 	// instance *******************************************
 
     private ImageRegistryHelper         images = new ImageRegistryHelper( this );
@@ -77,21 +80,6 @@ public class FulltextPlugin
     
     public void setErrorHandler( ErrorHandler errorHandler ) {
         this.errorHandler = errorHandler;    
-    }
-
-    
-    public Image imageForDescriptor( ImageDescriptor descriptor, String key ) {
-        return images.image( descriptor, key );
-    }
-
-    
-    public Image imageForName( String resName ) {
-        return images.image( resName );
-    }
-
-    
-    public ImageDescriptor imageDescriptor( String path ) {
-        return images.imageDescriptor( path );
     }
 
     

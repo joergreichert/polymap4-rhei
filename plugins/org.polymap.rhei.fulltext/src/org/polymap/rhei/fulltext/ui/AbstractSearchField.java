@@ -94,7 +94,7 @@ public abstract class AbstractSearchField
 
         clearBtn = new Label( container, SWT.PUSH | SWT.SEARCH );
         clearBtn.setToolTipText( "Zurücksetzen" );
-        clearBtn.setImage( FulltextPlugin.instance().imageForName( "icons/delete_edit.gif" ) );
+        clearBtn.setImage( FulltextPlugin.images().image( "icons/delete_edit.gif" ) );
         clearBtn.setLayoutData( FormDataFactory.filled().top( 0, 5 ).right( 100, -5 ).left( -1 ).create() );
         clearBtn.addMouseListener( new MouseAdapter() {
             public void mouseUp( MouseEvent e ) {

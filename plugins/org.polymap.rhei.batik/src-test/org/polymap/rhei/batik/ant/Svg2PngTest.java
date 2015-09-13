@@ -14,16 +14,20 @@
  */
 package org.polymap.rhei.batik.ant;
 
+import java.util.Collections;
+
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.polymap.rhei.batik.ant.Svg2Png;
+
+import org.apache.commons.io.FileUtils;
+
 import org.polymap.rhei.batik.ant.Svg2Png.Bounds;
 import org.polymap.rhei.batik.ant.Svg2Png.COLOR_TYPE;
 
@@ -98,23 +102,33 @@ public class Svg2PngTest {
 
     @Test
     public void testScaleSVG() throws Exception {
-        URL svgInputURL = getClass().getResource( EXAMPLE_SVG2 );
-        try (InputStream svgInput = getClass().getResourceAsStream( EXAMPLE_SVG2 )) {
-            ImageConfiguration imageConfig = new ImageConfiguration();
-            imageConfig.setName( "default" );
-            imageConfig.setDepth( ColorDepth.B4 );
-            imageConfig.setAdjHue( 0.3f );
-            imageConfig.setAdjSaturation( 0.8f );
-            imageConfig.setAdjBrightness( 0f );
-            imageConfig.setColorType( COLOR_TYPE.RGB);
-            svg2Png.transcode( svgInputURL.toString().replace( EXAMPLE_SVG2, "" ), EXAMPLE_SVG2, svgInput, Collections.singletonList(Scale.P16), Collections.singletonList(imageConfig) );
-            URL pngURL = getClass().getResource( "default/16/" + EXAMPLE_SVG2.replace( ".svg", ".png" ));
-            Assert.assertNotNull( pngURL );
-            BufferedImage image = ImageIO.read( pngURL );
-            Assert.assertNotNull( image );
-            Assert.assertEquals( 16f, image.getHeight(), 0.5f );
-            Assert.assertEquals( 12f, image.getWidth(), 0.5f );
-            Assert.assertEquals( 1, image.getColorModel().getPixelSize() );
-        }
+        ImageConfiguration imageConfig = new ImageConfiguration();
+        imageConfig.setName( "default" );
+        imageConfig.setDepth( ColorDepth.B4 );
+        imageConfig.setAdjHue( 0.3f );
+        imageConfig.setAdjSaturation( 0.8f );
+        imageConfig.setAdjBrightness( 0f );
+        imageConfig.setColorType( COLOR_TYPE.RGB);
+
+        File pngPath = new File( "/tmp/Svg2PngTest/" );
+        pngPath.mkdirs();
+        FileUtils.cleanDirectory( pngPath );
+
+        File svgFile = new File( pngPath, EXAMPLE_SVG2 );
+        FileUtils.copyURLToFile( getClass().getResource( EXAMPLE_SVG2 ), svgFile );
+
+        svg2Png.transcode(
+                pngPath.getAbsolutePath(),
+                Collections.singletonList( svgFile ),
+                Collections.singletonList( Scale.P16 ),
+                Collections.singletonList( imageConfig ) );
+        
+        URL pngURL = getClass().getResource( "default/16/" + EXAMPLE_SVG2.replace( ".svg", ".png" ));
+        Assert.assertNotNull( pngURL );
+        BufferedImage image = ImageIO.read( pngURL );
+        Assert.assertNotNull( image );
+        Assert.assertEquals( 16f, image.getHeight(), 0.5f );
+        Assert.assertEquals( 12f, image.getWidth(), 0.5f );
+        Assert.assertEquals( 1, image.getColorModel().getPixelSize() );
     }
 }

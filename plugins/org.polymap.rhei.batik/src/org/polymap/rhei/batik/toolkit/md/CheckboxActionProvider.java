@@ -14,6 +14,8 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
+import static org.polymap.rhei.batik.app.SvgImageRegistryHelper.NORMAL24;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,9 +38,9 @@ public abstract class CheckboxActionProvider
 
     private static Log log = LogFactory.getLog( CheckboxActionProvider.class );
 
-    private Image           selectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/checkbox-marked.png" );
+    private Image                   selectedImage = BatikPlugin.images().svgImage( "checkbox-marked.svg", NORMAL24 );
 
-    private Image           unselectedImage = BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/checkbox-blank-outline.png" );
+    private Image                   unselectedImage = BatikPlugin.images().svgImage( "checkbox-blank-outline.svg", NORMAL24 );
 
     protected Map<Object,Boolean>   selected = new HashMap( 32 );
     

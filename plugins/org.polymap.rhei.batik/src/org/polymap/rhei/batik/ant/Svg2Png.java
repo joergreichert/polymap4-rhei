@@ -32,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -52,28 +54,46 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.batik.util.SVGConstants;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.commons.io.FilenameUtils;
+
 import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
-import org.w3c.dom.svg.SVGAnimatedLength;
-import org.w3c.dom.svg.SVGAnimatedRect;
+
 import org.w3c.dom.svg.SVGDocument;
-import org.w3c.dom.svg.SVGRect;
 
 import com.google.common.base.Strings;
 
 /**
+ * 
  * @author Joerg Reichert <joerg@mapzone.io>
- *
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public class Svg2Png {
 
     public void transcode( String pngPath, List<File> svgFiles, List<Scale> scales,
             List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
         for (File svgFile : svgFiles) {
-            try (FileInputStream fis = new FileInputStream( svgFile )) {
+            try (
+                FileInputStream fis = new FileInputStream( svgFile )
+            ){
                 byte[] bytes = getImageAsBytes( fis );
                 Bounds bounds = getInitialSVGBounds( svgFile );
+                
                 String svgFileName = FilenameUtils.getBaseName( svgFile.getName() );
-                transcode( pngPath, svgFileName, bytes, bounds, scales, imageConfigurations );
+
+                if (!pngPath.endsWith( "/" )) {
+                    pngPath += "/";
+                }
+
+                for (ImageConfiguration imageConfiguration : imageConfigurations) {
+                    for (Scale scale : scales) {
+                        String baseName = FilenameUtils.getBaseName( svgFileName );
+                        String imagePath = pngPath + imageConfiguration.getName() + "/" + scale.name().substring( 1 ) + "/"
+                                + baseName + ".png";
+                        File pngFile = new File( imagePath.replace( "file:", "" ) );
+                        pngFile.getParentFile().mkdirs();
+                        
+                        transcode( pngFile, bytes, bounds, scale, imageConfiguration );
+                    }
+                }
             }
         }
     }
@@ -92,11 +112,11 @@ public class Svg2Png {
     }
 
 
-    public void transcode( String absolutePngPath, String svgFileName, InputStream svgInput, List<Scale> scales,
-            List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
-        byte[] bytes = getImageAsBytes( svgInput );
-        Bounds bounds = getInitialSVGBounds( svgFileName, new ByteArrayInputStream( bytes ) );
-        transcode( absolutePngPath, svgFileName, bytes, bounds, scales, imageConfigurations );
+    public void transcode( File pngFile, URL svgInput, Scale scale,
+            ImageConfiguration imageConfiguration ) throws TranscoderException, IOException {
+        byte[] bytes = getImageAsBytes( svgInput.openStream() );
+        Bounds bounds = getInitialSVGBounds( svgInput.toString(), new ByteArrayInputStream( bytes ) );
+        transcode( pngFile, bytes, bounds, scale, imageConfiguration );
     }
 
 
@@ -141,57 +161,44 @@ public class Svg2Png {
     }
 
 
-    private void transcode( String pngPath, String svgFileName, byte[] imageBytes, Bounds bounds, List<Scale> scales,
-            List<ImageConfiguration> imageConfigurations ) throws TranscoderException, IOException {
-        for (ImageConfiguration imageConfiguration : imageConfigurations) {
-            for (Scale scale : scales) {
-                TranscoderInput input = new TranscoderInput( new ByteArrayInputStream( imageBytes ) );
-                try {
-                    PNGTranscoder transcoder = new PNGTranscoder();
-                    String absolutePngPath = pngPath;
-                    if (!absolutePngPath.endsWith( "/" )) {
-                        absolutePngPath += "/";
-                    }
-                    String baseName = FilenameUtils.getBaseName( svgFileName );
-                    absolutePngPath += imageConfiguration.getName() + "/" + scale.name().substring( 1 ) + "/"
-                            + baseName + ".png";
-                    File pngFile = new File( absolutePngPath.replace( "file:", "" ) );
-                    pngFile.getParentFile().mkdirs();
-                    try (FileOutputStream writer = new FileOutputStream( pngFile )) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        TranscoderOutput output = new TranscoderOutput( out );
-                        Bounds newBounds = new Bounds( scale.getWidth( bounds ), scale.getHeight( bounds ) );
-                        transcoder.setTranscodingHints( createTranscodingHints( newBounds,
-                                imageConfiguration.getDepth() ) );
-                        transcoder.transcode( input, output );
+    private void transcode( File pngFile, byte[] imageBytes, Bounds bounds, Scale scale,
+            ImageConfiguration imageConfiguration ) throws TranscoderException, IOException {
+        TranscoderInput input = new TranscoderInput( new ByteArrayInputStream( imageBytes ) );
+        try {
+            PNGTranscoder transcoder = new PNGTranscoder();
+            try (FileOutputStream writer = new FileOutputStream( pngFile )) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                TranscoderOutput output = new TranscoderOutput( out );
+                Bounds newBounds = new Bounds( scale.getWidth( bounds ), scale.getHeight( bounds ) );
+                transcoder.setTranscodingHints( createTranscodingHints( newBounds,
+                        imageConfiguration.getDepth() ) );
+                transcoder.transcode( input, output );
 
-                        writer.write( out.toByteArray() );
-                        out.close();
-                        writer.flush();
-                    }
-                    BufferedImage originalImage = null;
-                    try {
-                        originalImage = ImageIO.read( pngFile );
-                        BufferedImage bufferedImage = transform( originalImage, imageConfiguration );
-                        try (FileOutputStream writer = new FileOutputStream( pngFile )) {
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            TranscoderOutput output = new TranscoderOutput( out );
-                            transcoder.writeImage( bufferedImage, output );
-                            writer.write( out.toByteArray() );
-                            out.close();
-                            writer.flush();
-                        }
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                catch (Exception e) {
-                    System.err.println( e.getMessage() );
-                    e.printStackTrace();
-                    throw e;
+                writer.write( out.toByteArray() );
+                out.close();
+                writer.flush();
+            }
+            BufferedImage originalImage = null;
+            try {
+                originalImage = ImageIO.read( pngFile );
+                BufferedImage bufferedImage = transform( originalImage, imageConfiguration );
+                try (FileOutputStream writer = new FileOutputStream( pngFile )) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    TranscoderOutput output = new TranscoderOutput( out );
+                    transcoder.writeImage( bufferedImage, output );
+                    writer.write( out.toByteArray() );
+                    out.close();
+                    writer.flush();
                 }
             }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e) {
+            System.err.println( e.getMessage() );
+            e.printStackTrace();
+            throw e;
         }
     }
 

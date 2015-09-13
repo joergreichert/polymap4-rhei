@@ -39,6 +39,7 @@ import org.polymap.rhei.batik.Context;
 import org.polymap.rhei.batik.DefaultPanel;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelIdentifier;
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.toolkit.IPanelSection;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.MinWidthConstraint;
@@ -116,7 +117,7 @@ public class RegisterPanel
     public void createContents( Composite parent ) {
         this.panelContainer = parent;
         getSite().setTitle( i18n.get( "title" ) );
-        getSite().setIcon( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
+        getSite().setIcon( BatikPlugin.images().svgImage( "account.svg", SvgImageRegistryHelper.NORMAL24 ) );
 
         // welcome section
         welcomeSection = tk.createPanelSection( parent, i18n.get( "sectionTitle" ) );
