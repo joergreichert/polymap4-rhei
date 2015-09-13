@@ -380,7 +380,7 @@ public class DefaultAppDesign
             btn.setVisible( false );
         }
         else if (showText || icon == null) {
-            btn.setText( title + " >" );
+            btn.setText( title );
         }
         else {
             btn.setToolTipText( title );

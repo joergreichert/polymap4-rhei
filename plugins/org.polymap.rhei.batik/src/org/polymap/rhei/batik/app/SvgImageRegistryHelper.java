@@ -59,6 +59,9 @@ public class SvgImageRegistryHelper
     private static Log log = LogFactory.getLog( SvgImageRegistryHelper.class );
     
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL48 = "normal48";
+
+    /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL24 = "normal";
     
     /** Image configuration for normale, disabled icons created by {@link #svgImage(String, String)}. */
@@ -94,6 +97,7 @@ public class SvgImageRegistryHelper
         
         // default configs
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 24 ) );
+        putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 48 ) );
     }
 
     
@@ -111,7 +115,7 @@ public class SvgImageRegistryHelper
      *        the bundle root or relative to {@link #svgBasePath}.
      * @param configName
      */
-    public Image svgImage( String path , String configName  ) {
+    public Image svgImage( String path, String configName  ) {
         String key = configName + "-" + path;
         Image image = registry.get().get( key );
         if (image == null || image.isDisposed()) {

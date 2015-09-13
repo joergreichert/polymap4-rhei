@@ -108,7 +108,7 @@ public class MdAppDesign
         dpi = 96;
         boolean mobile = false;
         if (userAgent.toLowerCase().contains( "mobile" )) {
-            dpi = 120;
+            dpi = 110;
             mobile = true;
         }
         
