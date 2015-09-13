@@ -472,7 +472,12 @@ public class DefaultAppManager
             Image previous = this.icon;
             this.icon = icon;
             IPanel panel = getPanel( path );
-            fireEvent( panel, EventType.TITLE, this.icon, previous );
+            if (panel != null) {
+                fireEvent( panel, EventType.TITLE, this.icon, previous );
+            }
+            else {
+                log.warn( "No panel yet for path: " + path );                
+            }
         }
 
         @Override

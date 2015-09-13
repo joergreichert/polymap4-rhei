@@ -14,11 +14,6 @@
    </extension>
    <extension
          point="org.eclipse.rap.ui.themes">
-      <theme
-            file="resources/css/default/default-rap23.css"
-            id="org.polymap.rhei.batik.theme"
-            name="Batik Default">
-      </theme>
       <!-- Done via SASS import -->
       <!--themeContribution
             file="resources/css/default/batik.css"

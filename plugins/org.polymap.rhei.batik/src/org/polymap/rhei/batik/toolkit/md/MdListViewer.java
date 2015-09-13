@@ -18,6 +18,7 @@ import static org.polymap.rhei.batik.toolkit.md.dp.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -30,19 +31,24 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.ImageCell;
 import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.template.TextCell;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Item;
+
 import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
+
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
 
 /**
@@ -186,19 +192,23 @@ public class MdListViewer
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( true );
             }
-            int actionCount = getActionCount();
-            int fromRight = 56;
             // actions
+            int width = 50;
+            int actionCount = getActionCount();
             if (thirdSecondaryActionProvider.isPresent()) {
-                createActionCell(template, thirdSecondaryActionProvider.get(), CELL_THIRDACTION, actionCount--*fromRight, tileHeight, colCount++);                
+                createActionCell( template, thirdSecondaryActionProvider.get(), CELL_THIRDACTION, dp( actionCount--*width ), tileHeight )
+                        .setBindingIndex( colCount++ );
             }
             if (secondSecondaryActionProvider.isPresent()) {
-                createActionCell(template, secondSecondaryActionProvider.get(), CELL_SECONDACTION, actionCount--*fromRight, tileHeight, colCount++);                
+                createActionCell( template, secondSecondaryActionProvider.get(), CELL_SECONDACTION, dp( actionCount--*width ), tileHeight )
+                        .setBindingIndex( colCount++ );
             }
             if (firstSecondaryActionProvider.isPresent()) {
-                createActionCell(template, firstSecondaryActionProvider.get(), CELL_FIRSTACTION,  actionCount--*fromRight, tileHeight, colCount++);                
+                createActionCell( template, firstSecondaryActionProvider.get(), CELL_FIRSTACTION, dp( actionCount--*width ), tileHeight )
+                        .setBindingIndex( colCount++ );
             }
 
+            // expand
             TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
             col.setLabelProvider( new CellLabelProvider() {
                 @Override
@@ -211,8 +221,8 @@ public class MdListViewer
                         }
                         if (expandable) {
                             cell.setImage( getExpandedState( cell.getElement() )
-                                    ? BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/chevron-up.png" )
-                                    : BatikPlugin.instance().imageForName( "resources/icons/md/gray/24/chevron-down.png" ) );
+                                    ? BatikPlugin.images().svgImage( "chevron-up.svg", SvgImageRegistryHelper.NORMAL24 )
+                                    : BatikPlugin.images().svgImage( "chevron-down.svg", SvgImageRegistryHelper.NORMAL24 ) );
                         }
                         else {
                             cell.setImage( null );
@@ -220,7 +230,6 @@ public class MdListViewer
                     }
                 }
             });
-            
             ImageCell cell = new ImageCell( template );
             cell.setName( CELL_EXPAND );
             cell.setRight( 1 ).setWidth( dp( 56 ).pix() ).setTop( 0 ).setHeight( tileHeight.pix() )
@@ -273,17 +282,17 @@ public class MdListViewer
     }
     
     
-    private void createActionCell(Template template, ActionProvider actionProvider, String cellName, int width, dp tileHeight, int colCount) {
+    private ImageCell createActionCell( Template template, ActionProvider actionProvider, String cellName, dp right, dp tileHeight ) {
         TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
         col.setLabelProvider( actionProvider );
 
         ImageCell cell = new ImageCell( template );
         cell.setName( cellName );
-        cell.setRight( dp( width ).pix() ).setWidth( dp( width ).pix() )
+        cell.setRight( right.pix() ).setWidth( dp( 56).pix() )
             .setTop( 0 ).setHeight( tileHeight.pix() )
             .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
-        cell.setBindingIndex( colCount );
         cell.setSelectable( true );
+        return cell;
     }
 
 
