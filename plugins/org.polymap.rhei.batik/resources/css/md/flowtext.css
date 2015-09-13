@@ -21,7 +21,7 @@
  * Font and color definitions for Material Design standard theme
  */
 /* Regular; 14px on Device */
-/* Medium; 14px on Device */
+/* Medium; orig: 13px, 14px on Device */
 /* Regular; 16px on Device */
 /* Medium */
 /* Regular */
@@ -46,8 +46,8 @@ a:hover {
 /* line 32, ../../sass/md/flowtext.scss */
 p {
   color: #4a4a4a;
-  font-size: 13px;
-  line-height: 14px;
+  font-size: 15px;
+  line-height: 18px;
   text-align: justify;
   margin: 3px 0 3px 0;
 }
@@ -83,7 +83,7 @@ h3 {
 
 /* line 60, ../../sass/md/flowtext.scss */
 h4 {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: medium;
   margin: 5px 0 0px 0;
 }

@@ -115,15 +115,20 @@ Button[RADIO][BORDER] {
 }
 
 Button-CheckIcon {
-  background-image: url( resource/widget/rap/button/check-unselected.png );
+  background-image: url( #{$icon-normal}/checkbox-blank-circle-outline.png );
+
+//  background-image: url( https://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png );
+//  background-image: url( resources/icons/rap/button/check-unselected.png );
 }
 
 Button-CheckIcon:hover {
-  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
+  background-image: url( #{$icon-hover}/checkbox-blank-circle-outline.png );
+//  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
 }
 
 Button-CheckIcon:selected {
-  background-image: url( resource/widget/rap/button/check-selected.png );
+  background-image: url( #{$icon-normal}/checkbox-marked-circle.png );
+//  background-image: url( resource/widget/rap/button/check-selected.png );
 }
 
 Button-CheckIcon:selected:hover {
