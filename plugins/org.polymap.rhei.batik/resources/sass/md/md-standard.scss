@@ -29,9 +29,15 @@
   font: 13px $font;
 }
 
+/*
+Generally graying all font colors does not make sense in all cases.  Text (form fields)
+are there in order to display an information. Graying makes it hard readable. Disabled color
+should be handled by each component. 
+
 *:disabled {
   color: $text-color-disabled;
-}
+}*/
+
 
 Widget-ToolTip {
   padding: 10px;

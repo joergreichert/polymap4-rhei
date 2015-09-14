@@ -40,12 +40,15 @@
   font: 13px "Roboto", "Noto", sans-serif;
 }
 
-/* line 32, ../../sass/md/md-standard.scss */
-*:disabled {
-  color: #CFCFCF;
-}
+/*
+Generally graying all font colors does not make sense in all cases.  Text (form fields)
+are there in order to display an information. Graying makes it hard readable. Disabled color
+should be handled by each component. 
 
-/* line 36, ../../sass/md/md-standard.scss */
+*:disabled {
+  color: $text-color-disabled;
+}*/
+/* line 42, ../../sass/md/md-standard.scss */
 Widget-ToolTip {
   padding: 10px;
   background-color: #201f1b;
@@ -59,32 +62,32 @@ Widget-ToolTip {
   text-align: center;
 }
 
-/* line 49, ../../sass/md/md-standard.scss */
+/* line 55, ../../sass/md/md-standard.scss */
 Widget-ToolTip-Pointer {
   background-image: none;
 }
 
-/* line 53, ../../sass/md/md-standard.scss */
+/* line 59, ../../sass/md/md-standard.scss */
 Widget-ToolTip-Pointer:up {
   background-image: url(resource/widget/rap/arrows/tooltip-up.png);
 }
 
-/* line 57, ../../sass/md/md-standard.scss */
+/* line 63, ../../sass/md/md-standard.scss */
 Widget-ToolTip-Pointer:down {
   background-image: url(resource/widget/rap/arrows/tooltip-down.png);
 }
 
-/* line 61, ../../sass/md/md-standard.scss */
+/* line 67, ../../sass/md/md-standard.scss */
 Widget-ToolTip-Pointer:left {
   background-image: url(resource/widget/rap/arrows/tooltip-left.png);
 }
 
-/* line 65, ../../sass/md/md-standard.scss */
+/* line 71, ../../sass/md/md-standard.scss */
 Widget-ToolTip-Pointer:right {
   background-image: url(resource/widget/rap/arrows/tooltip-right.png);
 }
 
-/* line 69, ../../sass/md/md-standard.scss */
+/* line 75, ../../sass/md/md-standard.scss */
 Display {
   rwt-shadow-color: #a7a6aa;
   rwt-highlight-color: #ffffff;
@@ -106,26 +109,26 @@ Display {
 /*rwt-fontlist: 13px Helvetica, Arial, sans-serif;*/
 /*background-image: url(resources/icons/rap/display/browser_bg.png );*/
 /*font: 13px Helvetica, Arial, sans-serif;*/
-/* line 93, ../../sass/md/md-standard.scss */
+/* line 99, ../../sass/md/md-standard.scss */
 SystemMessage-DisplayOverlay {
   background-color: rgba(128, 128, 128, 0.2);
   background-image: url(resource/widget/rap/display/loading.gif);
 }
 
 /* Default theme for all controls */
-/* line 100, ../../sass/md/md-standard.scss */
+/* line 106, ../../sass/md/md-standard.scss */
 * {
   border: none;
   padding: 0px;
 }
 
-/* line 105, ../../sass/md/md-standard.scss */
+/* line 111, ../../sass/md/md-standard.scss */
 *[BORDER] {
   border: 1px solid #a4a4a4;
 }
 
 /* Default theme for all composites */
-/* line 111, ../../sass/md/md-standard.scss */
+/* line 117, ../../sass/md/md-standard.scss */
 Composite {
   padding: 0;
   opacity: 1;
@@ -139,7 +142,7 @@ Composite {
   animation: none;
 }
 
-/* line 123, ../../sass/md/md-standard.scss */
+/* line 129, ../../sass/md/md-standard.scss */
 Composite[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
@@ -344,7 +347,7 @@ Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
 }
  */
 /* Combo default theme */
-/* line 330, ../../sass/md/md-standard.scss */
+/* line 336, ../../sass/md/md-standard.scss */
 Combo,
 Combo[BORDER] {
   color: #4a4a4a;
@@ -356,20 +359,20 @@ Combo[BORDER] {
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 342, ../../sass/md/md-standard.scss */
+/* line 348, ../../sass/md/md-standard.scss */
 Combo:focused,
 Combo[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 348, ../../sass/md/md-standard.scss */
+/* line 354, ../../sass/md/md-standard.scss */
 Combo:disabled,
 Combo[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 353, ../../sass/md/md-standard.scss */
+/* line 359, ../../sass/md/md-standard.scss */
 Combo-Button {
   cursor: default;
   background-color: #efefef;
@@ -380,30 +383,30 @@ Combo-Button {
   width: 30px;
 }
 
-/* line 367, ../../sass/md/md-standard.scss */
+/* line 373, ../../sass/md/md-standard.scss */
 Combo-Button:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 372, ../../sass/md/md-standard.scss */
+/* line 378, ../../sass/md/md-standard.scss */
 Combo-Button-Icon {
   background-image: url(resource/widget/rap/combo/down.png);
 }
 
-/* line 376, ../../sass/md/md-standard.scss */
+/* line 382, ../../sass/md/md-standard.scss */
 Combo-Button-Icon:hover {
   background-image: url(resource/widget/rap/combo/down-hover.png);
 }
 
-/* line 380, ../../sass/md/md-standard.scss */
+/* line 386, ../../sass/md/md-standard.scss */
 Combo-List {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
   border-radius: 2px;
 }
 
-/* line 386, ../../sass/md/md-standard.scss */
+/* line 392, ../../sass/md/md-standard.scss */
 Combo-List-Item {
   color: inherit;
   background-color: transparent;
@@ -413,26 +416,26 @@ Combo-List-Item {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 395, ../../sass/md/md-standard.scss */
+/* line 401, ../../sass/md/md-standard.scss */
 Combo-List-Item:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 405, ../../sass/md/md-standard.scss */
+/* line 411, ../../sass/md/md-standard.scss */
 Combo-List-Item:selected {
   color: #ffffff;
   background-color: #5882b5;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 415, ../../sass/md/md-standard.scss */
+/* line 421, ../../sass/md/md-standard.scss */
 Combo-Field {
   padding: 5px 10px 5px 10px;
 }
 
-/* line 419, ../../sass/md/md-standard.scss */
+/* line 425, ../../sass/md/md-standard.scss */
 Combo-FocusIndicator {
   background-color: transparent;
   border: none;
@@ -441,14 +444,14 @@ Combo-FocusIndicator {
 }
 
 /* DropDown default theme */
-/* line 428, ../../sass/md/md-standard.scss */
+/* line 434, ../../sass/md/md-standard.scss */
 DropDown {
   border: 1px solid #4f7cb1;
   border-radius: 0;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 434, ../../sass/md/md-standard.scss */
+/* line 440, ../../sass/md/md-standard.scss */
 DropDown-Item {
   color: inherit;
   background-color: transparent;
@@ -458,14 +461,14 @@ DropDown-Item {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 443, ../../sass/md/md-standard.scss */
+/* line 449, ../../sass/md/md-standard.scss */
 DropDown-Item:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 453, ../../sass/md/md-standard.scss */
+/* line 459, ../../sass/md/md-standard.scss */
 DropDown-Item:selected {
   color: #ffffff;
   background-color: #5882b5;
@@ -473,25 +476,25 @@ DropDown-Item:selected {
 }
 
 /* CoolBar default theme */
-/* line 465, ../../sass/md/md-standard.scss */
+/* line 471, ../../sass/md/md-standard.scss */
 CoolBar {
   background-image: none;
 }
 
-/* line 469, ../../sass/md/md-standard.scss */
+/* line 475, ../../sass/md/md-standard.scss */
 CoolItem-Handle {
   border: 1px solid #bdbdbd;
   width: 2px;
 }
 
 /* CTabFolder default theme */
-/* line 476, ../../sass/md/md-standard.scss */
+/* line 482, ../../sass/md/md-standard.scss */
 CTabFolder {
   border-color: #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 481, ../../sass/md/md-standard.scss */
+/* line 487, ../../sass/md/md-standard.scss */
 CTabItem {
   color: #4a4a4a;
   background-color: transparent;
@@ -501,37 +504,37 @@ CTabItem {
   text-shadow: none;
 }
 
-/* line 491, ../../sass/md/md-standard.scss */
+/* line 497, ../../sass/md/md-standard.scss */
 CTabItem:selected {
   color: #4a4a4a;
   background-color: #d6d6d6;
 }
 
 /* Do not gray out disabled CTabItems, this is SWT behavior */
-/* line 497, ../../sass/md/md-standard.scss */
+/* line 503, ../../sass/md/md-standard.scss */
 CTabItem:disabled {
   color: black;
 }
 
-/* line 501, ../../sass/md/md-standard.scss */
+/* line 507, ../../sass/md/md-standard.scss */
 CTabFolder-DropDownButton-Icon {
   background-image: url(resource/widget/rap/ctabfolder/ctabfolder-dropdown.png);
 }
 
-/* line 505, ../../sass/md/md-standard.scss */
+/* line 511, ../../sass/md/md-standard.scss */
 CTabFolder-DropDownButton-Icon:hover {
   background-image: url(resource/widget/rap/ctabfolder/ctabfolder-dropdown-hover.png);
 }
 
 /* Group default theme */
-/* line 511, ../../sass/md/md-standard.scss */
+/* line 517, ../../sass/md/md-standard.scss */
 Group {
   color: #4a4a4a;
   background-color: #ffffff;
   border: none;
 }
 
-/* line 517, ../../sass/md/md-standard.scss */
+/* line 523, ../../sass/md/md-standard.scss */
 Group-Frame {
   margin: 20px 0 0 0;
   padding: 15px 8px 8px 8px;
@@ -539,7 +542,7 @@ Group-Frame {
   border-radius: 2px;
 }
 
-/* line 524, ../../sass/md/md-standard.scss */
+/* line 530, ../../sass/md/md-standard.scss */
 Group-Label {
   padding: 2px 10px 2px 10px;
   background-color: #f0f0f0;
@@ -554,7 +557,7 @@ Group-Label {
 }
 
 /* Label default theme */
-/* line 539, ../../sass/md/md-standard.scss */
+/* line 545, ../../sass/md/md-standard.scss */
 Label {
   /*  color: #4a4a4a;
     background-color: #ffffff;
@@ -569,13 +572,13 @@ Label {
   text-shadow: none;
 }
 
-/* line 553, ../../sass/md/md-standard.scss */
+/* line 559, ../../sass/md/md-standard.scss */
 Label[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 558, ../../sass/md/md-standard.scss */
+/* line 564, ../../sass/md/md-standard.scss */
 Label-SeparatorLine {
   background-image: none;
   background-color: transparent;
@@ -584,18 +587,18 @@ Label-SeparatorLine {
   width: 2px;
 }
 
-/* line 566, ../../sass/md/md-standard.scss */
+/* line 572, ../../sass/md/md-standard.scss */
 Label-SeparatorLine[SHADOW_IN] {
   border: 1px inset;
 }
 
-/* line 570, ../../sass/md/md-standard.scss */
+/* line 576, ../../sass/md/md-standard.scss */
 Label-SeparatorLine[SHADOW_OUT] {
   border: 1px outset;
 }
 
 /* Link default theme */
-/* line 576, ../../sass/md/md-standard.scss */
+/* line 582, ../../sass/md/md-standard.scss */
 Link {
   color: #4a4a4a;
   background-color: #ffffff;
@@ -605,48 +608,48 @@ Link {
   text-shadow: none;
 }
 
-/* line 586, ../../sass/md/md-standard.scss */
+/* line 592, ../../sass/md/md-standard.scss */
 Link[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 590, ../../sass/md/md-standard.scss */
+/* line 596, ../../sass/md/md-standard.scss */
 Link-Hyperlink {
   color: #416693;
   text-shadow: none;
   text-decoration: none;
 }
 
-/* line 596, ../../sass/md/md-standard.scss */
+/* line 602, ../../sass/md/md-standard.scss */
 Link-Hyperlink:disabled {
   color: #959595;
 }
 
-/* line 600, ../../sass/md/md-standard.scss */
+/* line 606, ../../sass/md/md-standard.scss */
 Link-Hyperlink:hover {
   text-decoration: underline;
 }
 
-/* line 604, ../../sass/md/md-standard.scss */
+/* line 610, ../../sass/md/md-standard.scss */
 Link-Hyperlink:hover:disabled {
   color: #959595;
   text-decoration: none;
 }
 
 /* List default theme */
-/* line 611, ../../sass/md/md-standard.scss */
+/* line 617, ../../sass/md/md-standard.scss */
 List {
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
 }
 
-/* line 618, ../../sass/md/md-standard.scss */
+/* line 624, ../../sass/md/md-standard.scss */
 List[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 622, ../../sass/md/md-standard.scss */
+/* line 628, ../../sass/md/md-standard.scss */
 List-Item {
   padding: 5px 10px 5px 10px;
   background-color: #ffffff;
@@ -655,13 +658,13 @@ List-Item {
   text-shadow: none;
 }
 
-/* line 630, ../../sass/md/md-standard.scss */
+/* line 636, ../../sass/md/md-standard.scss */
 List-Item:hover {
   color: #4a4a4a;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 639, ../../sass/md/md-standard.scss */
+/* line 645, ../../sass/md/md-standard.scss */
 List-Item:selected {
   color: #ffffff;
   /* background-color property is used on the server to compute system color with id
@@ -670,37 +673,37 @@ List-Item:selected {
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 651, ../../sass/md/md-standard.scss */
+/* line 657, ../../sass/md/md-standard.scss */
 List-Item:selected:unfocused {
   color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
 }
 
-/* line 660, ../../sass/md/md-standard.scss */
+/* line 666, ../../sass/md/md-standard.scss */
 List-Item:even {
   background-color: #f0f0f0;
 }
 
-/* line 664, ../../sass/md/md-standard.scss */
+/* line 670, ../../sass/md/md-standard.scss */
 List-Item:even:hover {
   color: #4a4a4a;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 673, ../../sass/md/md-standard.scss */
+/* line 679, ../../sass/md/md-standard.scss */
 List-Item:even:selected {
   color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 682, ../../sass/md/md-standard.scss */
+/* line 688, ../../sass/md/md-standard.scss */
 List-Item:even:selected:unfocused {
   color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
 }
 
 /* Menu default theme */
-/* line 693, ../../sass/md/md-standard.scss */
+/* line 699, ../../sass/md/md-standard.scss */
 Menu {
   padding: 0;
   color: #0059a5;
@@ -713,7 +716,7 @@ Menu {
   animation: none;
 }
 
-/* line 709, ../../sass/md/md-standard.scss */
+/* line 715, ../../sass/md/md-standard.scss */
 MenuItem {
   color: #4a4a4a;
   background-color: transparent;
@@ -723,51 +726,51 @@ MenuItem {
   padding: 4px 10px 4px 10px;
 }
 
-/* line 718, ../../sass/md/md-standard.scss */
+/* line 724, ../../sass/md/md-standard.scss */
 MenuItem[SEPARATOR] {
   padding: 0px 10px;
 }
 
-/* line 722, ../../sass/md/md-standard.scss */
+/* line 728, ../../sass/md/md-standard.scss */
 MenuItem:hover {
   color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 731, ../../sass/md/md-standard.scss */
+/* line 737, ../../sass/md/md-standard.scss */
 MenuItem:pressed {
   color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#416693), to(#5882b5));
 }
 
-/* line 740, ../../sass/md/md-standard.scss */
+/* line 746, ../../sass/md/md-standard.scss */
 MenuItem:disabled {
   color: #bdbdbd;
   text-shadow: none;
 }
 
-/* line 745, ../../sass/md/md-standard.scss */
+/* line 751, ../../sass/md/md-standard.scss */
 MenuItem:onMenuBar {
   padding: 4px 6px;
 }
 
-/* line 750, ../../sass/md/md-standard.scss */
+/* line 756, ../../sass/md/md-standard.scss */
 MenuItem-CheckIcon {
   background-image: url(resource/widget/rap/menu/checkbox.gif);
 }
 
-/* line 754, ../../sass/md/md-standard.scss */
+/* line 760, ../../sass/md/md-standard.scss */
 MenuItem-RadioIcon {
   background-image: url(resource/widget/rap/menu/radiobutton.gif);
 }
 
-/* line 758, ../../sass/md/md-standard.scss */
+/* line 764, ../../sass/md/md-standard.scss */
 MenuItem-CascadeIcon {
   background-image: url(resource/widget/rap/menu/arrow.gif);
 }
 
 /* ProgressBar default theme */
-/* line 764, ../../sass/md/md-standard.scss */
+/* line 770, ../../sass/md/md-standard.scss */
 ProgressBar {
   background-color: #ffffff;
   background-image: url(resource/widget/rap/progressbar/progressbar-background.png);
@@ -776,7 +779,7 @@ ProgressBar {
   width: 16px;
 }
 
-/* line 772, ../../sass/md/md-standard.scss */
+/* line 778, ../../sass/md/md-standard.scss */
 ProgressBar-Indicator {
   background-color: #00589f;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
@@ -784,18 +787,18 @@ ProgressBar-Indicator {
   opacity: 1;
 }
 
-/* line 783, ../../sass/md/md-standard.scss */
+/* line 789, ../../sass/md/md-standard.scss */
 ProgressBar-Indicator:paused {
   background-image: gradient(linear, left top, left bottom, from(#818181), to(#b5b5b5));
 }
 
-/* line 791, ../../sass/md/md-standard.scss */
+/* line 797, ../../sass/md/md-standard.scss */
 ProgressBar-Indicator:error {
   background-image: gradient(linear, left top, left bottom, from(#bb1d1d), to(#fc0000));
 }
 
 /* Shell default theme */
-/* line 801, ../../sass/md/md-standard.scss */
+/* line 807, ../../sass/md/md-standard.scss */
 Shell {
   animation: none;
   border: none;
@@ -807,7 +810,7 @@ Shell {
   box-shadow: none;
 }
 
-/* line 812, ../../sass/md/md-standard.scss */
+/* line 818, ../../sass/md/md-standard.scss */
 Shell[TITLE], Shell[BORDER] {
   background-color: #ffffff;
   border: 1px solid #6e6e6e;
@@ -815,20 +818,20 @@ Shell[TITLE], Shell[BORDER] {
   box-shadow: 0 0 4px #ababab;
 }
 
-/* line 819, ../../sass/md/md-standard.scss */
+/* line 825, ../../sass/md/md-standard.scss */
 Shell[BORDER]:inactive, Shell[TITLE]:inactive {
   border: 1px solid #bdbdbd;
   box-shadow: none;
 }
 
-/* line 824, ../../sass/md/md-standard.scss */
+/* line 830, ../../sass/md/md-standard.scss */
 Shell:maximized, Shell:maximized:inactive {
   border: none;
   box-shadow: none;
   border-radius: 0px;
 }
 
-/* line 830, ../../sass/md/md-standard.scss */
+/* line 836, ../../sass/md/md-standard.scss */
 Shell-DisplayOverlay {
   animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
   background-image: none;
@@ -837,7 +840,7 @@ Shell-DisplayOverlay {
 }
 
 /* Shell titlebar */
-/* line 839, ../../sass/md/md-standard.scss */
+/* line 845, ../../sass/md/md-standard.scss */
 Shell-Titlebar {
   background-color: #0080c0;
   background-gradient-color: #0080c0;
@@ -851,7 +854,7 @@ Shell-Titlebar {
   text-shadow: none;
 }
 
-/* line 855, ../../sass/md/md-standard.scss */
+/* line 861, ../../sass/md/md-standard.scss */
 Shell-Titlebar:inactive {
   background-color: #7996a5;
   background-gradient-color: #7996a5;
@@ -860,97 +863,97 @@ Shell-Titlebar:inactive {
 
 /* Shell buttons */
 /* Minimize button */
-/* line 868, ../../sass/md/md-standard.scss */
+/* line 874, ../../sass/md/md-standard.scss */
 Shell-MinButton {
   background-image: url(resource/widget/rap/window/shell-min.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 873, ../../sass/md/md-standard.scss */
+/* line 879, ../../sass/md/md-standard.scss */
 Shell-MinButton:hover {
   background-image: url(resource/widget/rap/window/shell-min-hover.png);
 }
 
-/* line 877, ../../sass/md/md-standard.scss */
+/* line 883, ../../sass/md/md-standard.scss */
 Shell-MinButton:inactive {
   background-image: url(resource/widget/rap/window/shell-min.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 882, ../../sass/md/md-standard.scss */
+/* line 888, ../../sass/md/md-standard.scss */
 Shell-MinButton:inactive:hover {
   background-image: url(resource/widget/rap/window/shell-min-hover.png);
 }
 
 /* Maximize button */
-/* line 888, ../../sass/md/md-standard.scss */
+/* line 894, ../../sass/md/md-standard.scss */
 Shell-MaxButton {
   background-image: url(resource/widget/rap/window/shell-max.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 893, ../../sass/md/md-standard.scss */
+/* line 899, ../../sass/md/md-standard.scss */
 Shell-MaxButton:hover {
   background-image: url(resource/widget/rap/window/shell-max-hover.png);
 }
 
-/* line 897, ../../sass/md/md-standard.scss */
+/* line 903, ../../sass/md/md-standard.scss */
 Shell-MaxButton:inactive {
   background-image: url(resource/widget/rap/window/shell-max.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 902, ../../sass/md/md-standard.scss */
+/* line 908, ../../sass/md/md-standard.scss */
 Shell-MaxButton:inactive:hover {
   background-image: url(resource/widget/rap/window/shell-max-hover.png);
 }
 
 /* Restore button */
-/* line 908, ../../sass/md/md-standard.scss */
+/* line 914, ../../sass/md/md-standard.scss */
 Shell-MaxButton:maximized {
   background-image: url(resource/widget/rap/window/shell-restore.png);
 }
 
-/* line 912, ../../sass/md/md-standard.scss */
+/* line 918, ../../sass/md/md-standard.scss */
 Shell-MaxButton:maximized:hover {
   background-image: url(resource/widget/rap/window/shell-restore-hover.png);
 }
 
-/* line 916, ../../sass/md/md-standard.scss */
+/* line 922, ../../sass/md/md-standard.scss */
 Shell-MaxButton:maximized:inactive {
   background-image: url(resource/widget/rap/window/shell-restore.png);
 }
 
-/* line 920, ../../sass/md/md-standard.scss */
+/* line 926, ../../sass/md/md-standard.scss */
 Shell-MaxButton:maximized:inactive:hover {
   background-image: url(resource/widget/rap/window/shell-restore-hover.png);
 }
 
 /* Close button */
-/* line 926, ../../sass/md/md-standard.scss */
+/* line 932, ../../sass/md/md-standard.scss */
 Shell-CloseButton {
   background-image: url(resource/widget/rap/window/shell-close.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 931, ../../sass/md/md-standard.scss */
+/* line 937, ../../sass/md/md-standard.scss */
 Shell-CloseButton:hover {
   background-image: url(resource/widget/rap/window/shell-close-hover.png);
 }
 
-/* line 935, ../../sass/md/md-standard.scss */
+/* line 941, ../../sass/md/md-standard.scss */
 Shell-CloseButton:inactive {
   background-image: url(resource/widget/rap/window/shell-close.png);
   margin: 0 -2px 0 0;
 }
 
-/* line 940, ../../sass/md/md-standard.scss */
+/* line 946, ../../sass/md/md-standard.scss */
 Shell-CloseButton:inactive:hover {
   background-image: url(resource/widget/rap/window/shell-close-hover.png);
 }
 
 /* Spinner default theme */
-/* line 946, ../../sass/md/md-standard.scss */
+/* line 952, ../../sass/md/md-standard.scss */
 Spinner {
   border: none;
   border-radius: 0 2px 2px 0;
@@ -961,31 +964,31 @@ Spinner {
   box-shadow: none;
 }
 
-/* line 956, ../../sass/md/md-standard.scss */
+/* line 962, ../../sass/md/md-standard.scss */
 Spinner[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 962, ../../sass/md/md-standard.scss */
+/* line 968, ../../sass/md/md-standard.scss */
 Spinner[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 967, ../../sass/md/md-standard.scss */
+/* line 973, ../../sass/md/md-standard.scss */
 Spinner:disabled,
 Spinner[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 972, ../../sass/md/md-standard.scss */
+/* line 978, ../../sass/md/md-standard.scss */
 Spinner-Field {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 976, ../../sass/md/md-standard.scss */
+/* line 982, ../../sass/md/md-standard.scss */
 Spinner-UpButton {
   background-color: #efefef;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#efefef));
@@ -996,23 +999,23 @@ Spinner-UpButton {
   cursor: default;
 }
 
-/* line 990, ../../sass/md/md-standard.scss */
+/* line 996, ../../sass/md/md-standard.scss */
 Spinner-UpButton:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 995, ../../sass/md/md-standard.scss */
+/* line 1001, ../../sass/md/md-standard.scss */
 Spinner-UpButton-Icon {
   background-image: url(resource/widget/rap/spinner/up.png);
 }
 
-/* line 999, ../../sass/md/md-standard.scss */
+/* line 1005, ../../sass/md/md-standard.scss */
 Spinner-UpButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/up-hover.png);
 }
 
-/* line 1003, ../../sass/md/md-standard.scss */
+/* line 1009, ../../sass/md/md-standard.scss */
 Spinner-DownButton {
   background-color: #efefef;
   background-image: gradient(linear, left top, left bottom, from(#efefef), to(#e4e4e4));
@@ -1023,39 +1026,39 @@ Spinner-DownButton {
   cursor: default;
 }
 
-/* line 1017, ../../sass/md/md-standard.scss */
+/* line 1023, ../../sass/md/md-standard.scss */
 Spinner-DownButton:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 1022, ../../sass/md/md-standard.scss */
+/* line 1028, ../../sass/md/md-standard.scss */
 Spinner-DownButton-Icon {
   background-image: url(resource/widget/rap/spinner/down.png);
 }
 
-/* line 1026, ../../sass/md/md-standard.scss */
+/* line 1032, ../../sass/md/md-standard.scss */
 Spinner-DownButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/down-hover.png);
 }
 
 /* TabFolder default theme */
-/* line 1032, ../../sass/md/md-standard.scss */
+/* line 1038, ../../sass/md/md-standard.scss */
 TabFolder {
   border: none;
 }
 
-/* line 1036, ../../sass/md/md-standard.scss */
+/* line 1042, ../../sass/md/md-standard.scss */
 TabFolder[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 1040, ../../sass/md/md-standard.scss */
+/* line 1046, ../../sass/md/md-standard.scss */
 TabFolder-ContentContainer {
   border: 1px solid #bdbdbd;
 }
 
-/* line 1044, ../../sass/md/md-standard.scss */
+/* line 1050, ../../sass/md/md-standard.scss */
 TabItem {
   background-color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
@@ -1065,7 +1068,7 @@ TabItem {
   padding: 6px;
 }
 
-/* line 1057, ../../sass/md/md-standard.scss */
+/* line 1063, ../../sass/md/md-standard.scss */
 TabItem:selected {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
   padding: 6px 6px 7px 6px;
@@ -1295,7 +1298,7 @@ Text-Cancel-Icon {
   spacing: 3px;
 }*/
 /* ToolBar default theme */
-/* line 1293, ../../sass/md/md-standard.scss */
+/* line 1299, ../../sass/md/md-standard.scss */
 ToolBar {
   color: #4a4a4a;
   padding: 0;
@@ -1307,13 +1310,13 @@ ToolBar {
   opacity: 1;
 }
 
-/* line 1304, ../../sass/md/md-standard.scss */
+/* line 1310, ../../sass/md/md-standard.scss */
 ToolBar[BORDER] {
   border: 1px solid #a4a4a4;
   border-radius: 2px;
 }
 
-/* line 1309, ../../sass/md/md-standard.scss */
+/* line 1315, ../../sass/md/md-standard.scss */
 ToolItem {
   color: inherit;
   background-color: #fff;
@@ -1327,7 +1330,7 @@ ToolItem {
   text-shadow: none;
 }
 
-/* line 1322, ../../sass/md/md-standard.scss */
+/* line 1328, ../../sass/md/md-standard.scss */
 ToolItem:hover {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
@@ -1335,7 +1338,7 @@ ToolItem:hover {
   border-radius: 2px;
 }
 
-/* line 1333, ../../sass/md/md-standard.scss */
+/* line 1339, ../../sass/md/md-standard.scss */
 ToolItem:pressed, ToolItem:selected {
   border: 1px solid #a4a4a4;
   border-radius: 2px;
@@ -1343,36 +1346,36 @@ ToolItem:pressed, ToolItem:selected {
   background-image: gradient(linear, left top, left bottom, from(#e4e4e4), to(#f9f9f9));
 }
 
-/* line 1344, ../../sass/md/md-standard.scss */
+/* line 1350, ../../sass/md/md-standard.scss */
 ToolItem-DropDownIcon {
   background-image: url(resource/widget/rap/toolbar/down.png);
   border: none;
 }
 
-/* line 1349, ../../sass/md/md-standard.scss */
+/* line 1355, ../../sass/md/md-standard.scss */
 ToolItem-DropDownIcon:hover {
   border: 1px inset;
 }
 
-/* line 1353, ../../sass/md/md-standard.scss */
+/* line 1359, ../../sass/md/md-standard.scss */
 ToolItem-Separator {
   width: 4px;
 }
 
 /* Tree default theme */
-/* line 1359, ../../sass/md/md-standard.scss */
+/* line 1365, ../../sass/md/md-standard.scss */
 Tree {
   background-color: #ffffff;
   border: none;
   color: #4a4a4a;
 }
 
-/* line 1365, ../../sass/md/md-standard.scss */
+/* line 1371, ../../sass/md/md-standard.scss */
 Tree[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 1369, ../../sass/md/md-standard.scss */
+/* line 1375, ../../sass/md/md-standard.scss */
 TreeItem,
 TreeItem:linesvisible:even:rowtemplate {
   background-color: transparent;
@@ -1382,63 +1385,63 @@ TreeItem:linesvisible:even:rowtemplate {
   background-image: none;
 }
 
-/* line 1378, ../../sass/md/md-standard.scss */
+/* line 1384, ../../sass/md/md-standard.scss */
 TreeItem:linesvisible:even {
   background-color: #f0f0f0;
   color: inherit;
   border: none;
 }
 
-/* line 1384, ../../sass/md/md-standard.scss */
+/* line 1390, ../../sass/md/md-standard.scss */
 Tree-RowOverlay {
   background-color: transparent;
   color: inherit;
   background-image: none;
 }
 
-/* line 1390, ../../sass/md/md-standard.scss */
+/* line 1396, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 1400, ../../sass/md/md-standard.scss */
+/* line 1406, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:selected {
   color: #ffffff;
   background-color: #5882b5;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 1410, ../../sass/md/md-standard.scss */
+/* line 1416, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:selected:unfocused {
   color: #ffffff;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
 }
 
-/* line 1420, ../../sass/md/md-standard.scss */
+/* line 1426, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:linesvisible:even:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 1430, ../../sass/md/md-standard.scss */
+/* line 1436, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:linesvisible:even:selected {
   color: #ffffff;
   background-color: #5882b5;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 1440, ../../sass/md/md-standard.scss */
+/* line 1446, ../../sass/md/md-standard.scss */
 Tree-RowOverlay:linesvisible:even:selected:unfocused {
   color: #ffffff;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
 }
 
-/* line 1450, ../../sass/md/md-standard.scss */
+/* line 1456, ../../sass/md/md-standard.scss */
 TreeColumn {
   color: inherit;
   background-color: #f0f0f0;
@@ -1448,203 +1451,203 @@ TreeColumn {
   text-shadow: none;
 }
 
-/* line 1463, ../../sass/md/md-standard.scss */
+/* line 1469, ../../sass/md/md-standard.scss */
 TreeColumn:hover {
   background-image: gradient(linear, left top, left bottom, from(#e4e4e4), to(#f9f9f9));
 }
 
-/* line 1471, ../../sass/md/md-standard.scss */
+/* line 1477, ../../sass/md/md-standard.scss */
 TreeColumn-SortIndicator {
   background-image: none;
 }
 
-/* line 1475, ../../sass/md/md-standard.scss */
+/* line 1481, ../../sass/md/md-standard.scss */
 TreeColumn-SortIndicator:up {
   background-image: url(resource/widget/rap/column/sort-indicator-up.png);
 }
 
-/* line 1479, ../../sass/md/md-standard.scss */
+/* line 1485, ../../sass/md/md-standard.scss */
 TreeColumn-SortIndicator:down {
   background-image: url(resource/widget/rap/column/sort-indicator-down.png);
 }
 
-/* line 1483, ../../sass/md/md-standard.scss */
+/* line 1489, ../../sass/md/md-standard.scss */
 Tree-Cell {
   spacing: 3px;
   padding: 5px 3px 5px 3px;
 }
 
-/* line 1488, ../../sass/md/md-standard.scss */
+/* line 1494, ../../sass/md/md-standard.scss */
 Tree-GridLine,
 Tree-GridLine:vertical:rowtemplate {
   color: transparent;
 }
 
-/* line 1493, ../../sass/md/md-standard.scss */
+/* line 1499, ../../sass/md/md-standard.scss */
 Tree-GridLine:vertical,
 Tree-GridLine:header,
 Tree-GridLine:horizontal:rowtemplate {
   color: #d0d0d0;
 }
 
-/* line 1499, ../../sass/md/md-standard.scss */
+/* line 1505, ../../sass/md/md-standard.scss */
 Tree-Checkbox {
   margin: 0px 2px 0px 0px;
   background-image: url(resource/widget/rap/button/check-unselected.png);
 }
 
-/* line 1504, ../../sass/md/md-standard.scss */
+/* line 1510, ../../sass/md/md-standard.scss */
 Tree-Checkbox:hover {
   background-image: url(resource/widget/rap/button/check-unselected-hover.png);
 }
 
-/* line 1508, ../../sass/md/md-standard.scss */
+/* line 1514, ../../sass/md/md-standard.scss */
 Tree-Checkbox:checked {
   background-image: url(resource/widget/rap/button/check-selected.png);
 }
 
-/* line 1512, ../../sass/md/md-standard.scss */
+/* line 1518, ../../sass/md/md-standard.scss */
 Tree-Checkbox:checked:hover {
   background-image: url(resource/widget/rap/button/check-selected-hover.png);
 }
 
-/* line 1516, ../../sass/md/md-standard.scss */
+/* line 1522, ../../sass/md/md-standard.scss */
 Tree-Checkbox:checked:grayed {
   background-image: url(resource/widget/rap/button/check-grayed.png);
 }
 
-/* line 1520, ../../sass/md/md-standard.scss */
+/* line 1526, ../../sass/md/md-standard.scss */
 Tree-Checkbox:checked:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
 
-/* line 1524, ../../sass/md/md-standard.scss */
+/* line 1530, ../../sass/md/md-standard.scss */
 Tree-Indent {
   width: 16px;
   background-image: none;
 }
 
-/* line 1529, ../../sass/md/md-standard.scss */
+/* line 1535, ../../sass/md/md-standard.scss */
 Tree-Indent:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 1533, ../../sass/md/md-standard.scss */
+/* line 1539, ../../sass/md/md-standard.scss */
 Tree-Indent:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 1537, ../../sass/md/md-standard.scss */
+/* line 1543, ../../sass/md/md-standard.scss */
 Tree-Indent:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 1541, ../../sass/md/md-standard.scss */
+/* line 1547, ../../sass/md/md-standard.scss */
 Tree-Indent:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 1545, ../../sass/md/md-standard.scss */
+/* line 1551, ../../sass/md/md-standard.scss */
 Tree-Indent:line {
   background-image: none;
 }
 
-/* line 1549, ../../sass/md/md-standard.scss */
+/* line 1555, ../../sass/md/md-standard.scss */
 Tree-Indent:first {
   background-image: none;
 }
 
-/* line 1553, ../../sass/md/md-standard.scss */
+/* line 1559, ../../sass/md/md-standard.scss */
 Tree-Indent:first:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 1557, ../../sass/md/md-standard.scss */
+/* line 1563, ../../sass/md/md-standard.scss */
 Tree-Indent:first:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 1561, ../../sass/md/md-standard.scss */
+/* line 1567, ../../sass/md/md-standard.scss */
 Tree-Indent:first:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 1565, ../../sass/md/md-standard.scss */
+/* line 1571, ../../sass/md/md-standard.scss */
 Tree-Indent:first:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 1569, ../../sass/md/md-standard.scss */
+/* line 1575, ../../sass/md/md-standard.scss */
 Tree-Indent:last {
   background-image: none;
 }
 
-/* line 1573, ../../sass/md/md-standard.scss */
+/* line 1579, ../../sass/md/md-standard.scss */
 Tree-Indent:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 1577, ../../sass/md/md-standard.scss */
+/* line 1583, ../../sass/md/md-standard.scss */
 Tree-Indent:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 1581, ../../sass/md/md-standard.scss */
+/* line 1587, ../../sass/md/md-standard.scss */
 Tree-Indent:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 1585, ../../sass/md/md-standard.scss */
+/* line 1591, ../../sass/md/md-standard.scss */
 Tree-Indent:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 1589, ../../sass/md/md-standard.scss */
+/* line 1595, ../../sass/md/md-standard.scss */
 Tree-Indent:first:last {
   background-image: none;
 }
 
-/* line 1593, ../../sass/md/md-standard.scss */
+/* line 1599, ../../sass/md/md-standard.scss */
 Tree-Indent:first:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 1597, ../../sass/md/md-standard.scss */
+/* line 1603, ../../sass/md/md-standard.scss */
 Tree-Indent:first:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 1601, ../../sass/md/md-standard.scss */
+/* line 1607, ../../sass/md/md-standard.scss */
 Tree-Indent:first:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 1605, ../../sass/md/md-standard.scss */
+/* line 1611, ../../sass/md/md-standard.scss */
 Tree-Indent:first:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
 /* Scale default theme */
-/* line 1611, ../../sass/md/md-standard.scss */
+/* line 1617, ../../sass/md/md-standard.scss */
 Scale {
   background-color: white;
   border-radius: 3px;
 }
 
-/* line 1616, ../../sass/md/md-standard.scss */
+/* line 1622, ../../sass/md/md-standard.scss */
 Scale-Thumb {
   background-color: #e5e5e5;
   border: 1px solid #a4a4a4;
   border-radius: 2px 2px 2px 2px;
 }
 
-/* line 1622, ../../sass/md/md-standard.scss */
+/* line 1628, ../../sass/md/md-standard.scss */
 Scale-Thumb:focused {
   border: 1px solid #4f7cb1;
 }
 
 /* DateTime default theme */
-/* line 1628, ../../sass/md/md-standard.scss */
+/* line 1634, ../../sass/md/md-standard.scss */
 DateTime {
   border: none;
   border-radius: 0 2px 2px 0;
@@ -1655,13 +1658,13 @@ DateTime {
   box-shadow: none;
 }
 
-/* line 1638, ../../sass/md/md-standard.scss */
+/* line 1644, ../../sass/md/md-standard.scss */
 DateTime[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 1643, ../../sass/md/md-standard.scss */
+/* line 1649, ../../sass/md/md-standard.scss */
 DateTime-Field {
   color: inherit;
   background-color: transparent;
@@ -1669,55 +1672,55 @@ DateTime-Field {
   text-shadow: none;
 }
 
-/* line 1650, ../../sass/md/md-standard.scss */
+/* line 1656, ../../sass/md/md-standard.scss */
 DateTime[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 1656, ../../sass/md/md-standard.scss */
+/* line 1662, ../../sass/md/md-standard.scss */
 DateTime[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 1660, ../../sass/md/md-standard.scss */
+/* line 1666, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day {
   color: inherit;
   background-color: transparent;
   text-shadow: none;
 }
 
-/* line 1666, ../../sass/md/md-standard.scss */
+/* line 1672, ../../sass/md/md-standard.scss */
 DateTime-Field:selected,
 DateTime-Calendar-Day:selected {
   background-color: #5882b5;
   color: #ffffff;
 }
 
-/* line 1672, ../../sass/md/md-standard.scss */
+/* line 1678, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:selected:hover {
   background-color: #5882b5;
   color: #ffffff;
 }
 
-/* line 1677, ../../sass/md/md-standard.scss */
+/* line 1683, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:selected:unfocused {
   background-color: #c0c0c0;
 }
 
-/* line 1681, ../../sass/md/md-standard.scss */
+/* line 1687, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:otherMonth {
   background-color: transparent;
   color: #808080;
 }
 
-/* line 1686, ../../sass/md/md-standard.scss */
+/* line 1692, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:hover {
   background-color: #b5b5b5;
 }
 
-/* line 1690, ../../sass/md/md-standard.scss */
+/* line 1696, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Navbar {
   border: none;
   border-radius: 0;
@@ -1727,51 +1730,51 @@ DateTime-Calendar-Navbar {
   text-shadow: none;
 }
 
-/* line 1702, ../../sass/md/md-standard.scss */
+/* line 1708, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousMonthButton {
   background-image: url(resource/widget/rap/calendar/lastMonth.png);
   cursor: default;
 }
 
-/* line 1707, ../../sass/md/md-standard.scss */
+/* line 1713, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousMonthButton:hover {
   background-image: url(resource/widget/rap/calendar/lastMonth-hover.png);
 }
 
-/* line 1711, ../../sass/md/md-standard.scss */
+/* line 1717, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextMonthButton {
   background-image: url(resource/widget/rap/calendar/nextMonth.png);
   cursor: default;
 }
 
-/* line 1716, ../../sass/md/md-standard.scss */
+/* line 1722, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextMonthButton:hover {
   background-image: url(resource/widget/rap/calendar/nextMonth-hover.png);
 }
 
-/* line 1720, ../../sass/md/md-standard.scss */
+/* line 1726, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousYearButton {
   background-image: url(resource/widget/rap/calendar/lastYear.png);
   cursor: default;
 }
 
-/* line 1725, ../../sass/md/md-standard.scss */
+/* line 1731, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousYearButton:hover {
   background-image: url(resource/widget/rap/calendar/lastYear-hover.png);
 }
 
-/* line 1729, ../../sass/md/md-standard.scss */
+/* line 1735, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextYearButton {
   background-image: url(resource/widget/rap/calendar/nextYear.png);
   cursor: default;
 }
 
-/* line 1734, ../../sass/md/md-standard.scss */
+/* line 1740, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextYearButton:hover {
   background-image: url(resource/widget/rap/calendar/nextYear-hover.png);
 }
 
-/* line 1738, ../../sass/md/md-standard.scss */
+/* line 1744, ../../sass/md/md-standard.scss */
 DateTime-UpButton {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#efefef));
@@ -1782,17 +1785,17 @@ DateTime-UpButton {
   cursor: default;
 }
 
-/* line 1752, ../../sass/md/md-standard.scss */
+/* line 1758, ../../sass/md/md-standard.scss */
 DateTime-UpButton-Icon {
   background-image: url(resource/widget/rap/datetime/up.png);
 }
 
-/* line 1756, ../../sass/md/md-standard.scss */
+/* line 1762, ../../sass/md/md-standard.scss */
 DateTime-UpButton-Icon:hover {
   background-image: url(resource/widget/rap/datetime/up-hover.png);
 }
 
-/* line 1760, ../../sass/md/md-standard.scss */
+/* line 1766, ../../sass/md/md-standard.scss */
 DateTime-DownButton {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#efefef), to(#e4e4e4));
@@ -1803,17 +1806,17 @@ DateTime-DownButton {
   cursor: default;
 }
 
-/* line 1774, ../../sass/md/md-standard.scss */
+/* line 1780, ../../sass/md/md-standard.scss */
 DateTime-DownButton-Icon {
   background-image: url(resource/widget/rap/datetime/down.png);
 }
 
-/* line 1778, ../../sass/md/md-standard.scss */
+/* line 1784, ../../sass/md/md-standard.scss */
 DateTime-DownButton-Icon:hover {
   background-image: url(resource/widget/rap/datetime/down-hover.png);
 }
 
-/* line 1782, ../../sass/md/md-standard.scss */
+/* line 1788, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton {
   cursor: default;
   background-color: #f0f0f0;
@@ -1824,7 +1827,7 @@ DateTime-DropDownButton {
   width: 30px;
 }
 
-/* line 1796, ../../sass/md/md-standard.scss */
+/* line 1802, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton:disabled,
 DateTime-UpButton:disabled,
 DateTime-DownButton:disabled {
@@ -1832,41 +1835,41 @@ DateTime-DownButton:disabled {
   background-color: transparent;
 }
 
-/* line 1803, ../../sass/md/md-standard.scss */
+/* line 1809, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton-Icon {
   background-image: url(resource/widget/rap/spinner/down.png);
 }
 
-/* line 1807, ../../sass/md/md-standard.scss */
+/* line 1813, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/down-hover.png);
 }
 
-/* line 1811, ../../sass/md/md-standard.scss */
+/* line 1817, ../../sass/md/md-standard.scss */
 DateTime-DropDownCalendar {
   border: 1px #a7a6aa;
 }
 
 /* ExpandBar default theme */
-/* line 1817, ../../sass/md/md-standard.scss */
+/* line 1823, ../../sass/md/md-standard.scss */
 ExpandBar {
   color: #4a4a4a;
   background-color: white;
 }
 
-/* line 1822, ../../sass/md/md-standard.scss */
+/* line 1828, ../../sass/md/md-standard.scss */
 ExpandBar[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 1827, ../../sass/md/md-standard.scss */
+/* line 1833, ../../sass/md/md-standard.scss */
 ExpandItem {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 1832, ../../sass/md/md-standard.scss */
+/* line 1838, ../../sass/md/md-standard.scss */
 ExpandItem-Header {
   border: none;
   border-radius: 0;
@@ -1875,61 +1878,61 @@ ExpandItem-Header {
   text-shadow: none;
 }
 
-/* line 1844, ../../sass/md/md-standard.scss */
+/* line 1850, ../../sass/md/md-standard.scss */
 ExpandItem-Header:disabled {
   cursor: default;
 }
 
-/* line 1848, ../../sass/md/md-standard.scss */
+/* line 1854, ../../sass/md/md-standard.scss */
 ExpandItem-Button {
   background-image: url(resource/widget/rap/expanditem/expanditem-expand.png);
 }
 
-/* line 1852, ../../sass/md/md-standard.scss */
+/* line 1858, ../../sass/md/md-standard.scss */
 ExpandItem-Button:hover {
   background-image: url(resource/widget/rap/expanditem/expanditem-expand-hover.png);
 }
 
-/* line 1856, ../../sass/md/md-standard.scss */
+/* line 1862, ../../sass/md/md-standard.scss */
 ExpandItem-Button:expanded {
   background-image: url(resource/widget/rap/expanditem/expanditem-collapse.png);
 }
 
-/* line 1860, ../../sass/md/md-standard.scss */
+/* line 1866, ../../sass/md/md-standard.scss */
 ExpandItem-Button:expanded:hover {
   background-image: url(resource/widget/rap/expanditem/expanditem-collapse-hover.png);
 }
 
 /* Sash default theme */
-/* line 1866, ../../sass/md/md-standard.scss */
+/* line 1872, ../../sass/md/md-standard.scss */
 Sash {
   border: none;
   background-image: none;
   background-color: transparent;
 }
 
-/* line 1872, ../../sass/md/md-standard.scss */
+/* line 1878, ../../sass/md/md-standard.scss */
 Sash[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 1876, ../../sass/md/md-standard.scss */
+/* line 1882, ../../sass/md/md-standard.scss */
 Sash:hover {
   background-color: #e5e5e5;
 }
 
-/* line 1880, ../../sass/md/md-standard.scss */
+/* line 1886, ../../sass/md/md-standard.scss */
 Sash-Handle:horizontal {
   background-image: url(resource/widget/rap/sash/sash-handle-horizontal.png);
 }
 
-/* line 1884, ../../sass/md/md-standard.scss */
+/* line 1890, ../../sass/md/md-standard.scss */
 Sash-Handle:vertical {
   background-image: url(resource/widget/rap/sash/sash-handle-vertical.png);
 }
 
 /* Slider default theme */
-/* line 1890, ../../sass/md/md-standard.scss */
+/* line 1896, ../../sass/md/md-standard.scss */
 Slider {
   border: none;
   background-color: #f0f0f0;
@@ -1937,7 +1940,7 @@ Slider {
 }
 
 /* Thumb */
-/* line 1898, ../../sass/md/md-standard.scss */
+/* line 1904, ../../sass/md/md-standard.scss */
 Slider-Thumb[HORIZONTAL],
 Slider-Thumb[VERTICAL] {
   background-color: #e4e4e4;
@@ -1947,7 +1950,7 @@ Slider-Thumb[VERTICAL] {
 }
 
 /* Buttons */
-/* line 1908, ../../sass/md/md-standard.scss */
+/* line 1914, ../../sass/md/md-standard.scss */
 Slider-UpButton,
 Slider-DownButton {
   background-color: #e4e4e4;
@@ -1956,74 +1959,74 @@ Slider-DownButton {
   padding: 0;
 }
 
-/* line 1916, ../../sass/md/md-standard.scss */
+/* line 1922, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL],
 Slider-DownButton[HORIZONTAL] {
   background-image: none;
 }
 
-/* line 1921, ../../sass/md/md-standard.scss */
+/* line 1927, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL],
 Slider-DownButton[VERTICAL] {
   background-image: none;
 }
 
-/* line 1926, ../../sass/md/md-standard.scss */
+/* line 1932, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL]:pressed,
 Slider-DownButton[HORIZONTAL]:pressed {
   background-image: none;
 }
 
-/* line 1931, ../../sass/md/md-standard.scss */
+/* line 1937, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL]:pressed,
 Slider-DownButton[VERTICAL]:pressed {
   background-image: none;
 }
 
 /* Rounded Borders */
-/* line 1938, ../../sass/md/md-standard.scss */
+/* line 1944, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL] {
   border-radius: 0px 2px 2px 0px;
 }
 
-/* line 1942, ../../sass/md/md-standard.scss */
+/* line 1948, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL] {
   border-radius: 0px 0px 2px 2px;
 }
 
-/* line 1946, ../../sass/md/md-standard.scss */
+/* line 1952, ../../sass/md/md-standard.scss */
 Slider-DownButton[HORIZONTAL] {
   border-radius: 2px 0px 0px 2px;
 }
 
-/* line 1950, ../../sass/md/md-standard.scss */
+/* line 1956, ../../sass/md/md-standard.scss */
 Slider-DownButton[VERTICAL] {
   border-radius: 2px 2px 0px 0px;
 }
 
 /* Button Icons */
-/* line 1956, ../../sass/md/md-standard.scss */
+/* line 1962, ../../sass/md/md-standard.scss */
 Slider-UpButton-Icon[HORIZONTAL] {
   background-image: url(resource/widget/rap/slider/right.png);
 }
 
-/* line 1960, ../../sass/md/md-standard.scss */
+/* line 1966, ../../sass/md/md-standard.scss */
 Slider-UpButton-Icon[VERTICAL] {
   background-image: url(resource/widget/rap/slider/down.png);
 }
 
-/* line 1964, ../../sass/md/md-standard.scss */
+/* line 1970, ../../sass/md/md-standard.scss */
 Slider-DownButton-Icon[HORIZONTAL] {
   background-image: url(resource/widget/rap/slider/left.png);
 }
 
-/* line 1968, ../../sass/md/md-standard.scss */
+/* line 1974, ../../sass/md/md-standard.scss */
 Slider-DownButton-Icon[VERTICAL] {
   background-image: url(resource/widget/rap/slider/up.png);
 }
 
 /* ToolTip default theme */
-/* line 1974, ../../sass/md/md-standard.scss */
+/* line 1980, ../../sass/md/md-standard.scss */
 ToolTip {
   cursor: default;
   border: 1px solid #a0b3ca;
@@ -2037,35 +2040,35 @@ ToolTip {
   box-shadow: 0 0 4px #adadad;
 }
 
-/* line 1991, ../../sass/md/md-standard.scss */
+/* line 1997, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_ERROR] {
   background-image: url(resource/widget/rap/tooltip/error.png);
 }
 
-/* line 1995, ../../sass/md/md-standard.scss */
+/* line 2001, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_INFORMATION] {
   background-image: url(resource/widget/rap/tooltip/information.png);
 }
 
-/* line 1999, ../../sass/md/md-standard.scss */
+/* line 2005, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_WARNING] {
   background-image: url(resource/widget/rap/tooltip/warning.png);
 }
 
-/* line 2003, ../../sass/md/md-standard.scss */
+/* line 2009, ../../sass/md/md-standard.scss */
 ToolTip-Text {
   color: #4a4a4a;
   text-shadow: none;
 }
 
-/* line 2008, ../../sass/md/md-standard.scss */
+/* line 2014, ../../sass/md/md-standard.scss */
 ToolTip-Message {
   color: #4a4a4a;
   text-shadow: none;
 }
 
 /* CCombo default theme */
-/* line 2015, ../../sass/md/md-standard.scss */
+/* line 2021, ../../sass/md/md-standard.scss */
 CCombo {
   color: #4a4a4a;
   background-color: #ffffff;
@@ -2076,26 +2079,26 @@ CCombo {
   box-shadow: none;
 }
 
-/* line 2025, ../../sass/md/md-standard.scss */
+/* line 2031, ../../sass/md/md-standard.scss */
 CCombo[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 2031, ../../sass/md/md-standard.scss */
+/* line 2037, ../../sass/md/md-standard.scss */
 CCombo[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 2036, ../../sass/md/md-standard.scss */
+/* line 2042, ../../sass/md/md-standard.scss */
 CCombo:disabled,
 CCombo[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 2041, ../../sass/md/md-standard.scss */
+/* line 2047, ../../sass/md/md-standard.scss */
 CCombo-Button {
   cursor: default;
   background-color: #efefef;
@@ -2106,30 +2109,30 @@ CCombo-Button {
   width: 30px;
 }
 
-/* line 2055, ../../sass/md/md-standard.scss */
+/* line 2061, ../../sass/md/md-standard.scss */
 CCombo-Button:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 2060, ../../sass/md/md-standard.scss */
+/* line 2066, ../../sass/md/md-standard.scss */
 CCombo-Button-Icon {
   background-image: url(resource/widget/rap/ccombo/down.png);
 }
 
-/* line 2064, ../../sass/md/md-standard.scss */
+/* line 2070, ../../sass/md/md-standard.scss */
 CCombo-Button-Icon:hover {
   background-image: url(resource/widget/rap/ccombo/down-hover.png);
 }
 
-/* line 2068, ../../sass/md/md-standard.scss */
+/* line 2074, ../../sass/md/md-standard.scss */
 CCombo-List {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
   border-radius: 2px;
 }
 
-/* line 2074, ../../sass/md/md-standard.scss */
+/* line 2080, ../../sass/md/md-standard.scss */
 CCombo-List-Item {
   color: inherit;
   background-color: transparent;
@@ -2139,26 +2142,26 @@ CCombo-List-Item {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 2083, ../../sass/md/md-standard.scss */
+/* line 2089, ../../sass/md/md-standard.scss */
 CCombo-List-Item:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 2093, ../../sass/md/md-standard.scss */
+/* line 2099, ../../sass/md/md-standard.scss */
 CCombo-List-Item:selected {
   color: #ffffff;
   background-color: #5882b5;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 2103, ../../sass/md/md-standard.scss */
+/* line 2109, ../../sass/md/md-standard.scss */
 CCombo-Field {
   padding: 5px 10px 5px 10px;
 }
 
-/* line 2107, ../../sass/md/md-standard.scss */
+/* line 2113, ../../sass/md/md-standard.scss */
 CCombo-FocusIndicator {
   background-color: transparent;
   border: none;
@@ -2167,7 +2170,7 @@ CCombo-FocusIndicator {
 }
 
 /* CLabel default theme */
-/* line 2116, ../../sass/md/md-standard.scss */
+/* line 2122, ../../sass/md/md-standard.scss */
 CLabel {
   color: #4a4a4a;
   background-color: #ffffff;
@@ -2182,25 +2185,25 @@ CLabel {
   text-shadow: none;
 }
 
-/* line 2130, ../../sass/md/md-standard.scss */
+/* line 2136, ../../sass/md/md-standard.scss */
 CLabel[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
 /* Browser default theme */
-/* line 2137, ../../sass/md/md-standard.scss */
+/* line 2143, ../../sass/md/md-standard.scss */
 Browser {
   border: none;
 }
 
-/* line 2141, ../../sass/md/md-standard.scss */
+/* line 2147, ../../sass/md/md-standard.scss */
 Browser[BORDER] {
   border: 1px solid #a4a4a4;
 }
 
 /* ScrollBar default theme */
-/* line 2147, ../../sass/md/md-standard.scss */
+/* line 2153, ../../sass/md/md-standard.scss */
 ScrollBar {
   background-color: #f0f0f0;
   background-image: none;
@@ -2209,7 +2212,7 @@ ScrollBar {
   width: 10px;
 }
 
-/* line 2155, ../../sass/md/md-standard.scss */
+/* line 2161, ../../sass/md/md-standard.scss */
 ScrollBar-Thumb {
   background-color: #f0f0f0;
   border: 1px solid #bdbdbd;
@@ -2218,7 +2221,7 @@ ScrollBar-Thumb {
   min-height: 20px;
 }
 
-/* line 2163, ../../sass/md/md-standard.scss */
+/* line 2169, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton,
 ScrollBar-DownButton {
   background-color: transparent;
@@ -2227,28 +2230,28 @@ ScrollBar-DownButton {
   cursor: default;
 }
 
-/* line 2171, ../../sass/md/md-standard.scss */
+/* line 2177, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton[HORIZONTAL] {
   background-image: url(resource/widget/rap/scrollbar/right.png);
 }
 
-/* line 2175, ../../sass/md/md-standard.scss */
+/* line 2181, ../../sass/md/md-standard.scss */
 ScrollBar-DownButton[HORIZONTAL] {
   background-image: url(resource/widget/rap/scrollbar/left.png);
 }
 
-/* line 2179, ../../sass/md/md-standard.scss */
+/* line 2185, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton[VERTICAL] {
   background-image: url(resource/widget/rap/scrollbar/down.png);
 }
 
-/* line 2183, ../../sass/md/md-standard.scss */
+/* line 2189, ../../sass/md/md-standard.scss */
 ScrollBar-DownButton[VERTICAL] {
   background-image: url(resource/widget/rap/scrollbar/up.png);
 }
 
 /* FileUpload default theme */
-/* line 2189, ../../sass/md/md-standard.scss */
+/* line 2195, ../../sass/md/md-standard.scss */
 FileUpload {
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
   background-repeat: repeat;
@@ -2265,7 +2268,7 @@ FileUpload {
   text-shadow: 0 1px 0 #ffffff;
 }
 
-/* line 2209, ../../sass/md/md-standard.scss */
+/* line 2215, ../../sass/md/md-standard.scss */
 FileUpload:disabled {
   cursor: default;
   color: #d2d2d2;
@@ -2274,17 +2277,17 @@ FileUpload:disabled {
   border: 1px solid #d2d2d2;
 }
 
-/* line 2217, ../../sass/md/md-standard.scss */
+/* line 2223, ../../sass/md/md-standard.scss */
 FileUpload:hover {
   background-image: gradient(linear, left top, left bottom, from(#eaeaea), to(#d5d5d5));
 }
 
-/* line 2225, ../../sass/md/md-standard.scss */
+/* line 2231, ../../sass/md/md-standard.scss */
 FileUpload:pressed {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 2233, ../../sass/md/md-standard.scss */
+/* line 2239, ../../sass/md/md-standard.scss */
 FileUpload-FocusIndicator {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2294,7 +2297,7 @@ FileUpload-FocusIndicator {
 }
 
 /* JFace specific theming */
-/* line 2243, ../../sass/md/md-standard.scss */
+/* line 2249, ../../sass/md/md-standard.scss */
 Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
   border: 1px solid #bdbdbd;
   padding: 0;
@@ -2573,10 +2576,10 @@ Button[PUSH]:disabled,
 Button[TOGGLE]:disabled,
 Button[TOGGLE]:selected:disabled {
   cursor: default;
-  color: #d2d2d2;
+  color: #ffffff;
   background-image: none;
-  background-color: #fafafa;
-  border: 1px solid #d2d2d2;
+  background-color: #C0C0C0;
+  /*border: 1px solid #d2d2d2;*/
 }
 
 /* line 70, ../../sass/md/_button.scss */
@@ -2622,17 +2625,17 @@ Button[RADIO][BORDER] {
 
 /* line 117, ../../sass/md/_button.scss */
 Button-CheckIcon {
-  background-image: url(resources/icons/rap/png/normal/24//checkbox-blank-circle-outline.png);
+  background-image: url(resources/icons/rap/png/normal/20//checkbox-blank-circle-outline.png);
 }
 
 /* line 124, ../../sass/md/_button.scss */
 Button-CheckIcon:hover {
-  background-image: url(resources/icons/rap/png/hover/24//checkbox-blank-circle-outline.png);
+  background-image: url(resources/icons/rap/png/hover/20//checkbox-blank-circle-outline.png);
 }
 
 /* line 129, ../../sass/md/_button.scss */
 Button-CheckIcon:selected {
-  background-image: url(resources/icons/rap/png/normal/24//checkbox-marked-circle.png);
+  background-image: url(resources/icons/rap/png/normal/20//checkbox-marked-circle.png);
 }
 
 /* line 134, ../../sass/md/_button.scss */

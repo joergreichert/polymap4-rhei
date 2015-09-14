@@ -61,10 +61,10 @@ Button[PUSH]:disabled,
 Button[TOGGLE]:disabled,
 Button[TOGGLE]:selected:disabled {
   cursor: default;
-  color: #d2d2d2;
+  color: $action-disabled-fg;
   background-image: none;
-  background-color: #fafafa;
-  border: 1px solid #d2d2d2;
+  background-color: $action-disabled-bg;
+  /*border: 1px solid #d2d2d2;*/
 }
 
 Button[ARROW]:hover,
