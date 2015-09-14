@@ -95,10 +95,11 @@ public abstract class FieldBuilder
         // tooltip
         tooltip.ifPresent( value -> result.setToolTipText( value ) );
         
-//        // editable
-//        if (!fieldEnabled.get()) {
-//            pageContainer.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
-//        }
+        // editable
+        if (!fieldEnabled.get()) {
+            field.get().setEnabled( false );
+            //pageContainer.setFieldEnabled( prop.getName().getLocalPart(), fieldEnabled );
+        }
         return result;
     }
 
