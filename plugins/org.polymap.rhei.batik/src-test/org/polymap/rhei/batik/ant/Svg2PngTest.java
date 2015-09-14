@@ -94,8 +94,8 @@ public class Svg2PngTest {
         URL svgInputURL = getClass().getResource( EXAMPLE_SVG );
         try (InputStream svgInput = getClass().getResourceAsStream( EXAMPLE_SVG )) {
             Bounds bounds = svg2Png.getInitialSVGBounds( svgInputURL.toString(), svgInput );
-            Assert.assertEquals( 236f, bounds.getHeight(), 0.5f );
-            Assert.assertEquals( 236f, bounds.getWidth(), 0.5f );
+            Assert.assertEquals( 256f, bounds.getHeight(), 0.5f );
+            Assert.assertEquals( 256f, bounds.getWidth(), 0.5f );
         }
     }
 
@@ -110,7 +110,7 @@ public class Svg2PngTest {
         imageConfig.setAdjBrightness( 0f );
         imageConfig.setColorType( COLOR_TYPE.RGB);
 
-        File pngPath = new File( "/tmp/Svg2PngTest/" );
+        File pngPath = new File( "build/Svg2PngTest" );
         pngPath.mkdirs();
         FileUtils.cleanDirectory( pngPath );
 
@@ -123,12 +123,10 @@ public class Svg2PngTest {
                 Collections.singletonList( Scale.P16 ),
                 Collections.singletonList( imageConfig ) );
         
-        URL pngURL = getClass().getResource( "default/16/" + EXAMPLE_SVG2.replace( ".svg", ".png" ));
-        Assert.assertNotNull( pngURL );
-        BufferedImage image = ImageIO.read( pngURL );
+        BufferedImage image = ImageIO.read( new File(pngPath + "/default/16/" + EXAMPLE_SVG2.replace( ".svg", ".png" )) );
         Assert.assertNotNull( image );
         Assert.assertEquals( 16f, image.getHeight(), 0.5f );
-        Assert.assertEquals( 12f, image.getWidth(), 0.5f );
+        Assert.assertEquals( 16f, image.getWidth(), 0.5f );
         Assert.assertEquals( 1, image.getColorModel().getPixelSize() );
     }
 }
