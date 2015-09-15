@@ -19,11 +19,18 @@ import static org.polymap.rhei.batik.app.SvgImageRegistryHelper.NORMAL24;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,7 +41,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.polymap.core.runtime.Callback;
-import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.rhei.batik.BatikPlugin;
@@ -53,150 +59,199 @@ import org.polymap.rhei.batik.BatikPlugin;
 public class Toolbar
         extends Configurable {
 
-    private Image                  navigationMenuImage   = BatikPlugin.images().svgImage( "ic_menu_48px.svg", NORMAL24 );
+    private Image                     navigationMenuImage  = BatikPlugin.images().svgImage( "ic_menu_48px.svg",
+                                                                   NORMAL24 );
 
-    private Image                  moreActionsMenuImage  = BatikPlugin.images().svgImage( "ic_more_vert_48px.svg",
-                                                                 NORMAL24 );
+    private Image                     moreActionsMenuImage = BatikPlugin.images().svgImage( "ic_more_vert_48px.svg",
+                                                                   NORMAL24 );
 
-    @org.polymap.core.runtime.config.Mandatory
-    public Config2<Toolbar,String> title;
+    private final Composite           comp;
 
-    private final Composite        comp;
-
-    private final Button           navigationMenuButton;
-
-    private final Menu             navigationMenu;
-
-    // or combo box showing the current page
-    private final Label            titleLabel;
-
-    private final Composite        actionsPanel;
-
-    private Button                 moreActionsMenuButton = null;
-
-    private Menu                   moreActionsMenu       = null;
-
-
-    public static class ActionConfiguration
-            extends Configurable {
-
-        @org.polymap.core.runtime.config.Mandatory
-        public Config2<ActionConfiguration,String>          name;
-
-        @org.polymap.core.runtime.config.Mandatory
-        public Config2<ActionConfiguration,Boolean>         showName;
-
-        public Config2<ActionConfiguration,Image> image;
-
-        @org.polymap.core.runtime.config.Mandatory
-        public Config2<ActionConfiguration,Callback<?>>     callback;
-
-        public Config2<ActionConfiguration,Integer>         priority;
-
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        @Override
-        public boolean equals( Object obj ) {
-            if (!(obj instanceof ActionConfiguration))
-                return false;
-            return this.toString().equals( obj.toString() );
-        }
-
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return name.orElse( "<unknown>" );
-        }
-    }
-
-    private List<ActionConfiguration> actions = new ArrayList<ActionConfiguration>();
+    private List<ActionConfiguration> actions              = new ArrayList<ActionConfiguration>();
 
 
     /**
      * 
+     * @param tk the Material design toolkit to be used to create specific MD
+     *        components
+     * @param parent the parent composite of that toolbar to create
+     * @param title the title to be shown in this toolbar next to the navigation menu
+     * @param fixedPosition if true, the toolbar will be floating when scrolling
+     *        down, if false, the toolbar will disappear when scrolling the page down
+     * @param style the style configuration for the toolbar
+     * @param actions the actions to be shown as buttons (for the first two actions)
+     *        resp. menu entries for further actions
      */
-    public Toolbar( MdToolkit tk, Composite parent, boolean fixedPosition, int style, ActionConfiguration... actions ) {
-        this.actions = Arrays.asList( actions);
-        comp = tk.createComposite( parent, style );
-        comp.setLayoutData( FormDataFactory.defaults().top( 5 ).left( 0 ).right( 100 ).create() );
+    public Toolbar( MdToolkit tk, Composite parent, String title, boolean fixedPosition, int style,
+            ActionConfiguration... actions ) {
+        this.actions = Arrays.asList( actions );
+        comp = createToolbar( tk, parent, fixedPosition, style );
+        createNavigationMenu( tk, comp );
+        createTitleLabel( title, comp );
+        createActionsPanel( tk, comp, this.actions );
+    }
+
+
+    private Composite createActionsPanel( MdToolkit tk, Composite comp, List<ActionConfiguration> actions  ) {
+        Composite actionsPanel = tk.createComposite( comp, SWT.NONE );
+        actionsPanel.setLayout( new FillLayout( SWT.HORIZONTAL ) );
+
+        createWidgetsForActions( tk, actionsPanel, actions );
+
+        return actionsPanel;
+    }
+
+
+    private Label createTitleLabel( String title, Composite comp  ) {
+        Label titleLabel = new Label( comp, SWT.NONE );
+        titleLabel.setText( title );
+        GridData gridData = new GridData();
+        gridData.grabExcessHorizontalSpace = true;
+        titleLabel.setLayoutData( gridData );
+        return titleLabel;
+    }
+
+
+    private Button createNavigationMenu( MdToolkit tk, Composite comp  ) {
+        Button navigationMenuButton = tk.createButton( comp, "", SWT.NONE );
+        navigationMenuButton.setImage( navigationMenuImage );
+        // TODO this should show a side bar instead of a menu: 
+        // https://www.google.com/design/spec/layout/structure.html#structure-side-nav
+//        Menu navigationMenu = new Menu( navigationMenuButton );
+//        addDropDownMenuListener( navigationMenuButton, comp, navigationMenu );
+//
+//        MenuItem navigationMenuDummyItem = new MenuItem( navigationMenu, SWT.NONE );
+//        navigationMenuDummyItem.setText( "dummy" );
+        return navigationMenuButton;
+    }
+
+    /*
+     * We could use org.eclipse.swt.widgets.ToolBar instead of creating this composite,
+     * but I encounter some issues with applying styles and layouting (e.g. spacing
+     * between ToolItems).
+     * 
+     * http://help.eclipse.org/juno/index.jsp?topic=/org.eclipse.rap.help/help/html/reference/theming/ToolBar.html
+     */
+    private Composite createToolbar( MdToolkit tk, Composite parent, boolean fixedPosition, int style ) {
+        Composite comp = tk.createComposite( parent, style );
+        comp.setData( RWT.CUSTOM_VARIANT, "atlas-toolbar" );
+        comp.setLayoutData( FormDataFactory.defaults().left(0).right( 100 ).create() );
         if (fixedPosition) {
             comp.moveAbove( null );
         }
         GridLayout gridLayout = new GridLayout( 3, false );
         comp.setLayout( gridLayout );
+        return comp;
+    }
 
-        navigationMenuButton = tk.createButton( comp, "", SWT.NONE );
-        navigationMenuButton.setImage( navigationMenuImage );
-        navigationMenu = new Menu( navigationMenuButton );
 
-        titleLabel = new Label( comp, SWT.NONE );
-        title.ifPresent( title -> titleLabel.setText( title ) );
-        GridData gridData = new GridData();
-        gridData.grabExcessHorizontalSpace = true;
-        titleLabel.setLayoutData( gridData );
-
-        actionsPanel = tk.createComposite( comp, SWT.NONE );
-        FillLayout fillLayout2 = new FillLayout( SWT.HORIZONTAL );
-        actionsPanel.setLayout( fillLayout2 );
-
-        List<ActionConfiguration> sortedActions = Arrays.asList( actions ).stream().sorted( ( a1, a2 ) -> {
-            int prioComp = a1.priority.get().compareTo( a2.priority.get() );
-            if (prioComp != 0)
-                return prioComp;
-            else
-                return a1.name.get().compareTo( a2.name.get() );
-        } ).collect( Collectors.toList() );
-
-        if (actions.length <= 3) {
-            createVisibleActionButtons( tk, sortedActions );
+    private void createWidgetsForActions( MdToolkit tk, Composite actionsPanel, List<ActionConfiguration> actions ) {
+        List<ActionConfiguration> sortedActions = sortActionsByPriorityAndName( actions );
+        if (actions.size() <= 3) {
+            createVisibleActionButtons( tk, actionsPanel, sortedActions );
         }
         else {
             List<ActionConfiguration> visibleActions = sortedActions.subList( 0, 3 );
-            createVisibleActionButtons( tk, visibleActions );
-
-            moreActionsMenuButton = tk.createButton( actionsPanel, "", SWT.NONE );
-            moreActionsMenuButton.setImage( moreActionsMenuImage );
-            moreActionsMenu = new Menu( moreActionsMenuButton );
-
-            List<ActionConfiguration> hiddenActions = sortedActions.subList( 3, sortedActions.size() );
-            hiddenActions.forEach( action -> {
-                MenuItem menuItem = new MenuItem( moreActionsMenu, SWT.NONE );
-                action.name.ifPresent( text -> menuItem.setText( text ) );
-                action.image.ifPresent( image -> menuItem.setImage( image ) );
-                menuItem.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
-
-                    public void widgetSelected( SelectionEvent e ) {
-                        menuItem.setEnabled( action.callback.isPresent() );
-                        action.callback.ifPresent( callback -> callback.handle( null ) );
-                    }
-                } );
-            } );
+            createVisibleActionButtons( tk, actionsPanel, visibleActions );
+            createMoreActionsButton( tk, actionsPanel, sortedActions );
         }
     }
 
 
-    private void createVisibleActionButtons( MdToolkit tk, List<ActionConfiguration> visibleActions ) {
+    private Button createMoreActionsButton( MdToolkit tk, Composite actionsPanel,
+            List<ActionConfiguration> sortedActions ) {
+        Button moreActionsMenuButton = tk.createButton( actionsPanel, "", SWT.NONE );
+        moreActionsMenuButton.setImage( moreActionsMenuImage );
+        Menu moreActionsMenu = new Menu( moreActionsMenuButton );
+        addDropDownMenuListener( moreActionsMenuButton, comp, moreActionsMenu );
+
+        List<ActionConfiguration> hiddenActions = sortedActions.subList( 3, sortedActions.size() );
+        hiddenActions.forEach( action -> {
+            MenuItem menuItem = new MenuItem( moreActionsMenu, SWT.NONE );
+            if (action.showName.get() == Boolean.TRUE) {
+                action.name.ifPresent( text -> menuItem.setText( text ) );
+            }
+            action.image.ifPresent( image -> menuItem.setImage( image ) );
+            Function<Boolean,Void> function = ( Boolean enabled ) -> {
+                menuItem.setEnabled( enabled );
+                return null;
+            };
+            boundEnableStateToCallbackAvailability( action, function );
+            menuItem.addSelectionListener( triggerCallbackWhenSelected( action ) );
+            menuItem.setEnabled( action.getCallback() != null );
+        } );
+        return moreActionsMenuButton;
+    }
+
+
+    private List<ActionConfiguration> sortActionsByPriorityAndName( List<ActionConfiguration> actions ) {
+        return actions.stream().sorted( ( a1, a2 ) -> {
+            int prioComp = a1.priority.get().compareTo( a2.priority.get() );
+            if (prioComp != 0) {
+                return prioComp;
+            }
+            else {
+                return a1.name.get().compareTo( a2.name.get() );
+            }
+        } ).collect( Collectors.toList() );
+    }
+
+
+    private void boundEnableStateToCallbackAvailability( ActionConfiguration action,
+            Function<Boolean,Void> setEnableState ) {
+        Observer observer = new Observer() {
+
+            @Override
+            public void update( Observable o, Object arg ) {
+                setEnableState.apply( arg instanceof Callback<?> );
+            }
+        };
+        action.addObserver( observer );
+    }
+
+
+    private void addDropDownMenuListener( Button button, Composite parent, Menu menu) {
+        button.addSelectionListener( new SelectionAdapter() {
+
+            public void widgetSelected( SelectionEvent event ) {
+                Rectangle bounds = button.getBounds();
+                Point point = parent.toDisplay( bounds.x - 0, bounds.y + bounds.height );
+                menu.setLocation( point );
+                menu.setVisible( true );
+            }
+        } );
+    }
+
+
+    private void createVisibleActionButtons( MdToolkit tk, Composite actionsPanel,
+            List<ActionConfiguration> visibleActions ) {
         visibleActions.forEach( action -> {
             Button btn = tk.createButton( actionsPanel, "", SWT.NONE );
-            action.name.ifPresent( text -> btn.setText( text ) );
+            if (action.showName.get() == Boolean.TRUE) {
+                action.name.ifPresent( text -> btn.setText( text ) );
+            }
             action.image.ifPresent( image -> btn.setImage( image ) );
-            btn.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
-
-                public void widgetSelected( SelectionEvent e ) {
-                    btn.setEnabled( action.callback.isPresent() );
-                    action.callback.ifPresent( callback -> callback.handle( null ) );
-                }
-            } );
+            action.tooltipText.ifPresent( tooltipText -> btn.setToolTipText( tooltipText ) );
+            Function<Boolean,Void> function = ( Boolean enabled ) -> {
+                btn.setEnabled( enabled );
+                return null;
+            };
+            boundEnableStateToCallbackAvailability( action, function );
+            btn.addSelectionListener( triggerCallbackWhenSelected( action ) );
+            btn.setEnabled( action.getCallback() != null );
         } );
+    }
+
+
+    private SelectionAdapter triggerCallbackWhenSelected( ActionConfiguration action ) {
+        return new org.eclipse.swt.events.SelectionAdapter() {
+
+            public void widgetSelected( SelectionEvent e ) {
+                if (action.getCallback() != null) {
+                    action.getCallback().handle( null );
+                }
+            }
+        };
     }
 
 

@@ -26,7 +26,6 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
-import org.polymap.rhei.batik.toolkit.md.Toolbar.ActionConfiguration;
 
 /**
  * Material design toolkit.
@@ -91,6 +90,6 @@ public class MdToolkit
     }
 
     public Toolbar createToolbar( Composite parent, String label, boolean fixedPosition, int style, ActionConfiguration... actions ) {
-        return new Toolbar( this, parent == null ? panelPage.control : parent, fixedPosition, style, actions ).title.put(label);
+        return new Toolbar( this, parent == null ? panelPage.control : parent, label, fixedPosition, style, actions );
     }
 }

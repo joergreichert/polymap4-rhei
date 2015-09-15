@@ -2361,10 +2361,15 @@ Label.atlas-panel-header {
   text-shadow: 1px 1px 0px #ffffff;
 }
 
+/* line 52, ../../sass/md/_batik.scss */
+.atlas-toolbar {
+  background-image: gradient(linear, left top, left bottom, from(#E2EdF5), to(#ffffff));
+}
+
 /**********************************************************
  * Navigation/Action Buttons
  */
-/* line 55, ../../sass/md/_batik.scss */
+/* line 59, ../../sass/md/_batik.scss */
 Button[TOGGLE].atlas-navi,
 Button[PUSH].atlas-navi {
   color: #4a8aaf;
@@ -2373,7 +2378,7 @@ Button[PUSH].atlas-navi {
   border: none;
 }
 
-/* line 62, ../../sass/md/_batik.scss */
+/* line 66, ../../sass/md/_batik.scss */
 Button[TOGGLE]:selected.atlas-navi,
 Button[TOGGLE]:hover.atlas-navi,
 Button[PUSH]:hover.atlas-navi {
@@ -2382,18 +2387,18 @@ Button[PUSH]:hover.atlas-navi {
   border: 1px solid #6BBAE1;
 }
 
-/* line 69, ../../sass/md/_batik.scss */
+/* line 73, ../../sass/md/_batik.scss */
 Button[TOGGLE]:selected.atlas-navi {
   color: #606060;
   border: 1px solid #a0a0a0;
 }
 
-/* line 73, ../../sass/md/_batik.scss */
+/* line 77, ../../sass/md/_batik.scss */
 Composite.atlas-navi {
   /*background-color: #f3f3f3;*/
 }
 
-/* line 76, ../../sass/md/_batik.scss */
+/* line 80, ../../sass/md/_batik.scss */
 Composite[BORDER].atlas-actions {
   background-color: #f5f5f5;
   border-radius: 3px;
@@ -2401,21 +2406,21 @@ Composite[BORDER].atlas-actions {
   border-top-color: #ffffff;
 }
 
-/* line 82, ../../sass/md/_batik.scss */
+/* line 86, ../../sass/md/_batik.scss */
 Composite[BORDER].atlas-header {
   background-color: #ffffff;
   border-radius: 0px;
   border: none;
 }
 
-/* line 87, ../../sass/md/_batik.scss */
+/* line 91, ../../sass/md/_batik.scss */
 Label.atlas-header {
   font: bold 32px Helvetica, Arial, sans-serif;
   /*  color: #60A7CA;*/
   color: #666;
 }
 
-/* line 92, ../../sass/md/_batik.scss */
+/* line 96, ../../sass/md/_batik.scss */
 Composite.atlas-panel,
 Composite[BORDER].atlas-panel,
 Composite.atlas-navi-switcher,
@@ -2426,7 +2431,7 @@ Composite[BORDER].atlas-navi-switcher {
 /* ********************************************************
  * ToolTip 
  */
-/* line 102, ../../sass/md/_batik.scss */
+/* line 106, ../../sass/md/_batik.scss */
 ToolTip, Shell.batik-status-tooltip {
   cursor: default;
   border-radius: 3px;
@@ -2453,14 +2458,14 @@ ToolTip, Shell.batik-status-tooltip {
   */
 }
 
-/* line 130, ../../sass/md/_batik.scss */
+/* line 134, ../../sass/md/_batik.scss */
 ToolTip-Text,
 Label.batik-status-tooltip-text {
   color: #f8f8f8;
   text-shadow: none;
 }
 
-/* line 135, ../../sass/md/_batik.scss */
+/* line 139, ../../sass/md/_batik.scss */
 ToolTip-Message,
 Label.batik-status-tooltip-message {
   color: #e8e8e8;
@@ -2470,30 +2475,30 @@ Label.batik-status-tooltip-message {
 /**********************************************************
  * Section
  */
-/* line 144, ../../sass/md/_batik.scss */
+/* line 148, ../../sass/md/_batik.scss */
 Composite[BORDER].batik-panel-section-client {
   border-radius: 4px;
   border: 1px solid #ddd;
 }
 
-/* line 148, ../../sass/md/_batik.scss */
+/* line 152, ../../sass/md/_batik.scss */
 Composite[BORDER].batik-panel-section {
   border-radius: 4px;
   border: 1px solid #ddd;
 }
 
-/* line 152, ../../sass/md/_batik.scss */
+/* line 156, ../../sass/md/_batik.scss */
 Label.batik-panel-section-title {
   font: 22px 'Roboto', 'Noto', sans-serif;
   border: none;
 }
 
-/* line 156, ../../sass/md/_batik.scss */
+/* line 160, ../../sass/md/_batik.scss */
 Label:disabled.batik-panel-section-title {
   opacity: 0.3;
 }
 
-/* line 159, ../../sass/md/_batik.scss */
+/* line 163, ../../sass/md/_batik.scss */
 Label[SEPARATOR],
 Label[SEPARATOR].batik-panel-section-separator,
 Label.batik-panel-section-separator {
@@ -2501,7 +2506,7 @@ Label.batik-panel-section-separator {
   color: #f8f8f8;
 }
 
-/* line 165, ../../sass/md/_batik.scss */
+/* line 169, ../../sass/md/_batik.scss */
 Label-SeparatorLine,
 Label-SeparatorLine.batik-panel-section-separator {
   background-image: none;
