@@ -2940,7 +2940,7 @@ Tree-Checkbox:checked:grayed:hover {
 
 /* line 204, ../../sass/md/_tree.scss */
 Tree-Indent {
-  width: 16px;
+  width: 0px;
   background-image: none;
 }
 
