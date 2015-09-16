@@ -21,11 +21,9 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -33,12 +31,17 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.internal.textsize.TextSizeUtil;
 import org.eclipse.rap.rwt.template.ImageCell;
 import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.template.TextCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.internal.graphics.FontUtil;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Item;
@@ -138,21 +141,27 @@ public class MdListViewer
             dp tileHeight = dp( 0 );
             int colCount = 0;
             
+            GC gc = new GC(getControl());
+            FontMetrics fontMetrics = gc.getFontMetrics();
+            gc.dispose();
+            int defaultFontHeight = fontMetrics.getHeight(); // 19
+            
             // first line
             if (firstLineLabelProvider.isPresent()) {
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( firstLineLabelProvider.get() );
 
-                handleLabelProviderListener(firstLineLabelProvider.get());
+                Font font = MdAppDesign.font( FontStyle.Subhead );
+                int fontHeight = font.getFontData()[ 0 ].getHeight(); // 15
 
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_FIRSTLINE );
                 cell.setLeft( left.pix() ).setRight( 50 )
-                        .setTop( dp( 11 ).pix() ).setHeight( 18 )
+                        .setTop( dp( 11 ).pix() ).setHeight( fontHeight + 4 )
                         .setHorizontalAlignment( SWT.LEFT );
                 cell.setBindingIndex( colCount++ );
                 cell.setSelectable( openListenerPresent );
-                cell.setFont( MdAppDesign.font( FontStyle.Subhead ) );
+                cell.setFont( font );
                 
                 tileHeight = dp( 48 );
             }
@@ -161,26 +170,24 @@ public class MdListViewer
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( secondLineLabelProvider.get() );
 
-                handleLabelProviderListener(secondLineLabelProvider.get());
-
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_SECONDLINE );
-                cell.setLeft( left.pix() ).setRight( 50 ).setTop( dp( 39 ).pix() ).setHeight( 15 );
+                cell.setLeft( left.pix() ).setRight( 50 ).setTop( dp( 39 ).pix() ).setHeight( defaultFontHeight );
                 cell.setBindingIndex( colCount++ );
 
-                tileHeight = dp( 72 );
+                tileHeight = dp( 84 );
             }
             // third line
             if (thirdLineLabelProvider.isPresent()) {
                 TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
                 col.setLabelProvider( thirdLineLabelProvider.get() );
 
-                handleLabelProviderListener(thirdLineLabelProvider.get());
-
                 TextCell cell = new TextCell( template );
                 cell.setName( CELL_THIRDLINE );
-                cell.setLeft( 30 ).setRight( 30 ).setTop( 30 ).setHeight( 15 );
+                cell.setLeft( 30 ).setRight( 30 ).setTop( 30 ).setHeight( defaultFontHeight );
                 cell.setBindingIndex( colCount++ );
+                
+                tileHeight = dp( 112 );
             }
             // primary icon
             if (iconProvider.isPresent()) {
@@ -278,29 +285,11 @@ public class MdListViewer
                     log.info( "selection: " + ev );
                 }
             });
-            
+
             getTree().setData( RWT.ROW_TEMPLATE, template );        
             getTree().setData( RWT.CUSTOM_ITEM_HEIGHT, tileHeight.pix() );
         }
     }
-
-
-    private void handleLabelProviderListener(CellLabelProvider labelProvider ) {
-        if (labelProvider != null) {
-            labelProvider.addListener(this.labelProviderListener);
-        }
-        refresh();
-    }
-    
-    private final ILabelProviderListener labelProviderListener = new ILabelProviderListener() {
-
-        public void labelProviderChanged(LabelProviderChangedEvent event) {
-            Control control = getControl();
-            if (!(control == null || control.isDisposed())) {
-                MdListViewer.this.handleLabelProviderChanged(event);
-            }
-        }
-    };    
     
     
     private ImageCell createActionCell( Template template, ActionProvider actionProvider, String cellName, dp right, dp tileHeight ) {
@@ -382,7 +371,6 @@ public class MdListViewer
     
     @Override
     public void setLabelProvider( IBaseLabelProvider labelProvider ) {
-//        super.setLabelProvider( labelProvider );
         throw new UnsupportedOperationException( "The Material Design list supports multiple lines of text, for example call #setFirstLineLabelProvider()." );
     }
      
