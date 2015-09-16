@@ -129,7 +129,7 @@ public class Svg2PngTaskTest {
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
         // http://www.w3.org/TR/css3-color/#svg-color
-        imageConfig.setRgb( "#f0e68c" );
+        imageConfig.setRgb( "#00ff00" );
         imageConfig.setRelative( false );
         // have to use argb, as otherwise the alpha channel wouldn't be respected
         imageConfig.setColorType( "argb" );
@@ -155,12 +155,12 @@ public class Svg2PngTaskTest {
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
         // http://www.w3.org/TR/css3-color/#svg-color
-        imageConfig.setRgb( "#000000" );
+        imageConfig.setRgb( "#00ff00" );
         imageConfig.setRelative( false );
         imageConfig.setColorType( "argb" );
         ReplaceConfig replaceConfig = new ReplaceConfig();
         replaceConfig.setSourceRGB( "#000000" );
-        replaceConfig.setTargetRGB( "#aaaaaa" );
+        replaceConfig.setTargetRGB( "#00ff00" );
         imageConfig.addReplaceConfig( replaceConfig );
         TransparenceConfig transparenceConfig = new TransparenceConfig();
         transparenceConfig.setValue( "#ffffff" );
@@ -170,14 +170,11 @@ public class Svg2PngTaskTest {
         task.execute();
 
         BufferedImage image = ImageIO.read( new File( pngPath + "/default/128/ic_delete_48px.png" ) );
-        assertBrightnessAt( image, 5, 17, 0.66f );
-        assertHueAt( image, 5, 17, 0.0f );
-        assertSaturationAt( image, 5, 17, 0.0f );
         assertAlphaValueAt(image, 26, 21, 60);
         
-        assertBrightnessForAll( image, 0.66f );
-        assertHueForAll(image, 0f);
-        assertSaturationForAll(image, 0f);
+        assertBrightnessForAll( image, 1.00f );
+        assertHueForAll(image, 0.33f);
+        assertSaturationForAll(image, 1.0f);
     }
 
 

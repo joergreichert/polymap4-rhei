@@ -357,6 +357,7 @@ public class Svg2Png {
                 .findFirst();
         if (config.isPresent()) {
             hsb = config.get().getTo().getHSB();
+            hsb[0] = degreeToPercent(hsb[0]);
         }
         else {
             hsb = currentHsb;
