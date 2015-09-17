@@ -265,9 +265,11 @@ public class Svg2Png {
                     hsb = replaceColors( imageConfiguration, color, hsb );
                     int newRGB = Color.HSBtoRGB( hsb[0], hsb[1], hsb[2] );
                     finalThresholdImage.setRGB( x, y, newRGB );
-                    setAlpha( finalThresholdImage, x, y, rgb );
-                    finalThresholdImage = makeColorsTransparent( finalThresholdImage, imageConfiguration, new Color(
-                            newRGB ) );
+                    if(imageType == BufferedImage.TYPE_INT_ARGB) {
+                        setAlpha( finalThresholdImage, x, y, rgb );
+                        finalThresholdImage = makeColorsTransparent( finalThresholdImage, imageConfiguration, new Color(
+                                newRGB ) );
+                    }
                 }
             }
             catch (Exception e) {
@@ -355,6 +357,7 @@ public class Svg2Png {
                 .findFirst();
         if (config.isPresent()) {
             hsb = config.get().getTo().getHSB();
+            hsb[0] = degreeToPercent(hsb[0]);
         }
         else {
             hsb = currentHsb;
