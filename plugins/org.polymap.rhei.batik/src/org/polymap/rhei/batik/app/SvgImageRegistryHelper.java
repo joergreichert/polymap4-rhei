@@ -33,6 +33,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.DecorationOverlayIcon;
+import org.eclipse.jface.viewers.IDecoration;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -40,6 +42,7 @@ import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.DefaultString;
+import org.polymap.core.runtime.config.Immutable;
 import org.polymap.core.ui.ImageRegistryHelper;
 
 import org.polymap.rhei.batik.ant.ImageConfiguration;
@@ -62,17 +65,31 @@ public class SvgImageRegistryHelper
     public final static String      NORMAL48 = "normal48";
 
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24 = "normal";
+    public final static String      NORMAL12 = "normal12";
+    
+    /** Normal image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL24 = "normal24";
     
     /** Image configuration for normale, disabled icons created by {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_DISABLED = "normal-disabled";
+    public final static String      NORMAL24_DISABLED = "normal24-disabled";
     
     /** Image configuration for normale, hovered icons created by {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_HOVERED = "normal-hovered";
+    public final static String      NORMAL24_HOVERED = "normal24-hovered";
+    
+    /** Normal image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      OVR12_ACTION = "ovr12_action";
+    
+    /**
+     * The quadrant of an overlay created by {@link SvgImageRegistryHelper#svgOverlayedImage(String, String, String, String, Quadrant)}.
+     */
+    public enum Quadrant {
+        TopLeft, TopRight, BottmLeft, BottomRight;
+    }
     
     
     // instance *******************************************
 
+    @Immutable
     @DefaultString( "resources/icons/" )
     public Config2<SvgImageRegistryHelper,String> svgBasePath;
     
@@ -96,8 +113,10 @@ public class SvgImageRegistryHelper
         }
         
         // default configs
+        putConfig( NORMAL12, new ReplaceBlackSvgConfiguration( new RGB( 180, 180, 180 ), 16 ) );
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 24 ) );
         putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 48 ) );
+        putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 0 ), 16 ) );
     }
 
     
@@ -115,14 +134,46 @@ public class SvgImageRegistryHelper
      *        the bundle root or relative to {@link #svgBasePath}.
      * @param configName
      */
-    public Image svgImage( String path, String configName  ) {
+    public Image svgImage( String path, String configName ) {
         String key = configName + "-" + path;
         Image image = registry.get().get( key );
+        
         if (image == null || image.isDisposed()) {
             registry.get().put( key, createSvgImage( configName, path ) );
             image = registry.get().get( key );
         }
         return image;
+    }
+
+    
+    public Image svgOverlayedImage( String baseImagePath, String baseConfigName, 
+            String ovrImagePath, String ovrConfigName, Quadrant quadrant ) {
+        String key = Joiner.on( "-" ).join( baseImagePath, baseConfigName, ovrImagePath, ovrConfigName );
+        Image image = registry.get().get( key );
+        if (image == null || image.isDisposed()) {
+            Image baseImage = svgImage( baseImagePath, baseConfigName );
+            ImageDescriptor ovrImage = svgImageDescriptor( ovrImagePath, ovrConfigName );
+            image = new DecorationOverlayIcon( baseImage, ovrImage, IDecoration.TOP_LEFT ).createImage();
+            
+            registry.get().put( key, image );
+            image = registry.get().get( key );
+        }
+        return image;
+    }
+    
+    
+    /**
+     * 
+     *
+     * @param path The path to the image inside the bundle. This can be relative to
+     *        the bundle root or relative to {@link #svgBasePath}.
+     * @param configName
+     */
+    public ImageDescriptor svgImageDescriptor( String path, String configName  ) {
+        svgImage( path, configName );
+
+        String key = configName + "-" + path;
+        return registry.get().getDescriptor( key );
     }
     
     
@@ -177,14 +228,18 @@ public class SvgImageRegistryHelper
         
         public ImageDescriptor createImage( String svgPath ) throws TranscoderException, IOException {
             Timer timer = new Timer();
-            ImageConfiguration imageConfig = imageConfiguration();
-            Scale scale = scale();
             File pngFile = new File( tempFolder(), FilenameUtils.getBaseName( svgPath ) + ".png" );
-            URL svgInput = plugin.getBundle().getResource( svgPath );
-
-            new Svg2Png().transcode( pngFile, svgInput, scale, imageConfig );
+            if (!pngFile.exists()) {
+                ImageConfiguration imageConfig = imageConfiguration();
+                Scale scale = scale();
+                URL svgInput = plugin.getBundle().getResource( svgPath );
+                new Svg2Png().transcode( pngFile, svgInput, scale, imageConfig );
+                log.info( "SVG -> " + pngFile.getAbsolutePath() + " (" + timer.elapsedTime() + "ms)" );
+            }
+            else {
+                log.info( "SVG -> " + pngFile.getAbsolutePath() + " (cached)" );
+            }
             ImageDescriptor result = ImageDescriptor.createFromURL( pngFile.toURI().toURL() );
-            log.info( "SVG -> " + pngFile.getAbsolutePath() + " (" + timer.elapsedTime() + "ms)" );
             return result;
         }        
     }
