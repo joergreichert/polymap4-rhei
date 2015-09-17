@@ -85,9 +85,8 @@ Composite[BORDER].atlas-header {
   border: none;
 }
 Label.atlas-header {
-  font: bold 32px Helvetica, Arial, sans-serif;
-/*  color: #60A7CA;*/
-  color: #666;
+  font: bold 32px $font;
+  color: #808080;
 }
 Composite.atlas-panel,
 Composite[BORDER].atlas-panel, 

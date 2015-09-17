@@ -8,6 +8,8 @@ Button.batik-panel-fab {
   box-shadow: 0px 3px 4px #c0c0c0;
   background-color: $fab-bg;
   color: $fab-fg;
+  /* geht nur für Composite? */
+  animation: fadeIn 700ms ease-in, fadeOut 500ms ease-out;    
 }
 Button:hover.batik-panel-fab {
   background-color: $fab-hover;

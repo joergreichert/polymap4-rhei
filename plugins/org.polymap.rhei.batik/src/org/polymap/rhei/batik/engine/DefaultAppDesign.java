@@ -336,7 +336,7 @@ public class DefaultAppDesign
         // switcher
         Composite switcher = new Composite( head, SWT.NONE );
 //        switcher.setLayout( RowLayoutFactory.fillDefaults().margins( 1, 1 ).spacing( 5 ).fill( false ).create() );
-        switcher.setLayout( FormLayoutFactory.defaults().spacing( 5 ).margins( 1, 1 ).create() );
+        switcher.setLayout( FormLayoutFactory.defaults().spacing( 5 ).margins( 0, 0 ).create() );
         UIUtils.setVariant( switcher, CSS_SWITCHER );
 
         PanelPath panelPath = panel.getSite().getPath();
@@ -349,7 +349,7 @@ public class DefaultAppDesign
                         Button btn = createSwitcherButton( switcher, p );
                         btn.setLayoutData( btnCount == 0
                                 ? FormDataFactory.filled().clearRight().create()
-                                        : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
+                                : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
 
 //                        IPanelSite panelSite = p.getSite();
 //                        btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );

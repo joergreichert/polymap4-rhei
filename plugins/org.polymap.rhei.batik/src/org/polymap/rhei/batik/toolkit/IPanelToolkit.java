@@ -76,8 +76,15 @@ public interface IPanelToolkit
      * with some <a href="https://github.com/sirthias/pegdown">extensions</a> inside
      * the text.
      * <p/>
-     * Links can be used as: <pre>[Link text](@command/panelId)</pre> Currently the
-     * command <code>open</code> ist supported which opens the panel for the given panelId.
+     * Links inside the text:
+     * <ul>
+     * <li><code>[Link text](@command/panelId)</code> - executes the given command. Currently the
+     * command <code>open</code> ist supported which opens the panel for the given panelId</li>
+     * <br/>
+     * <li><code>![alt](URL)</code> - an image from the gicen URL</li>
+     * <br/>
+     * <li><code>[Link text](URL)</code> - a link to the given ULR</li>
+     * </ul>
      * 
      * @param parent
      * @param text
@@ -87,11 +94,9 @@ public interface IPanelToolkit
     public Label createFlowText( Composite parent, String text, int... styles );
 
     /**
-     * Creates a flow text element. Flow text allows HTML markup and <a
-     * href="http://daringfireball.net/projects/markdown/syntax">markdown syntax</a>
-     * with some <a href="https://github.com/sirthias/pegdown">extensions</a> inside
-     * the text.
-     * 
+     * See {@link #createFlowText(Composite, String, int...)}.
+     *  
+     * @see #createFlowText(Composite, String, int...) 
      * @param parent
      * @param text
      * @param styles
