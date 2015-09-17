@@ -14,6 +14,11 @@
  */
 package org.polymap.rhei.batik.dashboard;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.polymap.rhei.batik.toolkit.LayoutConstraint;
+
 /**
  * 
  *
@@ -22,17 +27,29 @@ package org.polymap.rhei.batik.dashboard;
 public abstract class DefaultDashlet
         implements IDashlet {
 
-    protected DashletSite          dashletSite;
+    protected DashletSite           dashletSite;
+    
+    private List<LayoutConstraint>  constraints = new ArrayList();
 
     
     @Override
     public void init( DashletSite site ) {
         this.dashletSite = site;
+        constraints.forEach( c -> site.constraints.get().add( c ) );
     }
 
     
     protected DashletSite getSite() {
         return dashletSite;
+    }
+    
+    
+    public DefaultDashlet addConstraint( LayoutConstraint constraint ) {
+        constraints.add( constraint );
+        if (dashletSite != null) {
+            dashletSite.constraints.get().add( constraint );
+        }
+        return this;
     }
     
 }

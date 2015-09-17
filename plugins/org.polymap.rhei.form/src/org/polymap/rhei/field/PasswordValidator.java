@@ -59,6 +59,9 @@ public class PasswordValidator
     private Pattern                             pattern;
     
 
+    /**
+     * Constraucts a new instance with default settings.
+     */
     public PasswordValidator() {
         pattern = Pattern.compile(
                 "^" +   

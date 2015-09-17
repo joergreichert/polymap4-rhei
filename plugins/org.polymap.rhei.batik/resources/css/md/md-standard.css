@@ -2410,12 +2410,11 @@ Composite[BORDER].atlas-header {
 
 /* line 87, ../../sass/md/_batik.scss */
 Label.atlas-header {
-  font: bold 32px Helvetica, Arial, sans-serif;
-  /*  color: #60A7CA;*/
-  color: #666;
+  font: bold 32px "Roboto", "Noto", sans-serif;
+  color: #808080;
 }
 
-/* line 92, ../../sass/md/_batik.scss */
+/* line 91, ../../sass/md/_batik.scss */
 Composite.atlas-panel,
 Composite[BORDER].atlas-panel,
 Composite.atlas-navi-switcher,
@@ -2426,7 +2425,7 @@ Composite[BORDER].atlas-navi-switcher {
 /* ********************************************************
  * ToolTip 
  */
-/* line 102, ../../sass/md/_batik.scss */
+/* line 101, ../../sass/md/_batik.scss */
 ToolTip, Shell.batik-status-tooltip {
   cursor: default;
   border-radius: 3px;
@@ -2453,14 +2452,14 @@ ToolTip, Shell.batik-status-tooltip {
   */
 }
 
-/* line 130, ../../sass/md/_batik.scss */
+/* line 129, ../../sass/md/_batik.scss */
 ToolTip-Text,
 Label.batik-status-tooltip-text {
   color: #f8f8f8;
   text-shadow: none;
 }
 
-/* line 135, ../../sass/md/_batik.scss */
+/* line 134, ../../sass/md/_batik.scss */
 ToolTip-Message,
 Label.batik-status-tooltip-message {
   color: #e8e8e8;
@@ -2470,30 +2469,30 @@ Label.batik-status-tooltip-message {
 /**********************************************************
  * Section
  */
-/* line 144, ../../sass/md/_batik.scss */
+/* line 143, ../../sass/md/_batik.scss */
 Composite[BORDER].batik-panel-section-client {
   border-radius: 4px;
   border: 1px solid #ddd;
 }
 
-/* line 148, ../../sass/md/_batik.scss */
+/* line 147, ../../sass/md/_batik.scss */
 Composite[BORDER].batik-panel-section {
   border-radius: 4px;
   border: 1px solid #ddd;
 }
 
-/* line 152, ../../sass/md/_batik.scss */
+/* line 151, ../../sass/md/_batik.scss */
 Label.batik-panel-section-title {
   font: 22px 'Roboto', 'Noto', sans-serif;
   border: none;
 }
 
-/* line 156, ../../sass/md/_batik.scss */
+/* line 155, ../../sass/md/_batik.scss */
 Label:disabled.batik-panel-section-title {
   opacity: 0.3;
 }
 
-/* line 159, ../../sass/md/_batik.scss */
+/* line 158, ../../sass/md/_batik.scss */
 Label[SEPARATOR],
 Label[SEPARATOR].batik-panel-section-separator,
 Label.batik-panel-section-separator {
@@ -2501,7 +2500,7 @@ Label.batik-panel-section-separator {
   color: #f8f8f8;
 }
 
-/* line 165, ../../sass/md/_batik.scss */
+/* line 164, ../../sass/md/_batik.scss */
 Label-SeparatorLine,
 Label-SeparatorLine.batik-panel-section-separator {
   background-image: none;
@@ -2721,9 +2720,11 @@ Button.batik-panel-fab {
   box-shadow: 0px 3px 4px #c0c0c0;
   background-color: #81CC39;
   color: #ffffff;
+  /* geht nur für Composite? */
+  animation: fadeIn 700ms ease-in, fadeOut 500ms ease-out;
 }
 
-/* line 12, ../../sass/md/_fab.scss */
+/* line 14, ../../sass/md/_fab.scss */
 Button:hover.batik-panel-fab {
   background-color: #6eb02e;
 }

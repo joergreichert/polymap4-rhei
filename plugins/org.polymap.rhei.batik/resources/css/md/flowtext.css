@@ -69,15 +69,15 @@ h1 {
 
 /* line 50, ../../sass/md/flowtext.scss */
 h2 {
-  font-size: 24px;
-  font-weight: medium;
-  margin: 20px 0 5px 0;
+  font-size: 20px;
+  font-weight: normal;
+  margin: 15px 0 10px 0;
 }
 
 /* line 55, ../../sass/md/flowtext.scss */
 h3 {
-  font-size: 15px;
-  font-weight: normal;
+  font-size: 18px;
+  font-weight: bold;
   margin: 10px 0 3px 0;
 }
 

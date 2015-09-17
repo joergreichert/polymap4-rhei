@@ -37,6 +37,7 @@ import com.google.common.base.Joiner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -138,14 +139,22 @@ public class DefaultToolkit
 
     @Override
     public Label createFlowText( Composite parent, String text, int... styles ) {
-        Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
+        Label result = new Label( parent, stylebits( styles ) | SWT.WRAP ) {
+            @Override
+            public void setText( String _text ) {
+                // process markdown
+                LinkRenderer linkRenderer = new DelegatingLinkRenderer( this );
+                String processed = new PegDownProcessor().markdownToHtml( _text, linkRenderer );
+                super.setText( processed );
+            }
+        };
+        adapt( result, false, false );
+
         if (text != null) {
-            // process markdown
-            LinkRenderer linkRenderer = new DelegatingLinkRenderer( result );
-            String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
-            result.setText( processed );
+            result.setText( text );
         }
         result.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+        result.setData( MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE );
         return result;
     }
 
