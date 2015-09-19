@@ -12,13 +12,14 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.graphics.RGB;
-import org.polymap.rhei.batik.ant.Svg2Png.COLOR_TYPE;
+
+import org.polymap.rhei.batik.engine.svg.Svg2Png.COLOR_TYPE;
 
 public class ImageConfig {
 

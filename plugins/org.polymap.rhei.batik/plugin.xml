@@ -78,14 +78,14 @@
    <extension
          point="org.eclipse.rap.ui.serviceHandler">
       <serviceHandler
-            class="org.polymap.rhei.batik.internal.LinkActionServiceHandler"
+            class="org.polymap.rhei.batik.engine.linkaction.LinkActionServiceHandler"
             id="org.polymap.rhei.batik.LinkActionServiceHandler">
       </serviceHandler>
    </extension>
    <extension
          point="org.eclipse.rap.ui.resources">
       <resource
-            class="org.polymap.rhei.batik.internal.LinkActionResource">
+            class="org.polymap.rhei.batik.engine.linkaction.LinkActionResource">
       </resource>
    </extension>
    <extension

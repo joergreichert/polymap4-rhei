@@ -43,11 +43,11 @@ import org.polymap.core.ui.FormLayoutFactory;
 
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.Messages;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.IAppManager;
 import org.polymap.rhei.batik.app.LogoutAction;
-import org.polymap.rhei.batik.internal.Messages;
 
 /**
  * 

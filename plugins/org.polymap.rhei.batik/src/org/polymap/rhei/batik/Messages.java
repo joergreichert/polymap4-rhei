@@ -12,14 +12,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik;
 
 import org.eclipse.rap.rwt.RWT;
 
 import org.polymap.core.runtime.i18n.IMessages;
 import org.polymap.core.runtime.i18n.MessagesImpl;
-
-import org.polymap.rhei.batik.BatikPlugin;
 
 /**
  *

@@ -1,0 +1,43 @@
+/* ScrollBar default theme */
+
+ScrollBar {
+  background-color: inherit;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 3px;
+}
+
+ScrollBar-Thumb {
+  background-color: #d8d8d8;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  /*background-image: url( resource/widget/rap/scrollbar/scrollbar-background.png );*/
+  min-height: 20px;
+}
+
+ScrollBar-UpButton,
+ScrollBar-DownButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+}
+
+/*
+ScrollBar-UpButton[HORIZONTAL] {
+  background-image: url( resource/widget/rap/scrollbar/right.png );
+}
+
+ScrollBar-DownButton[HORIZONTAL] {
+  background-image: url( resource/widget/rap/scrollbar/left.png );
+}
+
+ScrollBar-UpButton[VERTICAL] {
+  background-image: url( resource/widget/rap/scrollbar/down.png )
+}
+
+ScrollBar-DownButton[VERTICAL] {
+  background-image: url( resource/widget/rap/scrollbar/up.png );
+}
+*/

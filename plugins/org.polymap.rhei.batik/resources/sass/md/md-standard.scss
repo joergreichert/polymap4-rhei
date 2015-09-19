@@ -2149,13 +2149,13 @@ Browser[BORDER] {
 }
 
 /* ScrollBar default theme */
-
+/*
 ScrollBar {
   background-color: #f0f0f0;
   background-image: none;
   border: none;
   border-radius: 0;
-  width: 10px;
+  width: 3px;
 }
 
 ScrollBar-Thumb {
@@ -2189,6 +2189,7 @@ ScrollBar-UpButton[VERTICAL] {
 ScrollBar-DownButton[VERTICAL] {
   background-image: url( resource/widget/rap/scrollbar/up.png );
 }
+*/
 
 /* FileUpload default theme */
 
@@ -2260,3 +2261,4 @@ Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
 @import "messages";
 @import "text";
 @import "table";
+@import "scrollbar";

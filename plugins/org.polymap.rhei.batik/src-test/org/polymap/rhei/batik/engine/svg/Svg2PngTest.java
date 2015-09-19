@@ -12,7 +12,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 import java.util.Collections;
 
@@ -28,8 +28,12 @@ import org.junit.Test;
 
 import org.apache.commons.io.FileUtils;
 
-import org.polymap.rhei.batik.ant.Svg2Png.Bounds;
-import org.polymap.rhei.batik.ant.Svg2Png.COLOR_TYPE;
+import org.polymap.rhei.batik.engine.svg.ColorDepth;
+import org.polymap.rhei.batik.engine.svg.ImageConfiguration;
+import org.polymap.rhei.batik.engine.svg.Scale;
+import org.polymap.rhei.batik.engine.svg.Svg2Png;
+import org.polymap.rhei.batik.engine.svg.Svg2Png.Bounds;
+import org.polymap.rhei.batik.engine.svg.Svg2Png.COLOR_TYPE;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>

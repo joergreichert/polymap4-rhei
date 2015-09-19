@@ -12,7 +12,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -55,7 +55,7 @@ import org.apache.batik.util.SVGConstants;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.commons.io.FilenameUtils;
 
-import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
+import org.polymap.rhei.batik.engine.svg.ImageConfiguration.ReplaceConfiguration;
 
 import org.w3c.dom.svg.SVGDocument;
 

@@ -2203,25 +2203,23 @@ Browser[BORDER] {
 }
 
 /* ScrollBar default theme */
-/* line 2153, ../../sass/md/md-standard.scss */
+/*
 ScrollBar {
   background-color: #f0f0f0;
   background-image: none;
   border: none;
   border-radius: 0;
-  width: 10px;
+  width: 3px;
 }
 
-/* line 2161, ../../sass/md/md-standard.scss */
 ScrollBar-Thumb {
   background-color: #f0f0f0;
   border: 1px solid #bdbdbd;
   border-radius: 15px;
-  background-image: url(resource/widget/rap/scrollbar/scrollbar-background.png);
+  background-image: url( resource/widget/rap/scrollbar/scrollbar-background.png );
   min-height: 20px;
 }
 
-/* line 2169, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton,
 ScrollBar-DownButton {
   background-color: transparent;
@@ -2230,28 +2228,24 @@ ScrollBar-DownButton {
   cursor: default;
 }
 
-/* line 2177, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton[HORIZONTAL] {
-  background-image: url(resource/widget/rap/scrollbar/right.png);
+  background-image: url( resource/widget/rap/scrollbar/right.png );
 }
 
-/* line 2181, ../../sass/md/md-standard.scss */
 ScrollBar-DownButton[HORIZONTAL] {
-  background-image: url(resource/widget/rap/scrollbar/left.png);
+  background-image: url( resource/widget/rap/scrollbar/left.png );
 }
 
-/* line 2185, ../../sass/md/md-standard.scss */
 ScrollBar-UpButton[VERTICAL] {
-  background-image: url(resource/widget/rap/scrollbar/down.png);
+  background-image: url( resource/widget/rap/scrollbar/down.png )
 }
 
-/* line 2189, ../../sass/md/md-standard.scss */
 ScrollBar-DownButton[VERTICAL] {
-  background-image: url(resource/widget/rap/scrollbar/up.png);
+  background-image: url( resource/widget/rap/scrollbar/up.png );
 }
-
+*/
 /* FileUpload default theme */
-/* line 2195, ../../sass/md/md-standard.scss */
+/* line 2196, ../../sass/md/md-standard.scss */
 FileUpload {
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
   background-repeat: repeat;
@@ -2268,7 +2262,7 @@ FileUpload {
   text-shadow: 0 1px 0 #ffffff;
 }
 
-/* line 2215, ../../sass/md/md-standard.scss */
+/* line 2216, ../../sass/md/md-standard.scss */
 FileUpload:disabled {
   cursor: default;
   color: #d2d2d2;
@@ -2277,17 +2271,17 @@ FileUpload:disabled {
   border: 1px solid #d2d2d2;
 }
 
-/* line 2223, ../../sass/md/md-standard.scss */
+/* line 2224, ../../sass/md/md-standard.scss */
 FileUpload:hover {
   background-image: gradient(linear, left top, left bottom, from(#eaeaea), to(#d5d5d5));
 }
 
-/* line 2231, ../../sass/md/md-standard.scss */
+/* line 2232, ../../sass/md/md-standard.scss */
 FileUpload:pressed {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 2239, ../../sass/md/md-standard.scss */
+/* line 2240, ../../sass/md/md-standard.scss */
 FileUpload-FocusIndicator {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2297,7 +2291,7 @@ FileUpload-FocusIndicator {
 }
 
 /* JFace specific theming */
-/* line 2249, ../../sass/md/md-standard.scss */
+/* line 2250, ../../sass/md/md-standard.scss */
 Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
   border: 1px solid #bdbdbd;
   padding: 0;
@@ -2340,8 +2334,8 @@ Button[TOGGLE].atlas-panel-header {
   spacing: 0px;
   background-color: #ffffff;
   /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid #6BBAE1;
-  color: #6BBAE1;
+  border: 1px solid #599FC2;
+  color: #599FC2;
 }
 
 /* line 39, ../../sass/md/_batik.scss */
@@ -2542,7 +2536,7 @@ Button[PUSH][FLAT],
 Button[TOGGLE][FLAT] {
   font: 15px "Roboto", "Noto", sans-serif;
   color: #ffffff;
-  background-color: #6BBAE1;
+  background-color: #599FC2;
   padding: 5px 15px;
   cursor: pointer;
 }
@@ -2770,7 +2764,7 @@ TreeItem.firstRow {
 /* Tree default theme */
 /* line 43, ../../sass/md/_tree.scss */
 Tree {
-  background-color: #ffffff;
+  background-color: inherit;
   border: none;
   color: #4a4a4a;
 }
@@ -3269,3 +3263,49 @@ Table-Checkbox:checked:grayed {
 Table-Checkbox:checked:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
+
+/* ScrollBar default theme */
+/* line 3, ../../sass/md/_scrollbar.scss */
+ScrollBar {
+  background-color: inherit;
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 3px;
+}
+
+/* line 11, ../../sass/md/_scrollbar.scss */
+ScrollBar-Thumb {
+  background-color: #d8d8d8;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  /*background-image: url( resource/widget/rap/scrollbar/scrollbar-background.png );*/
+  min-height: 20px;
+}
+
+/* line 19, ../../sass/md/_scrollbar.scss */
+ScrollBar-UpButton,
+ScrollBar-DownButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+}
+
+/*
+ScrollBar-UpButton[HORIZONTAL] {
+  background-image: url( resource/widget/rap/scrollbar/right.png );
+}
+
+ScrollBar-DownButton[HORIZONTAL] {
+  background-image: url( resource/widget/rap/scrollbar/left.png );
+}
+
+ScrollBar-UpButton[VERTICAL] {
+  background-image: url( resource/widget/rap/scrollbar/down.png )
+}
+
+ScrollBar-DownButton[VERTICAL] {
+  background-image: url( resource/widget/rap/scrollbar/up.png );
+}
+*/

@@ -35,7 +35,11 @@ import org.polymap.rhei.batik.toolkit.LayoutConstraint;
 public abstract class DashletSite
         extends Configurable {
 
-    @Defaults
+    /**
+     * The title of the dashlet.
+     * <p/>
+     * Allow null to allow no header at all.
+     */
     @Concern(PropertyChangeSupport.class)
     public Config<String>                 title;
 

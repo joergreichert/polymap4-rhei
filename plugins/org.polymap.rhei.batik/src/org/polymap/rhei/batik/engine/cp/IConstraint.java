@@ -12,33 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.cp;
+package org.polymap.rhei.batik.engine.cp;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IOptimizationGoal<S extends ISolution> {
-
-    /**
-     * Try to optimze the given solution. The given instance is changed in-place.
-     *
-     * @param solution The solution to optimze.
-     * @return The optimized solution, or null if this goal does not find a better solution.
-     */
-    public abstract S optimize( S solution );
+public interface IConstraint<S extends ISolution, SC extends IScore> {
     
-    public abstract <SC extends IScore> SC score( S solution );
-
-    
-//    /**
-//     * 
-//     */
-//    public interface Step {
-//    
-//        public abstract void revoke();
-//        
-//    }
+    public SC score( S solution );
     
 }

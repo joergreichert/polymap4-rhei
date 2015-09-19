@@ -12,7 +12,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 public enum ColorDepth {
     B1(1), B2(2), B4(4), B8(8);

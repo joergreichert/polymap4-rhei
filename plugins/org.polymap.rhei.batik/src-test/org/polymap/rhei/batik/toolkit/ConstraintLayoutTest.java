@@ -27,8 +27,8 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import org.polymap.core.runtime.Timer;
 
-import org.polymap.rhei.batik.cp.BestFirstOptimizer;
-import org.polymap.rhei.batik.cp.ISolver.ScoredSolution;
+import org.polymap.rhei.batik.engine.cp.BestFirstOptimizer;
+import org.polymap.rhei.batik.engine.cp.ISolver.ScoredSolution;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;
 import org.polymap.rhei.batik.toolkit.NeighborhoodConstraint.Neighborhood;
 

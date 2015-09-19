@@ -12,9 +12,9 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
-import org.polymap.rhei.batik.ant.Svg2Png.Bounds;
+import org.polymap.rhei.batik.engine.svg.Svg2Png.Bounds;
 
 public enum Scale {
 

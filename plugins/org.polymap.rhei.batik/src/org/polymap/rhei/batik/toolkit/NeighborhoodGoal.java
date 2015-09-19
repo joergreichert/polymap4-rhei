@@ -17,9 +17,9 @@ package org.polymap.rhei.batik.toolkit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.rhei.batik.cp.IOptimizationGoal;
-import org.polymap.rhei.batik.cp.PercentScore;
-import org.polymap.rhei.batik.cp.Prioritized;
+import org.polymap.rhei.batik.engine.cp.IOptimizationGoal;
+import org.polymap.rhei.batik.engine.cp.PercentScore;
+import org.polymap.rhei.batik.engine.cp.Prioritized;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutColumn;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutElement;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout.LayoutSolution;

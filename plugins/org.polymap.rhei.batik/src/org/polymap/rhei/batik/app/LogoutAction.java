@@ -25,7 +25,7 @@ import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
 import org.polymap.core.runtime.i18n.IMessages;
 
 import org.polymap.rhei.batik.BatikPlugin;
-import org.polymap.rhei.batik.internal.Messages;
+import org.polymap.rhei.batik.Messages;
 
 /**
  * 

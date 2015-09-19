@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.internal;
+package org.polymap.rhei.batik.engine.linkaction;
 
 import org.eclipse.rap.ui.resources.IResource;
 
@@ -25,7 +25,7 @@ public class LinkActionResource
         implements IResource {
 
     public final String getLocation() {
-        return "org/polymap/rhei/batik/internal/linkaction.js";
+        return "org/polymap/rhei/batik/engine/linkaction/linkaction.js";
     }
 
     public final String getCharset() {

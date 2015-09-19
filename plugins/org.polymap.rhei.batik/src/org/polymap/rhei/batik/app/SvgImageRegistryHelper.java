@@ -45,11 +45,11 @@ import org.polymap.core.runtime.config.DefaultString;
 import org.polymap.core.runtime.config.Immutable;
 import org.polymap.core.ui.ImageRegistryHelper;
 
-import org.polymap.rhei.batik.ant.ImageConfiguration;
-import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
-import org.polymap.rhei.batik.ant.Scale;
-import org.polymap.rhei.batik.ant.Svg2Png;
-import org.polymap.rhei.batik.ant.Svg2Png.COLOR_TYPE;
+import org.polymap.rhei.batik.engine.svg.ImageConfiguration;
+import org.polymap.rhei.batik.engine.svg.Scale;
+import org.polymap.rhei.batik.engine.svg.Svg2Png;
+import org.polymap.rhei.batik.engine.svg.ImageConfiguration.ReplaceConfiguration;
+import org.polymap.rhei.batik.engine.svg.Svg2Png.COLOR_TYPE;
 
 /**
  * Provides auto generated PNG icons from SVG source.
@@ -61,8 +61,11 @@ public class SvgImageRegistryHelper
 
     private static Log log = LogFactory.getLog( SvgImageRegistryHelper.class );
     
-    /** Normal image configuration used to create {@link #svgImage(String, String)}. */
+    /** Image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL48 = "normal48";
+
+    /** Image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL48_LINK = "normal48-link";
 
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL12 = "normal12";
@@ -77,13 +80,22 @@ public class SvgImageRegistryHelper
     public final static String      NORMAL24_HOVERED = "normal24-hovered";
     
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      OVR12_ACTION = "ovr12_action";
+    public final static String      OVR12_ACTION = "ovr12-action";
     
     /**
      * The quadrant of an overlay created by {@link SvgImageRegistryHelper#svgOverlayedImage(String, String, String, String, Quadrant)}.
      */
     public enum Quadrant {
-        TopLeft, TopRight, BottmLeft, BottomRight;
+        TopLeft( IDecoration.TOP_LEFT ), 
+        TopRight( IDecoration.TOP_RIGHT ), 
+        BottmLeft( IDecoration.BOTTOM_LEFT ), 
+        BottomRight( IDecoration.BOTTOM_RIGHT );
+        
+        public int iDecorationConstant;
+
+        private Quadrant( int iDecorationConstant ) {
+            this.iDecorationConstant = iDecorationConstant;
+        }
     }
     
     
@@ -116,7 +128,8 @@ public class SvgImageRegistryHelper
         putConfig( NORMAL12, new ReplaceBlackSvgConfiguration( new RGB( 180, 180, 180 ), 16 ) );
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 24 ) );
         putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 48 ) );
-        putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 0 ), 16 ) );
+        putConfig( NORMAL48_LINK, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 48 ) );
+        putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 240, 100 ), 16 ) );
     }
 
     
@@ -133,6 +146,7 @@ public class SvgImageRegistryHelper
      * @param path The path to the image inside the bundle. This can be relative to
      *        the bundle root or relative to {@link #svgBasePath}.
      * @param configName
+     * @return Newly generated are cached image. Must no be used outside current user session!
      */
     public Image svgImage( String path, String configName ) {
         String key = configName + "-" + path;
@@ -145,7 +159,16 @@ public class SvgImageRegistryHelper
         return image;
     }
 
-    
+    /**
+     * 
+     *
+     * @param baseImagePath
+     * @param baseConfigName
+     * @param ovrImagePath
+     * @param ovrConfigName
+     * @param quadrant
+     * @return Newly generated are cached image. Must no be used outside current user session!
+     */
     public Image svgOverlayedImage( String baseImagePath, String baseConfigName, 
             String ovrImagePath, String ovrConfigName, Quadrant quadrant ) {
         String key = Joiner.on( "-" ).join( baseImagePath, baseConfigName, ovrImagePath, ovrConfigName );
@@ -153,7 +176,7 @@ public class SvgImageRegistryHelper
         if (image == null || image.isDisposed()) {
             Image baseImage = svgImage( baseImagePath, baseConfigName );
             ImageDescriptor ovrImage = svgImageDescriptor( ovrImagePath, ovrConfigName );
-            image = new DecorationOverlayIcon( baseImage, ovrImage, IDecoration.TOP_LEFT ).createImage();
+            image = new DecorationOverlayIcon( baseImage, ovrImage, quadrant.iDecorationConstant ).createImage();
             
             registry.get().put( key, image );
             image = registry.get().get( key );

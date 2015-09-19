@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.cp;
+package org.polymap.rhei.batik.engine.cp;
 
 import java.util.HashSet;
 import java.util.List;

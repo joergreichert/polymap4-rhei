@@ -28,7 +28,7 @@ import org.polymap.core.ui.UIUtils;
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.PanelIdentifier;
-import org.polymap.rhei.batik.internal.LinkActionServiceHandler;
+import org.polymap.rhei.batik.engine.linkaction.LinkActionServiceHandler;
 
 /**
  * Render @action/page style links.

@@ -29,12 +29,15 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 
 import org.eclipse.ui.forms.widgets.ILayoutExtension;
+
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.engine.PageStack.Page;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
@@ -72,6 +75,9 @@ public class PageStackLayout
     private LayoutSupplier          margins;
     
     private Rectangle               cachedClientArea;
+
+    private Color                   white = new Color( UIUtils.sessionDisplay(), 0xff, 0xff, 0xff );
+    private Color                   grey = new Color( UIUtils.sessionDisplay(), 0xfb, 0xfb, 0xfb );
     
 
     PageStackLayout( PageStack pageStack, LayoutSupplier margins ) {
@@ -127,7 +133,7 @@ public class PageStackLayout
         Collections.reverse( topDown );
 
         int filledWidth = 0;
-        int greyStep = 5, grey = 0xff - greyStep;
+//        int greyStep = 5, grey = 0xff - greyStep;
         
         Page focusedPage = pageStack.getFocusedPage();
         if (focusedPage == null && !topDown.isEmpty()) {
@@ -155,14 +161,15 @@ public class PageStackLayout
                     if (filledWidth == 0) {
                         page.isShown = true;
                         filledWidth = min( prefPageWidth, availWidth );
+//                        page.control.setBackground( white );
                     }
                     //
                     else if (filledWidth + prefPageWidth <= availWidth) {
                         page.isShown = true;
                         filledWidth += prefPageWidth + margins.getSpacing();
 
-                        //page.control.setBackground( new Color( page.control.getDisplay(), grey, grey, grey ) );
-                        grey -= greyStep;
+//                        page.control.setBackground( grey );
+//                        grey -= greyStep;
                     }
                     
                     if (page.isShown) {

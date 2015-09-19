@@ -12,11 +12,12 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,8 +29,10 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+
 import org.eclipse.swt.graphics.RGB;
-import org.polymap.rhei.batik.ant.ImageConfiguration.ReplaceConfiguration;
+
+import org.polymap.rhei.batik.engine.svg.ImageConfiguration.ReplaceConfiguration;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>

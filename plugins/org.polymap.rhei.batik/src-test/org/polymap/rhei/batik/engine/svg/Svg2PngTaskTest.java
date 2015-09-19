@@ -12,7 +12,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.ant;
+package org.polymap.rhei.batik.engine.svg;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -23,11 +23,15 @@ import javax.imageio.ImageIO;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.polymap.rhei.batik.ant.ImageConfig.ReplaceConfig;
-import org.polymap.rhei.batik.ant.ImageConfig.TransparenceConfig;
+
+import org.polymap.rhei.batik.engine.svg.ImageConfig;
+import org.polymap.rhei.batik.engine.svg.Svg2PngTask;
+import org.polymap.rhei.batik.engine.svg.ImageConfig.ReplaceConfig;
+import org.polymap.rhei.batik.engine.svg.ImageConfig.TransparenceConfig;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
