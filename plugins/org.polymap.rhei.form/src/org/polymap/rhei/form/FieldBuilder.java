@@ -86,6 +86,11 @@ public abstract class FieldBuilder
                 field.set( new StringFormField() );
             }
         }
+        // tooltip -> decorate label
+        if (tooltip.isPresent() && label.isPresent() && !label.get().endsWith( "*" ) ) {
+            label.set( label.get() + "*" );
+        }
+        
         Composite result = createFormField();
         
         // layoutData

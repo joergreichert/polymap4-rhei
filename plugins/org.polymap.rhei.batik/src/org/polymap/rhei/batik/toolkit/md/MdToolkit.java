@@ -18,14 +18,11 @@ import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
-
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
@@ -92,4 +89,7 @@ public class MdToolkit
         return new MdListViewer( parent, stylebits( styles ) );
     }
 
+    public Toolbar createToolbar( Composite parent, String label, boolean fixedPosition, int style, ActionConfiguration... actions ) {
+        return new Toolbar( this, parent == null ? panelPage.control : parent, label, fixedPosition, style, actions );
+    }
 }
