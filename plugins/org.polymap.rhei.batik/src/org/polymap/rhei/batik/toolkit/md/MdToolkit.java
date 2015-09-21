@@ -68,15 +68,27 @@ public class MdToolkit
 
 
     /**
-     * Creates a floating snack bar.
+     * Creates a snack bar.
      * 
      * @see <a
      *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
      *      Design</a>.
      */
     @SuppressWarnings("javadoc")
-    public Snackbar createFloatingSnackbar(int styleBits) {
+    public Snackbar createSnackbar(int styleBits) {
         return new Snackbar(this, panelPage.control, styleBits);
+    }
+    
+    
+    /**
+     * Creates a toast.
+     * 
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
+     *      Design</a>.
+     */
+    public Toast createToast( int verticalPosition, int styleBits ) {
+        return new Toast(this, panelPage.control, verticalPosition, styleBits);
     }    
 
 
