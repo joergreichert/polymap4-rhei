@@ -113,6 +113,12 @@ public class DefaultToolkit
     public PanelPath getPanelPath() {
         return panelPath;
     }
+    
+    public void enableMarkup( Control control ) {
+        control.setData( RWT.TOOLTIP_MARKUP_ENABLED, true );
+        control.setData( /* MarkupValidator.MARKUP_VALIDATION_DISABLED */"org.eclipse.rap.rwt.markupValidationDisabled",
+                false );
+    }
 
     @Override
     public void close() {

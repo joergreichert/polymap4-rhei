@@ -21,9 +21,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Joerg Reichert <joerg@mapzone.io>
  *
  */
-public class Toast extends AbstractFeedbackComponent {
+public class MdToast extends AbstractFeedbackComponent {
 
-    public Toast( MdToolkit tk, Composite parent, int verticalPosition, int style ) {
+    public MdToast( MdToolkit tk, Composite parent, int verticalPosition, int style ) {
         super( tk, parent, 70, style );
     }
 }

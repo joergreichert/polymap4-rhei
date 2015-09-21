@@ -61,6 +61,8 @@ public interface IPanelToolkit
      */
     public <T extends Control> T adapt( T control, boolean trackFocus, boolean trackKeyboard );
 
+    public void enableMarkup( Control control );
+    
     /**
      *
      * @see Label#Label(Composite, int)

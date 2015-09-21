@@ -57,7 +57,7 @@ import org.polymap.core.ui.UIUtils;
  * @author Joerg Reichert <joerg@mapzone.io>
  *
  */
-public class Toolbar
+public class MdToolbar
         extends Configurable {
 
     private Image                     navigationMenuImage  = images().svgImage( "ic_menu_48px.svg", NORMAL24 );
@@ -81,7 +81,7 @@ public class Toolbar
      * @param actions the actions to be shown as buttons (for the first two actions)
      *        resp. menu entries for further actions
      */
-    public Toolbar( MdToolkit tk, Composite parent, String title, boolean fixedPosition, int style,
+    public MdToolbar( MdToolkit tk, Composite parent, String title, boolean fixedPosition, int style,
             ActionConfiguration... actions ) {
         this.actions = Arrays.asList( actions );
         comp = createToolbar( tk, parent, fixedPosition, style );

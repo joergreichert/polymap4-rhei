@@ -36,7 +36,7 @@ import org.polymap.core.ui.UIUtils;
  * @author Joerg Reichert <joerg@mapzone.io>
  */
 @SuppressWarnings("javadoc")
-public class Snackbar
+public class MdSnackbar
         extends SelectionAdapter {
 
     private static final long serialVersionUID = -4892328447169729063L;
@@ -74,7 +74,7 @@ public class Snackbar
     private Callback<?>     callback = null;
 
 
-    public Snackbar( MdToolkit tk, Composite parent, int style ) {
+    public MdSnackbar( MdToolkit tk, Composite parent, int style ) {
         comp = tk.createComposite( parent, style );
         comp.setLayoutData( FormDataFactory.defaults().top( 90 ).left( 0 ).right( 100 ).bottom( 100 ).create() );
         comp.moveAbove( null );
