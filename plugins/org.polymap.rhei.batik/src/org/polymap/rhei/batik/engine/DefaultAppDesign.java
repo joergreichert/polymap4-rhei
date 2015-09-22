@@ -57,12 +57,14 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikApplication;
+import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.app.IAppDesign;
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.engine.PageStack.Page;
 import org.polymap.rhei.batik.toolkit.ConstraintLayout;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
@@ -321,9 +323,9 @@ public class DefaultAppDesign
         // close btn
         if (panel.getSite().getPath().size() > 1) {
             Button closeBtn = UIUtils.setVariant( new Button( head, SWT.NO_FOCUS ), CSS_PANEL_HEADER );
-            closeBtn.setText( "x" );
-            //closeBtn.setImage( BatikPlugin.instance().imageForName( "resources/icons/close3.gif" ) );
-            closeBtn.setToolTipText( "Dieses Panel schließen" );
+            //closeBtn.setText( "x" );
+            closeBtn.setImage( BatikPlugin.images().svgImage( "close.svg", SvgImageRegistryHelper.NORMAL12_ACTION ) );
+            closeBtn.setToolTipText( "Close this panel" );
             closeBtn.setLayoutData( FormDataFactory.filled().clearRight().width( dp( 50 ) ).create() );
             closeBtn.addSelectionListener( new SelectionAdapter() {
                 @Override

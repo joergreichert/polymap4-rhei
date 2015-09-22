@@ -65,13 +65,19 @@ public class SvgImageRegistryHelper
     public final static String      NORMAL48 = "normal48";
 
     /** Image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL48_LINK = "normal48-link";
+    public final static String      NORMAL48_ACTION = "normal48-link";
 
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL12 = "normal12";
     
+    /** Action image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL12_ACTION = "normal12-link";
+    
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL24 = "normal24";
+    
+    /** Action image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL24_ACTION = "normal24-link";
     
     /** Image configuration for normale, disabled icons created by {@link #svgImage(String, String)}. */
     public final static String      NORMAL24_DISABLED = "normal24-disabled";
@@ -128,7 +134,9 @@ public class SvgImageRegistryHelper
         putConfig( NORMAL12, new ReplaceBlackSvgConfiguration( new RGB( 180, 180, 180 ), 16 ) );
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 24 ) );
         putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 48 ) );
-        putConfig( NORMAL48_LINK, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 48 ) );
+        putConfig( NORMAL48_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 48 ) );
+        putConfig( NORMAL24_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 24 ) );
+        putConfig( NORMAL12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 16 ) );
         putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 240, 100 ), 16 ) );
     }
 
