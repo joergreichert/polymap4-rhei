@@ -14,8 +14,6 @@
  */
 package org.polymap.rhei.batik;
 
-import java.net.URL;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
@@ -24,11 +22,6 @@ import org.osgi.util.tracker.ServiceTracker;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.eclipse.swt.graphics.Image;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusAdapter;
@@ -120,30 +113,6 @@ public class BatikPlugin
         
         super.stop( context );
         instance = null;
-    }
-
-    
-    public Image imageForDescriptor( ImageDescriptor imageDescriptor, String key ) {
-        ImageRegistry images = getImageRegistry();
-        Image image = images.get( key );
-        if (image == null || image.isDisposed()) {
-            images.put( key, imageDescriptor );
-            image = images.get( key );
-        }
-        return image;
-    }
-
-    
-    public Image imageForName( String resName ) {
-        ImageRegistry images = getImageRegistry();
-        Image image = images.get( resName );
-        if (image == null || image.isDisposed()) {
-            URL res = getBundle().getResource( resName );
-            assert res != null : "Image resource not found: " + resName;
-            images.put( resName, ImageDescriptor.createFromURL( res ) );
-            image = images.get( resName );
-        }
-        return image;
     }
 
 }

@@ -392,16 +392,16 @@ public class StatusManager2
             //msg = msg != null ? new PegDownProcessor().markdownToHtml( status.getMessage() ) : null;
 
             if (panelStatus.getSeverity() == IStatus.OK) {
-                updateMessage( msg, msg, BatikPlugin.instance().imageForName( "resources/icons/ok-status.gif" ) );
+                updateMessage( msg, msg, BatikPlugin.images().image( "resources/icons/ok-status.gif" ) );
             }
             else if (panelStatus.getSeverity() == IStatus.ERROR) {
-                updateMessage( msg, msg, BatikPlugin.instance().imageForName( "resources/icons/field_invalid.gif" ) );
+                updateMessage( msg, msg, BatikPlugin.images().image( "resources/icons/field_invalid.gif" ) );
             }
             else if (panelStatus.getSeverity() == IStatus.WARNING) {
-                updateMessage( msg, msg, BatikPlugin.instance().imageForName( "resources/icons/warningstate.gif" ) );
+                updateMessage( msg, msg, BatikPlugin.images().image( "resources/icons/warningstate.gif" ) );
             }
             else if (panelStatus.getSeverity() == IStatus.INFO) {
-                updateMessage( msg, msg, BatikPlugin.instance().imageForName( "resources/icons/info.png" ) );
+                updateMessage( msg, msg, BatikPlugin.images().image( "resources/icons/info.png" ) );
             }
             else {
                 throw new RuntimeException( "Unhandled status severity: " + panelStatus.getSeverity() );
@@ -477,7 +477,7 @@ public class StatusManager2
             }
             ImageDescriptor image = action.getImageDescriptor();
             if (image != null) {
-                btn.setImage( BatikPlugin.instance().imageForDescriptor( image, action.getText() + "_icon" ) );
+                btn.setImage( BatikPlugin.images().image( image, action.getText() + "_icon" ) );
             }
         }
         

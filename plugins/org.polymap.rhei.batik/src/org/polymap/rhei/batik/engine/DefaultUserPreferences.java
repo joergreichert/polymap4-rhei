@@ -134,7 +134,7 @@ public class DefaultUserPreferences
             usernameLnk.setLayoutData( FormDataFactory.filled().right( btn ).width( 160 ).create() );
 //            UIUtils.setVariant( usernameLnk, DefaultAppNavigator.CSS_PREFIX );
             usernameLnk.setText( " [" + i18n.get( "noUser" ) + "]" );
-            usernameLnk.setImage( BatikPlugin.instance().imageForName( "resources/icons/user.png" ) );
+            usernameLnk.setImage( BatikPlugin.images().image( "resources/icons/user.png" ) );
             
             // FIXME
             usernameLnk.addSelectionListener( usernameLnkListener = new SelectionAdapter() {
@@ -167,7 +167,7 @@ public class DefaultUserPreferences
         item.setText( action.getText() );
         ImageDescriptor icon = action.getImageDescriptor();
         if (icon != null) {
-            item.setImage( BatikPlugin.instance().imageForDescriptor( icon, action.getText() ) );
+            item.setImage( BatikPlugin.images().image( icon, action.getText() ) );
         }
         item.addSelectionListener( new SelectionAdapter() {
             public void widgetSelected( SelectionEvent ev2 ) {
