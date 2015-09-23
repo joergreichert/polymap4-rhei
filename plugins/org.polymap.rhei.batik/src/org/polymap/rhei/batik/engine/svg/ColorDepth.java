@@ -32,7 +32,6 @@ public enum ColorDepth {
 
     /**
      * @param depth
-     * @return
      */
     public static ColorDepth getAsDepth( int depth ) {
         for (ColorDepth value : values()) {

@@ -32,7 +32,6 @@ import org.polymap.core.ui.UIUtils;
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
  */
-@SuppressWarnings("javadoc")
 public abstract class AbstractFeedbackComponent
         extends SelectionAdapter {
 
@@ -141,7 +140,7 @@ public abstract class AbstractFeedbackComponent
 
 
     public void showIssueAndOfferAction( MessageType messageStyle, String message, String actionName,
-            Callback<?> callback ) {
+            @SuppressWarnings("hiding") Callback<?> callback ) {
         internalShowIssue( messageStyle, message );
         button.setText( actionName );
         setVisibleForAll( true );

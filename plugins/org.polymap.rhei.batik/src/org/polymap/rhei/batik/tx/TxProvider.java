@@ -96,8 +96,6 @@ public abstract class TxProvider<T> {
     
     /**
      * Wrapper and Supplier of the actual underlying transaction.
-     * 
-     * @param <T> The type of the underlying transaction. 
      */
     public class Tx
             implements Supplier<T>, AutoCloseable {

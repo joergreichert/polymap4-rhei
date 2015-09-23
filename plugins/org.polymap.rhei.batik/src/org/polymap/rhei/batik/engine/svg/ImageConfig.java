@@ -142,20 +142,18 @@ public class ImageConfig {
      */
     COLOR_TYPE getTypedColorType() {
         String colorTypeStr = getColorType();
-        COLOR_TYPE colorType = null;
         if ("monochrom".equalsIgnoreCase( colorTypeStr )) {
-            colorType = COLOR_TYPE.MONOCHROM;
+            return COLOR_TYPE.MONOCHROM;
         }
         else if ("gray".equalsIgnoreCase( colorTypeStr )) {
-            colorType = COLOR_TYPE.GRAY;
+            return COLOR_TYPE.GRAY;
         }
         else if ("rgb".equalsIgnoreCase( colorTypeStr )) {
-            colorType = COLOR_TYPE.RGB;
+            return COLOR_TYPE.RGB;
         }
         else {
-            colorType = COLOR_TYPE.ARGB;
+            return COLOR_TYPE.ARGB;
         }
-        return colorType;
     }
 
 
@@ -163,8 +161,7 @@ public class ImageConfig {
      * @return
      */
     float getTypedAdjHue() {
-        float adjHue = Float.valueOf( getAdjHue() );
-        return adjHue;
+        return Float.valueOf( getAdjHue() );
     }
 
 
@@ -172,8 +169,7 @@ public class ImageConfig {
      * @return
      */
     float getTypedAdjSaturation() {
-        float adjSaturation = Float.valueOf( getAdjSaturation() );
-        return adjSaturation;
+        return Float.valueOf( getAdjSaturation() );
     }
 
 
@@ -181,8 +177,7 @@ public class ImageConfig {
      * @return
      */
     float getTypedAdjBrightness() {
-        float adjBrightness = Float.valueOf( getAdjBrightness() );
-        return adjBrightness;
+        return Float.valueOf( getAdjBrightness() );
     }
 
 
@@ -194,8 +189,7 @@ public class ImageConfig {
             return null;
         }
         else {
-            int depth = Integer.valueOf( getDepth() );
-            return ColorDepth.getAsDepth( depth );
+            return ColorDepth.getAsDepth( Integer.valueOf( getDepth() ) );
         }
     }
 
@@ -313,7 +307,7 @@ public class ImageConfig {
 
 
     /**
-     * @return
+     * 
      */
     public boolean isRelative() {
         return this.relative;

@@ -120,7 +120,7 @@ public class PageStackLayout
         
         // available size
         int availWidth = clientArea.width - margins.getMarginLeft() - margins.getMarginRight();
-        int availHeight = clientArea.height - margins.getMarginTop() + margins.getMarginBottom();
+//        int availHeight = clientArea.height - margins.getMarginTop() + margins.getMarginBottom();
 
         Collection<Page> pages = pageStack.getPages();
         List<Page> sortedVisible = pages.stream()

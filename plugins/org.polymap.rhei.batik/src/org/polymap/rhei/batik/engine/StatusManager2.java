@@ -178,7 +178,7 @@ public class StatusManager2
             return;
         }
         if (ev.getType() == EventType.LIFECYCLE) {
-            IPanel panel = ev.getPanel();
+//            IPanel panel = ev.getPanel();
             
             if (ev.getNewValue() == PanelStatus.FOCUSED) {
                 // deactivate current panel *** 

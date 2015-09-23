@@ -88,6 +88,7 @@ public class MdToolkit
      *      href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material
      *      Design</a>.
      */
+    @SuppressWarnings("javadoc")
     public Toast createToast( int verticalPosition, int styleBits ) {
         return new Toast(this, panelPage.control, verticalPosition, styleBits);
     }    
