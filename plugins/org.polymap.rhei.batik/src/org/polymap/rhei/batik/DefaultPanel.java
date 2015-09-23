@@ -22,6 +22,13 @@ import java.lang.reflect.Modifier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.core.runtime.IStatus;
+
+import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import org.polymap.rhei.batik.toolkit.LayoutSupplier;
+
 /**
  * Provides handling of {@link IPanelSite} and {@link IAppContext} variables.
  *
@@ -32,16 +39,19 @@ public abstract class DefaultPanel
 
     private static Log log = LogFactory.getLog( DefaultPanel.class );
     
-    private IPanelSite          site;
-
+    private PanelSite           site;
+    
+    private IPanelSite          site2;
+    
     private IAppContext         context;
 
 
     @Override
-    public void setSite( IPanelSite site, IAppContext context ) {
+    public void setSite( PanelSite site, IAppContext context ) {
         assert this.site == null : "site is not null";
         assert this.context == null : "context is not null";
         this.site = site;
+        this.site2 = new PanelSiteImpl();
         this.context = context;
     }
 
@@ -94,10 +104,21 @@ public abstract class DefaultPanel
     public void dispose() {
     }
 
-
+    
+    /**
+     * The site interface of this panel.
+     */
     @Override
-    public IPanelSite getSite() {
+    public PanelSite site() {
         return site;
+    }
+    
+    
+    /**
+     * This will be <b>deprecated</b> in future version use {@link #site()} instead.
+     */
+    public IPanelSite getSite() {
+        return site2;
     }
 
 
@@ -112,5 +133,72 @@ public abstract class DefaultPanel
     protected Optional<IPanel> parentPanel() {
         return Optional.ofNullable( getContext().getPanel( getSite().getPath().removeLast( 1 ) ) );
     }
+
     
+    /**
+     *
+     */
+    protected class PanelSiteImpl
+            implements IPanelSite {
+
+        @Override
+        public Memento getMemento() {
+            return site.memento();
+        }
+
+        @Override
+        public PanelStatus getPanelStatus() {
+            return site.panelStatus();
+        }
+
+        @Override
+        public PanelPath getPath() {
+            return site.path();
+        }
+
+        @Override
+        public void setStatus( IStatus status ) {
+            site.status.set( status );
+        }
+
+        @Override
+        public IPanelSite setTitle( String title ) {
+            site.title.set( title );
+            return this;
+        }
+
+        @Override
+        public IPanelSite setTooltip( String tooltip ) {
+            site.tooltip.set( tooltip );
+            return this;
+        }
+
+        @Override
+        public IPanelSite setIcon( Image icon ) {
+            site.icon.set( icon );
+            return this;
+        }
+
+        @Override
+        public LayoutSupplier getLayoutPreference() {
+            return site.layoutPreferences();
+        }
+
+        @Override
+        public void setPreferredWidth( int preferredWidth ) {
+            site.preferredWidth.set( preferredWidth );
+        }
+
+        @Override
+        public IPanelToolkit toolkit() {
+            return site.toolkit();
+        }
+
+        @Override
+        public void layout( boolean changed ) {
+            site.layout( changed );
+        }
+
+    }
+
 }

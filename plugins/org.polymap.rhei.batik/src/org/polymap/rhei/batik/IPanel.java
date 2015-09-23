@@ -33,9 +33,17 @@ import org.polymap.rhei.batik.toolkit.ConstraintLayout;
  */
 public interface IPanel {
 
-    public void setSite( IPanelSite site, IAppContext context );
+    /**
+     * Called by the engine right after constructing this panel and before
+     * any other call. Must not be called by client code.
+     *
+     * @param site
+     * @param context
+     */
+    public void setSite( PanelSite site, IAppContext context );
     
-    
+    public PanelSite site();
+
     /**
      * This method is called before {@link #init(IPanelSite, IAppContext)} in order
      * to check if the panel wants to be displayed on top of the current panel in the
@@ -70,7 +78,6 @@ public interface IPanel {
      */
     public boolean wantsToBeShown();
     
-    
     /**
      * Initializes the panel. This method is called right before the panel is
      * activated for the first time.
@@ -86,7 +93,6 @@ public interface IPanel {
     public void dispose();
 
     public PanelIdentifier id();
-
     
     /**
      * Creates the UI elements of this panel.
@@ -98,6 +104,4 @@ public interface IPanel {
      * @param panelBody The parent of the UI elements to create.
      */
     public void createContents( Composite panelBody );
-
-    public IPanelSite getSite();
 }

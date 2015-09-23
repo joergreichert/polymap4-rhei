@@ -12,26 +12,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
-package org.polymap.rhei.batik.contribution;
+package org.polymap.rhei.batik;
 
-import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.PanelSite;
-import org.polymap.rhei.batik.toolkit.IPanelToolkit;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public interface IContributionSite {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface FireEventType {
 
-    public IPanel getPanel();
-    
-    public PanelSite getPanelSite();
-    
-    public IAppContext getContext(); 
-
-    public <T extends IPanelToolkit> T toolkit();
-    
+    public PanelChangeEvent.EventType value();
 }

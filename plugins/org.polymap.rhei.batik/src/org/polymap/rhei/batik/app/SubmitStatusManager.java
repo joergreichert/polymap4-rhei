@@ -86,7 +86,7 @@ public class SubmitStatusManager {
         }
         
         log.debug( "highestSeverity: " + highestSeverity );
-        panel.getSite().setStatus( highestSeverity );
+        panel.site().status.set( highestSeverity );
         
         if (submit != null) {
             submit.setEnabled( highestSeverity.isOK() && highestSeverity != Status.OK_STATUS );

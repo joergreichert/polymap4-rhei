@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.PanelSite;
 import org.polymap.rhei.form.IFormPage;
 
 /**
@@ -36,7 +36,7 @@ public abstract class BatikFormPanel
 
     private static Log log = LogFactory.getLog( BatikFormPanel.class );
     
-    private IPanelSite      panelSite;
+    private PanelSite       panelSite;
     
     private IAppContext     context;
 
@@ -58,7 +58,7 @@ public abstract class BatikFormPanel
 
 
     @Override
-    public void setSite( IPanelSite site, IAppContext context ) {
+    public void setSite( PanelSite site, IAppContext context ) {
         this.panelSite = site;
         this.context = context;
     }
@@ -70,7 +70,7 @@ public abstract class BatikFormPanel
 
 
     @Override
-    public IPanelSite getSite() {
+    public PanelSite site() {
         return panelSite;
     }
 

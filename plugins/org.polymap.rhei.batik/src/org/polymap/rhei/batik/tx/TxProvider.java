@@ -202,14 +202,14 @@ public abstract class TxProvider<T> {
         }
 
         protected Optional<Tx> parentTx() {
-            PanelPath panelPath = panel.getSite().getPath();
+            PanelPath panelPath = panel.site().path();
             if (panelPath.size() <= 1) {
                 return Optional.empty();
             }
             else {
                 PanelPath parentPath = panelPath.removeLast( 1 );
                 return panels.entrySet().stream()
-                        .filter( entry -> entry.getKey().getSite().getPath().equals( parentPath ) )
+                        .filter( entry -> entry.getKey().site().path().equals( parentPath ) )
                         .map( entry -> entry.getValue() )
                         .findFirst();
             }
@@ -253,7 +253,6 @@ public abstract class TxProvider<T> {
      * </pre>
      *
      * @param panel
-     * @return
      */
     public Tx newTx( IPanel panel ) {
         Tx result = new Tx( panel );

@@ -38,7 +38,7 @@ public class Panels {
      */
     public static final Predicate<IPanel> withPrefix( final PanelPath prefix ) {
         assert prefix != null;
-        return (IPanel panel) -> prefix.isPrefixOf( panel.getSite().getPath() );
+        return (IPanel panel) -> prefix.isPrefixOf( panel.site().path() );
     }
 
     /**
@@ -46,7 +46,7 @@ public class Panels {
      */
     public static final Predicate<IPanel> is( final PanelPath path ) {
         assert path != null;
-        return (IPanel input) -> path.equals( input.getSite().getPath() );
+        return (IPanel input) -> path.equals( input.site().path() );
     }
 
 }

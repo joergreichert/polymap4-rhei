@@ -28,7 +28,7 @@ import org.polymap.core.runtime.session.SessionSingleton;
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
+import org.polymap.rhei.batik.PanelSite;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
@@ -88,8 +88,8 @@ public class ContributionManager
                 return panel;
             }
             @Override
-            public IPanelSite getPanelSite() {
-                return panel.getSite();
+            public PanelSite getPanelSite() {
+                return panel.site();
             }
             @Override
             public IAppContext getContext() {

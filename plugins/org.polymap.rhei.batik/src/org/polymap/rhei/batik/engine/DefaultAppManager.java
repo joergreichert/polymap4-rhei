@@ -19,7 +19,6 @@ import static org.polymap.rhei.batik.IPanelSite.PanelStatus.FOCUSED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,36 +39,33 @@ import java.io.OutputStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
 
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import org.polymap.core.runtime.Closer;
+import org.polymap.core.runtime.Lazy;
+import org.polymap.core.runtime.PlainLazyInit;
 import org.polymap.core.runtime.StreamIterable;
 import org.polymap.core.runtime.UIThreadExecutor;
-import org.polymap.core.runtime.event.EventManager;
+import org.polymap.core.runtime.config.Concern;
+import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.ui.StatusDispatcher;
 
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.BatikPlugin;
+import org.polymap.rhei.batik.FireEventType;
 import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
-import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.Memento;
-import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelIdentifier;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.PanelSite;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.app.IAppManager;
 import org.polymap.rhei.batik.engine.BatikFactory.PanelExtensionPoint;
@@ -138,10 +134,10 @@ public class DefaultAppManager
     }    
 
     
-    protected <T> void fireEvent( IPanel panel, EventType eventType, T newValue, T previousValue  ) {
-        // XXX avoid race conditions; EventManager does not seem to always handle display events properly
-        EventManager.instance().syncPublish( new PanelChangeEvent( panel, eventType, newValue, previousValue ) );        
-    }
+//    protected <T> void fireEvent( IPanel panel, EventType eventType, T newValue, T previousValue  ) {
+//        // XXX avoid race conditions; EventManager does not seem to always handle display events properly
+//        EventManager.instance().syncPublish( new PanelChangeEvent( panel, eventType, newValue, previousValue ) );        
+//    }
 
     
     @Override
@@ -163,10 +159,10 @@ public class DefaultAppManager
     }
 
     
-    protected IPanelSite getOrCreatePanelSite( PanelPath path, int stackPriority ) {
+    protected PanelSite getOrCreatePanelSite( PanelPath path, int stackPriority ) {
         PanelSite result = panelSites.get( path );
         if (result == null) {
-            result = new PanelSite( path, stackPriority );
+            result = new PanelSiteImpl( path, stackPriority );
             if (panelSites.put( path, result ) != null) {
                 throw new IllegalStateException();
             }
@@ -180,9 +176,9 @@ public class DefaultAppManager
             IPanel panel = ep.createPanel();
             new PanelContextInjector( panel, context ).run();
             PanelPath path = parentPath.append( panel.id() );
-            IPanelSite panelSite = getOrCreatePanelSite( path, ep.getStackPriority() );
+            PanelSite panelSite = getOrCreatePanelSite( path, ep.getStackPriority() );
             panel.setSite( panelSite, context );
-            if (panel.getSite() == null) {
+            if (panel.site() == null) {
                 throw new IllegalStateException( "Panel.getSite() == null after setSite()!");
             }
             return panel; //panel.wantsToBeShown() ? panel : null;
@@ -199,9 +195,9 @@ public class DefaultAppManager
                 .map( ep -> createPanel( ep, parentPath ) )
                 .filter( panel -> panel.id().equals( panelId ) )
                 .peek( panel -> {
-                        log.info( "CREATE panel: " + panel.getSite().getPath() );
-                        panels.put( panel.getSite().getPath(), panel );
-                        updatePanelStatus( panel, PanelStatus.CREATED );
+                        log.info( "CREATE panel: " + panel.site().path() );
+                        panels.put( panel.site().path(), panel );
+                        ((PanelSiteImpl)panel.site()).panelStatus.set( PanelStatus.CREATED );
                 })
                 .findFirst()
                 .orElseThrow( () -> new IllegalStateException( "No such panel: " + panelId ) );
@@ -229,7 +225,7 @@ public class DefaultAppManager
         disposePanels( parentPath );
         IPanel panel = createPanel( parentPath, panelId );
         raisePanelStatus( panel, PanelStatus.FOCUSED );
-        top = panel.getSite().getPath();
+        top = panel.site().path();
         return panel;
     }
 
@@ -237,14 +233,14 @@ public class DefaultAppManager
     protected void disposePanels( PanelPath parentPath ) {
         int pathSize = parentPath.size();
         panels.values().stream()
-                .filter( panel -> panel.getSite().getPath().size() > pathSize )
+                .filter( panel -> panel.site().path().size() > pathSize )
                 .collect( Collectors.toList() )  // keep stable while removing
                 .forEach( panel -> disposePanel( panel ) );
     }
     
     
     protected void disposePanel( IPanel panel ) {
-        log.info( "DISPOSE panel: " + panel.getSite().getPath() );
+        log.info( "DISPOSE panel: " + panel.site().path() );
         try {
             panel.dispose();
             saveMemento();
@@ -252,12 +248,12 @@ public class DefaultAppManager
         catch (Exception e) {
             log.warn( "", e );
         }
-        PanelPath panelPath = panel.getSite().getPath();
+        PanelPath panelPath = panel.site().path();
         if (panels.remove( panelPath ) == null) {
             throw new IllegalStateException( "No Panel exists at: " + panelPath );
         }
         panelSites.remove( panelPath );
-        updatePanelStatus( panel, null );
+        ((PanelSiteImpl)panel.site()).panelStatus.set( null );
         log.info( "    " + panels.values().toString() );
     }
         
@@ -278,26 +274,23 @@ public class DefaultAppManager
     
     protected void raisePanelStatus( IPanel panel, PanelStatus targetStatus ) {
         // initialize
-        if (panel.getSite().getPanelStatus() == CREATED && targetStatus.ge( INITIALIZED )) {
+        if (panel.site().panelStatus() == CREATED && targetStatus.ge( INITIALIZED )) {
             panel.init();
-            updatePanelStatus( panel, INITIALIZED );
+            ((PanelSiteImpl)panel.site()).panelStatus.set( INITIALIZED );
         }
         // make visible
-        if (panel.getSite().getPanelStatus() == INITIALIZED && targetStatus.ge( VISIBLE )) {
-            updatePanelStatus( panel, VISIBLE );
+        if (panel.site().panelStatus() == INITIALIZED && targetStatus.ge( VISIBLE )) {
+            ((PanelSiteImpl)panel.site()).panelStatus.set( VISIBLE );
         }
         // make active
-        if (panel.getSite().getPanelStatus() == VISIBLE && targetStatus.ge( FOCUSED )) {
-            updatePanelStatus( panel, FOCUSED );
+        if (panel.site().panelStatus() == VISIBLE && targetStatus.ge( FOCUSED )) {
+            ((PanelSiteImpl)panel.site()).panelStatus.set( FOCUSED );
         }
     }
     
     
     protected void updatePanelStatus( IPanel panel, PanelStatus panelStatus ) {
-        PanelSite panelSite = (PanelSite)panel.getSite();
-        PanelStatus previous = panelSite.panelStatus;
-        panelSite.panelStatus = panelStatus;
-        fireEvent( panel, EventType.LIFECYCLE, panelSite.panelStatus, previous );
+        ((PanelSiteImpl)panel.site()).panelStatus.set( panelStatus );
     }
 
 
@@ -354,48 +347,63 @@ public class DefaultAppManager
             return DefaultAppManager.this.wantToBeShown( parent );
         }
     }
-
-
+    
+    
     /**
-     *
+     * 
+     * 
      */
-    protected class PanelSite
-            implements IPanelSite {
+    protected class PanelSiteImpl
+            extends PanelSite {
+        
+        private PanelPath                       path;
+        
+        /**
+         * This must be lazily initialized as MdAppDesign has no page for the panel yet.
+         */
+        private Lazy<IPanelToolkit>             toolkit = new PlainLazyInit( () -> design.createToolkit( path ) );
+        
+        @Concern( FireEvent.class )
+        @FireEventType( EventType.LIFECYCLE )
+        protected Config2<PanelSite,PanelStatus> panelStatus;
+        
 
-        private PanelPath           path;
-        
-        private Integer             stackPriority;
-
-        private String              title;
-        
-        private Image               icon;
-
-        /** Toolbar tools: {@link IAction} or {@link IContributionItem}. */
-        private List                tools = new ArrayList();
-        
-        private IStatus             status = Status.OK_STATUS;
-        
-        private PanelStatus         panelStatus;
-        
-        /** Lazy init by {@link #toolkit()} to let page parent create. */
-        private IPanelToolkit       toolkit;
-        
-        private int                 preferredWidth = SWT.DEFAULT;
-
-
-        protected PanelSite( PanelPath path, Integer stackPriority  ) {
+        protected PanelSiteImpl( PanelPath path, Integer stackPriority ) {
             assert path != null;
             this.path = path;
-            this.stackPriority = stackPriority;
+            this.stackPriority.set( stackPriority );
+            status.set( Status.OK_STATUS );
         }
-
+        
         @Override
         protected void finalize() throws Throwable {
-            toolkit = Closer.create().closeAndNull( toolkit );
+            if (toolkit.isInitialized()) {
+                toolkit.get().close();
+            }
+        }
+        
+        @Override
+        public PanelPath path() {
+            return path;
         }
 
         @Override
-        public Memento getMemento() {
+        public PanelStatus panelStatus() {
+            return panelStatus.get();
+        }
+        
+        @Override
+        public IPanelToolkit toolkit() {
+            return toolkit.get();
+        }
+
+        @Override
+        public void layout( boolean changed ) {
+            design.delayedRefresh();
+        }
+
+        @Override
+        public Memento memento() {
             // "/" is not allowed as key
             String key = path.stream()
                     .map( id -> id.id() )
@@ -408,106 +416,9 @@ public class DefaultAppManager
         }
 
         @Override
-        public PanelStatus getPanelStatus() {
-            return panelStatus;
-        }
-
-        @Override
-        public PanelPath getPath() {
-            return path;
-        }
-
-        @Override        
-        public Integer getStackPriority() {
-            return stackPriority;
-        }
-
-        @Override
-        public void setStatus( IStatus status ) {
-            IPanel panel = getPanel( path );
-            IStatus previous = this.status;
-            this.status = status;
-            fireEvent( panel, EventType.STATUS, this.status, previous );
-        }
-
-        @Override
-        public IStatus getStatus() {
-            return status;
-        }
-
-        @Override
-        public void addToolbarAction( IAction action ) {
-            tools.add( action );
-        }
-
-        public List getTools() {
-            return tools;
-        }
-
-        @Override
-        public String getTitle() {
-            return title;
-        }
-
-        @Override
-        public void setTitle( String title ) {
-            String previous = this.title;
-            this.title = title;
-            IPanel panel = getPanel( path );
-            if (panel != null) {
-                fireEvent( panel, EventType.TITLE, this.title, previous );
-            }
-            else {
-                log.warn( "No panel yet for path: " + path );
-            }
-        }
-
-        @Override
-        public Image getIcon() {
-            return icon;
-        }
-        
-        @Override
-        public void setIcon( Image icon ) {
-            Image previous = this.icon;
-            this.icon = icon;
-            IPanel panel = getPanel( path );
-            if (panel != null) {
-                fireEvent( panel, EventType.TITLE, this.icon, previous );
-            }
-            else {
-                log.warn( "No panel yet for path: " + path );                
-            }
-        }
-
-        @Override
-        public IPanelToolkit toolkit() {
-            if (toolkit == null) {
-                toolkit = design.createToolkit( path );
-            }
-            return toolkit;
-        }
-
-        @Override
-        public void layout( boolean changed ) {
-            design.delayedRefresh();
-        }
-
-        @Override
-        public LayoutSupplier getLayoutPreference() {
+        public LayoutSupplier layoutPreferences() {
             return design.getPanelLayoutPreferences();
         }
-
-        @Override        
-        public int getPreferredWidth() {
-            return preferredWidth;
-        }
-
-        @Override
-        public void setPreferredWidth( int preferredWidth ) {
-            this.preferredWidth = preferredWidth;
-        }
-        
     }
 
 }

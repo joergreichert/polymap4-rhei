@@ -20,7 +20,6 @@ import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,6 +62,7 @@ import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.PanelSite;
 import org.polymap.rhei.batik.app.IAppDesign;
 import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.engine.PageStack.Page;
@@ -235,13 +235,13 @@ public class DefaultAppDesign
                         .forEach( page -> {
                                 PanelPath panelPath = page.key;
                                 IPanel p = appManager.getPanel( panelPath );
-                                PanelStatus panelStatus = p.getSite().getPanelStatus();
+                                PanelStatus panelStatus = p.site().panelStatus();
 
                                 // new or focused pages are explicitly set isShown=true, they already have proper
                                 // PanelStatus (>= VISIBLE); however, layout may decide to show pages when more space
                                 // becomes available, those panels have status < VISIBLE and need to be updated
                                 if (page.isShown && VISIBLE.ge( panelStatus )) {
-                                    appManager.updatePanelStatus( p, VISIBLE );                                 
+                                    appManager.updatePanelStatus( p, VISIBLE );                                
                                 }
                                 //
                                 if (!page.isShown && panelStatus.ge( VISIBLE )) {
@@ -286,7 +286,7 @@ public class DefaultAppDesign
         // title
         Label title = UIUtils.setVariant( new Label( head, SWT.NO_FOCUS|SWT.CENTER ), CSS_PANEL_HEADER );
         title.setData( "_type_", CSS_PANEL_HEADER );
-        title.setText( Optional.ofNullable( panel.getSite().getTitle() ).orElse( "..." ) );
+        title.setText( panel.site().title.orElse( "..." ) );
         title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 4 ).create() );
 
 //        FontData fontData = title.getFont().getFontData()[0];
@@ -321,7 +321,7 @@ public class DefaultAppDesign
     
     protected void createPanelDecoration( IPanel panel, Composite head  ) {
         // close btn
-        if (panel.getSite().getPath().size() > 1) {
+        if (panel.site().path().size() > 1) {
             Button closeBtn = UIUtils.setVariant( new Button( head, SWT.NO_FOCUS ), CSS_PANEL_HEADER );
             //closeBtn.setText( "x" );
             closeBtn.setImage( BatikPlugin.images().svgImage( "close.svg", SvgImageRegistryHelper.NORMAL12_ACTION ) );
@@ -330,7 +330,7 @@ public class DefaultAppDesign
             closeBtn.addSelectionListener( new SelectionAdapter() {
                 @Override
                 public void widgetSelected( SelectionEvent ev ) {
-                    appManager.getContext().closePanel( panel.getSite().getPath() );
+                    appManager.getContext().closePanel( panel.site().path() );
                 }
             });
         }
@@ -341,11 +341,11 @@ public class DefaultAppDesign
         switcher.setLayout( FormLayoutFactory.defaults().spacing( 5 ).margins( 0, 0 ).create() );
         UIUtils.setVariant( switcher, CSS_SWITCHER );
 
-        PanelPath panelPath = panel.getSite().getPath();
+        PanelPath panelPath = panel.site().path();
         //PanelPath prefix = panel.getSite().getPath().removeLast( 1 );
         StreamIterable.of( appManager.getContext().wantToBeShown( panelPath ) )
                 .stream()
-                .sorted( reverseOrder( comparing( p -> p.getSite().getStackPriority() ) ) )
+                .sorted( reverseOrder( comparing( p -> p.site().stackPriority.get() ) ) )
                 .forEach( p -> {
                         int btnCount = switcher.getChildren().length;
                         Button btn = createSwitcherButton( switcher, p );
@@ -375,8 +375,8 @@ public class DefaultAppDesign
         boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
         
         // update title/icon
-        Image icon = panel.getSite().getIcon();
-        String title = panel.getSite().getTitle();
+        Image icon = panel.site().icon.get();
+        String title = panel.site().title.get();
         
         if (icon == null && title == null) {
             btn.setVisible( false );
@@ -390,6 +390,7 @@ public class DefaultAppDesign
         if (icon != null) {
             btn.setImage( icon );
         }
+        btn.setToolTipText( panel.site().tooltip.get() );
         return btn;
     }
     
@@ -398,17 +399,19 @@ public class DefaultAppDesign
      * Updates the contents of a panel, including head, after
      * {@link PanelChangeEvent}. Override to change behaviour.
      */
-    protected void updatePanelContents( IPanel panel ) {
-        Page page = panelsArea.getPage( panel.getSite().getPath() );
-        UIUtils.visitChildren( page.control, child -> {
-            if (CSS_PANEL_HEADER.equals( child.getData( "_type_" ) )) {
-                ((Label)child).setText( Optional.ofNullable( panel.getSite().getTitle() ).orElse( "" ) );
-                return false;
-            }
-            else {
-                return true;
-            }
-        });
+    protected void updatePanelContents( PanelSite panelSite ) {
+        Page page = panelsArea.getPage( panelSite.path() );
+        if (page != null) {
+            UIUtils.visitChildren( page.control, child -> {
+                if (CSS_PANEL_HEADER.equals( child.getData( "_type_" ) )) {
+                    ((Label)child).setText( panelSite.title.orElse( "" ) );
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+        }
     }
 
     
@@ -458,7 +461,7 @@ public class DefaultAppDesign
         
         // lifecycle event
         if (ev.getType() == EventType.LIFECYCLE) {
-            PanelPath pageId = panel.getSite().getPath();
+            PanelPath pageId = ev.getSource().path();
             PanelStatus panelStatus = (PanelStatus)ev.getNewValue();  //panel.getSite().getPanelStatus();
 
             // update visibility of panel
@@ -478,15 +481,15 @@ public class DefaultAppDesign
                             (int)System.currentTimeMillis() );
                     createPanelContents( panel, page );
                     panelsArea.setPageVisible( pageId, true );
-                    panelsArea.setPagePreferredWidth( pageId, panel.getSite().getPreferredWidth() );
+                    panelsArea.setPagePreferredWidth( pageId, ev.getSource().preferredWidth.get() );
 //                    panelsArea.setFocusedPage( pageId );
     
 //                    Point panelSize = page.computeSize( SWT.DEFAULT, SWT.DEFAULT );
 //                    panelsArea.setMinHeight( panelSize.y );
                 }
     
-                String title = panel.getSite().getTitle();
-                mainWindow.setText( title != null ? title : "" );        
+                String title = ev.getSource().title.orElse( "" );
+                mainWindow.setText( title );        
                 browserHistory.pushState( panel.id().id(), StringUtils.abbreviate( title, 25 ) );
             }
     
@@ -503,7 +506,7 @@ public class DefaultAppDesign
         
         // title or icon changed
         else if (ev.getType() == EventType.TITLE) {
-            updatePanelContents( panel );
+            updatePanelContents( ev.getSource() );
         }
     }
 

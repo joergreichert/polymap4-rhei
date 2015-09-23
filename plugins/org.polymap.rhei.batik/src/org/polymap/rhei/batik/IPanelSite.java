@@ -18,8 +18,6 @@ import java.util.Arrays;
 
 import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.jface.action.IAction;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -27,7 +25,11 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 
 /**
- * The primary interface between an {@link IPanel} and the Batik framework.
+ * Provides the interface between an {@link IPanel} client code and the Batik
+ * framework.
+ * <p/>
+ * This API will be <b>deprecated</b> in future version. Use {@link PanelSite} API
+ * instead.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -64,8 +66,6 @@ public interface IPanelSite {
      */
     public PanelPath getPath();
     
-    public Integer getStackPriority();
-
     /**
      * Changes the status of the panel. {@link Status#OK_STATUS} signals that the
      * panel has valid state. If status is not valid then the given message is
@@ -85,36 +85,33 @@ public interface IPanelSite {
      */
     public void setStatus( IStatus status );
 
-    public IStatus getStatus();
-    
-    
-    /**
-     * Adds the given action to the toolbar of this panel.
-     * <p/>
-     * The description of the action can be set to {@link #SUBMIT} in order to hint
-     * the layout engine to style the GUI element accordingly.
-     * 
-     * @param action
-     */
-    public void addToolbarAction( IAction action );
-
-
     public IPanelToolkit toolkit();
-
     
     /**
      * Sets the title of the page. Null specifies that the panel does not show up in
      * the panel navigator bar.
      * 
      * @param title The title of the page, or null.
+     * @return this;
      */
-    public void setTitle( String title );
+    public IPanelSite setTitle( String title );
 
-    public String getTitle();
+    /**
+     * Sets the title and tooltip of the page.
+     * 
+     * @param title The title of the page, or null.
+     * @param tooltip The tooltip, or null;
+     * @return this;
+     */
+    public IPanelSite setTooltip( String tooltip );
 
-    void setIcon( Image icon );
-
-    public Image getIcon();
+    /**
+     * 
+     *
+     * @param icon
+     * @return this
+     */
+    public IPanelSite setIcon( Image icon );
 
     public void layout( boolean changed );
 
@@ -125,10 +122,8 @@ public interface IPanelSite {
      */
     public LayoutSupplier getLayoutPreference();
 
-    
     public void setPreferredWidth( int width );
 
-    public int getPreferredWidth();
 
 //    /**
 //     * Registers the given {@link EventHandler event handler}.

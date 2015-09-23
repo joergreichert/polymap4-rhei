@@ -16,11 +16,14 @@ package org.polymap.rhei.batik;
 
 import java.util.Arrays;
 import java.util.EventObject;
-
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 
 /**
- * 
+ * Signals changes of an {@link IPanel}
+ * <p/>
+ * <b>Beware!</b> Event handler methods should declare display=true in order to avoid
+ * race condition. Or the event handler code must not rely on property value but uses
+ * the new value from event.
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
@@ -33,7 +36,7 @@ public class PanelChangeEvent<V>
         LIFECYCLE,
         /** The {@link IPanelSite#getStatus()} has changed. */
         STATUS,
-        /** Titel or Icon has changed. */
+        /** Titel, tooltip or icon has changed. */
         TITLE;
 
         public boolean isOnOf( EventType... types ) {
@@ -45,35 +48,30 @@ public class PanelChangeEvent<V>
     
     private EventType       type;
     
-    private Object          previousValue;
+    private V               newValue;
     
-    private Object          newValue;
-    
-    public PanelChangeEvent( IPanel source, EventType type, V newValue, V previousValue ) {
+    public PanelChangeEvent( PanelSite source, EventType type, V newValue ) {
         super( source );
         this.type = type;
-        this.previousValue = previousValue;
         this.newValue = newValue;
     }
 
     @Override
-    public IPanel getSource() {
-        return (IPanel)super.getSource();
+    public PanelSite getSource() {
+        return (PanelSite)super.getSource();
     }
 
     /**
-     * Convenience helper that cast the result of {@link #getSource()} to a concrete type.
+     * The panel that caused the event.
+     * 
+     * @return Null if the panel is disposed.
      */
     public <T extends IPanel> T getPanel() {
-        return (T)super.getSource();
+        return (T)BatikApplication.instance().getContext().getPanel( getSource().path() );
     }
 
     public EventType getType() {
         return type;
-    }
-    
-    public <T> T getPreviousValue() {
-        return (T)previousValue;
     }
     
     public <T> T getNewValue() {

@@ -44,6 +44,7 @@ public class MdToolkit
 
     public MdToolkit( PanelPath panelPath, PageStack<PanelPath>.Page panelPage ) {
         super( panelPath );
+        assert panelPage != null;
         this.panelPage = panelPage;
     }
 

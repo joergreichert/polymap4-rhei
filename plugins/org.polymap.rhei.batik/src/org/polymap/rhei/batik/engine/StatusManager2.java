@@ -14,9 +14,6 @@
  */
 package org.polymap.rhei.batik.engine;
 
-import static com.google.common.collect.Iterables.tryFind;
-import static java.util.Arrays.asList;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +23,7 @@ import java.util.WeakHashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.base.Predicate;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -75,7 +68,6 @@ import org.polymap.rhei.batik.IPanelSite;
 import org.polymap.rhei.batik.IPanelSite.PanelStatus;
 import org.polymap.rhei.batik.PanelChangeEvent;
 import org.polymap.rhei.batik.PanelChangeEvent.EventType;
-import org.polymap.rhei.batik.engine.DefaultAppManager.PanelSite;
 
 /**
  * 
@@ -150,7 +142,7 @@ public class StatusManager2
     private IStatus                 panelStatus;
     
     /** The tools/actions of the currently active panel set by {@link #panelChanged(PanelChangeEvent)}. */
-    private List                    panelTools;
+//    private List                    panelTools;
 
     private ContributionManager     contribManager = new ContributionManager() {
         public void update( boolean force ) {
@@ -193,26 +185,26 @@ public class StatusManager2
                 if (popup != null) {
                     popup.close();
                 }
-                // remove property listener
-                if (activePanel != null) {
-                    for (Object tool : ((PanelSite)activePanel.getSite()).getTools() ) {
-                        ((IAction)tool).removePropertyChangeListener( this );
-                    }
-                }
+//                // remove property listener
+//                if (activePanel != null) {
+//                    for (Object tool : ((PanelSite)activePanel.getSite()).getTools() ) {
+//                        ((IAction)tool).removePropertyChangeListener( this );
+//                    }
+//                }
 
                 // activate new panel ***
-                activePanel = ev.getSource();            
-                panelStatus = activePanel.getSite().getStatus();
-                panelTools = ((PanelSite)activePanel.getSite()).getTools();
-
-                // register property listener
-                for (Object tool : panelTools ) {
-                    ((IAction)tool).addPropertyChangeListener( this );
-                }
+                activePanel = ev.getPanel();            
+                panelStatus = activePanel.site().status.get();
+//                panelTools = ((PanelSite)activePanel.getSite()).getTools();
+//
+//                // register property listener
+//                for (Object tool : panelTools ) {
+//                    ((IAction)tool).addPropertyChangeListener( this );
+//                }
             }
         }
-        else if (ev.getType() == EventType.STATUS) {
-            panelStatus = activePanel.getSite().getStatus();
+        else if (ev.getType() == EventType.STATUS && activePanel != null) {
+            panelStatus = activePanel.site().status.get();
             log.debug( "Panel status changed to: " + panelStatus );
             checkUpdatePopup();
         }
@@ -236,13 +228,13 @@ public class StatusManager2
      */
     protected void checkUpdatePopup() {
         boolean anyToolEnabled = false;
-        for (Object tool : panelTools) {
-            IAction action = (IAction)tool;
-            if (action.isEnabled()) {
-                anyToolEnabled = true;
-                break;
-            }
-        }
+//        for (Object tool : panelTools) {
+//            IAction action = (IAction)tool;
+//            if (action.isEnabled()) {
+//                anyToolEnabled = true;
+//                break;
+//            }
+//        }
         
         boolean statusNotEmpty = panelStatus != null 
                 && panelStatus != displayedStatus
@@ -420,43 +412,43 @@ public class StatusManager2
                 child.dispose();
             }
             
-            // create UI updates for every tool
-            for (final Object tool : panelTools) {
-                // IAction
-                if (tool instanceof IAction) {
-                    final IAction action = (IAction)tool;
-                    // find the btn or create a new one
-                    final Control btn = tryFind( asList( toolsContainer.getChildren() ), new Predicate<Control>() {
-                        public boolean apply( Control input ) {
-                            return input.getData( "tool" ) == tool;
-                        }
-                    }).or( action.getStyle() == IAction.AS_CHECK_BOX
-                            ? new Button( toolsContainer, SWT.CHECK | SWT.NO_FOCUS )
-                            : new Button( toolsContainer, SWT.PUSH | SWT.NO_FOCUS ) );
-
-                    ((Button)btn).addSelectionListener( new SelectionAdapter() {
-                        public void widgetSelected( SelectionEvent se ) {
-                            action.run();
-                        }
-                    });
-
-                    //btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
-                    updateToolButton( action, (Button)btn );
-                    btn.setData( "tool", tool );
-                }
-                else {
-                    throw new RuntimeException( "Panel toolbar item type: " + tool );
-                }
-            }
+//            // create UI updates for every tool
+//            for (final Object tool : panelTools) {
+//                // IAction
+//                if (tool instanceof IAction) {
+//                    final IAction action = (IAction)tool;
+//                    // find the btn or create a new one
+//                    final Control btn = tryFind( asList( toolsContainer.getChildren() ), new Predicate<Control>() {
+//                        public boolean apply( Control input ) {
+//                            return input.getData( "tool" ) == tool;
+//                        }
+//                    }).or( action.getStyle() == IAction.AS_CHECK_BOX
+//                            ? new Button( toolsContainer, SWT.CHECK | SWT.NO_FOCUS )
+//                            : new Button( toolsContainer, SWT.PUSH | SWT.NO_FOCUS ) );
+//
+//                    ((Button)btn).addSelectionListener( new SelectionAdapter() {
+//                        public void widgetSelected( SelectionEvent se ) {
+//                            action.run();
+//                        }
+//                    });
+//
+//                    //btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 28 ).create() );
+//                    updateToolButton( action, (Button)btn );
+//                    btn.setData( "tool", tool );
+//                }
+//                else {
+//                    throw new RuntimeException( "Panel toolbar item type: " + tool );
+//                }
+//            }
 
             // adjust layout data
             if (popup != null) {
                 FormDataFactory toolsSepData = FormDataFactory.filled().left( messageLabel ).clearRight();
                 FormDataFactory toolsContainerData = FormDataFactory.filled().left( toolsSep ).clearRight();
-                if (panelTools.isEmpty()) {
-                    toolsSepData.width( 0 );
-                    toolsContainerData.width( 0 );
-                }
+//                if (panelTools.isEmpty()) {
+//                    toolsSepData.width( 0 );
+//                    toolsContainerData.width( 0 );
+//                }
                 toolsSep.setLayoutData( toolsSepData.create() );
                 toolsContainer.setLayoutData( toolsContainerData.create() );
             }
