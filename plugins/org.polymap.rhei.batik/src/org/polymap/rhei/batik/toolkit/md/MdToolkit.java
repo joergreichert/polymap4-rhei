@@ -76,8 +76,8 @@ public class MdToolkit
      *      Design</a>.
      */
     @SuppressWarnings("javadoc")
-    public Snackbar createSnackbar(int styleBits) {
-        return new Snackbar(this, panelPage.control, styleBits);
+    public MdSnackbar createSnackbar( int... styleBits ) {
+        return new MdSnackbar( this, panelPage.control, stylebits( styleBits ) );
     }
     
     
@@ -89,8 +89,8 @@ public class MdToolkit
      *      Design</a>.
      */
     @SuppressWarnings("javadoc")
-    public Toast createToast( int verticalPosition, int styleBits ) {
-        return new Toast(this, panelPage.control, verticalPosition, styleBits);
+    public MdToast createToast( int verticalPosition, int... styleBits ) {
+        return new MdToast( this, panelPage.control, verticalPosition, stylebits( styleBits ) );
     }    
 
 
@@ -103,7 +103,18 @@ public class MdToolkit
         return new MdListViewer( parent, stylebits( styles ) );
     }
 
-    public Toolbar createToolbar( Composite parent, String label, boolean fixedPosition, int style, ActionConfiguration... actions ) {
-        return new Toolbar( this, parent == null ? panelPage.control : parent, label, fixedPosition, style, actions );
+    
+    /**
+     * Creates the main toolbar of the panel.
+     * 
+     * @param style {@link SWT#ON_TOP} The toolbar will float when scrolling. The
+     *        toolbar disappears when scrolling otherwise.
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/toolbars.html">Material
+     *      Design</a>
+     */
+    public MdToolbar createToolbar( String label, int... styles ) {
+        return new MdToolbar( this, panelPage.control, label, stylebits( styles ) );
     }
+    
 }

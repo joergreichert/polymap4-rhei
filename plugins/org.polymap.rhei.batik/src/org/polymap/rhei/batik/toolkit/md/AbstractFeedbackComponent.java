@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.rap.rwt.service.ServerPushSession;
 
 import org.polymap.core.runtime.Callback;
-import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
 /**
@@ -36,47 +35,50 @@ public abstract class AbstractFeedbackComponent
         extends SelectionAdapter {
 
     public enum MessageType {
-        ERROR("errorbox", "errorlabel"), WARNING("warnbox", "warnlabel"), INFO("infobox", "infolabel"), SUCCESS(
-                "successbox", "successlabel");
+        ERROR( "errorbox", "errorlabel" ),
+        WARNING( "warnbox", "warnlabel" ),
+        INFO( "infobox", "infolabel" ),
+        SUCCESS( "successbox", "successlabel" );
 
         private String boxCssName, labelCssName;
-
 
         MessageType( String boxCssName, String labelCssName ) {
             this.boxCssName = boxCssName;
             this.labelCssName = labelCssName;
         }
 
-
         public String getBoxCssName() {
             return boxCssName;
         }
-
 
         public String getLabelCssName() {
             return labelCssName;
         }
     }
 
-    private final Composite comp;
+    
+    // instance *******************************************
+    
+    /** The base {@link Composite} of this component. */
+    protected final Composite   control;
 
-    private final Label     label;
+    protected final Label       label;
 
-    private final Button    button;
+    protected final Button      button;
 
-    private Callback<?>     callback = null;
+    protected Callback<?>       callback = null;
 
 
-    public AbstractFeedbackComponent( MdToolkit tk, Composite parent, int position, int style ) {
-        comp = tk.createComposite( parent, style );
-        comp.setLayoutData( FormDataFactory.defaults().top( position ).left( 0 ).right( position + 10 ).bottom( 100 ).create() );
-        comp.moveAbove( null );
+    protected AbstractFeedbackComponent( MdToolkit tk, Composite parent, int style ) {
+        // layout data must be set by subclass
+        control = tk.createComposite( parent, style );
+        control.moveAbove( null );
         FillLayout fillLayout = new FillLayout();
         fillLayout.marginHeight = 10;
         fillLayout.marginWidth = 10;
-        comp.setLayout( fillLayout );
-        label = tk.createLabel( comp, "", SWT.NONE );
-        button = tk.createButton( comp, "", SWT.PUSH );
+        control.setLayout( fillLayout );
+        label = tk.createLabel( control, "", SWT.NONE );
+        button = tk.createButton( control, "", SWT.PUSH );
         button.addSelectionListener( this );
         setVisibleForAll( false );
     }
@@ -89,7 +91,7 @@ public abstract class AbstractFeedbackComponent
 
 
     private void setVisibleExceptButton( boolean visible ) {
-        comp.setVisible( visible );
+        control.setVisible( visible );
         label.setVisible( visible );
     }
 
@@ -130,7 +132,7 @@ public abstract class AbstractFeedbackComponent
 
 
     private void internalShowIssue( MessageType messageStyle, String message ) {
-        UIUtils.setVariant( comp, messageStyle.getBoxCssName() );
+        UIUtils.setVariant( control, messageStyle.getBoxCssName() );
         UIUtils.setVariant( label, messageStyle.getBoxCssName() );
         label.setText( message );
         button.setVisible( false );
@@ -159,7 +161,7 @@ public abstract class AbstractFeedbackComponent
     public void widgetSelected( SelectionEvent e ) {
         if (callback != null) {
             callback.handle( null );
-            this.comp.setVisible( false );
+            this.control.setVisible( false );
         }
     }
 }

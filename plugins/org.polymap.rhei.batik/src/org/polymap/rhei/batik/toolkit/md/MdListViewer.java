@@ -57,6 +57,7 @@ import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
  * 
  * @see <a href="http://www.google.com/design/spec/components/lists.html">Material Design</a>
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
+ * @author Joerg Reichert <joerg@mapzone.io>
  */
 public class MdListViewer
         extends TreeViewer {

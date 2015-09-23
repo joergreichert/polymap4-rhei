@@ -15,15 +15,22 @@
 package org.polymap.rhei.batik.toolkit.md;
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.polymap.core.ui.FormDataFactory;
 
 /**
+ * A floating snack bar.
+ * 
+ * @see <a href="http://www.google.com/design/spec/components/snackbars-toasts.html">Material Design</a>.
  * @author Joerg Reichert <joerg@mapzone.io>
- *
+ * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class Toast extends AbstractFeedbackComponent {
+@SuppressWarnings("javadoc")
+public class MdSnackbar
+        extends AbstractFeedbackComponent {
 
-    public Toast( MdToolkit tk, Composite parent, int verticalPosition, int style ) {
-        super( tk, parent, 70, style );
+    public MdSnackbar( MdToolkit tk, Composite parent, int style ) {
+        super( tk, parent, style );
+        control.setLayoutData( FormDataFactory.defaults().top( 90 ).left( 0 ).right( 100 ).bottom( 100 ).create() );
     }
+
 }

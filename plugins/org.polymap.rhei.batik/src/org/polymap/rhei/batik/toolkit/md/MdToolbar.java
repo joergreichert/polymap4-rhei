@@ -18,7 +18,6 @@ import static org.polymap.rhei.batik.BatikPlugin.images;
 import static org.polymap.rhei.batik.app.SvgImageRegistryHelper.NORMAL24;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,25 +47,24 @@ import org.polymap.core.ui.UIUtils;
 
 /**
  * 
- * In order to <a
- * href=http://www.google.com/design/spec/layout/structure.html#structure
- * -ui-regions">structuring UI region</a> <a
- * href="http://www.google.com/design/spec/components/toolbars.html">Toolbars</a>
- * should offer page and/or app specific actions
- * 
+ * @see <a href="http://www.google.com/design/spec/components/toolbars.html">Toolbars</a>
+ * @see <a href="http://www.google.com/design/spec/layout/structure.html#structure-ui-regions">structuring UI region</a>
  * @author Joerg Reichert <joerg@mapzone.io>
- *
  */
-public class Toolbar
+public class MdToolbar
         extends Configurable {
 
-    private Image                     navigationMenuImage  = images().svgImage( "ic_menu_48px.svg", NORMAL24 );
+    private Image                       navigationMenuImage  = images().svgImage( "ic_menu_48px.svg", NORMAL24 );
 
-    private Image                     moreActionsMenuImage = images().svgImage( "ic_more_vert_48px.svg", NORMAL24 );
+    private Image                       moreActionsMenuImage = images().svgImage( "ic_more_vert_48px.svg", NORMAL24 );
 
-    private final Composite           comp;
+    private MdToolkit                   tk;
 
-    private List<ActionConfiguration> actions              = new ArrayList<ActionConfiguration>();
+    private final Composite             control;
+
+    private Composite                   actionsPanel;
+
+    private List<ActionConfiguration>   actions = new ArrayList<ActionConfiguration>();
 
 
     /**
@@ -75,34 +73,93 @@ public class Toolbar
      *        components
      * @param parent the parent composite of that toolbar to create
      * @param title the title to be shown in this toolbar next to the navigation menu
-     * @param fixedPosition if true, the toolbar will be floating when scrolling
-     *        down, if false, the toolbar will disappear when scrolling the page down
      * @param style the style configuration for the toolbar
+     * @param style {@link SWT#ON_TOP} The toolbar will float when scrolling. The
+     *        toolbar disappears when scrolling otherwise.
      * @param actions the actions to be shown as buttons (for the first two actions)
      *        resp. menu entries for further actions
      */
-    public Toolbar( MdToolkit tk, Composite parent, String title, boolean fixedPosition, int style,
-            ActionConfiguration... actions ) {
-        this.actions = Arrays.asList( actions );
-        comp = createToolbar( tk, parent, fixedPosition, style );
-        createNavigationMenu( tk, comp );
-        createTitleLabel( title, comp );
-        createActionsPanel( tk, comp, this.actions );
+    public MdToolbar( MdToolkit tk, Composite parent, String title, int style ) {
+        this.tk = tk;
+        
+        /*
+         * We could use org.eclipse.swt.widgets.ToolBar instead of creating this composite,
+         * but I encounter some issues with applying styles and layouting (e.g. spacing
+         * between ToolItems).
+         * 
+         * http://help.eclipse.org/juno/index.jsp?topic=/org.eclipse.rap.help/help/html/reference/theming/ToolBar.html
+         */
+        control = tk.createComposite( parent, style );
+        UIUtils.setVariant( control, "atlas-toolbar" );
+        
+        // FIXME layout does not work at all (fixed or floating)
+        // find a way to get "special areas" from the MdAppDesign, so that design can layout and we can fill
+        control.setLayoutData( FormDataFactory.filled().noBottom().top( 0, 50 ).create() );
+        control.moveAbove( null );
+//        if ((style & SWT.ON_TOP) != 0) {
+//            control.moveAbove( null );
+//        }
+        control.setLayout( new GridLayout( 3, false ) );
+
+        createNavigationMenu();
+        createTitleLabel( title );
     }
 
 
-    private Composite createActionsPanel( MdToolkit tk, Composite comp, List<ActionConfiguration> actions  ) {
-        Composite actionsPanel = tk.createComposite( comp, SWT.NONE );
+    /**
+     * 
+     * @return The base {@link Composite} of this toolbar.
+     */
+    public Control getControl() {
+        return control;
+    }
+
+
+    public MdToolbar addAction( ActionConfiguration action ) {
+        actions.add( action );
+        updateActionsPanel();
+        return this;
+    }
+
+
+    protected void updateActionsPanel() {
+        // remove current
+        if (actionsPanel != null) {
+            actionsPanel.dispose();
+        }
+        
+        // create new
+        actionsPanel = tk.createComposite( control, SWT.NONE );
         actionsPanel.setLayout( new FillLayout( SWT.HORIZONTAL ) );
-
-        createWidgetsForActions( tk, actionsPanel, actions );
-
-        return actionsPanel;
+        
+        // actions
+        List<ActionConfiguration> sortedActions = sortActionsByPriorityAndName();
+        if (actions.size() <= 3) {
+            createVisibleActionButtons( sortedActions );
+        }
+        else {
+            List<ActionConfiguration> visibleActions = sortedActions.subList( 0, 3 );
+            createVisibleActionButtons( visibleActions );
+            createMoreActionsButton( sortedActions );
+        }
     }
 
 
-    private Label createTitleLabel( String title, Composite comp  ) {
-        Label titleLabel = new Label( comp, SWT.NONE );
+    protected List<ActionConfiguration> sortActionsByPriorityAndName() {
+        return actions.stream().sorted( ( a1, a2 ) -> {
+            int prioComp = a1.priority.get().compareTo( a2.priority.get() );
+            if (prioComp != 0) {
+                return prioComp;
+            }
+            else {
+                return a1.name.get().compareTo( a2.name.get() );
+            }
+        } ).collect( Collectors.toList() );
+    }
+
+
+    protected Label createTitleLabel( String title ) {
+        Label titleLabel = new Label( control, SWT.NONE );
         titleLabel.setText( title );
         GridData gridData = new GridData();
         gridData.grabExcessHorizontalSpace = true;
@@ -111,8 +168,8 @@ public class Toolbar
     }
 
 
-    private Button createNavigationMenu( MdToolkit tk, Composite comp  ) {
-        Button navigationMenuButton = tk.createButton( comp, "", SWT.NONE );
+    protected Button createNavigationMenu() {
+        Button navigationMenuButton = tk.createButton( control, "", SWT.NONE );
         navigationMenuButton.setImage( navigationMenuImage );
         // TODO this should show a side bar instead of a menu: 
         // https://www.google.com/design/spec/layout/structure.html#structure-side-nav
@@ -124,45 +181,12 @@ public class Toolbar
         return navigationMenuButton;
     }
 
-    /*
-     * We could use org.eclipse.swt.widgets.ToolBar instead of creating this composite,
-     * but I encounter some issues with applying styles and layouting (e.g. spacing
-     * between ToolItems).
-     * 
-     * http://help.eclipse.org/juno/index.jsp?topic=/org.eclipse.rap.help/help/html/reference/theming/ToolBar.html
-     */
-    private Composite createToolbar( MdToolkit tk, Composite parent, boolean fixedPosition, int style ) {
-        Composite comp = tk.createComposite( parent, style );
-        UIUtils.setVariant( comp, "atlas-toolbar" );
-        comp.setLayoutData( FormDataFactory.defaults().left(0).right( 100 ).create() );
-        if (fixedPosition) {
-            comp.moveAbove( null );
-        }
-        GridLayout gridLayout = new GridLayout( 3, false );
-        comp.setLayout( gridLayout );
-        return comp;
-    }
 
-
-    private void createWidgetsForActions( MdToolkit tk, Composite actionsPanel, List<ActionConfiguration> actions ) {
-        List<ActionConfiguration> sortedActions = sortActionsByPriorityAndName( actions );
-        if (actions.size() <= 3) {
-            createVisibleActionButtons( tk, actionsPanel, sortedActions );
-        }
-        else {
-            List<ActionConfiguration> visibleActions = sortedActions.subList( 0, 3 );
-            createVisibleActionButtons( tk, actionsPanel, visibleActions );
-            createMoreActionsButton( tk, actionsPanel, sortedActions );
-        }
-    }
-
-
-    private Button createMoreActionsButton( MdToolkit tk, Composite actionsPanel,
-            List<ActionConfiguration> sortedActions ) {
+    private Button createMoreActionsButton( List<ActionConfiguration> sortedActions ) {
         Button moreActionsMenuButton = tk.createButton( actionsPanel, "", SWT.NONE );
         moreActionsMenuButton.setImage( moreActionsMenuImage );
         Menu moreActionsMenu = new Menu( moreActionsMenuButton );
-        addDropDownMenuListener( moreActionsMenuButton, comp, moreActionsMenu );
+        addDropDownMenuListener( moreActionsMenuButton, control, moreActionsMenu );
 
         List<ActionConfiguration> hiddenActions = sortedActions.subList( 3, sortedActions.size() );
         hiddenActions.forEach( action -> {
@@ -183,23 +207,9 @@ public class Toolbar
     }
 
 
-    private List<ActionConfiguration> sortActionsByPriorityAndName( List<ActionConfiguration> actions ) {
-        return actions.stream().sorted( ( a1, a2 ) -> {
-            int prioComp = a1.priority.get().compareTo( a2.priority.get() );
-            if (prioComp != 0) {
-                return prioComp;
-            }
-            else {
-                return a1.name.get().compareTo( a2.name.get() );
-            }
-        } ).collect( Collectors.toList() );
-    }
-
-
     private void boundEnableStateToCallbackAvailability( ActionConfiguration action,
             Function<Boolean,Void> setEnableState ) {
         Observer observer = new Observer() {
-
             @Override
             public void update( Observable o, Object arg ) {
                 setEnableState.apply( arg instanceof Callback<?> );
@@ -211,7 +221,7 @@ public class Toolbar
 
     private void addDropDownMenuListener( Button button, Composite parent, Menu menu) {
         button.addSelectionListener( new SelectionAdapter() {
-
+            @Override
             public void widgetSelected( SelectionEvent event ) {
                 Rectangle bounds = button.getBounds();
                 Point point = parent.toDisplay( bounds.x - 0, bounds.y + bounds.height );
@@ -222,8 +232,7 @@ public class Toolbar
     }
 
 
-    private void createVisibleActionButtons( MdToolkit tk, Composite actionsPanel,
-            List<ActionConfiguration> visibleActions ) {
+    private void createVisibleActionButtons( List<ActionConfiguration> visibleActions ) {
         visibleActions.forEach( action -> {
             Button btn = tk.createButton( actionsPanel, "", SWT.NONE );
             if (action.showName.get() == Boolean.TRUE) {
@@ -244,7 +253,7 @@ public class Toolbar
 
     private SelectionAdapter triggerCallbackWhenSelected( ActionConfiguration action ) {
         return new org.eclipse.swt.events.SelectionAdapter() {
-
+            @Override
             public void widgetSelected( SelectionEvent e ) {
                 if (action.getCallback() != null) {
                     action.getCallback().handle( null );
@@ -253,16 +262,9 @@ public class Toolbar
         };
     }
 
-
-    /**
-     * @return
-     */
-    public Control getControl() {
-        return comp;
-    }
-
-
-    public List<ActionConfiguration> getActionConfigurations() {
-        return actions;
-    }
+    
+//    public List<ActionConfiguration> getActionConfigurations() {
+//        return actions;
+//    }
+    
 }
