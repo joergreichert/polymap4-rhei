@@ -65,6 +65,7 @@ import org.polymap.rhei.batik.PanelPath;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
+@SuppressWarnings("restriction")
 public class DefaultToolkit
         implements IPanelToolkit {
 
@@ -153,22 +154,12 @@ public class DefaultToolkit
         if (text != null) {
             result.setText( text );
         }
-        result.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-        result.setData( MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE );
         return result;
     }
 
     @Override
     public Label createFlowText( Composite parent, String text, ILinkAction[] linkActions, int... styles ) {
-        Label result = adapt( new Label( parent, stylebits( styles ) | SWT.WRAP ), false, false );
-        if (text != null) {
-            // process markdown
-            LinkRenderer linkRenderer = new DelegatingLinkRenderer( result );
-            String processed = new PegDownProcessor().markdownToHtml( text, linkRenderer );
-            result.setText( processed );
-        }
-        result.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-        return result;
+        throw new RuntimeException( "not yet implemented" );
     }
 
     /**
@@ -458,6 +449,10 @@ public class DefaultToolkit
      */
     public <T extends Control> T adapt( T control, boolean trackFocus, boolean trackKeyboard) {
         UIUtils.setVariant( control, CSS_PREFIX );
+
+        control.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+        control.setData( RWT.TOOLTIP_MARKUP_ENABLED, Boolean.TRUE );
+        control.setData( MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE );
 
 //        control.setBackground( colors.getBackground() );
 //        control.setForeground( colors.getForeground() );

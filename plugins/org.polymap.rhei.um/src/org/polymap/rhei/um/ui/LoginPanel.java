@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IUndoableOperation;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -311,14 +310,9 @@ public class LoginPanel
             UserRepository repo = UserRepository.instance();
             User umuser = repo.findUser( name );
             if (umuser != null) {
-                try {
-                    IUndoableOperation op = new NewPasswordOperation( umuser );
-                    OperationSupport.instance().execute( op, true, false );
-                    panelSite.setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "passwordSent", name ) ) );
-                }
-                catch (ExecutionException e) {
-                    log.warn( "", e );
-                }
+                IUndoableOperation op = new NewPasswordOperation( umuser );
+                OperationSupport.instance().execute( op, true, false );
+                panelSite.setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "passwordSent", name ) ) );
             }
             else {
                 panelSite.setStatus( new Status( IStatus.WARNING, UmPlugin.ID, i18n.get( "noSuchUser", name ) ) );

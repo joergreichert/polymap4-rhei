@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Item;
 
 import org.polymap.core.runtime.config.Config;
 import org.polymap.core.runtime.config.ConfigurationFactory;
+import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
@@ -114,6 +115,8 @@ public class MdListViewer
      * Method is called after all label providers and configurations are done by
      * client code. It allows to customize the tree with templates, label providers
      * and stuff.
+     * <p/>
+     * Client code <b>must not</b> call this before {@link #setInput(Object)}.
      */
     @Override
     public Control getControl() {
@@ -166,6 +169,7 @@ public class MdListViewer
                 cell.setName( CELL_SECONDLINE );
                 cell.setLeft( left.pix() ).setRight( 50 ).setTop( dp( 39 ).pix() ).setHeight( 15 );
                 cell.setBindingIndex( colCount++ );
+                cell.setForeground( UIUtils.getColor( 150, 150, 150 ) );
 
                 tileHeight = dp( 72 );
             }
@@ -288,7 +292,7 @@ public class MdListViewer
 
         ImageCell cell = new ImageCell( template );
         cell.setName( cellName );
-        cell.setRight( right.pix() ).setWidth( dp( 56).pix() )
+        cell.setRight( right.pix() ).setWidth( dp( 56 ).pix() )
             .setTop( 0 ).setHeight( tileHeight.pix() )
             .setVerticalAlignment( SWT.CENTER ).setHorizontalAlignment( SWT.CENTER );
         cell.setSelectable( true );
