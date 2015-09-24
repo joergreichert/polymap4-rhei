@@ -35,10 +35,10 @@ public class EmailService {
 
     private static Log log = LogFactory.getLog( EmailService.class );
 
-    private static final Lazy<EmailService>   instance = new CachedLazyInit( 1024 );
+    private static final Lazy<EmailService>   instance = new CachedLazyInit( () -> new EmailService() );
     
     public static EmailService instance() {
-        return instance.get( () -> new EmailService() );
+        return instance.get();
     }
 
     

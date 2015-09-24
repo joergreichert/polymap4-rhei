@@ -81,9 +81,11 @@ public class RUserRepository
 
 
     protected void registerEntities( Iterable<Entity> candidates ) {
-        for (Entity candidate : candidates) {
-            
-        }
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+//        for (Entity candidate : candidates) {
+//            
+//        }
     }
 
     @Override
