@@ -16,20 +16,12 @@ package org.polymap.rhei.engine.form;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.function.Function;
 
 import org.eclipse.rap.rwt.graphics.Graphics;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -65,17 +57,7 @@ import com.google.common.collect.Sets;
 public class FormEditorToolkit
         implements IFormToolkit {
 
-    /**
-     * 
-     */
-    private static final String TABITEM_SELECTED_STYLE = "tabItem_selected";
-
-    /**
-     * 
-     */
-    private static final String TABITEM_DEFAULT_STYLE  = "tabItem_default";
-
-    public static final String  CUSTOM_VARIANT_VALUE   = "formeditor";
+    public static final String CUSTOM_VARIANT_VALUE   = "formeditor";
 
     // public static final Color textBackground = Graphics.getColor( 0xFF, 0xFE, 0xE1
     // );
@@ -83,13 +65,13 @@ public class FormEditorToolkit
     // 0xF7, 0xF7 );
     // public static final Color textBackgroundFocused = Graphics.getColor( 0xff,
     // 0xf0, 0xd2 );
-    public static final Color   backgroundFocused      = Graphics.getColor( 0xF0, 0xF0, 0xFF );
+    public static final Color  backgroundFocused      = Graphics.getColor( 0xF0, 0xF0, 0xFF );
 
-    public static final Color   labelForeground        = Graphics.getColor( 0x70, 0x70, 0x70 );
+    public static final Color  labelForeground        = Graphics.getColor( 0x70, 0x70, 0x70 );
 
-    public static final Color   labelForegroundFocused = Graphics.getColor( 0x00, 0x00, 0x00 );
+    public static final Color  labelForegroundFocused = Graphics.getColor( 0x00, 0x00, 0x00 );
 
-    private FormToolkit         delegate;
+    private FormToolkit        delegate;
 
 
     public FormEditorToolkit( FormToolkit delegate ) {
@@ -240,12 +222,12 @@ public class FormEditorToolkit
         adapt( combo );
         // combo.setBackground( textBackground );
         combo.setVisibleItemCount( 12 );
-        SortedSet<String> set = Sets.newTreeSet( (String s1, String s2) -> s1.compareTo(s2));
+        SortedSet<String> set = Sets.newTreeSet( ( String s1, String s2 ) -> s1.compareTo( s2 ) );
         set.addAll( values );
         for (String value : set) {
             combo.add( value );
         }
-        if(combo.getItems().length > 0) {
+        if (combo.getItems().length > 0) {
             combo.select( 0 );
         }
         return combo;
@@ -272,79 +254,30 @@ public class FormEditorToolkit
     }
 
 
-    public Spinner createSpinner( Composite parent, int min, int max, int defaultValue ) {
-        Spinner spinner = new Spinner( parent, SWT.NONE );
-        spinner.setMinimum( min );
-        spinner.setMaximum( max );
-        spinner.setSelection( defaultValue );
-        return spinner;
-    }
-
-
-    public Spinner createSpinner( Composite parent, int min, int max, double d ) {
-        String doubleStr = String.valueOf( d );
-        String[] parts = doubleStr.split( "\\." );
-        int digitCount = parts.length > 1 ? parts[1].length() : 0;
+    public Spinner createSpinner( Composite parent, double min, double max, double increment, double defaultValue,
+            int digitCount ) {
         int times = Double.valueOf( Math.pow( 10, digitCount ) ).intValue();
-        int defaultValue = Double.valueOf( d * times ).intValue();
-        Spinner spinner = createSpinner( parent, min, max * times, defaultValue );
+        int minInt = toIntValue( min, times );
+        int maxInt = toIntValue( max, times );
+        int incrementInt = toIntValue( increment, times );
+        int defaultValueInt = toIntValue( defaultValue, times );
+        Spinner spinner = createSpinner( parent, minInt, maxInt, incrementInt, defaultValueInt );
         spinner.setDigits( digitCount );
         return spinner;
     }
 
 
-    public Composite createTabFolder( Composite parent, java.util.List<String> tabItems,
-            Map<String,Function<Composite,Composite>> tabContents ) {
-        Composite tabFolder = new Composite( parent, SWT.NONE );
-        GridLayout tabFolderLayout = new GridLayout( 1, false );
-        tabFolderLayout.verticalSpacing = 0;
-        tabFolder.setLayout( tabFolderLayout );
-        Composite tabBar = new Composite( tabFolder, SWT.NONE );
-        GridLayout tabBarGridLayout = new org.eclipse.swt.layout.GridLayout( tabItems.size(), true );
-        tabBarGridLayout.verticalSpacing = 0;
-        tabBarGridLayout.horizontalSpacing = 0;
-        tabBarGridLayout.marginHeight = 0;
-        tabBarGridLayout.marginWidth = 0;
-        tabBar.setLayout( tabBarGridLayout );
-        GridData data = new GridData();
-        data.grabExcessHorizontalSpace = true;
-        data.horizontalAlignment = SWT.FILL;
-        tabBar.setLayoutData( data );
-        Map<String,Button> tabButtons = new HashMap<String,Button>();
-        for (String label : tabItems) {
-            Button button = new Button( tabBar, SWT.PUSH );
-            button.setText( label );
-            button.setLayoutData( data );
-            UIUtils.setVariant( button, TABITEM_DEFAULT_STYLE );
-            tabButtons.put( label, button );
-        }
+    private Spinner createSpinner( Composite parent, int min, int max, int increment, int defaultValue ) {
+        Spinner spinner = new Spinner( parent, SWT.NONE );
+        spinner.setMinimum( min );
+        spinner.setMaximum( max );
+        spinner.setSelection( defaultValue );
+        spinner.setIncrement( increment );
+        return spinner;
+    }
 
-        final Composite tabContent = new Composite( tabFolder, SWT.NONE );
-        tabContent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        final StackLayout layout = new StackLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        tabContent.setLayout( layout );
-        Map<String,Composite> map = new HashMap<String,Composite>();
-        tabContents.entrySet().stream()
-                .forEach( entry -> map.put( entry.getKey(), entry.getValue().apply( tabContent ) ) );
-        if (tabItems.size() > 0) {
-            layout.topControl = map.get( tabItems.get( 0 ) );
-            UIUtils.setVariant( tabButtons.get( tabItems.get( 0 ) ), TABITEM_SELECTED_STYLE );
-        }
-        tabContent.layout();
-        for (String label : tabItems) {
-            tabButtons.get( label ).addSelectionListener( new SelectionAdapter() {
 
-                public void widgetSelected( SelectionEvent e ) {
-                    layout.topControl = map.get( label );
-                    tabContent.layout();
-                    UIUtils.setVariant( (Button)e.widget, TABITEM_SELECTED_STYLE );
-                    tabButtons.values().stream().filter( button -> button != e.widget )
-                            .forEach( button -> UIUtils.setVariant( button, TABITEM_DEFAULT_STYLE ) );
-                }
-            } );
-        }
-        return tabFolder;
+    private int toIntValue( double min, int times ) {
+        return Double.valueOf( min * times ).intValue();
     }
 }

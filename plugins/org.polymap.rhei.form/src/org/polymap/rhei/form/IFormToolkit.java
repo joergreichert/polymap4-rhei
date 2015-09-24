@@ -17,16 +17,17 @@ package org.polymap.rhei.form;
 import java.util.Date;
 import java.util.Set;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
-
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -35,9 +36,7 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.polymap.rhei.filter.FilterEditor;
-
 import org.polymap.rap.updownload.upload.Upload;
 
 /**
@@ -92,4 +91,6 @@ public interface IFormToolkit {
 
     public abstract List createList( Composite parent, int... styles );
     
+    public abstract Spinner createSpinner( Composite parent, double min, double max, 
+            double increment, double defaultValue, int digitCount );
 }

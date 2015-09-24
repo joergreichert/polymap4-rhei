@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
-
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -36,9 +36,7 @@ import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.polymap.rhei.form.IFormToolkit;
-
 import org.polymap.rap.updownload.upload.Upload;
 
 /**
@@ -208,6 +206,16 @@ public class TableEditorToolkit
 
     @Override
     public List createList( Composite parent, int... styles ) {
+        // XXX Auto-generated method stub
+        throw new RuntimeException( "not yet implemented." );
+    }
+
+    /* (non-Javadoc)
+     * @see org.polymap.rhei.form.IFormToolkit#createSpinner(org.eclipse.swt.widgets.Composite, double, double, double, double, int)
+     */
+    @Override
+    public Spinner createSpinner( Composite parent, double min, double max, double increment, double defaultValue,
+            int digitCount ) {
         // XXX Auto-generated method stub
         throw new RuntimeException( "not yet implemented." );
     }

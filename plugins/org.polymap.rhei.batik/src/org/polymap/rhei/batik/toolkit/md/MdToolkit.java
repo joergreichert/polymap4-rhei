@@ -16,6 +16,9 @@ package org.polymap.rhei.batik.toolkit.md;
 
 import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -23,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TabFolder;
 
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -212,4 +216,25 @@ public class MdToolkit
        return result;
     }
 
+    /**
+     * Creates a tab folder out of the given composites. It is expected that the
+     * labels in tabItems matches the keys in tabContents. The tabs will fill the
+     * hole width (in contrast to default SWT {@link TabFolder}).
+     * 
+     * @param parent the parent composite of the tab folder to create
+     * @param tabItems the ordered list of names to be used for the tabs to be
+     *        created
+     * @param tabContents functions taking the tab folder as parent for producing a
+     *        composite whose content will be used inside the tab identified with the
+     *        key, expecting the key matches one of tabItems entries
+     * @param styles style bits for the tab folder composite
+     * @return
+     * @see <a
+     *      href="hhttp://www.google.com/design/spec/components/tabs.html#">Material
+     *      Design</a>
+     */
+    public MdTabFolder createTabFolder( Composite parent, java.util.List<String> tabItems,
+            Map<String,Function<Composite,Composite>> tabContents, int... styles ) {
+        return new MdTabFolder( parent, tabItems, tabContents, stylebits( styles ) );
+    }
 }
