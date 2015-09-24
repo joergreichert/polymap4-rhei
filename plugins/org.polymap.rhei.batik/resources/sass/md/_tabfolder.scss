@@ -1,0 +1,13 @@
+.tabItem_default {
+  background-color: #ffffff;
+  background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
+  border-top-color: #5882b5;
+  border-bottom-color: #5882b5;
+  text-shadow: 0 1px 0 #ffffff;
+  padding: 6px;
+}
+
+.tabItem_selected {
+  background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
+  padding: 6px 6px 7px 6px;
+}
