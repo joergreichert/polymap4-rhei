@@ -42,8 +42,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.jface.layout.RowDataFactory;
-
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
@@ -168,11 +166,16 @@ public class DefaultAppDesign
         
         // header
         Composite headerContainer = fillHeaderArea( mainWindow );
-        headerContainer.setLayoutData( FormDataFactory.filled().clearBottom().create() );
+        if (headerContainer != null && headerContainer.getLayoutData() == null) {
+            headerContainer.setLayoutData( FormDataFactory.filled().clearBottom().create() );
+        }
 
         // panels
-        Composite panelContainer = fillPanelArea( mainWindow );
-        panelContainer.setLayoutData( FormDataFactory.filled().top( headerContainer, 0 ).create() );
+        Composite panelContainer = fillPanelsArea( mainWindow );
+        panelContainer.setLayoutData( FormDataFactory.filled().top( 0, 3 ).create() );            
+        if (headerContainer != null) {
+            panelContainer.setLayoutData( FormDataFactory.filled().top( headerContainer ).create() );
+        }
 
         // status manager
         statusManager = new StatusManager2( appManager );
@@ -186,31 +189,26 @@ public class DefaultAppDesign
 
 
     protected Composite fillHeaderArea( Composite parent ) {
-        Composite result = new Composite( parent, SWT.NO_FOCUS | SWT.BORDER );
-        UIUtils.setVariant( result, IAppDesign.CSS_HEADER );
-        result.setLayout( FormLayoutFactory.defaults().margins( 0, 0 ).create() );
-        Label l = new Label( result, SWT.NONE );
-        UIUtils.setVariant( l, IAppDesign.CSS_HEADER );
-        l.setText( "Batik Application" );
-        return result;
+        return null;
+//        Composite result = new Composite( parent, SWT.NO_FOCUS | SWT.BORDER );
+//        UIUtils.setVariant( result, IAppDesign.CSS_HEADER );
+//        result.setLayout( FormLayoutFactory.defaults().margins( 0, 0 ).create() );
+//        Label l = new Label( result, SWT.NONE );
+//        UIUtils.setVariant( l, IAppDesign.CSS_HEADER );
+//        l.setText( "Batik Application" );
+//        return result;
     }
 
 
-    protected Composite fillPanelArea( Composite parent ) {
+    protected Composite fillPanelsArea( Composite parent ) {
         // layout supplier
         DelegatingLayoutSupplier ls = new DelegatingLayoutSupplier( getAppLayoutSettings() ) {
             @Override
-            public int getMarginLeft() {
-                return 0;
-            }
+            public int getMarginLeft() { return 0; }
             @Override
-            public int getMarginRight() {
-                return 0;
-            }
+            public int getMarginRight() { return 0; }
             @Override
-            public int getMarginTop() {
-                return getSpacing()/2;
-            }
+            public int getMarginTop() { return getSpacing()/2; }
         };
 
         // panelsArea
@@ -272,7 +270,8 @@ public class DefaultAppDesign
      * to change behaviour.
      */
     protected void createPanelContents( final IPanel panel, final Composite parent ) {
-        parent.setLayout( FormLayoutFactory.defaults().create() );
+        // margins for shaddow
+        parent.setLayout( FormLayoutFactory.defaults().margins( 1, 3, 0, 3 ).create() );
         UIUtils.setVariant( parent, CSS_PANEL );
         
         // head
@@ -287,7 +286,7 @@ public class DefaultAppDesign
         Label title = UIUtils.setVariant( new Label( head, SWT.NO_FOCUS|SWT.CENTER ), CSS_PANEL_HEADER );
         title.setData( "_type_", CSS_PANEL_HEADER );
         title.setText( panel.site().title.orElse( "..." ) );
-        title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 4 ).create() );
+        title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 5 ).create() );
 
 //        FontData fontData = title.getFont().getFontData()[0];
 //        title.setFont( JFaceResources.getFontRegistry().getBold( fontData.getName() ) );
@@ -303,14 +302,24 @@ public class DefaultAppDesign
                 }
             }
         });
-        scrolled.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
+        scrolled.setLayoutData( FormDataFactory.filled().top( 0, dp( 54 ) ).create() );
         scrolled.setExpandVertical( true );
         scrolled.setExpandHorizontal( true );
-        scrolled.setTouchEnabled( true );        
+        scrolled.setTouchEnabled( true );
+        scrolled.moveBelow( head );
 
         // panel
         Composite panelParent = new Composite( scrolled, SWT.NO_FOCUS );
-        panelParent.setLayout( new ConstraintLayout( getPanelLayoutPreferences() ) );
+        panelParent.setLayout( new ConstraintLayout( new DelegatingLayoutSupplier( getPanelLayoutPreferences() ) {
+            /** 
+             * Add an extra margin on top of the panel; panel layout probably has 0
+             * margin top in order to have compact sections
+             */
+            @Override
+            public int getMarginTop() {
+                return dp( 16 );
+            }
+        }));
         panel.createContents( panelParent );
         panelParent.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
 
@@ -349,9 +358,11 @@ public class DefaultAppDesign
                 .forEach( p -> {
                         int btnCount = switcher.getChildren().length;
                         Button btn = createSwitcherButton( switcher, p );
-                        btn.setLayoutData( btnCount == 0
-                                ? FormDataFactory.filled().clearRight().create()
-                                : FormDataFactory.filled().clearRight().left( switcher.getChildren()[btnCount-1] ).create() );
+                        if (btn.getLayoutData() == null) {
+                            btn.setLayoutData( btnCount == 0
+                                    ? FormDataFactory.filled().noRight().create()
+                                    : FormDataFactory.filled().noRight().left( switcher.getChildren()[btnCount-1] ).create() );
+                        }
 
 //                        IPanelSite panelSite = p.getSite();
 //                        btn.setSelection( panelSite.getPanelStatus().ge( PanelStatus.VISIBLE ) );
@@ -370,7 +381,6 @@ public class DefaultAppDesign
     
     protected Button createSwitcherButton( Composite switcher, IPanel panel ) {
         final Button btn = UIUtils.setVariant( new Button( switcher, SWT.PUSH ), CSS_PANEL_HEADER );
-        btn.setLayoutData( RowDataFactory.swtDefaults().hint( SWT.DEFAULT, 21 ).create() );
 
         boolean showText = UIUtils.sessionDisplay().getClientArea().width > 900;
         
@@ -438,10 +448,12 @@ public class DefaultAppDesign
         
         // panel layout
         panelLayoutSettings.spacing = spacing;
+        panelLayoutSettings.marginTop = 0;
         
         // app layout
         appLayoutSettings.spacing = (int)(spacing * 0.75);
         appLayoutSettings.marginLeft = appLayoutSettings.marginRight = marginsWidth;
+        appLayoutSettings.marginTop = 0;
         
         mainWindow.setLayout( FormLayoutFactory.defaults().margins( 
                 appLayoutSettings.marginTop, appLayoutSettings.marginRight, 

@@ -22,8 +22,10 @@
  */
 Composite[BORDER].atlas-panel-header {
   border-radius: 5px;
-  border: 0px solid #e8e8e8;
-  background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));
+  border: 0px solid #ffffff;
+  /*background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));*/
+  background-color: $header-bg;
+  box-shadow: 0px 2px 3px #b0b0b0;
 }
 Button[PUSH].atlas-panel-header,
 Button[TOGGLE].atlas-panel-header {
@@ -44,7 +46,7 @@ Button[TOGGLE]:hover.atlas-panel-header {
   background-color: #5AA9BD;
 }
 Label.atlas-panel-header {
-  font: $font-size-button $font;
+  font: 16px $font;
   color: #5993AE;
   text-shadow: 1px 1px 0px #ffffff;
 }
@@ -85,7 +87,7 @@ Composite[BORDER].atlas-header {
   border: none;
 }
 Label.atlas-header {
-  font: bold 32px $font;
+  font: 15px $font;
   color: #808080;
 }
 Composite.atlas-panel,

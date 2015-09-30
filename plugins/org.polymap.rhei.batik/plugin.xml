@@ -65,6 +65,16 @@
             id="org.polymap.rhei.batik.branding"
             themeId="org.polymap.rhei.batik.materialDesign"
             title="Batik">
+         <additionalHeaders>
+            <link
+                  href="batikres/css/md/flowtext.css"
+                  rel="stylesheet">
+            </link>
+            <link
+                  href="batikres/css/roboto.css"
+                  rel="stylesheet">
+            </link>
+         </additionalHeaders>
       </branding>
    </extension>
    <extension
