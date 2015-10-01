@@ -1,0 +1,70 @@
+/*
+ * polymap.org
+ * Copyright 2015, Falko Bräutigam. All rights reserved.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3.0 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
+/*
+ * Panel and header
+ */
+
+Composite.atlas-panel,
+Composite[BORDER].atlas-panel {
+  /* space for header shadow */
+  padding: 1px 3px 0px 3px;
+} 
+
+Composite.atlas-panel,
+Composite[BORDER].atlas-panel, 
+Composite.atlas-navi-switcher, 
+Composite[BORDER].atlas-navi-switcher {
+  animation: fadeIn 700ms ease-in, fadeOut 500ms ease-out;    
+}
+
+Composite.atlas-panel-client {
+  /* space for section shadow does not work here */
+  /* padding: 5px 5px; */
+}
+
+Composite[BORDER].atlas-panel-header {
+  border-radius: 4px;
+  border: 0px solid #ffffff;
+  /*background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));*/
+  background-color: $header-bg;
+  box-shadow: 0px 2px 3px $shadow;
+}
+
+Button[PUSH].atlas-panel-header,
+Button[TOGGLE].atlas-panel-header {
+  font: $font-size-button $font;
+  border-radius: 4px;
+  padding: 0px 5px;
+  spacing: 0px;
+  background-color: #ffffff;
+/*  background-image : url( resources/icons/close3.gif );*/
+  border: 1px solid #5AA9BD;  /*$action-bg;*/
+  color: $action-bg;
+}
+
+Button[PUSH]:hover.atlas-panel-header,
+Button[TOGGLE]:hover.atlas-panel-header {
+  color: #ffffff;
+/*  background-image : url( resources/icons/close_hover.gif );*/
+  border: none;  /*1px solid #e03000;*/
+  background-color: #5AA9BD;
+}
+
+Label.atlas-panel-header {
+  font: 16px $font;
+  color: #5993AE;
+  text-shadow: 1px 1px 0px #ffffff;
+}

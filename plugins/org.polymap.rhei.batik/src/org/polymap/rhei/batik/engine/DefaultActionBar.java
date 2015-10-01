@@ -28,7 +28,6 @@ import org.polymap.core.ui.FormLayoutFactory;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.batik.IAppContext;
-import org.polymap.rhei.batik.app.IAppDesign;
 
 /**
  * The main action bar displayed at the top of the main window.
@@ -76,7 +75,7 @@ public class DefaultActionBar {
 
     public Composite createContents( Composite parent, int style ) {
         Composite contents = new Composite( parent, style | SWT.NO_FOCUS );
-        UIUtils.setVariant( contents, IAppDesign.CSS_ACTIONS );
+        UIUtils.setVariant( contents, DefaultAppDesign.CSS_ACTIONS );
         contents.setLayout( FormLayoutFactory.defaults().spacing( 10 ).create() );
 
         Composite left = null;

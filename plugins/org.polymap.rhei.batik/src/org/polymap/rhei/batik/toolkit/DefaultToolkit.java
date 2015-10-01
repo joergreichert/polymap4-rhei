@@ -396,12 +396,6 @@ public class DefaultToolkit
 
     
     @Override
-    public IPanelSection createPanelSection( ILayoutContainer parent, String title, int... styles ) {
-        return createPanelSection( parent.getBody(), title, styles );
-    }
-
-    
-    @Override
     public List createList( Composite parent, int... styles ) {
         List result = adapt( new List( parent, stylebits( styles ) ), false, false );
         return result;
@@ -490,6 +484,10 @@ public class DefaultToolkit
             result |= style;
         }
         return result;
+    }
+
+    protected int styleHas( int[] styles, int search ) {
+        return ArrayUtils.contains( styles, search ) ? search : SWT.NONE;
     }
 
 }

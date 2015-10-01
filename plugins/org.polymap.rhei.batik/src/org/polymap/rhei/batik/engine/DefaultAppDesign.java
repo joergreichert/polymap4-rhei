@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.engine;
 
 import static java.util.Collections.reverseOrder;
 import static java.util.Comparator.comparing;
+import static org.polymap.core.ui.UIUtils.setVariant;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.INITIALIZED;
 import static org.polymap.rhei.batik.IPanelSite.PanelStatus.VISIBLE;
 import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
@@ -78,12 +79,16 @@ public class DefaultAppDesign
         implements IAppDesign, BrowserNavigationListener {
 
     private static Log log = LogFactory.getLog( DefaultAppDesign.class );
-
-    public static final String          CSS_PREFIX = "atlas-panel";
-    public static final String          CSS_PANEL_HEADER = CSS_PREFIX + "-header";
-    public static final String          CSS_BREADCRUMP = CSS_PREFIX + "-breadcrump";
-    public static final String          CSS_SWITCHER = CSS_PREFIX + "-switcher";
     
+    public static final String          CSS_PANELS = "atlas-panels";
+    public static final String          CSS_PANEL = "atlas-panel";
+    public static final String          CSS_ACTIONS = "atlas-actions";
+    public static final String          CSS_HEADER = "atlas-header";
+    public static final String          CSS_SHELL = "atlas-shell";
+    public static final String          CSS_PANEL_HEADER = CSS_PANEL + "-header";
+    public static final String          CSS_PANEL_CLIENT = CSS_PANEL + "-client";
+    public static final String          CSS_SWITCHER = CSS_PANEL + "-switcher";
+
     private DefaultAppManager           appManager;
 
     protected Display                   display;
@@ -101,7 +106,6 @@ public class DefaultAppDesign
     protected DefaultLayoutSupplier     panelLayoutSettings = new DefaultLayoutSupplier();
  
     protected DefaultLayoutSupplier     appLayoutSettings = new DefaultLayoutSupplier();
-
 
     @Override
     public void init() {
@@ -148,7 +152,7 @@ public class DefaultAppDesign
         this.display = display;
         mainWindow = new Shell( display, SWT.NO_TRIM );
         mainWindow.setMaximized( true );
-        UIUtils.setVariant( mainWindow, IAppDesign.CSS_SHELL );
+        UIUtils.setVariant( mainWindow, CSS_SHELL );
 
         updateMainWindowLayout();
         
@@ -270,12 +274,12 @@ public class DefaultAppDesign
      * to change behaviour.
      */
     protected void createPanelContents( final IPanel panel, final Composite parent ) {
-        // margins for shaddow
-        parent.setLayout( FormLayoutFactory.defaults().margins( 1, 3, 0, 3 ).create() );
+        // margins for shadow
+        parent.setLayout( FormLayoutFactory.defaults()/*.margins( 1, 3, 0, 3 )*/.create() );
         UIUtils.setVariant( parent, CSS_PANEL );
         
         // head
-        Composite head = UIUtils.setVariant( new Composite( parent, SWT.BORDER | SWT.NO_FOCUS ), CSS_PANEL_HEADER );
+        Composite head = setVariant( new Composite( parent, SWT.BORDER | SWT.NO_FOCUS ), CSS_PANEL_HEADER );
         head.setLayoutData( FormDataFactory.filled().clearBottom().height( dp( 54 ) ).create() );
         head.setLayout( FormLayoutFactory.defaults().margins( 2 ).spacing( 2 ).create() );
 
@@ -283,7 +287,7 @@ public class DefaultAppDesign
         createPanelDecoration( panel, head );
       
         // title
-        Label title = UIUtils.setVariant( new Label( head, SWT.NO_FOCUS|SWT.CENTER ), CSS_PANEL_HEADER );
+        Label title = setVariant( new Label( head, SWT.NO_FOCUS|SWT.CENTER ), CSS_PANEL_HEADER );
         title.setData( "_type_", CSS_PANEL_HEADER );
         title.setText( panel.site().title.orElse( "..." ) );
         title.setLayoutData( FormDataFactory.filled()/*.left( center, 0, Alignment.CENTER )*/.top( 0, 5 ).create() );
@@ -309,19 +313,19 @@ public class DefaultAppDesign
         scrolled.moveBelow( head );
 
         // panel
-        Composite panelParent = new Composite( scrolled, SWT.NO_FOCUS );
+        Composite panelParent = setVariant( new Composite( scrolled, SWT.NO_FOCUS ), CSS_PANEL_CLIENT );
         panelParent.setLayout( new ConstraintLayout( new DelegatingLayoutSupplier( getPanelLayoutPreferences() ) {
             /** 
              * Add an extra margin on top of the panel; panel layout probably has 0
              * margin top in order to have compact sections
              */
             @Override
-            public int getMarginTop() {
-                return dp( 16 );
-            }
+            public int getMarginTop() { return dp( 24 ); }
+            @Override
+            public int getMarginBottom() { return super.getMarginBottom() + dp( 16 ); }
         }));
         panel.createContents( panelParent );
-        panelParent.setLayoutData( FormDataFactory.filled().top( 0, 35 ).create() );
+        panelParent.setLayoutData( FormDataFactory.filled().top( 0, dp( 54 ) ).create() );
 
         scrolled.setContent( panelParent );
         scrolled.layout();
@@ -435,23 +439,27 @@ public class DefaultAppDesign
         int marginsWidth = -1;
         int spacing = -1;
         if (displayArea.width < 500) {
-            marginsWidth = spacing = 5;
+            marginsWidth = spacing = dp( 12 );
         }
         else if (displayArea.width < 1366) { // many current notebook displays?
-            marginsWidth = spacing = (int)(displayArea.width * 0.025);
+            marginsWidth = spacing = dp( 24 );
         }
         else {
-            marginsWidth = (int)(displayArea.width * 0.025) + 100;
-            spacing = (int)(displayArea.width * 0.025);
+            marginsWidth = spacing = dp( 32 );
+            marginsWidth += 100;
         }
         log.debug( "adjustLayout(): display width=" + displayArea.width + " -> spacing=" + spacing );
         
         // panel layout
         panelLayoutSettings.spacing = spacing;
-        panelLayoutSettings.marginTop = 0;
+        // space for section shadows
+        // XXX fixes fucking, not working CSS margin; there is no way to add
+        // margins to panelSections in CSS
+        panelLayoutSettings.marginLeft = panelLayoutSettings.marginRight = 3;
+        panelLayoutSettings.marginTop = panelLayoutSettings.marginBottom = 3;
         
         // app layout
-        appLayoutSettings.spacing = (int)(spacing * 0.75);
+        appLayoutSettings.spacing = spacing;
         appLayoutSettings.marginLeft = appLayoutSettings.marginRight = marginsWidth;
         appLayoutSettings.marginTop = 0;
         

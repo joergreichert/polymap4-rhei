@@ -39,6 +39,11 @@ public abstract class DefaultDashlet
     }
 
     
+    @Override
+    public void dispose() {
+    }
+
+
     protected DashletSite getSite() {
         return dashletSite;
     }

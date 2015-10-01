@@ -74,7 +74,8 @@ public class DefaultPanelSection
         sep.moveBelow( title );
 
         // client
-        client = tk.adapt( new Composite( control, SWT.NO_FOCUS ) );
+        // border style signals CSS that the section has a border
+        client = tk.adapt( new Composite( control, SWT.NO_FOCUS | tk.styleHas( styles, SWT.BORDER ) ) );
         UIUtils.setVariant( client, DefaultToolkit.CSS_SECTION_CLIENT );
         FormDataFactory.filled().top( sep ).applyTo( client );
 

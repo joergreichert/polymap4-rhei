@@ -1,0 +1,63 @@
+/*
+ * polymap.org
+ * Copyright 2015, Falko Bräutigam. All rights reserved.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3.0 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
+/*
+ * Batik panel section
+ */
+ 
+Composite[BORDER].batik-panel-section-client {
+  /* BORDER style just signals that the entiry section has a border;
+     the client has no border but white background */
+  border: none;
+  background-color: #ffffff;
+}
+
+Composite.batik-panel-section {
+}
+Composite[BORDER].batik-panel-section {
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #ffffff;
+  box-shadow: 0px 1px 2px $shadow;
+  /* XXX space for shadow; does not work; see DefaultAddDesign.createPanelContents() for fix */
+  /*margin: 2px 3px 4px 3px; */
+  padding: 5px 8px;
+}
+
+Label.batik-panel-section-title {
+  font: 22px $font;
+  border: none;
+}
+Label:disabled.batik-panel-section-title {
+  opacity: 0.3;
+}
+Label[SEPARATOR], 
+Label[SEPARATOR].batik-panel-section-separator, 
+Label.batik-panel-section-separator {
+  background-color: #303030;
+  color: #f8f8f8;
+}
+Label-SeparatorLine, 
+Label-SeparatorLine.batik-panel-section-separator {
+  background-image: none;
+  background-color: #c8c8c8; /* ! */
+  border: 0px solid #000000;
+  width: 1px;
+  color: #000000;
+}
+
+/* Label.batik-panel-section-separator {
+  opacity: 0;
+}*/

@@ -27,6 +27,10 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import org.polymap.core.runtime.config.Config2;
+import org.polymap.core.runtime.config.Configurable;
+import org.polymap.core.runtime.config.DefaultBoolean;
+import org.polymap.core.runtime.config.Mandatory;
 import org.polymap.core.runtime.event.EventHandler;
 import org.polymap.core.runtime.event.EventManager;
 
@@ -41,10 +45,15 @@ import org.polymap.rhei.batik.toolkit.LayoutConstraint;
  *
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
-public class Dashboard {
+public class Dashboard
+        extends Configurable {
 
     private static Log log = LogFactory.getLog( Dashboard.class );
 
+    @Mandatory
+    @DefaultBoolean( true )
+    public Config2<Dashboard,Boolean>       defaultBorder;
+    
     private String                          id;
     
     private IPanelSite                      panelSite;
@@ -55,6 +64,12 @@ public class Dashboard {
     public Dashboard( IPanelSite panelSite, String id ) {
         this.panelSite = panelSite;
         this.id = id;
+    }
+    
+    
+    public void dispose() {
+        dashlets.keySet().stream().forEach( dashlet -> dashlet.dispose() );
+        dashlets.clear();
     }
     
     
@@ -78,7 +93,10 @@ public class Dashboard {
             EventManager.instance().subscribe( this, ev -> ev.getSource() == dashletSite );
             
             String title = dashletSite.title.get();
-            int border = dashletSite.isBoxStyle.get() ? SWT.BORDER : SWT.NONE;
+            int border = defaultBorder.get() ? SWT.BORDER : SWT.NONE;
+            if (dashletSite.border.get() != null) {
+                border = dashletSite.border.get() ? SWT.BORDER : SWT.NONE;
+            }
             int expandable = dashletSite.isExpandable.get() ? IPanelSection.EXPANDABLE : SWT.NONE;
             IPanelSection section = tk.createPanelSection( parent, title, border, expandable );
             

@@ -2,7 +2,10 @@
  * _standard.scss:
  * Font and color definitions for Material Design standard theme
  */
- 
+
+/**********************************************************
+ * Fonts
+ */
 $font:                  'Roboto', 'Noto', sans-serif;
 $font-size-button:      15px;      
 $font-button:           $font-size-button $font;
@@ -13,6 +16,9 @@ $font-size-subhead:     18px;  /* Regular; 16px on Device */
 $font-size-title:       20px;  /* Medium */      
 $font-size-headline:    24px;  /* Regular */      
 
+/**********************************************************
+ * Colors
+ */
 $text-color:            #4a4a4a;
 $text-color-disabled:   #6a6a6a;
 
@@ -29,6 +35,11 @@ $fab-bg:                #81CC39;
 $fab-fg:                #ffffff;
 $fab-hover:             #6eb02e;
 
+$shadow:                #b0b0b0;
+
+/**********************************************************
+ * Icons
+ */
 $icon-base:             "resources/icons/rap/png/";
 $icon-normal:           "resources/icons/rap/png/normal/20/";
 $icon-hover:            "resources/icons/rap/png/hover/20/";

@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 public interface IDashlet {
 
     public void init( DashletSite site );
+    
+    public void dispose();
    
     /**
      * 

@@ -31,12 +31,6 @@ import org.polymap.rhei.batik.toolkit.LayoutSupplier;
 public interface IAppDesign
         extends AutoCloseable {
 
-    public static final String      CSS_PANELS = "atlas-panels";
-    public static final String      CSS_PANEL = "atlas-panel";
-    public static final String      CSS_ACTIONS = "atlas-actions";
-    public static final String      CSS_HEADER = "atlas-header";
-    public static final String      CSS_SHELL = "atlas-shell";
-
     public void init();
 
     @Override

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
@@ -122,6 +123,13 @@ public interface IPanelToolkit
      */
     public Composite createComposite( Composite parent, int... styles );
 
+    public default Composite createComposite( Composite parent, Layout layout, int... styles ) {
+        assert layout != null;
+        Composite result = createComposite( parent, styles );
+        result.setLayout( layout );
+        return result;
+    }
+
     public Section createSection( Composite parent, String title, int... styles );
 
     public Text createText( Composite parent, String defaultText, int... styles );
@@ -141,7 +149,9 @@ public interface IPanelToolkit
      * 
      * @see #createPanelSection(Composite, String, int...)
      */
-    public IPanelSection createPanelSection( ILayoutContainer parent, String title, int... styles );
+    public default IPanelSection createPanelSection( ILayoutContainer parent, String title, int... styles ) {
+        return createPanelSection( parent.getBody(), title, styles );
+    }
 
     public List createList( Composite parent, int... styles );
 

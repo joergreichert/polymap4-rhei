@@ -43,9 +43,7 @@ public abstract class DashletSite
     @Concern(PropertyChangeSupport.class)
     public Config<String>                 title;
 
-    @Mandatory
-    @Defaults
-    public Config<Boolean>                isBoxStyle;
+    public Config<Boolean>                border;
     
     @Mandatory
     @Defaults

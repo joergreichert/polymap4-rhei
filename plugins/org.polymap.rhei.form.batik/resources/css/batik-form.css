@@ -20,13 +20,17 @@
 /*Forms Background*/
 Composite.batik-panel-form,
 Composite.batik-panel-form-disabled {
+  /*
   background-color: #f2f2f2;
   border-radius: 3px;
   border: 1px solid #e8e9e6;
+  */
 }
 Composite.batik-panel-formfield,
 Composite.batik-panel-formfield-disabled {
+  /*
   background-color: #f2f2f2;
+  */
 }
 Composite.formeditor-label,
 Composite.formeditor-label-disabled {
