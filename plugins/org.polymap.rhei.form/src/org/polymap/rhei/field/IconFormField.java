@@ -76,7 +76,7 @@ public class IconFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "choose...", SWT.PUSH );
+        button = toolkit.createButton( parent, "No icon", SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
@@ -87,7 +87,10 @@ public class IconFormField
                 if (newImage != null) {
                     image = newImage;
                     button.setText("");
-                    button.setImage( imageDialog.getScaledImage( image, 12, 12 ) );
+                    button.setImage( imageDialog.getScaledImage( image, 16, 16 ) );
+                } else {
+                    button.setImage(null);
+                    button.setText("No icon");
                 }
             };
         } );
