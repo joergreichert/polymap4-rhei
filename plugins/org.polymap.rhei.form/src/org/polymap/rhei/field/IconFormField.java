@@ -16,30 +16,27 @@ package org.polymap.rhei.field;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.polymap.rhei.form.IFormToolkit;
+import org.polymap.rhei.form.ImageDialog;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
  *
  */
-public class FontFormField
+public class IconFormField
         implements IFormField {
 
     private IFormFieldSite site;
 
     private Button         button;
 
-    private FontData       fontData;
-
-    private RGB            rgb;
+    private Image          image;
 
     private Object         loadedValue;
 
@@ -84,15 +81,13 @@ public class FontFormField
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 final Display display = parent.getDisplay();
-                final FontDialog fontDialog = new FontDialog( display.getActiveShell() );
-                fontDialog.setFontList( new FontData[] { fontData } );
-                fontDialog.setRGB( rgb );
-                FontData newFontData = fontDialog.open();
-                if (newFontData != null) {
-                    fontData = newFontData;
-                    button.setText( fontData.getName() + ", " + fontData.getHeight() );
-                    rgb = fontDialog.getRGB();
-                    button.setBackground( new Color( Display.getDefault(), rgb ) );
+                final ImageDialog imageDialog = new ImageDialog( display.getActiveShell() );
+                imageDialog.setImage( image );
+                Image newImage = imageDialog.open();
+                if (newImage != null) {
+                    image = newImage;
+                    button.setText("");
+                    button.setImage( imageDialog.getScaledImage( image, 12, 12 ) );
                 }
             };
         } );
@@ -125,7 +120,7 @@ public class FontFormField
      */
     @Override
     public void store() throws Exception {
-        site.setFieldValue( fontData );
+        site.setFieldValue( image );
     }
 
 
@@ -140,7 +135,7 @@ public class FontFormField
 
         loadedValue = site.getFieldValue();
 
-        fontData = loadedValue instanceof FontData ? (FontData)loadedValue : null;
+        image = loadedValue instanceof Image ? (Image)loadedValue : null;
     }
 
 
@@ -151,8 +146,8 @@ public class FontFormField
      */
     @Override
     public IFormField setValue( Object value ) {
-        if (value instanceof FontData) {
-            fontData = (FontData)value;
+        if (value instanceof RGB) {
+            image = (Image)value;
         }
         return this;
     }

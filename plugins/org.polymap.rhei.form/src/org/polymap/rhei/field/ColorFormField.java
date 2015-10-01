@@ -76,16 +76,21 @@ public class ColorFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "choose...", SWT.PUSH );
+        button = toolkit.createButton( parent, "No color", SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 final Display display = parent.getDisplay();
-                final ColorDialog colorDialog = new ColorDialog( display.getActiveShell() );
+                final org.polymap.rhei.form.ColorDialog colorDialog = new org.polymap.rhei.form.ColorDialog( display
+                        .getActiveShell() );
+                colorDialog.setRGB( rgb );
                 RGB newRgb = colorDialog.open();
-                if(newRgb != null) {
+                if (newRgb != null) {
                     rgb = newRgb;
                     button.setBackground( new Color( Display.getDefault(), rgb ) );
+                } else {
+                    button.setText( "No color" );
+                    button.setBackground( null );
                 }
             };
         } );
