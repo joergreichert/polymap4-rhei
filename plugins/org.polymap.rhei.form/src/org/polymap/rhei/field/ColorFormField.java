@@ -16,6 +16,7 @@ package org.polymap.rhei.field;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ColorDialog;
@@ -75,13 +76,17 @@ public class ColorFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "color", SWT.PUSH );
+        button = toolkit.createButton( parent, "choose...", SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 final Display display = parent.getDisplay();
                 final ColorDialog colorDialog = new ColorDialog( display.getActiveShell() );
-                rgb = colorDialog.open();
+                RGB newRgb = colorDialog.open();
+                if(newRgb != null) {
+                    rgb = newRgb;
+                    button.setBackground( new Color( Display.getDefault(), rgb ) );
+                }
             };
         } );
         button.setEnabled( deferredEnabled );

@@ -16,6 +16,7 @@ package org.polymap.rhei.field;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -75,13 +76,18 @@ public class FontFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "font", SWT.PUSH );
+        button = toolkit.createButton( parent, "choose...", SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 final Display display = parent.getDisplay();
                 final FontDialog fontDialog = new FontDialog( display.getActiveShell() );
-                fontData = fontDialog.open();
+                FontData newFontData = fontDialog.open();
+                if(newFontData != null) {
+                    fontData = newFontData;
+                    button.setText( fontData.getName() + ", " + fontData.getHeight() );
+                    button.setBackground( new Color( Display.getDefault(), fontDialog.getRGB() ) );
+                }
             };
         } );
         button.setEnabled( deferredEnabled );

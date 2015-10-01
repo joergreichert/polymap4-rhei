@@ -56,5 +56,14 @@ public abstract class DefaultDashlet
         }
         return this;
     }
+
+
+    /**
+     * 
+     */
+    public void dispose() {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

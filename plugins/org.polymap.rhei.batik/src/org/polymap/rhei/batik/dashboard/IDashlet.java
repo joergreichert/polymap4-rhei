@@ -34,5 +34,4 @@ public interface IDashlet {
      * @param parent
      */
    public void createContents( Composite parent );
-   
 }
