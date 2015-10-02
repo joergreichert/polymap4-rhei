@@ -14,8 +14,13 @@
  */
 package org.polymap.rhei.form;
 
-import java.lang.reflect.Field;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.internal.textsize.TextSizeUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -39,9 +44,9 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
@@ -50,23 +55,25 @@ import org.eclipse.ui.PlatformUI;
 public class ImageDialog
         extends Dialog {
 
-    private static final int IMAGE_BOXES_IN_ROW     = 14;
+    private static final int                                           IMAGE_BOXES_IN_ROW     = 14;
 
-    private static final int IMAGE_DISPLAY_BOX_SIZE = 76;
+    private static final int                                           IMAGE_DISPLAY_BOX_SIZE = 76;
 
-    private static final int PALETTE_BOX_SIZE       = 12;
+    private static final int                                           PALETTE_BOX_SIZE       = 12;
 
-    private static final int BUTTON_WIDTH           = 60;
+    private static final int                                           BUTTON_WIDTH           = 60;
 
-    private Image            image;
+    private Image                                                      image;
 
-    private Label            imageDisplay;
+    private Label                                                      imageDisplay;
 
-    private Button noIcon;
+    private Button                                                     noIcon;
+
+    private final SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary;
 
 
-    public ImageDialog( Shell parent ) {
-        this( parent, SWT.APPLICATION_MODAL );
+    public ImageDialog( Shell parent, SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary ) {
+        this( parent, SWT.APPLICATION_MODAL, imageLibrary );
     }
 
 
@@ -98,10 +105,11 @@ public class ImageDialog
      * @see Widget#checkSubclass
      * @see Widget#getStyle
      */
-    public ImageDialog( Shell parent, int style ) {
+    public ImageDialog( Shell parent, int style, SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary ) {
         super( parent, checkStyle( parent, style ) );
         checkSubclass();
         setText( "Select icon" );
+        this.imageLibrary = imageLibrary;
     }
 
 
@@ -212,17 +220,21 @@ public class ImageDialog
 
 
     private void createNoIconButton() {
-        noIcon = new Button(shell, SWT.CHECK);
+        noIcon = new Button( shell, SWT.CHECK );
         noIcon.setText( "Use no icon" );
         noIcon.setSelection( image == null );
         noIcon.addSelectionListener( new SelectionAdapter() {
-            
-            /* (non-Javadoc)
-             * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+
+            /*
+             * (non-Javadoc)
+             * 
+             * @see
+             * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse
+             * .swt.events.SelectionEvent)
              */
             @Override
             public void widgetSelected( SelectionEvent e ) {
-                if(noIcon.getSelection()) {
+                if (noIcon.getSelection()) {
                     image = null;
                     updateImageDisplay();
                     noIcon.setEnabled( false );
@@ -234,6 +246,24 @@ public class ImageDialog
 
     private void createImageSelection() {
         Composite imageSelectionComp = new Composite( shell, SWT.NONE );
+        imageSelectionComp.setLayout( new GridLayout( 1, false ) );
+        TabFolder tabFolder = new TabFolder( imageSelectionComp, SWT.NONE );
+        for (Pair<String,String> nameAndLicenceText : imageLibrary.keySet()) {
+            TabItem tabItem = new TabItem( tabFolder, SWT.NONE );
+            tabItem.setText( nameAndLicenceText.getLeft() );
+            Composite comp = new Composite( tabFolder, SWT.NONE );
+            comp.setLayout( new GridLayout( 1, false ) );
+            createImageSelection( comp, imageLibrary.get( nameAndLicenceText ) );
+            Label licenceLabel = new Label( comp, SWT.NONE );
+            licenceLabel.setText( nameAndLicenceText.getRight() );
+            licenceLabel.setData( RWT.MARKUP_ENABLED, true );
+            tabItem.setControl( comp );
+        }
+    }
+
+
+    private Composite createImageSelection( Composite parent, List<Supplier<ImageDescriptor>> list ) {
+        Composite imageSelectionComp = new Composite( parent, SWT.NONE );
         GridData palData = new GridData( SWT.CENTER, SWT.CENTER, true, false );
         imageSelectionComp.setLayoutData( palData );
         imageSelectionComp.setLayout( new GridLayout( IMAGE_BOXES_IN_ROW, true ) );
@@ -243,21 +273,13 @@ public class ImageDialog
         GridData titleData = new GridData( SWT.CENTER, SWT.CENTER, true, false );
         titleData.horizontalSpan = IMAGE_BOXES_IN_ROW;
         title.setLayoutData( titleData );
-        ISharedImages platformImages = PlatformUI.getWorkbench().getSharedImages();
-        Field[] declaredFields = ISharedImages.class.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            if (declaredField.getName().startsWith( "IMG_" ) && declaredField.getType() == String.class) {
-                try {
-                    Image image = platformImages.getImage( (String)declaredField.get( platformImages ) );
-                    if(image != null) {
-                        createPaletteImageBox( imageSelectionComp, image );
-                    }
-                }
-                catch (IllegalArgumentException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+        for (Supplier<ImageDescriptor> imageDesc : list) {
+            Image image = imageDesc.get().createImage();
+            if (image != null) {
+                createPaletteImageBox( imageSelectionComp, image );
             }
         }
+        return imageSelectionComp;
     }
 
 
@@ -284,6 +306,8 @@ public class ImageDialog
         GridData data = new GridData();
         data.widthHint = PALETTE_BOX_SIZE;
         data.heightHint = PALETTE_BOX_SIZE;
+        data.horizontalAlignment = SWT.CENTER;
+        data.verticalAlignment = SWT.CENTER;
         result.setLayoutData( data );
         result.setImage( getScaledImage( image, data.widthHint, data.heightHint ) );
         result.addMouseListener( new PaletteListener( image ) );
@@ -298,6 +322,8 @@ public class ImageDialog
         areaComp.setLayout( new GridLayout( 1, false ) );
         imageDisplay = new Label( areaComp, SWT.BORDER | SWT.FLAT );
         GridData data = new GridData();
+        data.horizontalAlignment = SWT.CENTER;
+        data.verticalAlignment = SWT.CENTER;
         data.widthHint = IMAGE_DISPLAY_BOX_SIZE;
         data.heightHint = IMAGE_DISPLAY_BOX_SIZE;
         imageDisplay.setLayoutData( data );
@@ -329,15 +355,16 @@ public class ImageDialog
 
 
     private void updateImageDisplay() {
-        if(image == imageDisplay.getImage()) {
+        if (image == imageDisplay.getImage()) {
             return;
         }
         if (imageDisplay.getImage() != null) {
             imageDisplay.getImage().dispose();
         }
-        if(image == null) {
+        if (image == null) {
             imageDisplay.setImage( null );
-        } else {
+        }
+        else {
             imageDisplay.setImage( getScaledImage( image, IMAGE_DISPLAY_BOX_SIZE, IMAGE_DISPLAY_BOX_SIZE ) );
         }
     }

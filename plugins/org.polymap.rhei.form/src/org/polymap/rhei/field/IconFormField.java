@@ -14,6 +14,12 @@
  */
 package org.polymap.rhei.field;
 
+import java.util.List;
+import java.util.SortedMap;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Image;
@@ -32,15 +38,25 @@ import org.polymap.rhei.form.ImageDialog;
 public class IconFormField
         implements IFormField {
 
-    private IFormFieldSite site;
+    private IFormFieldSite                                                       site;
 
-    private Button         button;
+    private Button                                                               button;
 
-    private Image          image;
+    private Image                                                                image;
 
-    private Object         loadedValue;
+    private Object                                                               loadedValue;
 
-    private boolean        deferredEnabled = true;
+    private boolean                                                              deferredEnabled = true;
+
+    private final SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary;
+
+
+    /**
+     * @param imageLibrary licence text to list of image descriptors
+     */
+    public IconFormField( SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary ) {
+        this.imageLibrary = imageLibrary;
+    }
 
 
     /*
@@ -81,16 +97,17 @@ public class IconFormField
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
                 final Display display = parent.getDisplay();
-                final ImageDialog imageDialog = new ImageDialog( display.getActiveShell() );
+                final ImageDialog imageDialog = new ImageDialog( display.getActiveShell(), imageLibrary );
                 imageDialog.setImage( image );
                 Image newImage = imageDialog.open();
                 if (newImage != null) {
                     image = newImage;
-                    button.setText("");
+                    button.setText( "" );
                     button.setImage( imageDialog.getScaledImage( image, 16, 16 ) );
-                } else {
-                    button.setImage(null);
-                    button.setText("No icon");
+                }
+                else {
+                    button.setImage( null );
+                    button.setText( "No icon" );
                 }
             };
         } );

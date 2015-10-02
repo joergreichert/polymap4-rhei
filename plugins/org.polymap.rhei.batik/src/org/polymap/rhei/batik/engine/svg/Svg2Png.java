@@ -136,8 +136,8 @@ public class Svg2Png {
             String widthStr = doc.getRootElement().getAttribute( "width" );
             String heightStr = doc.getRootElement().getAttribute( "height" );
             if(!Strings.isNullOrEmpty( widthStr) && !Strings.isNullOrEmpty( heightStr)) {
-                int width = Integer.valueOf(doc.getRootElement().getAttribute( "width" ));
-                int height = Integer.valueOf(doc.getRootElement().getAttribute( "height" ));
+                int width = Integer.valueOf(doc.getRootElement().getAttribute( "width" ).replace( "px", "" ));
+                int height = Integer.valueOf(doc.getRootElement().getAttribute( "height" ).replace( "px", "" ));
                 return new Bounds( width, height );
             } else {
                 BridgeContext ctx = new BridgeContext( new UserAgentAdapter() );
