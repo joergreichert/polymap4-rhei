@@ -16,7 +16,6 @@ package org.polymap.rhei.batik.app;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,20 +30,16 @@ import com.google.common.base.Joiner;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DecorationOverlayIcon;
 import org.eclipse.jface.viewers.IDecoration;
-
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-
 import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.runtime.config.DefaultString;
 import org.polymap.core.runtime.config.Immutable;
 import org.polymap.core.ui.ImageRegistryHelper;
-
 import org.polymap.rhei.batik.engine.svg.ImageConfiguration;
 import org.polymap.rhei.batik.engine.svg.Scale;
 import org.polymap.rhei.batik.engine.svg.Svg2Png;
@@ -125,7 +120,7 @@ public class SvgImageRegistryHelper
     
     private File                            tempFolder;
     
-    private Map<String,SvgConfiguration>    svgConfigs = new HashMap();
+    private Map<String,SvgConfiguration>    svgConfigs = new HashMap<>();
     
     
     public SvgImageRegistryHelper( AbstractUIPlugin plugin ) {
@@ -164,6 +159,11 @@ public class SvgImageRegistryHelper
         config.baseTempFolder = tempFolder;
         config.plugin = plugin;
         svgConfigs.put( name, config );
+    }
+
+    
+    public boolean existsConfig( String name ) {
+        return svgConfigs.containsKey( name );
     }
     
     
@@ -334,5 +334,4 @@ public class SvgImageRegistryHelper
             return imageConfig;
         }
     }
-    
 }

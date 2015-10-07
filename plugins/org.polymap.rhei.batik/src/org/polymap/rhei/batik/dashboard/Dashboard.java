@@ -134,14 +134,4 @@ public class Dashboard
         }
         
     }
-
-
-    /**
-     * 
-     */
-    public void dispose() {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

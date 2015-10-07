@@ -2736,3 +2736,58 @@ Combo-FocusIndicator {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
   padding: 6px 6px 7px 6px;
 }
+
+/* line 1, ../../sass/md/_image_table.scss */
+TableItem:linesvisible:even {
+  background-color: transparent;
+  color: inherit;
+}
+
+/* line 7, ../../sass/md/_image_table.scss */
+Table-RowOverlay {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}
+
+/* line 13, ../../sass/md/_image_table.scss */
+Table-RowOverlay:hover {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* line 19, ../../sass/md/_image_table.scss */
+Table-RowOverlay:selected {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* line 25, ../../sass/md/_image_table.scss */
+Table-RowOverlay:selected:unfocused {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* line 31, ../../sass/md/_image_table.scss */
+Table-RowOverlay:linesvisible:even:hover {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* line 37, ../../sass/md/_image_table.scss */
+Table-RowOverlay:linesvisible:even:selected {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* line 43, ../../sass/md/_image_table.scss */
+Table-RowOverlay:linesvisible:even:selected:unfocused {
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+}

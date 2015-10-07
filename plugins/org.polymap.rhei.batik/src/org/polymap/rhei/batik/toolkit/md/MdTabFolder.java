@@ -14,7 +14,9 @@
  */
 package org.polymap.rhei.batik.toolkit.md;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -22,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -37,13 +40,16 @@ public class MdTabFolder extends Composite {
     private static final String TABITEM_SELECTED_STYLE = "tabItem_selected";
     
     private static final String TABITEM_DEFAULT_STYLE  = "tabItem_default";
+    
+    private Map<String,Button> tabButtons = new HashMap<String, Button>();
+    private Map<String,Composite> tabItemContents = new HashMap<String, Composite>();    
+    private List<SelectionListener> selectionListeners = new ArrayList<SelectionListener>();
 
     public MdTabFolder( Composite parent, java.util.List<String> tabItems,
             Map<String,Function<Composite,Composite>> tabContents, int style ) {
         super( parent, style );
         setTabFolderLayout();
-        Map<String,Button> tabButtons = createTabBar( tabItems );
-
+        tabButtons = createTabBar( tabItems );
         createTabContents( tabItems, tabContents, tabButtons );
     }
 
@@ -52,22 +58,18 @@ public class MdTabFolder extends Composite {
         final Composite tabContent = new Composite( this, SWT.NONE );
         tabContent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         final StackLayout layout = setTabContentLayout( tabContent );
-        Map<String,Composite> map = createAndRevealTabContents( tabItems, tabContents, tabButtons, tabContent, layout );
+        tabItemContents = createAndRevealTabContents( tabItems, tabContents, tabButtons, tabContent, layout );
         tabContent.layout();
-        addTabSwitchListener( tabItems, tabButtons, tabContent, layout, map );
+        addTabSwitchListener( tabItems );
     }
 
-    private void addTabSwitchListener( java.util.List<String> tabItems, Map<String,Button> tabButtons,
-            final Composite tabContent, final StackLayout layout, Map<String,Composite> map ) {
+    private void addTabSwitchListener( java.util.List<String> tabItems) {
         for (String label : tabItems) {
             tabButtons.get( label ).addSelectionListener( new SelectionAdapter() {
 
                 public void widgetSelected( SelectionEvent e ) {
-                    layout.topControl = map.get( label );
-                    tabContent.layout();
-                    UIUtils.setVariant( (Button)e.widget, TABITEM_SELECTED_STYLE );
-                    tabButtons.values().stream().filter( button -> button != e.widget )
-                            .forEach( button -> UIUtils.setVariant( button, TABITEM_DEFAULT_STYLE ) );
+                    openTab( label );
+                    selectionListeners.forEach( selectionListener -> selectionListener.widgetSelected(e) );
                 }
             } );
         }
@@ -137,5 +139,25 @@ public class MdTabFolder extends Composite {
         data.grabExcessHorizontalSpace = true;
         data.horizontalAlignment = SWT.FILL;
         return data;
+    }
+
+    public void openTab( String label ) {
+        Composite tabItem = tabItemContents.get( label );
+        if(tabItem != null) {
+            Composite tabFolder = tabItem.getParent();
+            ((StackLayout) tabFolder.getLayout()).topControl = tabItem;
+            tabFolder.layout();
+            UIUtils.setVariant( tabButtons.get( label ), TABITEM_SELECTED_STYLE );
+            tabButtons.values().stream().filter( button -> button != tabButtons.get( label ) )
+            .forEach( button -> UIUtils.setVariant( button, TABITEM_DEFAULT_STYLE ) );
+        }
+    }
+
+    public void addSelectionListener( SelectionListener selectionListener ) {
+        selectionListeners.add( selectionListener );
+    }
+
+    public void removeSelectionListener( SelectionListener selectionListener ) {
+        selectionListeners.remove( selectionListener );
     }
 }

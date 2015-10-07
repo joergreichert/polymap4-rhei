@@ -14,22 +14,12 @@
  */
 package org.polymap.rhei.field;
 
-import java.util.List;
-import java.util.SortedMap;
-import java.util.function.Supplier;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.polymap.rhei.form.IFormToolkit;
-import org.polymap.rhei.form.ImageDialog;
 
 /**
  * @author Joerg Reichert <joerg@mapzone.io>
@@ -38,25 +28,20 @@ import org.polymap.rhei.form.ImageDialog;
 public class IconFormField
         implements IFormField {
 
-    private IFormFieldSite                                                       site;
-
-    private Button                                                               button;
-
-    private Image                                                                image;
-
-    private Object                                                               loadedValue;
-
-    private boolean                                                              deferredEnabled = true;
-
-    private final SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary;
-
-
     /**
-     * @param imageLibrary licence text to list of image descriptors
+     * 
      */
-    public IconFormField( SortedMap<Pair<String,String>,List<Supplier<ImageDescriptor>>> imageLibrary ) {
-        this.imageLibrary = imageLibrary;
-    }
+    private static final String INITIAL_LABEL   = "Choose...";
+
+    private IFormFieldSite      site;
+
+    private Button              button;
+
+    private ImageDescription    imageDescription;
+
+    private Object              loadedValue;
+
+    private boolean             deferredEnabled = true;
 
 
     /*
@@ -92,23 +77,11 @@ public class IconFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "No icon", SWT.PUSH );
+        button = toolkit.createButton( parent, INITIAL_LABEL, SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                final Display display = parent.getDisplay();
-                final ImageDialog imageDialog = new ImageDialog( display.getActiveShell(), imageLibrary );
-                imageDialog.setImage( image );
-                Image newImage = imageDialog.open();
-                if (newImage != null) {
-                    image = newImage;
-                    button.setText( "" );
-                    button.setImage( imageDialog.getScaledImage( image, 16, 16 ) );
-                }
-                else {
-                    button.setImage( null );
-                    button.setText( "No icon" );
-                }
+                site.fireEvent( IconFormField.this, IFormFieldListener.VALUE_CHANGE, imageDescription );
             };
         } );
         button.setEnabled( deferredEnabled );
@@ -140,7 +113,7 @@ public class IconFormField
      */
     @Override
     public void store() throws Exception {
-        site.setFieldValue( image );
+        site.setFieldValue( imageDescription );
     }
 
 
@@ -155,7 +128,7 @@ public class IconFormField
 
         loadedValue = site.getFieldValue();
 
-        image = loadedValue instanceof Image ? (Image)loadedValue : null;
+        imageDescription = loadedValue instanceof ImageDescription ? (ImageDescription)loadedValue : null;
     }
 
 
@@ -166,9 +139,25 @@ public class IconFormField
      */
     @Override
     public IFormField setValue( Object value ) {
-        if (value instanceof RGB) {
-            image = (Image)value;
+        if (value instanceof ImageDescription) {
+            this.imageDescription = (ImageDescription)value;
+            updateButton();
         }
         return this;
+    }
+
+
+    private void updateButton() {
+        if (button != null) {
+            if (imageDescription != null) {
+
+                button.setText( "" );
+                button.setImage( imageDescription.getImageForSize( 16 ).createImage() );
+            }
+            else {
+                button.setText( INITIAL_LABEL );
+                button.setBackground( null );
+            }
+        }
     }
 }

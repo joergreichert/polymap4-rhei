@@ -19,7 +19,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -32,15 +31,20 @@ import org.polymap.rhei.form.IFormToolkit;
 public class ColorFormField
         implements IFormField {
 
-    private IFormFieldSite site;
+    /**
+     * 
+     */
+    private static final String INITIAL_LABEL   = "Choose...";
 
-    private Button         button;
+    private IFormFieldSite      site;
 
-    private RGB            rgb;
+    private Button              button;
 
-    private Object         loadedValue;
+    private RGB                 rgb;
 
-    private boolean        deferredEnabled = true;
+    private Object              loadedValue;
+
+    private boolean             deferredEnabled = true;
 
 
     /*
@@ -76,23 +80,12 @@ public class ColorFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "No color", SWT.PUSH );
+        button = toolkit.createButton( parent, INITIAL_LABEL, SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                final Display display = parent.getDisplay();
-                final org.polymap.rhei.form.ColorDialog colorDialog = new org.polymap.rhei.form.ColorDialog( display
-                        .getActiveShell() );
-                colorDialog.setRGB( rgb );
-                RGB newRgb = colorDialog.open();
-                if (newRgb != null) {
-                    rgb = newRgb;
-                    button.setBackground( new Color( Display.getDefault(), rgb ) );
-                } else {
-                    button.setText( "No color" );
-                    button.setBackground( null );
-                }
-            };
+                site.fireEvent( ColorFormField.this, IFormFieldListener.VALUE_CHANGE, rgb );
+            }
         } );
         button.setEnabled( deferredEnabled );
         return button;
@@ -107,6 +100,17 @@ public class ColorFormField
     @Override
     public IFormField setEnabled( boolean enabled ) {
         if (button != null) {
+            if (!enabled) {
+                button.setBackground( null );
+            }
+            else {
+                if (rgb != null) {
+                    button.setBackground( new Color( Display.getDefault(), rgb ) );
+                }
+                else {
+                    button.setBackground( null );
+                }
+            }
             button.setEnabled( enabled );
         }
         else {
@@ -151,7 +155,21 @@ public class ColorFormField
     public IFormField setValue( Object value ) {
         if (value instanceof RGB) {
             rgb = (RGB)value;
+            updateButton();
         }
         return this;
+    }
+
+
+    private void updateButton() {
+        if (button != null) {
+            if (rgb != null) {
+                button.setBackground( new Color( Display.getDefault(), rgb ) );
+            }
+            else {
+                button.setText( INITIAL_LABEL );
+                button.setBackground( null );
+            }
+        }
     }
 }
