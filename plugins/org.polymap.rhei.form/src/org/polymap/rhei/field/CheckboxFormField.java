@@ -40,67 +40,77 @@ import org.polymap.rhei.form.IFormToolkit;
 public class CheckboxFormField
         implements IFormField {
 
-    private static Log log = LogFactory.getLog( CheckboxFormField.class );
+    private static Log     log = LogFactory.getLog( CheckboxFormField.class );
 
-    private IFormFieldSite      site;
-    
-    private Button              checkbox;
-    
-    // XXX use (proper) validator to make the translation to String 
-    private Object              loadedValue;
+    private IFormFieldSite site;
+
+    private Button         checkbox;
+
+    // XXX use (proper) validator to make the translation to String
+    private Object         loadedValue;
 
 
     public void init( IFormFieldSite _site ) {
         this.site = _site;
     }
 
+
     public void dispose() {
         checkbox.dispose();
     }
+
 
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
         checkbox = toolkit.createButton( parent, "", SWT.CHECK );
 
         // modify listener
         checkbox.addSelectionListener( new SelectionListener() {
+
             public void widgetSelected( SelectionEvent e ) {
                 log.debug( "modifyEvent(): test= " + checkbox.getSelection() );
-                site.fireEvent( this, IFormFieldListener.VALUE_CHANGE, 
+                site.fireEvent( CheckboxFormField.this, IFormFieldListener.VALUE_CHANGE, 
                         loadedValue == null && !checkbox.getSelection() ? null : checkbox.getSelection() );
             }
+
+
             public void widgetDefaultSelected( SelectionEvent e ) {
             }
-        });
+        } );
         // focus listener
         checkbox.addFocusListener( new FocusListener() {
+
             public void focusLost( FocusEvent event ) {
-//                checkbox.setBackground( FormEditorToolkit.textBackground );
-                site.fireEvent( this, IFormFieldListener.FOCUS_LOST, checkbox.getText() );
+                site.fireEvent( CheckboxFormField.this, IFormFieldListener.FOCUS_LOST, checkbox.getSelection() );
             }
+
+
             public void focusGained( FocusEvent event ) {
-//                checkbox.setBackground( FormEditorToolkit.textBackgroundFocused );
-                site.fireEvent( this, IFormFieldListener.FOCUS_GAINED, checkbox.getText() );
+                site.fireEvent( CheckboxFormField.this, IFormFieldListener.FOCUS_GAINED, checkbox.getSelection() );
             }
-        });
+        } );
         return checkbox;
     }
+
 
     public IFormField setEnabled( boolean enabled ) {
         checkbox.setEnabled( enabled );
         return this;
     }
 
+
     public IFormField setValue( Object value ) {
         checkbox.setSelection( (Boolean)value );
         return this;
     }
 
+
     public void load() throws Exception {
         assert checkbox != null : "Control is null, call createControl() first.";
-        
+
         loadedValue = site.getFieldValue();
         checkbox.setSelection( loadedValue != null && loadedValue.toString().equalsIgnoreCase( "true" ) );
     }
+
 
     public void store() throws Exception {
         site.setFieldValue( checkbox.getSelection() );
