@@ -143,6 +143,8 @@ public class ColorFormField
         loadedValue = site.getFieldValue();
 
         rgb = loadedValue instanceof RGB ? (RGB)loadedValue : null;
+
+        updateButton();
     }
 
 

@@ -129,6 +129,7 @@ public class IconFormField
         loadedValue = site.getFieldValue();
 
         imageDescription = loadedValue instanceof ImageDescription ? (ImageDescription)loadedValue : null;
+        updateButton();
     }
 
 

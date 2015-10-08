@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.polymap.rhei.form.IFormToolkit;
 
 /**
@@ -83,17 +82,20 @@ public class FontFormField
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
-                final Display display = parent.getDisplay();
-                final FontDialog fontDialog = new FontDialog( display.getActiveShell() );
-                fontDialog.setFontList( new FontData[] { fontData } );
-                fontDialog.setRGB( rgb );
-                FontData newFontData = fontDialog.open();
-                if (newFontData != null) {
-                    fontData = newFontData;
-                    button.setText( fontData.getName() + ", " + fontData.getHeight() );
-                    rgb = fontDialog.getRGB();
-                    button.setBackground( new Color( Display.getDefault(), rgb ) );
-                }
+                site.fireEvent( FontFormField.this, IFormFieldListener.VALUE_CHANGE, new Object[] { fontData, rgb } );
+                // final Display display = parent.getDisplay();
+                // final FontDialog fontDialog = new FontDialog(
+                // display.getActiveShell() );
+                // fontDialog.setFontList( new FontData[] { fontData } );
+                // fontDialog.setRGB( rgb );
+                // FontData newFontData = fontDialog.open();
+                // if (newFontData != null) {
+                // fontData = newFontData;
+                // button.setText( fontData.getName() + ", " + fontData.getHeight()
+                // );
+                // rgb = fontDialog.getRGB();
+                // button.setBackground( new Color( Display.getDefault(), rgb ) );
+                // }
             };
         } );
         button.setEnabled( deferredEnabled );
@@ -140,7 +142,15 @@ public class FontFormField
 
         loadedValue = site.getFieldValue();
 
-        fontData = loadedValue instanceof FontData ? (FontData)loadedValue : null;
+        if(loadedValue instanceof Object[]) {
+            Object[] array = (Object[])loadedValue;
+            if (array.length > 0) {
+                fontData = (FontData)array[0];
+            }
+            if (array.length > 1) {
+                rgb = (RGB)array[1];
+            }
+        }
     }
 
 
@@ -151,9 +161,28 @@ public class FontFormField
      */
     @Override
     public IFormField setValue( Object value ) {
-        if (value instanceof FontData) {
-            fontData = (FontData)value;
+        if (value instanceof Object[]) {
+            Object[] array = (Object[])value;
+            if (array.length == 2) {
+                fontData = ((FontData [] )array[0])[0];
+                rgb = (RGB)array[1];
+            }
+            updateButton();
         }
         return this;
+    }
+
+
+    private void updateButton() {
+        if (button != null) {
+            if (fontData != null) {
+                button.setText( fontData.getName() + ", " + fontData.getHeight() );
+                if(rgb != null) {
+                    button.setBackground( new Color( Display.getDefault(), rgb ) );
+                } else {
+                    button.setBackground( null );
+                }
+            }
+        }
     }
 }
