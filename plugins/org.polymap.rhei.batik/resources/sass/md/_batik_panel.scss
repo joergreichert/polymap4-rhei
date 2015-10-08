@@ -51,20 +51,19 @@ Button[TOGGLE].atlas-panel-header {
   spacing: 0px;
   background-color: #ffffff;
 /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid #5AA9BD;  /*$action-bg;*/
-  color: $action-bg;
+  border: 1px solid $header-fg;
+  color: $header-fg;
 }
 
 Button[PUSH]:hover.atlas-panel-header,
 Button[TOGGLE]:hover.atlas-panel-header {
   color: #ffffff;
-/*  background-image : url( resources/icons/close_hover.gif );*/
-  border: none;  /*1px solid #e03000;*/
-  background-color: #5AA9BD;
+  border: none;
+  background-color: $header-fg;
 }
 
 Label.atlas-panel-header {
   font: 16px $font;
-  color: #5993AE;
+  color: $header-fg;
   text-shadow: 1px 1px 0px #ffffff;
 }

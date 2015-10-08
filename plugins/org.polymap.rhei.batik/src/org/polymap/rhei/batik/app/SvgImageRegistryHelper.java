@@ -82,6 +82,12 @@ public class SvgImageRegistryHelper
     /** Action image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL24_OK = "normal24-ok";
     
+    /** Action image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL24_ALERT = "normal24-alert";
+    
+    /** Action image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      NORMAL24_ERROR = "normal24-error";
+    
     /** Image configuration for normale, disabled icons created by {@link #svgImage(String, String)}. */
     public final static String      NORMAL24_DISABLED = "normal24-disabled";
     
@@ -141,6 +147,8 @@ public class SvgImageRegistryHelper
         putConfig( NORMAL24_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 24 ) );
         putConfig( NORMAL12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 16 ) );
         putConfig( NORMAL24_OK, new ReplaceBlackSvgConfiguration( new RGB( 0x81, 0xCC, 0x39 ), 24 ) );
+        putConfig( NORMAL24_ALERT, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0xD2, 0x2C ), 24 ) );
+        putConfig( NORMAL24_ERROR, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0x61, 0x39 ), 24 ) );
         putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 240, 100 ), 16 ) );
     }
 

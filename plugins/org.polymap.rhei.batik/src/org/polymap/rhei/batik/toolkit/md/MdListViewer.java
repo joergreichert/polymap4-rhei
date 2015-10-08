@@ -88,7 +88,8 @@ public class MdListViewer
     
     public Config<CellLabelProvider>   thirdLineLabelProvider;
     
-    public Config<ActionProvider>      firstSecondaryActionProvider;
+    /** ActionProvider */
+    public Config<CellLabelProvider>   firstSecondaryActionProvider;
 
     public Config<ActionProvider>      secondSecondaryActionProvider;
 
@@ -259,8 +260,8 @@ public class MdListViewer
                         }
                     }
                     //
-                    else if (CELL_FIRSTACTION.equals( ev.text )) {
-                        firstSecondaryActionProvider.get().perform( MdListViewer.this, elm );
+                    else if (CELL_FIRSTACTION.equals( ev.text ) && firstSecondaryActionProvider.get() instanceof ActionProvider) {
+                        ((ActionProvider)firstSecondaryActionProvider.get()).perform( MdListViewer.this, elm );
                     }
                     else if (CELL_SECONDACTION.equals( ev.text )) {
                         secondSecondaryActionProvider.get().perform( MdListViewer.this, elm );
@@ -287,7 +288,7 @@ public class MdListViewer
     }
     
     
-    private ImageCell createActionCell( Template template, ActionProvider actionProvider, String cellName, dp right, dp tileHeight ) {
+    private ImageCell createActionCell( Template template, CellLabelProvider actionProvider, String cellName, dp right, dp tileHeight ) {
         TreeViewerColumn col = new TreeViewerColumn( this, SWT.NONE );
         col.setLabelProvider( actionProvider );
 

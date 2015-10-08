@@ -2309,25 +2309,22 @@ Button[TOGGLE].atlas-panel-header {
   spacing: 0px;
   background-color: #ffffff;
   /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid #5AA9BD;
-  /*$action-bg;*/
-  color: #599FC2;
+  border: 1px solid #90A5B3;
+  color: #90A5B3;
 }
 
 /* line 58, ../../sass/md/_batik_panel.scss */
 Button[PUSH]:hover.atlas-panel-header,
 Button[TOGGLE]:hover.atlas-panel-header {
   color: #ffffff;
-  /*  background-image : url( resources/icons/close_hover.gif );*/
   border: none;
-  /*1px solid #e03000;*/
-  background-color: #5AA9BD;
+  background-color: #90A5B3;
 }
 
-/* line 66, ../../sass/md/_batik_panel.scss */
+/* line 65, ../../sass/md/_batik_panel.scss */
 Label.atlas-panel-header {
   font: 16px "Roboto", "Noto", sans-serif;
-  color: #5993AE;
+  color: #90A5B3;
   text-shadow: 1px 1px 0px #ffffff;
 }
 
