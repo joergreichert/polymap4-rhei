@@ -45,7 +45,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -68,7 +68,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -104,7 +104,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -128,7 +128,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -154,7 +154,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant/ic_delete_48px.svg" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg/ic_delete_48px.svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -188,7 +188,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -217,7 +217,7 @@ public class Svg2PngTaskTest {
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();

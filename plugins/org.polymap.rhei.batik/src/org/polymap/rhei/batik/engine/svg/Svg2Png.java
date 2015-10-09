@@ -255,20 +255,24 @@ public class Svg2Png {
         if (brightnessDelta == null) {
             brightnessDelta = 0f;
         }
+        int sRGB, red, green, blue;
         for (int x = 0; x < width; x++) {
             try {
                 for (int y = 0; y < height; y++) {
                     int rgb = img.getRGB( x, y );
-                    Color color = new Color( rgb );
-                    float[] hsb = getHsb( imageConfiguration, color );
+                    sRGB = 0xff000000 | rgb;
+                    red = (sRGB >> 16) & 0xFF;
+                    green = (sRGB >> 8) & 0xFF;
+                    blue = (sRGB >> 0) & 0xFF;
+                    
+                    float[] hsb = getHsb( imageConfiguration, red, green, blue );
                     hsb = applyDeltas( imageConfiguration, hueDelta, saturationDelta, brightnessDelta, hsb );
-                    hsb = replaceColors( imageConfiguration, color, hsb );
+                    hsb = replaceColors( imageConfiguration, red, green, blue, hsb );
                     int newRGB = Color.HSBtoRGB( hsb[0], hsb[1], hsb[2] );
                     finalThresholdImage.setRGB( x, y, newRGB );
                     if(imageType == BufferedImage.TYPE_INT_ARGB) {
                         setAlpha( finalThresholdImage, x, y, rgb );
-                        finalThresholdImage = makeColorsTransparent( finalThresholdImage, imageConfiguration, new Color(
-                                newRGB ) );
+                        finalThresholdImage = makeColorsTransparent( finalThresholdImage, imageConfiguration, newRGB );
                     }
                 }
             }
@@ -288,24 +292,27 @@ public class Svg2Png {
      * @return
      */
     private static BufferedImage makeColorsTransparent( BufferedImage finalThresholdImage,
-            ImageConfiguration imageConfiguration, Color color ) {
+            ImageConfiguration imageConfiguration, int sRGB ) {
+        int red = (sRGB >> 16) & 0xFF;
+        int green = (sRGB >> 8) & 0xFF;
+        int blue = (sRGB >> 0) & 0xFF;
         boolean found = imageConfiguration
                 .getTransparenceConfigurations()
                 .stream()
-                .anyMatch( tc -> tc.red == color.getRed() && tc.green == color.getGreen() && tc.blue == color.getBlue() );
+                .anyMatch( tc -> tc.red == red && tc.green == green && tc.blue == blue );
         if (found) {
-            finalThresholdImage = makeColorTransparent( finalThresholdImage, color );
+            finalThresholdImage = makeColorTransparent( finalThresholdImage, sRGB );
         }
         return finalThresholdImage;
     }
 
 
-    public static BufferedImage makeColorTransparent( BufferedImage im, final Color color ) {
+    public static BufferedImage makeColorTransparent( BufferedImage im, int sRGB ) {
         ImageFilter filter = new RGBImageFilter() {
 
             private int shift                = 0xFF000000;
 
-            public int  rgbToMakeTransparent = color.getRGB() | shift;
+            public int  rgbToMakeTransparent = sRGB | shift;
 
 
             public final int filterRGB( int x, int y, int rgb ) {
@@ -334,26 +341,26 @@ public class Svg2Png {
     }
 
 
-    private static float[] getHsb( ImageConfiguration imageConfiguration, Color color ) {
+    private static float[] getHsb( ImageConfiguration imageConfiguration, int red, int green, int blue ) {
         float[] hsb = new float[3];
         if (imageConfiguration.isInvert()) {
-            Color.RGBtoHSB( 255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue(), hsb );
+            Color.RGBtoHSB( 255 - red, 255 - green, 255 - blue, hsb );
         }
         else {
-            Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
+            Color.RGBtoHSB( red, green, blue, hsb );
         }
         return hsb;
     }
 
 
-    private static float[] replaceColors( ImageConfiguration imageConfiguration, Color color, final float[] currentHsb ) {
+    private static float[] replaceColors( ImageConfiguration imageConfiguration, int red, int green, int blue, final float[] currentHsb ) {
         float[] hsb;
         Optional<ReplaceConfiguration> config = imageConfiguration
                 .getReplaceConfigurations()
                 .stream()
                 .filter(
-                        rc -> rc.getFrom() != null && rc.getTo() != null && rc.getFrom().red == color.getRed()
-                                && rc.getFrom().green == color.getGreen() && rc.getFrom().blue == color.getBlue() )
+                        rc -> rc.getFrom() != null && rc.getTo() != null && rc.getFrom().red == red
+                                && rc.getFrom().green == green && rc.getFrom().blue == blue )
                 .findFirst();
         if (config.isPresent()) {
             hsb = config.get().getTo().getHSB();
