@@ -14,11 +14,13 @@
  */
 package org.polymap.rhei.field;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.polymap.core.runtime.Callback;
 import org.polymap.rhei.form.IFormToolkit;
 
 /**
@@ -153,7 +155,20 @@ public class IconFormField
             if (imageDescription != null) {
 
                 button.setText( "" );
-                button.setImage( imageDescription.getImageForSize( 16 ).createImage() );
+                Callback<ImageDescriptor> callback = new Callback<ImageDescriptor>() {
+
+                    @Override
+                    public void handle( ImageDescriptor result ) {
+                        button.getDisplay().asyncExec( new Runnable() {
+
+                            @Override
+                            public void run() {
+                                button.setImage( result.createImage() );
+                            }
+                        } );
+                    }
+                };
+                imageDescription.createImageForSize( 16, button.getDisplay(), callback );
             }
             else {
                 button.setText( INITIAL_LABEL );

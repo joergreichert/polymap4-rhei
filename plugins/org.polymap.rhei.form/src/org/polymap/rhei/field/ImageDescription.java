@@ -14,10 +14,13 @@
  */
 package org.polymap.rhei.field;
 
-import java.util.function.Function;
+import java.util.Map;
+import java.util.function.Consumer;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.polymap.core.runtime.Callback;
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 
@@ -27,29 +30,13 @@ import org.polymap.core.runtime.config.Configurable;
  */
 public class ImageDescription
         extends Configurable {
+    private static Consumer<Triple<Integer,Display,Callback<Map<String, ImageDescriptor>>>> CALC;
 
-    public Config2<ImageDescription,String>                            localURL;
+    public Config2<ImageDescription,String>                              localURL;
 
-    public Config2<ImageDescription,String>                            remoteURL;
+    public Config2<ImageDescription,String>                              remoteURL;
 
-    public Config2<ImageDescription,Function<Integer,ImageDescriptor>> imageDescriptorSupplier;
-
-
-    /**
-     * Tries to create an image with minimal bounds. If it is possible, 
-     * the image exists.
-     * 
-     * @return
-     */
-    public boolean exists() {
-        Image image = imageDescriptorSupplier.get().apply( /*Scale.P8*/8 ).createImage();
-        boolean exists = image != null;
-        if(exists) {
-            image.dispose();
-        }
-        return exists;
-    }
-
+    public Config2<ImageDescription,Consumer<Triple<Integer,Display,Callback<ImageDescriptor>>>> imageDescriptorCalculator;
 
     /**
      * As org.polymap.rhei.batik.engine.svg.Scale only supports certain sizes this
@@ -57,9 +44,17 @@ public class ImageDescription
      * given size 20, an image descriptor with bounds 24x24 is returned.
      * 
      * @param the desired size for the image
-     * @return an image descriptor that at least is as big as the desired size
      */
-    public ImageDescriptor getImageForSize( int size ) {
-        return imageDescriptorSupplier.get().apply( size );
+    public void createImageForSize( int size, Display display, Callback<ImageDescriptor> callback ) {
+        imageDescriptorCalculator.get().accept( Triple.of( size, display, callback ) );
+    }   
+
+    public static void setImageDescriptorsCalculator(
+            Consumer<Triple<Integer,Display,Callback<Map<String, ImageDescriptor>>>> calc ) {
+        CALC = calc;
+    }
+
+    public static void createImagesForSize( int size, Display display, Callback<Map<String, ImageDescriptor>> callback ) {
+        CALC.accept( Triple.of( size, display, callback ) );
     }
 }
