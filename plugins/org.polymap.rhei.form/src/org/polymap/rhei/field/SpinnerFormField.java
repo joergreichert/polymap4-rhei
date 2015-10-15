@@ -236,7 +236,13 @@ public class SpinnerFormField
         assert spinner != null : "Control is null, call createControl() first.";
 
         loadedValue = site.getFieldValue();
-        spinner.setSelection( loadedValue != null ? getScaled( (Double)loadedValue ) : getScaled( getDefaultValue() ) );
+        Double value = null;
+        if(loadedValue instanceof Integer) {
+            value = Double.valueOf( (Integer) loadedValue); 
+        } else if(loadedValue instanceof Double) {
+            value = (Double) loadedValue; 
+        }
+        spinner.setSelection( loadedValue != null ? getScaled( value ) : getScaled( getDefaultValue() ) );
     }
 
 

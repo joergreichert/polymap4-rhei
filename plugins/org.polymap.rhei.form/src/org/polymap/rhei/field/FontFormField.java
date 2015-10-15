@@ -32,17 +32,24 @@ import org.polymap.rhei.form.IFormToolkit;
 public class FontFormField
         implements IFormField {
 
-    private IFormFieldSite site;
+    /**
+     * 
+     */
+    private static final String INITIAL_LABEL   = "Choose...";
 
-    private Button         button;
+    private IFormFieldSite      site;
 
-    private FontData       fontData;
+    private Button              button;
 
-    private RGB            rgb;
+    private FontData            fontData;
 
-    private Object         loadedValue;
+    private RGB                 rgb;
 
-    private boolean        deferredEnabled = true;
+    private Object              loadedValue;
+
+    private boolean             deferredEnabled = true;
+
+    private static final RGB    DISABLED_COLOR  = new RGB( 150, 150, 150 );
 
 
     /*
@@ -78,7 +85,7 @@ public class FontFormField
      */
     @Override
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
-        button = toolkit.createButton( parent, "choose...", SWT.PUSH );
+        button = toolkit.createButton( parent, INITIAL_LABEL, SWT.PUSH );
         button.addSelectionListener( new SelectionAdapter() {
 
             public void widgetSelected( org.eclipse.swt.events.SelectionEvent e ) {
@@ -112,6 +119,14 @@ public class FontFormField
     public IFormField setEnabled( boolean enabled ) {
         if (button != null) {
             button.setEnabled( enabled );
+            if (!enabled) {
+                button.setBackground( new Color( button.getDisplay(), DISABLED_COLOR.red, DISABLED_COLOR.green,
+                        DISABLED_COLOR.blue ) );
+                button.setText( INITIAL_LABEL );
+            }
+            else {
+                updateButton();
+            }
         }
         else {
             deferredEnabled = enabled;
@@ -142,7 +157,7 @@ public class FontFormField
 
         loadedValue = site.getFieldValue();
 
-        if(loadedValue instanceof Object[]) {
+        if (loadedValue instanceof Object[]) {
             Object[] array = (Object[])loadedValue;
             if (array.length > 0) {
                 fontData = (FontData)array[0];
@@ -164,7 +179,7 @@ public class FontFormField
         if (value instanceof Object[]) {
             Object[] array = (Object[])value;
             if (array.length == 2) {
-                fontData = ((FontData [] )array[0])[0];
+                fontData = ((FontData[])array[0])[0];
                 rgb = (RGB)array[1];
             }
             updateButton();
@@ -174,12 +189,13 @@ public class FontFormField
 
 
     private void updateButton() {
-        if (button != null) {
+        if (button != null && button.isEnabled()) {
             if (fontData != null) {
                 button.setText( fontData.getName() + ", " + fontData.getHeight() );
-                if(rgb != null) {
+                if (rgb != null) {
                     button.setBackground( new Color( Display.getDefault(), rgb ) );
-                } else {
+                }
+                else {
                     button.setBackground( null );
                 }
             }
