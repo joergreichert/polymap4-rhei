@@ -21,13 +21,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-
 import org.polymap.rhei.form.IFormToolkit;
 
 /**
@@ -37,12 +33,11 @@ import org.polymap.rhei.form.IFormToolkit;
  * @version ($Revision$)
  */
 public class BetweenFormField
-        implements IFormField {
+        extends AbstractFieldFormPair {
 
-    private static Log log = LogFactory.getLog( BetweenFormField.class );
 
     // Date helpers ***************************************
-    
+
     public static Date dayStart( Date date ) {
         Calendar cal = Calendar.getInstance( Locale.GERMANY );
         cal.setTime( date );
@@ -52,7 +47,8 @@ public class BetweenFormField
         cal.set( Calendar.MILLISECOND, 0 );
         return cal.getTime();
     }
-    
+
+
     public static Date dayEnd( Date date ) {
         Calendar cal = Calendar.getInstance( Locale.GERMANY );
         cal.setTime( date );
@@ -65,68 +61,11 @@ public class BetweenFormField
     }
 
     // instance *******************************************
-    
-    private IFormFieldSite      site;
-    
-    private IFormField          field1, field2;
-    
-    private Object              newValue1, newValue2;
-
-    private Object[]            loadedValue;
-
 
     public BetweenFormField( IFormField field1, IFormField field2 ) {
-        super();
-        this.field1 = field1;
-        this.field2 = field2;
+        super(field1, field2);
     }
 
-    
-    public void init( IFormFieldSite _site ) {
-        this.site = _site;
-        
-        // field1
-        field1.init( new DelegateSite( site ) {
-            
-            public Object getFieldValue()
-                    throws Exception {
-                return loadedValue != null ? loadedValue[0] : null;
-            }
-            
-            public void setFieldValue( Object value )
-                    throws Exception {
-                throw new RuntimeException( "not yet implemented." );
-            }
-        });
-        
-        // field2
-        field2.init( new DelegateSite( site ) {
-            
-            public Object getFieldValue()
-                    throws Exception {
-                return loadedValue != null ? loadedValue[1] : null;
-            }
-
-            public void setFieldValue( Object value )
-                    throws Exception {
-                throw new RuntimeException( "not yet implemented." );
-            }
-        });
-    }
-
-    
-    public void dispose() {
-        if (field1 != null) {
-            field1.dispose();
-            field1 = null;
-        }
-        if (field2 != null) {
-            field2.dispose();
-            field2 = null;
-        }
-    }
-
-    
     public Control createControl( Composite parent, IFormToolkit toolkit ) {
         Composite contents = toolkit.createComposite( parent );
         RowLayout layout = new RowLayout();
@@ -137,67 +76,23 @@ public class BetweenFormField
         layout.marginLeft = 0;
         layout.marginRight = 0;
         layout.spacing = 3;
-//        layout.justify = true;
+        // layout.justify = true;
         layout.center = true;
         contents.setLayout( layout );
 
-        Control field1Control = field1.createControl( contents, toolkit );
+        field1.createControl( contents, toolkit );
         toolkit.createLabel( contents, "bis" );
-        Control field2Control = field2.createControl( contents, toolkit );
+        field2.createControl( contents, toolkit );
 
         contents.pack( true );
         return contents;
     }
 
-    
-    public IFormField setEnabled( boolean enabled ) {
-        field1.setEnabled( enabled );
-        field2.setEnabled( enabled );
-        return this;
-    }
-
-    
-    public IFormField setValue( Object value ) {
-        throw new RuntimeException( "Not yet implemented." );
-    }
-
-    
-    public void load() throws Exception {
-        assert field1 != null || field2 != null : "Control is null, call createControl() first.";
-        
-        // FIXME makes DateField be dirty?
-        if (site.getFieldValue() == null) {
-            loadedValue = null;
-            field1.load();
-            field2.load();
-        }
-        else if (site.getFieldValue() instanceof Object[]) {
-            loadedValue = (Object[])site.getFieldValue();
-            field1.load();
-            field2.load();
-        }
-        else {
-            log.warn( "Unknown value type: " + site.getFieldValue() );
-        }
-    }
-
-    
-    public void store() throws Exception {
-        site.setFieldValue( new Object[] {newValue1, newValue2} );
-    }
-
-    
-    public void fireEvent( Object eventSrc, int eventCode, Object newValue ) {
-        log.debug( "fireEvent(): ev=" + eventCode + ", newValue=" + newValue );
-        
-        if (eventCode == IFormFieldListener.VALUE_CHANGE && eventSrc == field1) {
-            newValue1 = newValue;
-//            newValue2 = newValue2 == null ? newValue1 : newValue2;
-        }
-        if (eventCode == IFormFieldListener.VALUE_CHANGE && eventSrc == field2) {
-            newValue2 = newValue;
-//            newValue1 = newValue1 == null ? newValue2 : newValue1;
-        }
+    /* (non-Javadoc)
+     * @see org.polymap.rhei.field.AbstractFieldFormPair#postProcessValues()
+     */
+    @Override
+    protected void postProcessValues() {
         if (newValue1 instanceof Comparable && newValue2 instanceof Comparable) {
             Comparable c1 = (Comparable)newValue1;
             Comparable c2 = (Comparable)newValue2;
@@ -205,63 +100,5 @@ public class BetweenFormField
                 newValue2 = newValue1;
             }
         }
-        
-        Object value = newValue1 != null || newValue2 != null
-                ? new Object[] {newValue1, newValue2}
-                : null;
-        site.fireEvent( this, eventCode, value );
     }
-    
-    
-    /**
-     * 
-     */
-    abstract class DelegateSite
-            implements IFormFieldSite {
-        
-        private IFormFieldSite      delegate;
-
-        
-        public DelegateSite( IFormFieldSite delegate ) {
-            this.delegate = delegate;
-        }
-
-        public void addChangeListener( IFormFieldListener l ) {
-            delegate.addChangeListener( l );
-        }
-
-        public void fireEvent( Object source, int eventCode, Object newValue ) {
-            BetweenFormField.this.fireEvent( source, eventCode, newValue );
-        }
-
-        public String getErrorMessage() {
-            return delegate.getErrorMessage();
-        }
-
-        public String getFieldName() {
-            return delegate.getFieldName();
-        }
-
-        public IFormToolkit getToolkit() {
-            return delegate.getToolkit();
-        }
-
-        public boolean isDirty() {
-            return delegate.isDirty();
-        }
-
-        public boolean isValid() {
-            return delegate.isValid();
-        }
-
-        public void removeChangeListener( IFormFieldListener l ) {
-            delegate.removeChangeListener( l );
-        }
-
-        public void setErrorMessage( String msg ) {
-            delegate.setErrorMessage( msg );
-        }
-        
-    }
-    
 }
