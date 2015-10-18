@@ -143,9 +143,9 @@ public class SvgImageRegistryHelper
         putConfig( NORMAL12, new ReplaceBlackSvgConfiguration( new RGB( 180, 180, 180 ), 16 ) );
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 24 ) );
         putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( new RGB( 140, 140, 140 ), 48 ) );
-        putConfig( NORMAL48_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 48 ) );
-        putConfig( NORMAL24_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 24 ) );
-        putConfig( NORMAL12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xBD ), 16 ) );
+        putConfig( NORMAL48_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xDD ), 48 ) );
+        putConfig( NORMAL24_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xDD ), 24 ) );
+        putConfig( NORMAL12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 0x5A, 0xA9, 0xDD ), 16 ) );
         putConfig( NORMAL24_OK, new ReplaceBlackSvgConfiguration( new RGB( 0x81, 0xCC, 0x39 ), 24 ) );
         putConfig( NORMAL24_ALERT, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0xD2, 0x2C ), 24 ) );
         putConfig( NORMAL24_ERROR, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0x61, 0x39 ), 24 ) );

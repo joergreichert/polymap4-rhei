@@ -71,18 +71,19 @@ Button[TOGGLE]:selected:disabled {
 Button[ARROW]:hover,
 Button[PUSH]:hover,
 Button[TOGGLE]:hover {
-  background-color: #5a9cbd;
+  background-color: darken( $action-bg, 10% );
   animation: hoverOut 400ms ease-out;
 }
 
 Button[ARROW]:pressed,
 Button[PUSH]:pressed,
 Button[TOGGLE]:pressed {
-  background-image: gradient(
+  background-color: darken( $action-bg, 20% );
+  /*background-image: gradient(
     linear, left top, left bottom,
     from( #d5d5d5 ),
     to( #eaeaea )
-  );
+  );*/
 }
 
 Button[TOGGLE]:selected {

@@ -34,6 +34,10 @@
 /**********************************************************
  * Colors
  */
+/* Selected lines of list, trees and tables */
+/*lighten( $action-bg, 30% );*/
+/* Light separator color for tree/table lines, header underline. */
+/* Dark separator used for borders and section separator. */
 /**********************************************************
  * Icons
  */
@@ -608,163 +612,8 @@ ProgressBar-Indicator:error {
   background-image: gradient(linear, left top, left bottom, from(#bb1d1d), to(#fc0000));
 }
 
-/* Shell default theme */
-/* line 606, ../../sass/md/md-standard.scss */
-Shell {
-  animation: none;
-  border: none;
-  border-radius: 2px;
-  background-color: #ffffff;
-  background-image: none;
-  padding: 0;
-  opacity: 1;
-  box-shadow: none;
-}
-
-/* line 617, ../../sass/md/md-standard.scss */
-Shell[TITLE], Shell[BORDER] {
-  background-color: #ffffff;
-  border: 1px solid #6e6e6e;
-  border-radius: 2px;
-  box-shadow: 0 0 4px #ababab;
-}
-
-/* line 624, ../../sass/md/md-standard.scss */
-Shell[BORDER]:inactive, Shell[TITLE]:inactive {
-  border: 1px solid #bdbdbd;
-  box-shadow: none;
-}
-
-/* line 629, ../../sass/md/md-standard.scss */
-Shell:maximized, Shell:maximized:inactive {
-  border: none;
-  box-shadow: none;
-  border-radius: 0px;
-}
-
-/* line 635, ../../sass/md/md-standard.scss */
-Shell-DisplayOverlay {
-  animation: fadeIn 200ms linear, fadeOut 400ms ease-out;
-  background-image: none;
-  background-color: #808080;
-  opacity: 0.2;
-}
-
-/* Shell titlebar */
-/* line 644, ../../sass/md/md-standard.scss */
-Shell-Titlebar {
-  background-color: #0080c0;
-  background-gradient-color: #0080c0;
-  color: #ffffff;
-  background-image: gradient(linear, left top, left bottom, from(#416693), to(#5882b5));
-  padding: 0 10px 0 10px;
-  margin: 0px;
-  height: 38px;
-  border: none;
-  border-radius: 0;
-  text-shadow: none;
-}
-
-/* line 660, ../../sass/md/md-standard.scss */
-Shell-Titlebar:inactive {
-  background-color: #7996a5;
-  background-gradient-color: #7996a5;
-  background-image: gradient(linear, left top, left bottom, from(#818181), to(#b5b5b5));
-}
-
-/* Shell buttons */
-/* Minimize button */
-/* line 673, ../../sass/md/md-standard.scss */
-Shell-MinButton {
-  background-image: url(resource/widget/rap/window/shell-min.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 678, ../../sass/md/md-standard.scss */
-Shell-MinButton:hover {
-  background-image: url(resource/widget/rap/window/shell-min-hover.png);
-}
-
-/* line 682, ../../sass/md/md-standard.scss */
-Shell-MinButton:inactive {
-  background-image: url(resource/widget/rap/window/shell-min.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 687, ../../sass/md/md-standard.scss */
-Shell-MinButton:inactive:hover {
-  background-image: url(resource/widget/rap/window/shell-min-hover.png);
-}
-
-/* Maximize button */
-/* line 693, ../../sass/md/md-standard.scss */
-Shell-MaxButton {
-  background-image: url(resource/widget/rap/window/shell-max.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 698, ../../sass/md/md-standard.scss */
-Shell-MaxButton:hover {
-  background-image: url(resource/widget/rap/window/shell-max-hover.png);
-}
-
-/* line 702, ../../sass/md/md-standard.scss */
-Shell-MaxButton:inactive {
-  background-image: url(resource/widget/rap/window/shell-max.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 707, ../../sass/md/md-standard.scss */
-Shell-MaxButton:inactive:hover {
-  background-image: url(resource/widget/rap/window/shell-max-hover.png);
-}
-
-/* Restore button */
-/* line 713, ../../sass/md/md-standard.scss */
-Shell-MaxButton:maximized {
-  background-image: url(resource/widget/rap/window/shell-restore.png);
-}
-
-/* line 717, ../../sass/md/md-standard.scss */
-Shell-MaxButton:maximized:hover {
-  background-image: url(resource/widget/rap/window/shell-restore-hover.png);
-}
-
-/* line 721, ../../sass/md/md-standard.scss */
-Shell-MaxButton:maximized:inactive {
-  background-image: url(resource/widget/rap/window/shell-restore.png);
-}
-
-/* line 725, ../../sass/md/md-standard.scss */
-Shell-MaxButton:maximized:inactive:hover {
-  background-image: url(resource/widget/rap/window/shell-restore-hover.png);
-}
-
-/* Close button */
-/* line 731, ../../sass/md/md-standard.scss */
-Shell-CloseButton {
-  background-image: url(resource/widget/rap/window/shell-close.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 736, ../../sass/md/md-standard.scss */
-Shell-CloseButton:hover {
-  background-image: url(resource/widget/rap/window/shell-close-hover.png);
-}
-
-/* line 740, ../../sass/md/md-standard.scss */
-Shell-CloseButton:inactive {
-  background-image: url(resource/widget/rap/window/shell-close.png);
-  margin: 0 -2px 0 0;
-}
-
-/* line 745, ../../sass/md/md-standard.scss */
-Shell-CloseButton:inactive:hover {
-  background-image: url(resource/widget/rap/window/shell-close-hover.png);
-}
-
 /* Spinner default theme */
-/* line 751, ../../sass/md/md-standard.scss */
+/* line 607, ../../sass/md/md-standard.scss */
 Spinner {
   border: none;
   border-radius: 0 2px 2px 0;
@@ -775,31 +624,31 @@ Spinner {
   box-shadow: none;
 }
 
-/* line 761, ../../sass/md/md-standard.scss */
+/* line 617, ../../sass/md/md-standard.scss */
 Spinner[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 767, ../../sass/md/md-standard.scss */
+/* line 623, ../../sass/md/md-standard.scss */
 Spinner[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 772, ../../sass/md/md-standard.scss */
+/* line 628, ../../sass/md/md-standard.scss */
 Spinner:disabled,
 Spinner[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 777, ../../sass/md/md-standard.scss */
+/* line 633, ../../sass/md/md-standard.scss */
 Spinner-Field {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 781, ../../sass/md/md-standard.scss */
+/* line 637, ../../sass/md/md-standard.scss */
 Spinner-UpButton {
   background-color: #efefef;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#efefef));
@@ -810,23 +659,23 @@ Spinner-UpButton {
   cursor: default;
 }
 
-/* line 795, ../../sass/md/md-standard.scss */
+/* line 651, ../../sass/md/md-standard.scss */
 Spinner-UpButton:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 800, ../../sass/md/md-standard.scss */
+/* line 656, ../../sass/md/md-standard.scss */
 Spinner-UpButton-Icon {
   background-image: url(resource/widget/rap/spinner/up.png);
 }
 
-/* line 804, ../../sass/md/md-standard.scss */
+/* line 660, ../../sass/md/md-standard.scss */
 Spinner-UpButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/up-hover.png);
 }
 
-/* line 808, ../../sass/md/md-standard.scss */
+/* line 664, ../../sass/md/md-standard.scss */
 Spinner-DownButton {
   background-color: #efefef;
   background-image: gradient(linear, left top, left bottom, from(#efefef), to(#e4e4e4));
@@ -837,39 +686,39 @@ Spinner-DownButton {
   cursor: default;
 }
 
-/* line 822, ../../sass/md/md-standard.scss */
+/* line 678, ../../sass/md/md-standard.scss */
 Spinner-DownButton:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 827, ../../sass/md/md-standard.scss */
+/* line 683, ../../sass/md/md-standard.scss */
 Spinner-DownButton-Icon {
   background-image: url(resource/widget/rap/spinner/down.png);
 }
 
-/* line 831, ../../sass/md/md-standard.scss */
+/* line 687, ../../sass/md/md-standard.scss */
 Spinner-DownButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/down-hover.png);
 }
 
 /* TabFolder default theme */
-/* line 837, ../../sass/md/md-standard.scss */
+/* line 693, ../../sass/md/md-standard.scss */
 TabFolder {
   border: none;
 }
 
-/* line 841, ../../sass/md/md-standard.scss */
+/* line 697, ../../sass/md/md-standard.scss */
 TabFolder[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 845, ../../sass/md/md-standard.scss */
+/* line 701, ../../sass/md/md-standard.scss */
 TabFolder-ContentContainer {
   border: 1px solid #bdbdbd;
 }
 
-/* line 849, ../../sass/md/md-standard.scss */
+/* line 705, ../../sass/md/md-standard.scss */
 TabItem {
   background-color: #ffffff;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
@@ -879,237 +728,14 @@ TabItem {
   padding: 6px;
 }
 
-/* line 862, ../../sass/md/md-standard.scss */
+/* line 718, ../../sass/md/md-standard.scss */
 TabItem:selected {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
   padding: 6px 6px 7px 6px;
 }
 
-/* Table default theme */
-/*
-Table {
-  background-color: #ffffff;
-  background-image: none;
-  color: #4a4a4a;
-  border: none;
-}
-
-Table[BORDER] {
-  border: 1px solid #bdbdbd;
-}
-
-TableColumn {
-  background-color: #f0f0f0;
-  padding: 8px 3px 8px 3px;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
-  color: inherit;
-  border-bottom: 1px solid #bdbdbd;
-  text-shadow: 0 1px 0 #ffffff;
-}
-
-TableColumn:hover {
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #e4e4e4 ),
-    to( #f9f9f9 )
-  );
-}
-
-TableItem,
-TableItem:linesvisible:even:rowtemplate {
-  background-color: transparent;
-  color: inherit;
-  text-decoration: none;
-  text-shadow: none;
-  background-image: none;
-}
-
-TableItem:linesvisible:even {
-  background-color: #f0f0f0;
-  color: inherit;
-}
-
-Table-RowOverlay {
-  background-color: transparent;
-  color: inherit;
-  background-image: none;
-}
-
-Table-RowOverlay:hover {
-  color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #ebebeb ),
-    to( #d5d5d5 )
-  );
-}
-
-Table-RowOverlay:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #5882b5 ),
-    to( #416693 )
-  );
-}
-
-Table-RowOverlay:selected:unfocused {
-  color: #ffffff;
-  background-color: #b5b5b5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #b5b5b5 ),
-    to( #818181 )
-  );
-}
-
-Table-RowOverlay:linesvisible:even:hover {
-  color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #ebebeb ),
-    to( #d5d5d5 )
-  );
-}
-
-Table-RowOverlay:linesvisible:even:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #5882b5 ),
-    to( #416693 )
-  );
-}
-
-Table-RowOverlay:linesvisible:even:selected:unfocused {
-  background-color: #959595;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #b5b5b5 ),
-    to( #818181 )
-  );
-  color: #ffffff;
-}
-
-TableColumn-SortIndicator {
-  background-image: none;
-}
-
-TableColumn-SortIndicator:up {
-  background-image: url( resource/widget/rap/column/sort-indicator-up.png );
-}
-
-TableColumn-SortIndicator:down {
-  background-image: url( resource/widget/rap/column/sort-indicator-down.png );
-}
-
-Table-Cell {
-  spacing: 3px;
-  padding: 5px 3px 5px 3px;
-}
-
-Table-GridLine,
-Table-GridLine:vertical:rowtemplate {
-  color: transparent;
-}
-
-Table-GridLine:vertical,
-Table-GridLine:header,
-Table-GridLine:horizontal:rowtemplate {
-  color: #dedede;
-}
-
-
-Table-Checkbox {
-    // For backward compatibility we have to keep the width property.
-    // Deprecated, use "margin" instead.
-  width: 21px;
-  margin: 0 0 0 4px;
-  background-image: url( resource/widget/rap/button/check-unselected.png );
-}
-
-Table-Checkbox:hover {
-  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
-}
-
-Table-Checkbox:checked {
-  background-image: url( resource/widget/rap/button/check-selected.png );
-}
-
-Table-Checkbox:checked:hover {
-  background-image: url( resource/widget/rap/button/check-selected-hover.png );
-}
-
-Table-Checkbox:checked:grayed {
-  background-image: url( resource/widget/rap/button/check-grayed.png );
-}
-
-Table-Checkbox:checked:grayed:hover {
-  background-image: url( resource/widget/rap/button/check-grayed-hover.png );
-}*/
-/* Text default theme */
-/*
-Text {
-  border: none;
-  border-radius: 0;
-  padding: 5px 10px 5px 10px;
-  color: #4a4a4a;
-  background-repeat: repeat;
-  background-position: left top;
-  background-color: #ffffff;
-  background-image: none;
-  text-shadow: none;
-  box-shadow: none;
-}
-
-Text[MULTI] {
-  padding: 5px 10px 5px 10px;
-}
-
-Text[BORDER],
-Text[MULTI][BORDER] {
-  border: 1px solid #aaaaaa;
-  border-radius: 0;
-  box-shadow: inset 0 0 3px #bdbdbd;
-}
-
-Text[BORDER]:focused,
-Text[MULTI][BORDER]:focused {
-  border: 1px solid #4f7cb1;
-  box-shadow: 0 0 5px #4f7cb1;
-}
-
-Text[BORDER]:disabled,
-Text[MULTI][BORDER]:disabled,
-Text[BORDER]:read-only,
-Text[MULTI][BORDER]:read-only {
-  box-shadow: none;
-}
-
-Text-Message {
-  color: #a7a6aa;
-  text-shadow: none;
-}
-
-Text-Search-Icon {
-  background-image: url( resource/widget/rap/text/find.png );
-  spacing: 3px;
-}
-
-Text-Cancel-Icon {
-  background-image: url( resource/widget/rap/text/clear.gif );
-  spacing: 3px;
-}*/
 /* ToolBar default theme */
-/* line 1098, ../../sass/md/md-standard.scss */
+/* line 729, ../../sass/md/md-standard.scss */
 ToolBar {
   color: #4a4a4a;
   padding: 0;
@@ -1121,13 +747,13 @@ ToolBar {
   opacity: 1;
 }
 
-/* line 1109, ../../sass/md/md-standard.scss */
+/* line 740, ../../sass/md/md-standard.scss */
 ToolBar[BORDER] {
   border: 1px solid #a4a4a4;
   border-radius: 2px;
 }
 
-/* line 1114, ../../sass/md/md-standard.scss */
+/* line 745, ../../sass/md/md-standard.scss */
 ToolItem {
   color: inherit;
   background-color: #fff;
@@ -1141,7 +767,7 @@ ToolItem {
   text-shadow: none;
 }
 
-/* line 1127, ../../sass/md/md-standard.scss */
+/* line 758, ../../sass/md/md-standard.scss */
 ToolItem:hover {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
@@ -1149,7 +775,7 @@ ToolItem:hover {
   border-radius: 2px;
 }
 
-/* line 1138, ../../sass/md/md-standard.scss */
+/* line 769, ../../sass/md/md-standard.scss */
 ToolItem:pressed, ToolItem:selected {
   border: 1px solid #a4a4a4;
   border-radius: 2px;
@@ -1157,308 +783,43 @@ ToolItem:pressed, ToolItem:selected {
   background-image: gradient(linear, left top, left bottom, from(#e4e4e4), to(#f9f9f9));
 }
 
-/* line 1149, ../../sass/md/md-standard.scss */
+/* line 780, ../../sass/md/md-standard.scss */
 ToolItem-DropDownIcon {
   background-image: url(resource/widget/rap/toolbar/down.png);
   border: none;
 }
 
-/* line 1154, ../../sass/md/md-standard.scss */
+/* line 785, ../../sass/md/md-standard.scss */
 ToolItem-DropDownIcon:hover {
   border: 1px inset;
 }
 
-/* line 1158, ../../sass/md/md-standard.scss */
+/* line 789, ../../sass/md/md-standard.scss */
 ToolItem-Separator {
   width: 4px;
 }
 
-/* Tree default theme */
-/* line 1164, ../../sass/md/md-standard.scss */
-Tree {
-  background-color: #ffffff;
-  border: none;
-  color: #4a4a4a;
-}
-
-/* line 1170, ../../sass/md/md-standard.scss */
-Tree[BORDER] {
-  border: 1px solid #bdbdbd;
-}
-
-/* line 1174, ../../sass/md/md-standard.scss */
-TreeItem,
-TreeItem:linesvisible:even:rowtemplate {
-  background-color: transparent;
-  color: inherit;
-  text-decoration: none;
-  text-shadow: none;
-  background-image: none;
-}
-
-/* line 1183, ../../sass/md/md-standard.scss */
-TreeItem:linesvisible:even {
-  background-color: #f0f0f0;
-  color: inherit;
-  border: none;
-}
-
-/* line 1189, ../../sass/md/md-standard.scss */
-Tree-RowOverlay {
-  background-color: transparent;
-  color: inherit;
-  background-image: none;
-}
-
-/* line 1195, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:hover {
-  color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
-}
-
-/* line 1205, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
-}
-
-/* line 1215, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:selected:unfocused {
-  color: #ffffff;
-  background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
-}
-
-/* line 1225, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:linesvisible:even:hover {
-  color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
-}
-
-/* line 1235, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:linesvisible:even:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
-}
-
-/* line 1245, ../../sass/md/md-standard.scss */
-Tree-RowOverlay:linesvisible:even:selected:unfocused {
-  color: #ffffff;
-  background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
-}
-
-/* line 1255, ../../sass/md/md-standard.scss */
-TreeColumn {
-  color: inherit;
-  background-color: #f0f0f0;
-  background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
-  padding: 8px 10px 8px 6px;
-  border-bottom: 1px solid #bdbdbd;
-  text-shadow: none;
-}
-
-/* line 1268, ../../sass/md/md-standard.scss */
-TreeColumn:hover {
-  background-image: gradient(linear, left top, left bottom, from(#e4e4e4), to(#f9f9f9));
-}
-
-/* line 1276, ../../sass/md/md-standard.scss */
-TreeColumn-SortIndicator {
-  background-image: none;
-}
-
-/* line 1280, ../../sass/md/md-standard.scss */
-TreeColumn-SortIndicator:up {
-  background-image: url(resource/widget/rap/column/sort-indicator-up.png);
-}
-
-/* line 1284, ../../sass/md/md-standard.scss */
-TreeColumn-SortIndicator:down {
-  background-image: url(resource/widget/rap/column/sort-indicator-down.png);
-}
-
-/* line 1288, ../../sass/md/md-standard.scss */
-Tree-Cell {
-  spacing: 3px;
-  padding: 5px 3px 5px 3px;
-}
-
-/* line 1293, ../../sass/md/md-standard.scss */
-Tree-GridLine,
-Tree-GridLine:vertical:rowtemplate {
-  color: transparent;
-}
-
-/* line 1298, ../../sass/md/md-standard.scss */
-Tree-GridLine:vertical,
-Tree-GridLine:header,
-Tree-GridLine:horizontal:rowtemplate {
-  color: #d0d0d0;
-}
-
-/* line 1304, ../../sass/md/md-standard.scss */
-Tree-Checkbox {
-  margin: 0px 2px 0px 0px;
-  background-image: url(resource/widget/rap/button/check-unselected.png);
-}
-
-/* line 1309, ../../sass/md/md-standard.scss */
-Tree-Checkbox:hover {
-  background-image: url(resource/widget/rap/button/check-unselected-hover.png);
-}
-
-/* line 1313, ../../sass/md/md-standard.scss */
-Tree-Checkbox:checked {
-  background-image: url(resource/widget/rap/button/check-selected.png);
-}
-
-/* line 1317, ../../sass/md/md-standard.scss */
-Tree-Checkbox:checked:hover {
-  background-image: url(resource/widget/rap/button/check-selected-hover.png);
-}
-
-/* line 1321, ../../sass/md/md-standard.scss */
-Tree-Checkbox:checked:grayed {
-  background-image: url(resource/widget/rap/button/check-grayed.png);
-}
-
-/* line 1325, ../../sass/md/md-standard.scss */
-Tree-Checkbox:checked:grayed:hover {
-  background-image: url(resource/widget/rap/button/check-grayed-hover.png);
-}
-
-/* line 1329, ../../sass/md/md-standard.scss */
-Tree-Indent {
-  width: 16px;
-  background-image: none;
-}
-
-/* line 1334, ../../sass/md/md-standard.scss */
-Tree-Indent:collapsed {
-  background-image: url(resource/widget/rap/tree/tree-collapsed.png);
-}
-
-/* line 1338, ../../sass/md/md-standard.scss */
-Tree-Indent:collapsed:hover {
-  background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
-}
-
-/* line 1342, ../../sass/md/md-standard.scss */
-Tree-Indent:expanded {
-  background-image: url(resource/widget/rap/tree/tree-expanded.png);
-}
-
-/* line 1346, ../../sass/md/md-standard.scss */
-Tree-Indent:expanded:hover {
-  background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
-}
-
-/* line 1350, ../../sass/md/md-standard.scss */
-Tree-Indent:line {
-  background-image: none;
-}
-
-/* line 1354, ../../sass/md/md-standard.scss */
-Tree-Indent:first {
-  background-image: none;
-}
-
-/* line 1358, ../../sass/md/md-standard.scss */
-Tree-Indent:first:collapsed {
-  background-image: url(resource/widget/rap/tree/tree-collapsed.png);
-}
-
-/* line 1362, ../../sass/md/md-standard.scss */
-Tree-Indent:first:collapsed:hover {
-  background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
-}
-
-/* line 1366, ../../sass/md/md-standard.scss */
-Tree-Indent:first:expanded {
-  background-image: url(resource/widget/rap/tree/tree-expanded.png);
-}
-
-/* line 1370, ../../sass/md/md-standard.scss */
-Tree-Indent:first:expanded:hover {
-  background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
-}
-
-/* line 1374, ../../sass/md/md-standard.scss */
-Tree-Indent:last {
-  background-image: none;
-}
-
-/* line 1378, ../../sass/md/md-standard.scss */
-Tree-Indent:last:collapsed {
-  background-image: url(resource/widget/rap/tree/tree-collapsed.png);
-}
-
-/* line 1382, ../../sass/md/md-standard.scss */
-Tree-Indent:last:collapsed:hover {
-  background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
-}
-
-/* line 1386, ../../sass/md/md-standard.scss */
-Tree-Indent:last:expanded {
-  background-image: url(resource/widget/rap/tree/tree-expanded.png);
-}
-
-/* line 1390, ../../sass/md/md-standard.scss */
-Tree-Indent:last:expanded:hover {
-  background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
-}
-
-/* line 1394, ../../sass/md/md-standard.scss */
-Tree-Indent:first:last {
-  background-image: none;
-}
-
-/* line 1398, ../../sass/md/md-standard.scss */
-Tree-Indent:first:last:collapsed {
-  background-image: url(resource/widget/rap/tree/tree-collapsed.png);
-}
-
-/* line 1402, ../../sass/md/md-standard.scss */
-Tree-Indent:first:last:collapsed:hover {
-  background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
-}
-
-/* line 1406, ../../sass/md/md-standard.scss */
-Tree-Indent:first:last:expanded {
-  background-image: url(resource/widget/rap/tree/tree-expanded.png);
-}
-
-/* line 1410, ../../sass/md/md-standard.scss */
-Tree-Indent:first:last:expanded:hover {
-  background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
-}
-
 /* Scale default theme */
-/* line 1416, ../../sass/md/md-standard.scss */
+/* line 795, ../../sass/md/md-standard.scss */
 Scale {
   background-color: white;
   border-radius: 3px;
 }
 
-/* line 1421, ../../sass/md/md-standard.scss */
+/* line 800, ../../sass/md/md-standard.scss */
 Scale-Thumb {
   background-color: #e5e5e5;
   border: 1px solid #a4a4a4;
   border-radius: 2px 2px 2px 2px;
 }
 
-/* line 1427, ../../sass/md/md-standard.scss */
+/* line 806, ../../sass/md/md-standard.scss */
 Scale-Thumb:focused {
   border: 1px solid #4f7cb1;
 }
 
 /* DateTime default theme */
-/* line 1433, ../../sass/md/md-standard.scss */
+/* line 812, ../../sass/md/md-standard.scss */
 DateTime {
   border: none;
   border-radius: 0 2px 2px 0;
@@ -1469,13 +830,13 @@ DateTime {
   box-shadow: none;
 }
 
-/* line 1443, ../../sass/md/md-standard.scss */
+/* line 822, ../../sass/md/md-standard.scss */
 DateTime[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 1448, ../../sass/md/md-standard.scss */
+/* line 827, ../../sass/md/md-standard.scss */
 DateTime-Field {
   color: inherit;
   background-color: transparent;
@@ -1483,55 +844,55 @@ DateTime-Field {
   text-shadow: none;
 }
 
-/* line 1455, ../../sass/md/md-standard.scss */
+/* line 834, ../../sass/md/md-standard.scss */
 DateTime[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 1461, ../../sass/md/md-standard.scss */
+/* line 840, ../../sass/md/md-standard.scss */
 DateTime[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 1465, ../../sass/md/md-standard.scss */
+/* line 844, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day {
   color: inherit;
   background-color: transparent;
   text-shadow: none;
 }
 
-/* line 1471, ../../sass/md/md-standard.scss */
+/* line 850, ../../sass/md/md-standard.scss */
 DateTime-Field:selected,
 DateTime-Calendar-Day:selected {
   background-color: #5882b5;
   color: #ffffff;
 }
 
-/* line 1477, ../../sass/md/md-standard.scss */
+/* line 856, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:selected:hover {
   background-color: #5882b5;
   color: #ffffff;
 }
 
-/* line 1482, ../../sass/md/md-standard.scss */
+/* line 861, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:selected:unfocused {
   background-color: #c0c0c0;
 }
 
-/* line 1486, ../../sass/md/md-standard.scss */
+/* line 865, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:otherMonth {
   background-color: transparent;
   color: #808080;
 }
 
-/* line 1491, ../../sass/md/md-standard.scss */
+/* line 870, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Day:hover {
   background-color: #b5b5b5;
 }
 
-/* line 1495, ../../sass/md/md-standard.scss */
+/* line 874, ../../sass/md/md-standard.scss */
 DateTime-Calendar-Navbar {
   border: none;
   border-radius: 0;
@@ -1541,51 +902,51 @@ DateTime-Calendar-Navbar {
   text-shadow: none;
 }
 
-/* line 1507, ../../sass/md/md-standard.scss */
+/* line 886, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousMonthButton {
   background-image: url(resource/widget/rap/calendar/lastMonth.png);
   cursor: default;
 }
 
-/* line 1512, ../../sass/md/md-standard.scss */
+/* line 891, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousMonthButton:hover {
   background-image: url(resource/widget/rap/calendar/lastMonth-hover.png);
 }
 
-/* line 1516, ../../sass/md/md-standard.scss */
+/* line 895, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextMonthButton {
   background-image: url(resource/widget/rap/calendar/nextMonth.png);
   cursor: default;
 }
 
-/* line 1521, ../../sass/md/md-standard.scss */
+/* line 900, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextMonthButton:hover {
   background-image: url(resource/widget/rap/calendar/nextMonth-hover.png);
 }
 
-/* line 1525, ../../sass/md/md-standard.scss */
+/* line 904, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousYearButton {
   background-image: url(resource/widget/rap/calendar/lastYear.png);
   cursor: default;
 }
 
-/* line 1530, ../../sass/md/md-standard.scss */
+/* line 909, ../../sass/md/md-standard.scss */
 DateTime-Calendar-PreviousYearButton:hover {
   background-image: url(resource/widget/rap/calendar/lastYear-hover.png);
 }
 
-/* line 1534, ../../sass/md/md-standard.scss */
+/* line 913, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextYearButton {
   background-image: url(resource/widget/rap/calendar/nextYear.png);
   cursor: default;
 }
 
-/* line 1539, ../../sass/md/md-standard.scss */
+/* line 918, ../../sass/md/md-standard.scss */
 DateTime-Calendar-NextYearButton:hover {
   background-image: url(resource/widget/rap/calendar/nextYear-hover.png);
 }
 
-/* line 1543, ../../sass/md/md-standard.scss */
+/* line 922, ../../sass/md/md-standard.scss */
 DateTime-UpButton {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#efefef));
@@ -1596,17 +957,17 @@ DateTime-UpButton {
   cursor: default;
 }
 
-/* line 1557, ../../sass/md/md-standard.scss */
+/* line 936, ../../sass/md/md-standard.scss */
 DateTime-UpButton-Icon {
   background-image: url(resource/widget/rap/datetime/up.png);
 }
 
-/* line 1561, ../../sass/md/md-standard.scss */
+/* line 940, ../../sass/md/md-standard.scss */
 DateTime-UpButton-Icon:hover {
   background-image: url(resource/widget/rap/datetime/up-hover.png);
 }
 
-/* line 1565, ../../sass/md/md-standard.scss */
+/* line 944, ../../sass/md/md-standard.scss */
 DateTime-DownButton {
   background-color: #f0f0f0;
   background-image: gradient(linear, left top, left bottom, from(#efefef), to(#e4e4e4));
@@ -1617,17 +978,17 @@ DateTime-DownButton {
   cursor: default;
 }
 
-/* line 1579, ../../sass/md/md-standard.scss */
+/* line 958, ../../sass/md/md-standard.scss */
 DateTime-DownButton-Icon {
   background-image: url(resource/widget/rap/datetime/down.png);
 }
 
-/* line 1583, ../../sass/md/md-standard.scss */
+/* line 962, ../../sass/md/md-standard.scss */
 DateTime-DownButton-Icon:hover {
   background-image: url(resource/widget/rap/datetime/down-hover.png);
 }
 
-/* line 1587, ../../sass/md/md-standard.scss */
+/* line 966, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton {
   cursor: default;
   background-color: #f0f0f0;
@@ -1638,7 +999,7 @@ DateTime-DropDownButton {
   width: 30px;
 }
 
-/* line 1601, ../../sass/md/md-standard.scss */
+/* line 980, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton:disabled,
 DateTime-UpButton:disabled,
 DateTime-DownButton:disabled {
@@ -1646,41 +1007,41 @@ DateTime-DownButton:disabled {
   background-color: transparent;
 }
 
-/* line 1608, ../../sass/md/md-standard.scss */
+/* line 987, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton-Icon {
   background-image: url(resource/widget/rap/spinner/down.png);
 }
 
-/* line 1612, ../../sass/md/md-standard.scss */
+/* line 991, ../../sass/md/md-standard.scss */
 DateTime-DropDownButton-Icon:hover {
   background-image: url(resource/widget/rap/spinner/down-hover.png);
 }
 
-/* line 1616, ../../sass/md/md-standard.scss */
+/* line 995, ../../sass/md/md-standard.scss */
 DateTime-DropDownCalendar {
   border: 1px #a7a6aa;
 }
 
 /* ExpandBar default theme */
-/* line 1622, ../../sass/md/md-standard.scss */
+/* line 1001, ../../sass/md/md-standard.scss */
 ExpandBar {
   color: #4a4a4a;
   background-color: white;
 }
 
-/* line 1627, ../../sass/md/md-standard.scss */
+/* line 1006, ../../sass/md/md-standard.scss */
 ExpandBar[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 1632, ../../sass/md/md-standard.scss */
+/* line 1011, ../../sass/md/md-standard.scss */
 ExpandItem {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
-/* line 1637, ../../sass/md/md-standard.scss */
+/* line 1016, ../../sass/md/md-standard.scss */
 ExpandItem-Header {
   border: none;
   border-radius: 0;
@@ -1689,61 +1050,61 @@ ExpandItem-Header {
   text-shadow: none;
 }
 
-/* line 1649, ../../sass/md/md-standard.scss */
+/* line 1028, ../../sass/md/md-standard.scss */
 ExpandItem-Header:disabled {
   cursor: default;
 }
 
-/* line 1653, ../../sass/md/md-standard.scss */
+/* line 1032, ../../sass/md/md-standard.scss */
 ExpandItem-Button {
   background-image: url(resource/widget/rap/expanditem/expanditem-expand.png);
 }
 
-/* line 1657, ../../sass/md/md-standard.scss */
+/* line 1036, ../../sass/md/md-standard.scss */
 ExpandItem-Button:hover {
   background-image: url(resource/widget/rap/expanditem/expanditem-expand-hover.png);
 }
 
-/* line 1661, ../../sass/md/md-standard.scss */
+/* line 1040, ../../sass/md/md-standard.scss */
 ExpandItem-Button:expanded {
   background-image: url(resource/widget/rap/expanditem/expanditem-collapse.png);
 }
 
-/* line 1665, ../../sass/md/md-standard.scss */
+/* line 1044, ../../sass/md/md-standard.scss */
 ExpandItem-Button:expanded:hover {
   background-image: url(resource/widget/rap/expanditem/expanditem-collapse-hover.png);
 }
 
 /* Sash default theme */
-/* line 1671, ../../sass/md/md-standard.scss */
+/* line 1050, ../../sass/md/md-standard.scss */
 Sash {
   border: none;
   background-image: none;
   background-color: transparent;
 }
 
-/* line 1677, ../../sass/md/md-standard.scss */
+/* line 1056, ../../sass/md/md-standard.scss */
 Sash[BORDER] {
   border: 1px solid #bdbdbd;
 }
 
-/* line 1681, ../../sass/md/md-standard.scss */
+/* line 1060, ../../sass/md/md-standard.scss */
 Sash:hover {
   background-color: #e5e5e5;
 }
 
-/* line 1685, ../../sass/md/md-standard.scss */
+/* line 1064, ../../sass/md/md-standard.scss */
 Sash-Handle:horizontal {
   background-image: url(resource/widget/rap/sash/sash-handle-horizontal.png);
 }
 
-/* line 1689, ../../sass/md/md-standard.scss */
+/* line 1068, ../../sass/md/md-standard.scss */
 Sash-Handle:vertical {
   background-image: url(resource/widget/rap/sash/sash-handle-vertical.png);
 }
 
 /* Slider default theme */
-/* line 1695, ../../sass/md/md-standard.scss */
+/* line 1074, ../../sass/md/md-standard.scss */
 Slider {
   border: none;
   background-color: #f0f0f0;
@@ -1751,7 +1112,7 @@ Slider {
 }
 
 /* Thumb */
-/* line 1703, ../../sass/md/md-standard.scss */
+/* line 1082, ../../sass/md/md-standard.scss */
 Slider-Thumb[HORIZONTAL],
 Slider-Thumb[VERTICAL] {
   background-color: #e4e4e4;
@@ -1761,7 +1122,7 @@ Slider-Thumb[VERTICAL] {
 }
 
 /* Buttons */
-/* line 1713, ../../sass/md/md-standard.scss */
+/* line 1092, ../../sass/md/md-standard.scss */
 Slider-UpButton,
 Slider-DownButton {
   background-color: #e4e4e4;
@@ -1770,74 +1131,74 @@ Slider-DownButton {
   padding: 0;
 }
 
-/* line 1721, ../../sass/md/md-standard.scss */
+/* line 1100, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL],
 Slider-DownButton[HORIZONTAL] {
   background-image: none;
 }
 
-/* line 1726, ../../sass/md/md-standard.scss */
+/* line 1105, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL],
 Slider-DownButton[VERTICAL] {
   background-image: none;
 }
 
-/* line 1731, ../../sass/md/md-standard.scss */
+/* line 1110, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL]:pressed,
 Slider-DownButton[HORIZONTAL]:pressed {
   background-image: none;
 }
 
-/* line 1736, ../../sass/md/md-standard.scss */
+/* line 1115, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL]:pressed,
 Slider-DownButton[VERTICAL]:pressed {
   background-image: none;
 }
 
 /* Rounded Borders */
-/* line 1743, ../../sass/md/md-standard.scss */
+/* line 1122, ../../sass/md/md-standard.scss */
 Slider-UpButton[HORIZONTAL] {
   border-radius: 0px 2px 2px 0px;
 }
 
-/* line 1747, ../../sass/md/md-standard.scss */
+/* line 1126, ../../sass/md/md-standard.scss */
 Slider-UpButton[VERTICAL] {
   border-radius: 0px 0px 2px 2px;
 }
 
-/* line 1751, ../../sass/md/md-standard.scss */
+/* line 1130, ../../sass/md/md-standard.scss */
 Slider-DownButton[HORIZONTAL] {
   border-radius: 2px 0px 0px 2px;
 }
 
-/* line 1755, ../../sass/md/md-standard.scss */
+/* line 1134, ../../sass/md/md-standard.scss */
 Slider-DownButton[VERTICAL] {
   border-radius: 2px 2px 0px 0px;
 }
 
 /* Button Icons */
-/* line 1761, ../../sass/md/md-standard.scss */
+/* line 1140, ../../sass/md/md-standard.scss */
 Slider-UpButton-Icon[HORIZONTAL] {
   background-image: url(resource/widget/rap/slider/right.png);
 }
 
-/* line 1765, ../../sass/md/md-standard.scss */
+/* line 1144, ../../sass/md/md-standard.scss */
 Slider-UpButton-Icon[VERTICAL] {
   background-image: url(resource/widget/rap/slider/down.png);
 }
 
-/* line 1769, ../../sass/md/md-standard.scss */
+/* line 1148, ../../sass/md/md-standard.scss */
 Slider-DownButton-Icon[HORIZONTAL] {
   background-image: url(resource/widget/rap/slider/left.png);
 }
 
-/* line 1773, ../../sass/md/md-standard.scss */
+/* line 1152, ../../sass/md/md-standard.scss */
 Slider-DownButton-Icon[VERTICAL] {
   background-image: url(resource/widget/rap/slider/up.png);
 }
 
 /* ToolTip default theme */
-/* line 1779, ../../sass/md/md-standard.scss */
+/* line 1158, ../../sass/md/md-standard.scss */
 ToolTip {
   cursor: default;
   border: 1px solid #a0b3ca;
@@ -1851,35 +1212,35 @@ ToolTip {
   box-shadow: 0 0 4px #adadad;
 }
 
-/* line 1796, ../../sass/md/md-standard.scss */
+/* line 1175, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_ERROR] {
   background-image: url(resource/widget/rap/tooltip/error.png);
 }
 
-/* line 1800, ../../sass/md/md-standard.scss */
+/* line 1179, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_INFORMATION] {
   background-image: url(resource/widget/rap/tooltip/information.png);
 }
 
-/* line 1804, ../../sass/md/md-standard.scss */
+/* line 1183, ../../sass/md/md-standard.scss */
 ToolTip-Image[ICON_WARNING] {
   background-image: url(resource/widget/rap/tooltip/warning.png);
 }
 
-/* line 1808, ../../sass/md/md-standard.scss */
+/* line 1187, ../../sass/md/md-standard.scss */
 ToolTip-Text {
   color: #4a4a4a;
   text-shadow: none;
 }
 
-/* line 1813, ../../sass/md/md-standard.scss */
+/* line 1192, ../../sass/md/md-standard.scss */
 ToolTip-Message {
   color: #4a4a4a;
   text-shadow: none;
 }
 
 /* CCombo default theme */
-/* line 1820, ../../sass/md/md-standard.scss */
+/* line 1199, ../../sass/md/md-standard.scss */
 CCombo {
   color: #4a4a4a;
   background-color: #ffffff;
@@ -1890,26 +1251,26 @@ CCombo {
   box-shadow: none;
 }
 
-/* line 1830, ../../sass/md/md-standard.scss */
+/* line 1209, ../../sass/md/md-standard.scss */
 CCombo[BORDER] {
   border: 1px solid #aaaaaa;
   border-radius: 0 2px 2px 0;
   box-shadow: inset 0 0 3px #bdbdbd;
 }
 
-/* line 1836, ../../sass/md/md-standard.scss */
+/* line 1215, ../../sass/md/md-standard.scss */
 CCombo[BORDER]:focused {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
 }
 
-/* line 1841, ../../sass/md/md-standard.scss */
+/* line 1220, ../../sass/md/md-standard.scss */
 CCombo:disabled,
 CCombo[BORDER]:disabled {
   box-shadow: none;
 }
 
-/* line 1846, ../../sass/md/md-standard.scss */
+/* line 1225, ../../sass/md/md-standard.scss */
 CCombo-Button {
   cursor: default;
   background-color: #efefef;
@@ -1920,30 +1281,30 @@ CCombo-Button {
   width: 30px;
 }
 
-/* line 1860, ../../sass/md/md-standard.scss */
+/* line 1239, ../../sass/md/md-standard.scss */
 CCombo-Button:disabled {
   background-image: none;
   background-color: transparent;
 }
 
-/* line 1865, ../../sass/md/md-standard.scss */
+/* line 1244, ../../sass/md/md-standard.scss */
 CCombo-Button-Icon {
   background-image: url(resource/widget/rap/ccombo/down.png);
 }
 
-/* line 1869, ../../sass/md/md-standard.scss */
+/* line 1248, ../../sass/md/md-standard.scss */
 CCombo-Button-Icon:hover {
   background-image: url(resource/widget/rap/ccombo/down-hover.png);
 }
 
-/* line 1873, ../../sass/md/md-standard.scss */
+/* line 1252, ../../sass/md/md-standard.scss */
 CCombo-List {
   border: 1px solid #4f7cb1;
   box-shadow: 0 0 5px #4f7cb1;
   border-radius: 2px;
 }
 
-/* line 1879, ../../sass/md/md-standard.scss */
+/* line 1258, ../../sass/md/md-standard.scss */
 CCombo-List-Item {
   color: inherit;
   background-color: transparent;
@@ -1953,26 +1314,26 @@ CCombo-List-Item {
   padding: 6px 10px 6px 10px;
 }
 
-/* line 1888, ../../sass/md/md-standard.scss */
+/* line 1267, ../../sass/md/md-standard.scss */
 CCombo-List-Item:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
   background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
 }
 
-/* line 1898, ../../sass/md/md-standard.scss */
+/* line 1277, ../../sass/md/md-standard.scss */
 CCombo-List-Item:selected {
   color: #ffffff;
   background-color: #5882b5;
   background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
 }
 
-/* line 1908, ../../sass/md/md-standard.scss */
+/* line 1287, ../../sass/md/md-standard.scss */
 CCombo-Field {
   padding: 5px 10px 5px 10px;
 }
 
-/* line 1912, ../../sass/md/md-standard.scss */
+/* line 1291, ../../sass/md/md-standard.scss */
 CCombo-FocusIndicator {
   background-color: transparent;
   border: none;
@@ -1981,7 +1342,7 @@ CCombo-FocusIndicator {
 }
 
 /* CLabel default theme */
-/* line 1921, ../../sass/md/md-standard.scss */
+/* line 1300, ../../sass/md/md-standard.scss */
 CLabel {
   color: #4a4a4a;
   background-color: #ffffff;
@@ -1996,19 +1357,19 @@ CLabel {
   text-shadow: none;
 }
 
-/* line 1935, ../../sass/md/md-standard.scss */
+/* line 1314, ../../sass/md/md-standard.scss */
 CLabel[BORDER] {
   border: 1px solid #bdbdbd;
   border-radius: 2px;
 }
 
 /* Browser default theme */
-/* line 1942, ../../sass/md/md-standard.scss */
+/* line 1321, ../../sass/md/md-standard.scss */
 Browser {
   border: none;
 }
 
-/* line 1946, ../../sass/md/md-standard.scss */
+/* line 1325, ../../sass/md/md-standard.scss */
 Browser[BORDER] {
   border: 1px solid #a4a4a4;
 }
@@ -2056,7 +1417,7 @@ ScrollBar-DownButton[VERTICAL] {
 }
 */
 /* FileUpload default theme */
-/* line 1995, ../../sass/md/md-standard.scss */
+/* line 1374, ../../sass/md/md-standard.scss */
 FileUpload {
   background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
   background-repeat: repeat;
@@ -2073,7 +1434,7 @@ FileUpload {
   text-shadow: 0 1px 0 #ffffff;
 }
 
-/* line 2015, ../../sass/md/md-standard.scss */
+/* line 1394, ../../sass/md/md-standard.scss */
 FileUpload:disabled {
   cursor: default;
   color: #d2d2d2;
@@ -2082,17 +1443,17 @@ FileUpload:disabled {
   border: 1px solid #d2d2d2;
 }
 
-/* line 2023, ../../sass/md/md-standard.scss */
+/* line 1402, ../../sass/md/md-standard.scss */
 FileUpload:hover {
   background-image: gradient(linear, left top, left bottom, from(#eaeaea), to(#d5d5d5));
 }
 
-/* line 2031, ../../sass/md/md-standard.scss */
+/* line 1410, ../../sass/md/md-standard.scss */
 FileUpload:pressed {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 2039, ../../sass/md/md-standard.scss */
+/* line 1418, ../../sass/md/md-standard.scss */
 FileUpload-FocusIndicator {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2102,7 +1463,7 @@ FileUpload-FocusIndicator {
 }
 
 /* JFace specific theming */
-/* line 2049, ../../sass/md/md-standard.scss */
+/* line 1428, ../../sass/md/md-standard.scss */
 Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
   border: 1px solid #bdbdbd;
   padding: 0;
@@ -2185,7 +1546,7 @@ Label.batik-panel-section-separator {
 Label-SeparatorLine,
 Label-SeparatorLine.batik-panel-section-separator {
   background-image: none;
-  background-color: #c8c8c8;
+  background-color: #d0d0d0;
   /* ! */
   border: 0px solid #000000;
   width: 1px;
@@ -2293,10 +1654,10 @@ Composite.atlas-panel-client {
 
 /* line 38, ../../sass/md/_batik_panel.scss */
 Composite[BORDER].atlas-panel-header {
-  border-radius: 4px;
+  border-radius: 3px;
   border: 0px solid #ffffff;
   /*background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));*/
-  background-color: #E2EdF5;
+  background-color: #b0d1f1;
   box-shadow: 0px 2px 3px #b0b0b0;
 }
 
@@ -2304,13 +1665,13 @@ Composite[BORDER].atlas-panel-header {
 Button[PUSH].atlas-panel-header,
 Button[TOGGLE].atlas-panel-header {
   font: 15px "Roboto", "Noto", sans-serif;
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 0px 5px;
   spacing: 0px;
   background-color: #ffffff;
   /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid #90A5B3;
-  color: #90A5B3;
+  border: 1px solid #ffffff;
+  color: #ffffff;
 }
 
 /* line 58, ../../sass/md/_batik_panel.scss */
@@ -2318,14 +1679,14 @@ Button[PUSH]:hover.atlas-panel-header,
 Button[TOGGLE]:hover.atlas-panel-header {
   color: #ffffff;
   border: none;
-  background-color: #90A5B3;
+  background-color: #ffffff;
 }
 
 /* line 65, ../../sass/md/_batik_panel.scss */
 Label.atlas-panel-header {
   font: 16px "Roboto", "Noto", sans-serif;
-  color: #90A5B3;
-  text-shadow: 1px 1px 0px #ffffff;
+  color: #ffffff;
+  /*text-shadow: 1px 1px 0px #ffffff;*/
 }
 
 /* line 24, ../../sass/md/_batik.scss */
@@ -2409,7 +1770,7 @@ Button[PUSH][FLAT],
 Button[TOGGLE][FLAT] {
   font: 15px "Roboto", "Noto", sans-serif;
   color: #ffffff;
-  background-color: #599FC2;
+  background-color: #599FE2;
   padding: 5px 15px;
   cursor: pointer;
 }
@@ -2452,7 +1813,7 @@ Button[TOGGLE]:selected:disabled {
 Button[ARROW]:hover,
 Button[PUSH]:hover,
 Button[TOGGLE]:hover {
-  background-color: #5a9cbd;
+  background-color: #2e86da;
   animation: hoverOut 400ms ease-out;
 }
 
@@ -2460,27 +1821,32 @@ Button[TOGGLE]:hover {
 Button[ARROW]:pressed,
 Button[PUSH]:pressed,
 Button[TOGGLE]:pressed {
-  background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
+  background-color: #206cb5;
+  /*background-image: gradient(
+    linear, left top, left bottom,
+    from( #d5d5d5 ),
+    to( #eaeaea )
+  );*/
 }
 
-/* line 88, ../../sass/md/_button.scss */
+/* line 89, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 96, ../../sass/md/_button.scss */
+/* line 97, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected:hover {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 104, ../../sass/md/_button.scss */
+/* line 105, ../../sass/md/_button.scss */
 Button[CHECK],
 Button[RADIO] {
   padding: 3px 3px 3px 0;
   spacing: 7px;
 }
 
-/* line 110, ../../sass/md/_button.scss */
+/* line 111, ../../sass/md/_button.scss */
 Button[CHECK][BORDER],
 Button[RADIO][BORDER] {
   cursor: default;
@@ -2489,77 +1855,77 @@ Button[RADIO][BORDER] {
   border-radius: 2px;
 }
 
-/* line 118, ../../sass/md/_button.scss */
+/* line 119, ../../sass/md/_button.scss */
 Button-CheckIcon {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 125, ../../sass/md/_button.scss */
+/* line 126, ../../sass/md/_button.scss */
 Button-CheckIcon:hover {
   background-image: url(resources/icons/rap/png/hover/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 130, ../../sass/md/_button.scss */
+/* line 131, ../../sass/md/_button.scss */
 Button-CheckIcon:selected {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-marked-circle.png);
 }
 
-/* line 135, ../../sass/md/_button.scss */
+/* line 136, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:hover {
   background-image: url(resource/widget/rap/button/check-selected-hover.png);
 }
 
-/* line 139, ../../sass/md/_button.scss */
+/* line 140, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed {
   background-image: url(resource/widget/rap/button/check-grayed.png);
 }
 
-/* line 143, ../../sass/md/_button.scss */
+/* line 144, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
 
-/* line 147, ../../sass/md/_button.scss */
+/* line 148, ../../sass/md/_button.scss */
 Button-RadioIcon {
   background-image: url(resource/widget/rap/button/radio-unselected.png);
 }
 
-/* line 151, ../../sass/md/_button.scss */
+/* line 152, ../../sass/md/_button.scss */
 Button-RadioIcon:hover {
   background-image: url(resource/widget/rap/button/radio-unselected-hover.png);
 }
 
-/* line 155, ../../sass/md/_button.scss */
+/* line 156, ../../sass/md/_button.scss */
 Button-RadioIcon:selected {
   background-image: url(resource/widget/rap/button/radio-selected.png);
 }
 
-/* line 159, ../../sass/md/_button.scss */
+/* line 160, ../../sass/md/_button.scss */
 Button-RadioIcon:selected:hover {
   background-image: url(resource/widget/rap/button/radio-selected-hover.png);
 }
 
-/* line 163, ../../sass/md/_button.scss */
+/* line 164, ../../sass/md/_button.scss */
 Button-ArrowIcon[UP] {
   background-image: url(resource/widget/rap/button/arrow-up.png);
 }
 
-/* line 167, ../../sass/md/_button.scss */
+/* line 168, ../../sass/md/_button.scss */
 Button-ArrowIcon[DOWN] {
   background-image: url(resource/widget/rap/button/arrow-down.png);
 }
 
-/* line 171, ../../sass/md/_button.scss */
+/* line 172, ../../sass/md/_button.scss */
 Button-ArrowIcon[LEFT] {
   background-image: url(resource/widget/rap/button/arrow-left.png);
 }
 
-/* line 175, ../../sass/md/_button.scss */
+/* line 176, ../../sass/md/_button.scss */
 Button-ArrowIcon[RIGHT] {
   background-image: url(resource/widget/rap/button/arrow-right.png);
 }
 
-/* line 179, ../../sass/md/_button.scss */
+/* line 180, ../../sass/md/_button.scss */
 Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2568,7 +1934,7 @@ Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator
   opacity: 1;
 }
 
-/* line 187, ../../sass/md/_button.scss */
+/* line 188, ../../sass/md/_button.scss */
 Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2596,59 +1962,22 @@ Button:hover.batik-panel-fab {
   background-color: #6eb02e;
 }
 
-/* 
- * polymap.org
- * Copyright (C) 2014, Polymap GmbH. All rights reserved.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- */
-/* line 16, ../../sass/md/_tree.scss */
-TreeColumn {
-  color: inherit;
-  background-color: #f0f0f0;
-  background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
-  padding: 3px 3px 3px 3px;
-  border-bottom: 1px solid #bdbdbd;
-}
-
-/* line 28, ../../sass/md/_tree.scss */
-Tree-Cell {
-  spacing: 2px;
-  padding: 1px 1px 1px 1px;
-}
-
-/* line 33, ../../sass/md/_tree.scss */
-TreeItem.firstRow {
-  background-color: #f0f0f0;
-  color: inherit;
-  text-decoration: none;
-  text-shadow: none;
-  background-image: none;
-}
-
 /* Tree default theme */
-/* line 43, ../../sass/md/_tree.scss */
+/* line 3, ../../sass/md/_tree.scss */
 Tree {
   background-color: inherit;
   border: none;
-  color: #4a4a4a;
+  color: inherit;
 }
 
-/* line 49, ../../sass/md/_tree.scss */
+/* line 9, ../../sass/md/_tree.scss */
 Tree[BORDER] {
-  border: 1px solid #bdbdbd;
+  border: 1px solid #e8e8e8;
 }
 
-/* line 53, ../../sass/md/_tree.scss */
-TreeItem {
+/* line 13, ../../sass/md/_tree.scss */
+TreeItem,
+TreeItem:linesvisible:even:rowtemplate {
   background-color: transparent;
   color: inherit;
   text-decoration: none;
@@ -2656,241 +1985,266 @@ TreeItem {
   background-image: none;
 }
 
-/* line 61, ../../sass/md/_tree.scss */
+/* line 22, ../../sass/md/_tree.scss */
 TreeItem:linesvisible:even {
   background-color: #f0f0f0;
   color: inherit;
   border: none;
 }
 
-/* line 67, ../../sass/md/_tree.scss */
+/* RowOverlay = MdListViewer? */
+/* line 29, ../../sass/md/_tree.scss */
 Tree-RowOverlay {
   background-color: transparent;
   color: inherit;
   background-image: none;
 }
 
-/* line 73, ../../sass/md/_tree.scss */
+/* line 35, ../../sass/md/_tree.scss */
 Tree-RowOverlay:hover {
   color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
+  background-color: #e8e8e8;
+  /*background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );*/
 }
 
-/* line 83, ../../sass/md/_tree.scss */
+/* line 45, ../../sass/md/_tree.scss */
+Tree-RowOverlay:selected:unfocused,
 Tree-RowOverlay:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
+  color: #4a4a4a;
+  background-color: #FFFEDB;
+  /*background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );*/
 }
 
-/* line 93, ../../sass/md/_tree.scss */
-Tree-RowOverlay:selected:unfocused {
+/*Tree-RowOverlay:selected:unfocused {
   color: #ffffff;
   background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
-}
-
-/* line 103, ../../sass/md/_tree.scss */
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
+}*/
+/* falko: linesvisible: no different hover/selection behaviour
 Tree-RowOverlay:linesvisible:even:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#ebebeb), to(#d5d5d5));
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ebebeb ),
+    to( #d5d5d5 )
+  );
 }
 
-/* line 113, ../../sass/md/_tree.scss */
 Tree-RowOverlay:linesvisible:even:selected {
   color: #ffffff;
   background-color: #5882b5;
-  background-image: gradient(linear, left top, left bottom, from(#5882b5), to(#416693));
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #5882b5 ),
+    to( #416693 )
+  );
 }
 
-/* line 123, ../../sass/md/_tree.scss */
 Tree-RowOverlay:linesvisible:even:selected:unfocused {
   color: #ffffff;
   background-color: #b5b5b5;
-  background-image: gradient(linear, left top, left bottom, from(#b5b5b5), to(#818181));
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #b5b5b5 ),
+    to( #818181 )
+  );
 }
-
-/*TreeColumn {
+*/
+/* line 98, ../../sass/md/_tree.scss */
+TreeColumn {
   color: inherit;
   background-color: #f0f0f0;
-   background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
+  background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
   padding: 8px 10px 8px 6px;
   border-bottom: 1px solid #bdbdbd;
   text-shadow: none;
-}*/
-/* line 146, ../../sass/md/_tree.scss */
+}
+
+/* line 111, ../../sass/md/_tree.scss */
 TreeColumn:hover {
   background-image: gradient(linear, left top, left bottom, from(#e4e4e4), to(#f9f9f9));
 }
 
-/* line 154, ../../sass/md/_tree.scss */
+/* line 119, ../../sass/md/_tree.scss */
 TreeColumn-SortIndicator {
   background-image: none;
 }
 
-/* line 158, ../../sass/md/_tree.scss */
+/* line 123, ../../sass/md/_tree.scss */
 TreeColumn-SortIndicator:up {
   background-image: url(resource/widget/rap/column/sort-indicator-up.png);
 }
 
-/* line 162, ../../sass/md/_tree.scss */
+/* line 127, ../../sass/md/_tree.scss */
 TreeColumn-SortIndicator:down {
   background-image: url(resource/widget/rap/column/sort-indicator-down.png);
 }
 
-/*Tree-Cell {
+/* line 131, ../../sass/md/_tree.scss */
+Tree-Cell {
   spacing: 3px;
   padding: 5px 3px 5px 3px;
-}*/
-/* line 171, ../../sass/md/_tree.scss */
-Tree-GridLine {
-  color: #d0d0d0;
 }
 
-/* line 175, ../../sass/md/_tree.scss */
-Tree-GridLine:horizontal {
+/* line 136, ../../sass/md/_tree.scss */
+Tree-GridLine,
+Tree-GridLine:vertical:rowtemplate {
   color: transparent;
 }
 
-/* line 179, ../../sass/md/_tree.scss */
+/* line 141, ../../sass/md/_tree.scss */
+Tree-GridLine:vertical,
+Tree-GridLine:header,
+Tree-GridLine:horizontal:rowtemplate {
+  color: #e8e8e8;
+}
+
+/* line 147, ../../sass/md/_tree.scss */
 Tree-Checkbox {
   margin: 0px 2px 0px 0px;
   background-image: url(resource/widget/rap/button/check-unselected.png);
 }
 
-/* line 184, ../../sass/md/_tree.scss */
+/* line 152, ../../sass/md/_tree.scss */
 Tree-Checkbox:hover {
   background-image: url(resource/widget/rap/button/check-unselected-hover.png);
 }
 
-/* line 188, ../../sass/md/_tree.scss */
+/* line 156, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked {
   background-image: url(resource/widget/rap/button/check-selected.png);
 }
 
-/* line 192, ../../sass/md/_tree.scss */
+/* line 160, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:hover {
   background-image: url(resource/widget/rap/button/check-selected-hover.png);
 }
 
-/* line 196, ../../sass/md/_tree.scss */
+/* line 164, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:grayed {
   background-image: url(resource/widget/rap/button/check-grayed.png);
 }
 
-/* line 200, ../../sass/md/_tree.scss */
+/* line 168, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
 
-/* line 204, ../../sass/md/_tree.scss */
+/* line 172, ../../sass/md/_tree.scss */
 Tree-Indent {
-  width: 16px;
+  width: 0px;
   background-image: none;
 }
 
-/* line 209, ../../sass/md/_tree.scss */
+/* line 177, ../../sass/md/_tree.scss */
 Tree-Indent:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 213, ../../sass/md/_tree.scss */
+/* line 181, ../../sass/md/_tree.scss */
 Tree-Indent:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 217, ../../sass/md/_tree.scss */
+/* line 185, ../../sass/md/_tree.scss */
 Tree-Indent:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 221, ../../sass/md/_tree.scss */
+/* line 189, ../../sass/md/_tree.scss */
 Tree-Indent:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 225, ../../sass/md/_tree.scss */
+/* line 193, ../../sass/md/_tree.scss */
 Tree-Indent:line {
   background-image: none;
 }
 
-/* line 229, ../../sass/md/_tree.scss */
+/* line 197, ../../sass/md/_tree.scss */
 Tree-Indent:first {
   background-image: none;
 }
 
-/* line 233, ../../sass/md/_tree.scss */
+/* line 201, ../../sass/md/_tree.scss */
 Tree-Indent:first:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 237, ../../sass/md/_tree.scss */
+/* line 205, ../../sass/md/_tree.scss */
 Tree-Indent:first:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 241, ../../sass/md/_tree.scss */
+/* line 209, ../../sass/md/_tree.scss */
 Tree-Indent:first:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 245, ../../sass/md/_tree.scss */
+/* line 213, ../../sass/md/_tree.scss */
 Tree-Indent:first:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 249, ../../sass/md/_tree.scss */
+/* line 217, ../../sass/md/_tree.scss */
 Tree-Indent:last {
   background-image: none;
 }
 
-/* line 253, ../../sass/md/_tree.scss */
+/* line 221, ../../sass/md/_tree.scss */
 Tree-Indent:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 257, ../../sass/md/_tree.scss */
+/* line 225, ../../sass/md/_tree.scss */
 Tree-Indent:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 261, ../../sass/md/_tree.scss */
+/* line 229, ../../sass/md/_tree.scss */
 Tree-Indent:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 265, ../../sass/md/_tree.scss */
+/* line 233, ../../sass/md/_tree.scss */
 Tree-Indent:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 269, ../../sass/md/_tree.scss */
+/* line 237, ../../sass/md/_tree.scss */
 Tree-Indent:first:last {
   background-image: none;
 }
 
-/* line 273, ../../sass/md/_tree.scss */
+/* line 241, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 277, ../../sass/md/_tree.scss */
+/* line 245, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 281, ../../sass/md/_tree.scss */
+/* line 249, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 285, ../../sass/md/_tree.scss */
+/* line 253, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
@@ -2933,7 +2287,6 @@ Tree-Indent:first:last:expanded:hover {
 /* line 3, ../../sass/md/_text.scss */
 Text {
   border: none;
-  border-radius: 3px;
   padding: 3px 6px 3px 6px;
   background-color: #ffffff;
   background-image: none;
@@ -2943,7 +2296,7 @@ Text {
   background-position: left top;
 }
 
-/* line 15, ../../sass/md/_text.scss */
+/* line 14, ../../sass/md/_text.scss */
 Text[MULTI] {
   /*
    * padding currently has no effect because of bug 253644
@@ -2952,23 +2305,23 @@ Text[MULTI] {
   padding: 3px 6px 3px 6px;
 }
 
-/* line 23, ../../sass/md/_text.scss */
+/* line 22, ../../sass/md/_text.scss */
 Text[BORDER],
 Text[MULTI][BORDER] {
-  border: 1px solid #cacaca;
+  border: 1px solid #d0d0d0;
   border-radius: 3px;
   /*box-shadow: inset 0 0 1px #cdcdcd;*/
 }
 
-/* line 30, ../../sass/md/_text.scss */
+/* line 29, ../../sass/md/_text.scss */
 Text[BORDER]:focused,
 Text[MULTI][BORDER]:focused {
-  border: 1px solid #6BBAE1;
+  border: 1px solid #599FE2;
   background-color: #FFFEDB;
   box-shadow: none;
 }
 
-/* line 37, ../../sass/md/_text.scss */
+/* line 36, ../../sass/md/_text.scss */
 Text[BORDER]:disabled,
 Text[MULTI][BORDER]:disabled,
 Text[BORDER]:read-only,
@@ -2976,19 +2329,19 @@ Text[MULTI][BORDER]:read-only {
   box-shadow: none;
 }
 
-/* line 44, ../../sass/md/_text.scss */
+/* line 43, ../../sass/md/_text.scss */
 Text-Message {
   color: #a7a6aa;
   text-shadow: none;
 }
 
-/* line 49, ../../sass/md/_text.scss */
+/* line 48, ../../sass/md/_text.scss */
 Text-Search-Icon {
   background-image: url(resource/widget/rap/text/find.png);
   spacing: 3px;
 }
 
-/* line 54, ../../sass/md/_text.scss */
+/* line 53, ../../sass/md/_text.scss */
 Text-Cancel-Icon {
   background-image: url(resource/widget/rap/text/clear.gif);
   spacing: 3px;
@@ -3007,6 +2360,17 @@ Table {
   border: 1px solid #bdbdbd;
 }*/
 /* line 14, ../../sass/md/_table.scss */
+Table[BORDER] {
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #ffffff;
+  box-shadow: 0px 1px 2px #b0b0b0;
+  /* XXX space for shadow; does not work; see DefaultAddDesign.createPanelContents() for fix */
+  /*margin: 2px 3px 4px 3px; */
+  padding: 3px 3px;
+}
+
+/* line 24, ../../sass/md/_table.scss */
 TableColumn {
   background-color: #f1f4f6;
   padding: 4px 10px 4px 10px;
@@ -3015,13 +2379,13 @@ TableColumn {
   text-shadow: 0 1px 0 #ffffff;
 }
 
-/* line 22, ../../sass/md/_table.scss */
+/* line 32, ../../sass/md/_table.scss */
 TableColumn:hover {
   background-color: #e1e4e6;
   animation: hoverOut 400ms ease-out;
 }
 
-/* line 27, ../../sass/md/_table.scss */
+/* line 37, ../../sass/md/_table.scss */
 TableItem,
 TableItem:linesvisible:even:rowtemplate {
   background-color: transparent;
@@ -3032,19 +2396,19 @@ TableItem:linesvisible:even:rowtemplate {
   border-bottom: 1px solid #edf1f3;
 }
 
-/* line 37, ../../sass/md/_table.scss */
+/* line 47, ../../sass/md/_table.scss */
 TableItem:linesvisible:even {
   /*background-color: #f0f0f0;*/
 }
 
-/* line 41, ../../sass/md/_table.scss */
+/* line 51, ../../sass/md/_table.scss */
 Table-RowOverlay {
   background-color: transparent;
   color: inherit;
   background-image: none;
 }
 
-/* line 46, ../../sass/md/_table.scss */
+/* line 56, ../../sass/md/_table.scss */
 Table-RowOverlay:hover,
 Table-RowOverlay:linesvisible:even:hover {
   color: #0f1c23;
@@ -3052,56 +2416,56 @@ Table-RowOverlay:linesvisible:even:hover {
   text-shadow: 0 1px 0 #ffffff;
 }
 
-/* line 52, ../../sass/md/_table.scss */
+/* line 62, ../../sass/md/_table.scss */
 Table-RowOverlay:selected,
 Table-RowOverlay:selected:unfocused {
   color: #0f1c23;
   background-color: #e5e9ec;
 }
 
-/* line 57, ../../sass/md/_table.scss */
+/* line 67, ../../sass/md/_table.scss */
 Table-RowOverlay:linesvisible:even:selected,
 Table-RowOverlay:linesvisible:even:selected:unfocused {
   color: #0f1c23;
   background-color: #e5e9ec;
 }
 
-/* line 63, ../../sass/md/_table.scss */
+/* line 73, ../../sass/md/_table.scss */
 TableColumn-SortIndicator {
   background-image: none;
 }
 
-/* line 66, ../../sass/md/_table.scss */
+/* line 76, ../../sass/md/_table.scss */
 TableColumn-SortIndicator:up {
   background-image: url(resource/widget/rap/column/sort-indicator-up.png);
 }
 
-/* line 70, ../../sass/md/_table.scss */
+/* line 80, ../../sass/md/_table.scss */
 TableColumn-SortIndicator:down {
   background-image: url(resource/widget/rap/column/sort-indicator-down.png);
 }
 
-/* line 74, ../../sass/md/_table.scss */
+/* line 84, ../../sass/md/_table.scss */
 Table-Cell {
   spacing: 3px;
   padding: 4px 10px 4px 10px;
 }
 
-/* line 79, ../../sass/md/_table.scss */
+/* line 89, ../../sass/md/_table.scss */
 Table-GridLine,
 Table-GridLine:vertical,
 Table-GridLine:vertical:rowtemplate {
   color: transparent;
 }
 
-/* line 85, ../../sass/md/_table.scss */
+/* line 95, ../../sass/md/_table.scss */
 Table-GridLine:header,
 Table-GridLine:horizontal,
 Table-GridLine:horizontal:rowtemplate {
   color: #edf1f3;
 }
 
-/* line 91, ../../sass/md/_table.scss */
+/* line 101, ../../sass/md/_table.scss */
 Table-Checkbox {
   /*
   For backward compatibility we have to keep the width property.
@@ -3112,27 +2476,27 @@ Table-Checkbox {
   background-image: url(resource/widget/rap/button/check-unselected.png);
 }
 
-/* line 101, ../../sass/md/_table.scss */
+/* line 111, ../../sass/md/_table.scss */
 Table-Checkbox:hover {
   background-image: url(resource/widget/rap/button/check-unselected-hover.png);
 }
 
-/* line 105, ../../sass/md/_table.scss */
+/* line 115, ../../sass/md/_table.scss */
 Table-Checkbox:checked {
   background-image: url(resource/widget/rap/button/check-selected.png);
 }
 
-/* line 109, ../../sass/md/_table.scss */
+/* line 119, ../../sass/md/_table.scss */
 Table-Checkbox:checked:hover {
   background-image: url(resource/widget/rap/button/check-selected-hover.png);
 }
 
-/* line 113, ../../sass/md/_table.scss */
+/* line 123, ../../sass/md/_table.scss */
 Table-Checkbox:checked:grayed {
   background-image: url(resource/widget/rap/button/check-grayed.png);
 }
 
-/* line 117, ../../sass/md/_table.scss */
+/* line 127, ../../sass/md/_table.scss */
 Table-Checkbox:checked:grayed:hover {
   background-image: url(resource/widget/rap/button/check-grayed-hover.png);
 }
@@ -3184,5 +2548,164 @@ ScrollBar-DownButton[VERTICAL] {
 */
 /* line 2, ../../sass/md/_toolbar.scss */
 .atlas-toolbar {
-  background-image: gradient(linear, left top, left bottom, from(#E2EdF5), to(#ffffff));
+  background-image: gradient(linear, left top, left bottom, from(#b0d1f1), to(#ffffff));
 }
+
+/* Shell and Dialog default theme */
+/* line 4, ../../sass/md/_shell.scss */
+Shell {
+  animation: none;
+  border: none;
+  border-radius: 3px;
+  background-color: #ffffff;
+  background-image: none;
+  padding: 0px;
+  /* 5px 0px 5px;*/
+  opacity: 1;
+  box-shadow: none;
+  animation: fadeIn 200ms ease-in, fadeOut 200ms ease-out;
+}
+
+/* line 16, ../../sass/md/_shell.scss */
+Shell[TITLE], Shell[BORDER] {
+  border: none;
+  box-shadow: 0 10px 24px #7d7d7d;
+  /* darken shadow because displayOverlay is already dark. */
+}
+
+/* line 21, ../../sass/md/_shell.scss */
+Shell[BORDER]:inactive, Shell[TITLE]:inactive {
+  border: none;
+  box-shadow: 0 5px 10px #b0b0b0;
+}
+
+/* line 26, ../../sass/md/_shell.scss */
+Shell:maximized, Shell:maximized:inactive {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+/* line 32, ../../sass/md/_shell.scss */
+Shell-DisplayOverlay {
+  animation: fadeIn 200ms linear, fadeOut 200ms ease-out;
+  background-image: none;
+  background-color: #808080;
+  opacity: 0.4;
+}
+
+/* Shell titlebar */
+/* line 41, ../../sass/md/_shell.scss */
+Shell-Titlebar {
+  background-color: #ffffff;
+  /*background-gradient-color: #0080c0;*/
+  color: #4a4a4a;
+  /*background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ), to( #5882b5 )
+  );*/
+  padding: 10px 10px 0 10px;
+  margin: 0px;
+  height: 38px;
+  border: none;
+  border-radius: 0;
+  text-shadow: none;
+  font: 22px "Roboto", "Noto", sans-serif;
+}
+
+/* Action buttons */
+/* line 60, ../../sass/md/_shell.scss */
+Button[PUSH].dialog {
+  color: #599FE2;
+  background-color: #ffffff;
+}
+
+/* line 64, ../../sass/md/_shell.scss */
+Button[PUSH]:hover.dialog {
+  color: #2e86da;
+  /*animation: hoverOut 400ms ease-out;*/
+}
+
+/*Shell-Titlebar:inactive {
+  background-color: #7996a5;
+  background-gradient-color: #7996a5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #818181 ), to( #b5b5b5 )
+  );
+}*/
+/* Shell buttons */
+/* Minimize button */
+/*
+Shell-MinButton {
+  background-image: url( resource/widget/rap/window/shell-min.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MinButton:hover {
+  background-image: url( resource/widget/rap/window/shell-min-hover.png );
+}
+
+Shell-MinButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-min.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MinButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-min-hover.png );
+}*/
+/* Maximize button */
+/*
+Shell-MaxButton {
+  background-image: url( resource/widget/rap/window/shell-max.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MaxButton:hover {
+  background-image: url( resource/widget/rap/window/shell-max-hover.png );
+}
+
+Shell-MaxButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-max.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MaxButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-max-hover.png );
+}*/
+/* Restore button */
+/*
+Shell-MaxButton:maximized {
+  background-image: url( resource/widget/rap/window/shell-restore.png );
+}
+
+Shell-MaxButton:maximized:hover {
+  background-image: url( resource/widget/rap/window/shell-restore-hover.png );
+}
+
+Shell-MaxButton:maximized:inactive {
+  background-image: url( resource/widget/rap/window/shell-restore.png );
+}
+
+Shell-MaxButton:maximized:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-restore-hover.png );
+}*/
+/* Close button */
+/*
+Shell-CloseButton {
+  background-image: url( resource/widget/rap/window/shell-close.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-CloseButton:hover {
+  background-image: url( resource/widget/rap/window/shell-close-hover.png );
+}
+
+Shell-CloseButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-close.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-CloseButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-close-hover.png );
+}*/

@@ -1,56 +1,17 @@
-/* 
- * polymap.org
- * Copyright (C) 2014, Polymap GmbH. All rights reserved.
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- */
-
-TreeColumn {
-  color: inherit;
-  background-color: #f0f0f0;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
-  padding: 3px 3px 3px 3px;
-  border-bottom: 1px solid #bdbdbd;
-}
-
-Tree-Cell {
-  spacing: 2px;
-  padding: 1px 1px 1px 1px;
-}
-
-TreeItem.firstRow {
-  background-color: #f0f0f0;
-  color: inherit;
-  text-decoration: none;
-  text-shadow: none;
-  background-image: none;
-}
-
 /* Tree default theme */
 
 Tree {
   background-color: inherit;
   border: none;
-  color: #4a4a4a;
+  color: inherit;
 }
 
 Tree[BORDER] {
-  border: 1px solid #bdbdbd;
+  border: 1px solid $separator1;
 }
 
-TreeItem {
+TreeItem,
+TreeItem:linesvisible:even:rowtemplate {
   background-color: transparent;
   color: inherit;
   text-decoration: none;
@@ -64,6 +25,7 @@ TreeItem:linesvisible:even {
   border: none;
 }
 
+/* RowOverlay = MdListViewer? */
 Tree-RowOverlay {
   background-color: transparent;
   color: inherit;
@@ -71,26 +33,27 @@ Tree-RowOverlay {
 }
 
 Tree-RowOverlay:hover {
-  color: #4a4a4a;
-  background-color: #b5b5b5;
-  background-image: gradient(
+  color: $text-color;
+  background-color: $separator1;
+  /*background-image: gradient(
     linear, left top, left bottom,
     from( #ebebeb ),
     to( #d5d5d5 )
-  );
+  );*/
 }
 
+Tree-RowOverlay:selected:unfocused,
 Tree-RowOverlay:selected {
-  color: #ffffff;
-  background-color: #5882b5;
-  background-image: gradient(
+  color: $selection-fg;
+  background-color: $selection-bg;
+  /*background-image: gradient(
     linear, left top, left bottom,
     from( #5882b5 ),
     to( #416693 )
-  );
+  );*/
 }
 
-Tree-RowOverlay:selected:unfocused {
+/*Tree-RowOverlay:selected:unfocused {
   color: #ffffff;
   background-color: #b5b5b5;
   background-image: gradient(
@@ -98,8 +61,9 @@ Tree-RowOverlay:selected:unfocused {
     from( #b5b5b5 ),
     to( #818181 )
   );
-}
+}*/
 
+/* falko: linesvisible: no different hover/selection behaviour
 Tree-RowOverlay:linesvisible:even:hover {
   color: #4a4a4a;
   background-color: #b5b5b5;
@@ -129,8 +93,9 @@ Tree-RowOverlay:linesvisible:even:selected:unfocused {
     to( #818181 )
   );
 }
+*/
 
-/*TreeColumn {
+TreeColumn {
   color: inherit;
   background-color: #f0f0f0;
    background-image: gradient(
@@ -141,7 +106,7 @@ Tree-RowOverlay:linesvisible:even:selected:unfocused {
   padding: 8px 10px 8px 6px;
   border-bottom: 1px solid #bdbdbd;
   text-shadow: none;
-}*/
+}
 
 TreeColumn:hover {
   background-image: gradient(
@@ -163,17 +128,20 @@ TreeColumn-SortIndicator:down {
   background-image: url( resource/widget/rap/column/sort-indicator-down.png );
 }
 
-/*Tree-Cell {
+Tree-Cell {
   spacing: 3px;
   padding: 5px 3px 5px 3px;
-}*/
-
-Tree-GridLine {
-  color: #d0d0d0;
 }
 
-Tree-GridLine:horizontal {
+Tree-GridLine,
+Tree-GridLine:vertical:rowtemplate {
   color: transparent;
+}
+
+Tree-GridLine:vertical,
+Tree-GridLine:header,
+Tree-GridLine:horizontal:rowtemplate {
+  color: $separator1;
 }
 
 Tree-Checkbox {
@@ -202,7 +170,7 @@ Tree-Checkbox:checked:grayed:hover {
 }
 
 Tree-Indent {
-  width: 16px;
+  width: 0px;
   background-image: none;
 }
 

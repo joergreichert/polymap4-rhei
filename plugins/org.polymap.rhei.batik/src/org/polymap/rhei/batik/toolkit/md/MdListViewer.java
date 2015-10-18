@@ -139,6 +139,9 @@ public class MdListViewer
     protected void customizeTree() {
         if (!customized) {
             customized = true;
+            
+            getTree().setLinesVisible( true );
+            
             Template template = new Template();
 
             // 16dp used for the tree node handle
@@ -157,7 +160,8 @@ public class MdListViewer
                         .setTop( dp( 11 ).pix() ).setHeight( 18 )
                         .setHorizontalAlignment( SWT.LEFT );
                 cell.setBindingIndex( colCount++ );
-                cell.setSelectable( openListenerPresent );
+                // this makes text a link, which flickers and does not look very smooth
+                //cell.setSelectable( openListenerPresent );
                 cell.setFont( MdAppDesign.font( FontStyle.Subhead ) );
                 
                 tileHeight = dp( 48 );

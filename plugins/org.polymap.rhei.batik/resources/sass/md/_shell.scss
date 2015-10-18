@@ -1,0 +1,157 @@
+
+/* Shell and Dialog default theme */
+
+Shell {
+  animation: none;
+  border: none;
+  border-radius: 3px;
+  background-color: #ffffff;
+  background-image: none;
+  padding: 0px; /* 5px 0px 5px;*/
+  opacity: 1;
+  box-shadow: none;
+  animation: fadeIn 200ms ease-in, fadeOut 200ms ease-out;
+}
+
+Shell[TITLE], Shell[BORDER] {
+  border: none;
+  box-shadow: 0 10px 24px darken( $shadow, 20% );  /* darken shadow because displayOverlay is already dark. */
+}
+
+Shell[BORDER]:inactive, Shell[TITLE]:inactive {
+  border: none;
+  box-shadow: 0 5px 10px $shadow;
+}
+
+Shell:maximized, Shell:maximized:inactive {
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+Shell-DisplayOverlay {
+  animation: fadeIn 200ms linear, fadeOut 200ms ease-out;
+  background-image: none;
+  background-color: #808080;
+  opacity: 0.4;
+}
+
+/* Shell titlebar */
+
+Shell-Titlebar {
+  background-color: #ffffff;
+  /*background-gradient-color: #0080c0;*/
+  color: $text-color;
+  /*background-image: gradient(
+    linear, left top, left bottom,
+    from( #416693 ), to( #5882b5 )
+  );*/
+  padding: 10px 10px 0 10px;
+  margin: 0px;
+  height: 38px;
+  border: none;
+  border-radius: 0;
+  text-shadow: none;
+  font: 22px $font;
+}
+
+/* Action buttons */
+
+Button[PUSH].dialog {
+  color: $action-bg;
+  background-color: #ffffff;
+}
+Button[PUSH]:hover.dialog {
+  color: darken( $action-bg, 10% );
+  /*animation: hoverOut 400ms ease-out;*/
+}
+
+
+/*Shell-Titlebar:inactive {
+  background-color: #7996a5;
+  background-gradient-color: #7996a5;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #818181 ), to( #b5b5b5 )
+  );
+}*/
+
+/* Shell buttons */
+
+/* Minimize button */
+/*
+Shell-MinButton {
+  background-image: url( resource/widget/rap/window/shell-min.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MinButton:hover {
+  background-image: url( resource/widget/rap/window/shell-min-hover.png );
+}
+
+Shell-MinButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-min.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MinButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-min-hover.png );
+}*/
+
+/* Maximize button */
+/*
+Shell-MaxButton {
+  background-image: url( resource/widget/rap/window/shell-max.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MaxButton:hover {
+  background-image: url( resource/widget/rap/window/shell-max-hover.png );
+}
+
+Shell-MaxButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-max.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-MaxButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-max-hover.png );
+}*/
+
+/* Restore button */
+/*
+Shell-MaxButton:maximized {
+  background-image: url( resource/widget/rap/window/shell-restore.png );
+}
+
+Shell-MaxButton:maximized:hover {
+  background-image: url( resource/widget/rap/window/shell-restore-hover.png );
+}
+
+Shell-MaxButton:maximized:inactive {
+  background-image: url( resource/widget/rap/window/shell-restore.png );
+}
+
+Shell-MaxButton:maximized:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-restore-hover.png );
+}*/
+
+/* Close button */
+/*
+Shell-CloseButton {
+  background-image: url( resource/widget/rap/window/shell-close.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-CloseButton:hover {
+  background-image: url( resource/widget/rap/window/shell-close-hover.png );
+}
+
+Shell-CloseButton:inactive {
+  background-image: url( resource/widget/rap/window/shell-close.png );
+  margin: 0 -2px 0 0;
+}
+
+Shell-CloseButton:inactive:hover {
+  background-image: url( resource/widget/rap/window/shell-close-hover.png );
+}*/

@@ -18,14 +18,18 @@ import static org.polymap.rhei.batik.toolkit.md.MdAppDesign.dp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
+
 import org.polymap.rhei.batik.PanelPath;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
+import org.polymap.rhei.batik.toolkit.SimpleDialog;
 
 /**
  * Material design toolkit.
@@ -116,5 +120,13 @@ public class MdToolkit
     public MdToolbar createToolbar( String label, int... styles ) {
         return new MdToolbar( this, panelPage.control, label, stylebits( styles ) );
     }
+
     
+    @Override
+    public SimpleDialog createSimpleDialog( String title ) {
+        SimpleDialog result = super.createSimpleDialog( title );
+        result.centerOn.put( panelPage.control );
+        return result;
+    }
+
 }

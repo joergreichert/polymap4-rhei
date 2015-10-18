@@ -31,6 +31,10 @@
 /**********************************************************
  * Colors
  */
+/* Selected lines of list, trees and tables */
+/*lighten( $action-bg, 30% );*/
+/* Light separator color for tree/table lines, header underline. */
+/* Dark separator used for borders and section separator. */
 /**********************************************************
  * Icons
  */

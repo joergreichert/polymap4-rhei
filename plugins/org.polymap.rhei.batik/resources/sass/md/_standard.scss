@@ -24,19 +24,28 @@ $text-color-disabled:   #6a6a6a;
 
 $link-color:            #5a9cbd;
 
-$action-bg:             #599FC2;
+$action-bg:             #599FE2;
 $action-fg:             #ffffff;
 $action-disabled-bg:    #C0C0C0;
 $action-disabled-fg:    #ffffff;
 
-$header-bg:             #E2EdF5;
-$header-fg:             #90A5B3;
+/* Selected lines of list, trees and tables */
+$selection-bg:          #FFFEDB;                    /*lighten( $action-bg, 30% );*/
+$selection-fg:          $text-color;
+
+$header-bg:             lighten( $action-bg, 20% );
+$header-fg:             #ffffff;
 
 $fab-bg:                #81CC39;
 $fab-fg:                #ffffff;
 $fab-hover:             #6eb02e;
 
 $shadow:                #b0b0b0;
+
+/* Light separator color for tree/table lines, header underline. */
+$separator1:            #e8e8e8;
+/* Dark separator used for borders and section separator. */
+$separator2:            #d0d0d0;
 
 /**********************************************************
  * Icons

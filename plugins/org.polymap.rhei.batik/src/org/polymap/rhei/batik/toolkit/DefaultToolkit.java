@@ -408,6 +408,12 @@ public class DefaultToolkit
     }
 
     
+    @Override
+    public SimpleDialog createSimpleDialog( String title ) {
+        return new SimpleDialog().title.put( title );
+    }
+
+    
     public <T extends Composite> T adapt( T composite ) {
         UIUtils.setVariant( composite, CSS_PREFIX );
 

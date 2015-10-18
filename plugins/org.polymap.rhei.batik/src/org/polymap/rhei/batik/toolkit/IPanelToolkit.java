@@ -157,4 +157,25 @@ public interface IPanelToolkit
 
     public IBusyIndicator busyIndicator( Composite parent );
 
+    
+    /**
+     * Creates a new dialog.
+     * <b>Example:</b>
+     * <pre>
+     * SimpleDialog dialog = site().toolkit().createSimpleDialog( "Titel!" );
+     * dialog.addAction( new Action( "OK") {
+     *     public void run() {
+     *         dialog.close( );
+     *     }
+     * } );
+     * dialog.open();
+     * </pre>
+     * 
+     * @param title
+     * @return Newly created dialog instance.
+     * @see <a href="http://www.google.com/design/spec/components/dialogs.html">
+     *      Material Design</a>
+     */
+    public SimpleDialog createSimpleDialog( String title );
+    
 }
