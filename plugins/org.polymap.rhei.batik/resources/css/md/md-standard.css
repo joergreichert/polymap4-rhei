@@ -1374,96 +1374,8 @@ Browser[BORDER] {
   border: 1px solid #a4a4a4;
 }
 
-/* ScrollBar default theme */
-/*
-ScrollBar {
-  background-color: #f0f0f0;
-  background-image: none;
-  border: none;
-  border-radius: 0;
-  width: 3px;
-}
-
-ScrollBar-Thumb {
-  background-color: #f0f0f0;
-  border: 1px solid #bdbdbd;
-  border-radius: 15px;
-  background-image: url( resource/widget/rap/scrollbar/scrollbar-background.png );
-  min-height: 20px;
-}
-
-ScrollBar-UpButton,
-ScrollBar-DownButton {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  cursor: default;
-}
-
-ScrollBar-UpButton[HORIZONTAL] {
-  background-image: url( resource/widget/rap/scrollbar/right.png );
-}
-
-ScrollBar-DownButton[HORIZONTAL] {
-  background-image: url( resource/widget/rap/scrollbar/left.png );
-}
-
-ScrollBar-UpButton[VERTICAL] {
-  background-image: url( resource/widget/rap/scrollbar/down.png )
-}
-
-ScrollBar-DownButton[VERTICAL] {
-  background-image: url( resource/widget/rap/scrollbar/up.png );
-}
-*/
-/* FileUpload default theme */
-/* line 1374, ../../sass/md/md-standard.scss */
-FileUpload {
-  background-image: gradient(linear, left top, left bottom, from(#f9f9f9), to(#e4e4e4));
-  background-repeat: repeat;
-  background-position: left top;
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
-  padding: 6px 15px;
-  spacing: 2px;
-  cursor: pointer;
-  animation: none;
-  color: #4a4a4a;
-  background-color: #ffffff;
-  opacity: 1;
-  text-shadow: 0 1px 0 #ffffff;
-}
-
-/* line 1394, ../../sass/md/md-standard.scss */
-FileUpload:disabled {
-  cursor: default;
-  color: #d2d2d2;
-  background-image: none;
-  background-color: #fafafa;
-  border: 1px solid #d2d2d2;
-}
-
-/* line 1402, ../../sass/md/md-standard.scss */
-FileUpload:hover {
-  background-image: gradient(linear, left top, left bottom, from(#eaeaea), to(#d5d5d5));
-}
-
-/* line 1410, ../../sass/md/md-standard.scss */
-FileUpload:pressed {
-  background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
-}
-
-/* line 1418, ../../sass/md/md-standard.scss */
-FileUpload-FocusIndicator {
-  background-color: transparent;
-  border: 1px dotted #b8b8b8;
-  margin: 2px;
-  padding: 0px;
-  opacity: 1;
-}
-
 /* JFace specific theming */
-/* line 1428, ../../sass/md/md-standard.scss */
+/* line 1332, ../../sass/md/md-standard.scss */
 Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
   border: 1px solid #bdbdbd;
   padding: 0;
@@ -1654,7 +1566,7 @@ Composite.atlas-panel-client {
 
 /* line 38, ../../sass/md/_batik_panel.scss */
 Composite[BORDER].atlas-panel-header {
-  border-radius: 3px;
+  border-radius: 2px;
   border: 0px solid #ffffff;
   /*background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));*/
   background-color: #b0d1f1;
@@ -1756,12 +1668,11 @@ Button {
   animation: none;
   opacity: 1;
   text-shadow: none;
-  box-shadow: none;
   text-decoration: none;
   box-shadow: none;
 }
 
-/* line 21, ../../sass/md/_button.scss */
+/* line 20, ../../sass/md/_button.scss */
 Button[PUSH],
 Button[TOGGLE],
 Button[PUSH][BORDER],
@@ -1769,13 +1680,30 @@ Button[TOGGLE][BORDER],
 Button[PUSH][FLAT],
 Button[TOGGLE][FLAT] {
   font: 15px "Roboto", "Noto", sans-serif;
-  color: #ffffff;
-  background-color: #599FE2;
-  padding: 5px 15px;
   cursor: pointer;
 }
 
-/* line 34, ../../sass/md/_button.scss */
+/* w/o border: Raised button */
+/* line 31, ../../sass/md/_button.scss */
+Button[PUSH],
+Button[TOGGLE],
+Button[PUSH][BORDER],
+Button[TOGGLE][BORDER] {
+  color: #ffffff;
+  background-color: #599FE2;
+  box-shadow: 0px 1px 2px #b0b0b0;
+}
+
+/* flat button */
+/* line 41, ../../sass/md/_button.scss */
+Button[PUSH][FLAT],
+Button[TOGGLE][FLAT] {
+  color: #599FE2;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* line 48, ../../sass/md/_button.scss */
 Button[ARROW],
 Button[ARROW][BORDER],
 Button[ARROW][FLAT] {
@@ -1797,7 +1725,7 @@ Button[TOGGLE]:default {
   );
   border: 1px solid #a0b3ca;
 }*/
-/* line 60, ../../sass/md/_button.scss */
+/* line 74, ../../sass/md/_button.scss */
 Button[ARROW]:disabled,
 Button[PUSH]:disabled,
 Button[TOGGLE]:disabled,
@@ -1809,7 +1737,13 @@ Button[TOGGLE]:selected:disabled {
   /*border: 1px solid #d2d2d2;*/
 }
 
-/* line 71, ../../sass/md/_button.scss */
+/* line 85, ../../sass/md/_button.scss */
+Button[PUSH][FLAT]:disabled,
+Button[TOGGLE][FLAT]:disabled {
+  color: #C0C0C0;
+}
+
+/* line 90, ../../sass/md/_button.scss */
 Button[ARROW]:hover,
 Button[PUSH]:hover,
 Button[TOGGLE]:hover {
@@ -1817,7 +1751,14 @@ Button[TOGGLE]:hover {
   animation: hoverOut 400ms ease-out;
 }
 
-/* line 78, ../../sass/md/_button.scss */
+/* line 97, ../../sass/md/_button.scss */
+Button[PUSH][FLAT]:hover,
+Button[TOGGLE][FLAT]:hover {
+  background-color: transparent;
+  color: #2e86da;
+}
+
+/* line 103, ../../sass/md/_button.scss */
 Button[ARROW]:pressed,
 Button[PUSH]:pressed,
 Button[TOGGLE]:pressed {
@@ -1829,24 +1770,24 @@ Button[TOGGLE]:pressed {
   );*/
 }
 
-/* line 89, ../../sass/md/_button.scss */
+/* line 114, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 97, ../../sass/md/_button.scss */
+/* line 122, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected:hover {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 105, ../../sass/md/_button.scss */
+/* line 130, ../../sass/md/_button.scss */
 Button[CHECK],
 Button[RADIO] {
   padding: 3px 3px 3px 0;
   spacing: 7px;
 }
 
-/* line 111, ../../sass/md/_button.scss */
+/* line 136, ../../sass/md/_button.scss */
 Button[CHECK][BORDER],
 Button[RADIO][BORDER] {
   cursor: default;
@@ -1855,77 +1796,77 @@ Button[RADIO][BORDER] {
   border-radius: 2px;
 }
 
-/* line 119, ../../sass/md/_button.scss */
+/* Checkbox */
+/* line 145, ../../sass/md/_button.scss */
 Button-CheckIcon {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 126, ../../sass/md/_button.scss */
+/* line 148, ../../sass/md/_button.scss */
 Button-CheckIcon:hover {
   background-image: url(resources/icons/rap/png/hover/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 131, ../../sass/md/_button.scss */
+/* line 151, ../../sass/md/_button.scss */
 Button-CheckIcon:selected {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-marked-circle.png);
 }
 
-/* line 136, ../../sass/md/_button.scss */
+/* line 154, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:hover {
-  background-image: url(resource/widget/rap/button/check-selected-hover.png);
+  background-image: url(resources/icons/rap/png/hover/20//checkbox-marked-circle.png);
 }
 
-/* line 140, ../../sass/md/_button.scss */
+/* line 157, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed {
-  background-image: url(resource/widget/rap/button/check-grayed.png);
-}
-
-/* line 144, ../../sass/md/_button.scss */
-Button-CheckIcon:selected:grayed:hover {
-  background-image: url(resource/widget/rap/button/check-grayed-hover.png);
-}
-
-/* line 148, ../../sass/md/_button.scss */
-Button-RadioIcon {
-  background-image: url(resource/widget/rap/button/radio-unselected.png);
-}
-
-/* line 152, ../../sass/md/_button.scss */
-Button-RadioIcon:hover {
-  background-image: url(resource/widget/rap/button/radio-unselected-hover.png);
-}
-
-/* line 156, ../../sass/md/_button.scss */
-Button-RadioIcon:selected {
-  background-image: url(resource/widget/rap/button/radio-selected.png);
+  /*background-image: url( resource/widget/rap/button/check-grayed.png );*/
 }
 
 /* line 160, ../../sass/md/_button.scss */
-Button-RadioIcon:selected:hover {
-  background-image: url(resource/widget/rap/button/radio-selected-hover.png);
+Button-CheckIcon:selected:grayed:hover {
+  /* background-image: url( resource/widget/rap/button/check-grayed-hover.png );*/
 }
 
-/* line 164, ../../sass/md/_button.scss */
-Button-ArrowIcon[UP] {
-  background-image: url(resource/widget/rap/button/arrow-up.png);
+/* Radio */
+/* line 165, ../../sass/md/_button.scss */
+Button-RadioIcon {
+  background-image: url(resources/icons/rap/png/normal/20//radiobox-blank.png);
 }
 
 /* line 168, ../../sass/md/_button.scss */
+Button-RadioIcon:hover {
+  background-image: url(resources/icons/rap/png/hover/20//radiobox-blank.png);
+}
+
+/* line 171, ../../sass/md/_button.scss */
+Button-RadioIcon:selected {
+  background-image: url(resources/icons/rap/png/normal/20//radiobox-marked.png);
+}
+
+/* line 174, ../../sass/md/_button.scss */
+Button-RadioIcon:selected:hover {
+  background-image: url(resources/icons/rap/png/hover/20//radiobox-marked.png);
+}
+
+/** Arrow */
+/*
+Button-ArrowIcon[UP] {
+  background-image: url( resource/widget/rap/button/arrow-up.png );
+}
+
 Button-ArrowIcon[DOWN] {
-  background-image: url(resource/widget/rap/button/arrow-down.png);
+  background-image: url( resource/widget/rap/button/arrow-down.png );
 }
 
-/* line 172, ../../sass/md/_button.scss */
 Button-ArrowIcon[LEFT] {
-  background-image: url(resource/widget/rap/button/arrow-left.png);
+  background-image: url( resource/widget/rap/button/arrow-left.png );
 }
 
-/* line 176, ../../sass/md/_button.scss */
 Button-ArrowIcon[RIGHT] {
-  background-image: url(resource/widget/rap/button/arrow-right.png);
+  background-image: url( resource/widget/rap/button/arrow-right.png );
 }
-
-/* line 180, ../../sass/md/_button.scss */
+*/
+/* line 196, ../../sass/md/_button.scss */
 Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -1934,7 +1875,7 @@ Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator
   opacity: 1;
 }
 
-/* line 188, ../../sass/md/_button.scss */
+/* line 204, ../../sass/md/_button.scss */
 Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -2112,139 +2053,128 @@ Tree-GridLine:horizontal:rowtemplate {
   color: #e8e8e8;
 }
 
-/* line 147, ../../sass/md/_tree.scss */
+/*
 Tree-Checkbox {
   margin: 0px 2px 0px 0px;
-  background-image: url(resource/widget/rap/button/check-unselected.png);
+  background-image: url( resource/widget/rap/button/check-unselected.png );
 }
-
-/* line 152, ../../sass/md/_tree.scss */
 Tree-Checkbox:hover {
-  background-image: url(resource/widget/rap/button/check-unselected-hover.png);
+  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
 }
-
-/* line 156, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked {
-  background-image: url(resource/widget/rap/button/check-selected.png);
+  background-image: url( resource/widget/rap/button/check-selected.png );
 }
-
-/* line 160, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:hover {
-  background-image: url(resource/widget/rap/button/check-selected-hover.png);
+  background-image: url( resource/widget/rap/button/check-selected-hover.png );
 }
-
-/* line 164, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:grayed {
-  background-image: url(resource/widget/rap/button/check-grayed.png);
+  background-image: url( resource/widget/rap/button/check-grayed.png );
 }
-
-/* line 168, ../../sass/md/_tree.scss */
 Tree-Checkbox:checked:grayed:hover {
-  background-image: url(resource/widget/rap/button/check-grayed-hover.png);
-}
-
-/* line 172, ../../sass/md/_tree.scss */
+  background-image: url( resource/widget/rap/button/check-grayed-hover.png );
+}*/
+/* line 168, ../../sass/md/_tree.scss */
 Tree-Indent {
   width: 0px;
   background-image: none;
 }
 
-/* line 177, ../../sass/md/_tree.scss */
+/* line 173, ../../sass/md/_tree.scss */
 Tree-Indent:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 181, ../../sass/md/_tree.scss */
+/* line 177, ../../sass/md/_tree.scss */
 Tree-Indent:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 185, ../../sass/md/_tree.scss */
+/* line 181, ../../sass/md/_tree.scss */
 Tree-Indent:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 189, ../../sass/md/_tree.scss */
+/* line 185, ../../sass/md/_tree.scss */
 Tree-Indent:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 193, ../../sass/md/_tree.scss */
+/* line 189, ../../sass/md/_tree.scss */
 Tree-Indent:line {
   background-image: none;
 }
 
-/* line 197, ../../sass/md/_tree.scss */
+/* line 193, ../../sass/md/_tree.scss */
 Tree-Indent:first {
   background-image: none;
 }
 
-/* line 201, ../../sass/md/_tree.scss */
+/* line 197, ../../sass/md/_tree.scss */
 Tree-Indent:first:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 205, ../../sass/md/_tree.scss */
+/* line 201, ../../sass/md/_tree.scss */
 Tree-Indent:first:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 209, ../../sass/md/_tree.scss */
+/* line 205, ../../sass/md/_tree.scss */
 Tree-Indent:first:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 213, ../../sass/md/_tree.scss */
+/* line 209, ../../sass/md/_tree.scss */
 Tree-Indent:first:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 217, ../../sass/md/_tree.scss */
+/* line 213, ../../sass/md/_tree.scss */
 Tree-Indent:last {
   background-image: none;
 }
 
-/* line 221, ../../sass/md/_tree.scss */
+/* line 217, ../../sass/md/_tree.scss */
 Tree-Indent:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 225, ../../sass/md/_tree.scss */
+/* line 221, ../../sass/md/_tree.scss */
 Tree-Indent:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 229, ../../sass/md/_tree.scss */
+/* line 225, ../../sass/md/_tree.scss */
 Tree-Indent:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 233, ../../sass/md/_tree.scss */
+/* line 229, ../../sass/md/_tree.scss */
 Tree-Indent:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
 
-/* line 237, ../../sass/md/_tree.scss */
+/* line 233, ../../sass/md/_tree.scss */
 Tree-Indent:first:last {
   background-image: none;
 }
 
-/* line 241, ../../sass/md/_tree.scss */
+/* line 237, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:collapsed {
   background-image: url(resource/widget/rap/tree/tree-collapsed.png);
 }
 
-/* line 245, ../../sass/md/_tree.scss */
+/* line 241, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:collapsed:hover {
   background-image: url(resource/widget/rap/tree/tree-collapsed-hover.png);
 }
 
-/* line 249, ../../sass/md/_tree.scss */
+/* line 245, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:expanded {
   background-image: url(resource/widget/rap/tree/tree-expanded.png);
 }
 
-/* line 253, ../../sass/md/_tree.scss */
+/* line 249, ../../sass/md/_tree.scss */
 Tree-Indent:first:last:expanded:hover {
   background-image: url(resource/widget/rap/tree/tree-expanded-hover.png);
 }
@@ -2613,19 +2543,6 @@ Shell-Titlebar {
   font: 22px "Roboto", "Noto", sans-serif;
 }
 
-/* Action buttons */
-/* line 60, ../../sass/md/_shell.scss */
-Button[PUSH].dialog {
-  color: #599FE2;
-  background-color: #ffffff;
-}
-
-/* line 64, ../../sass/md/_shell.scss */
-Button[PUSH]:hover.dialog {
-  color: #2e86da;
-  /*animation: hoverOut 400ms ease-out;*/
-}
-
 /*Shell-Titlebar:inactive {
   background-color: #7996a5;
   background-gradient-color: #7996a5;
@@ -2709,3 +2626,53 @@ Shell-CloseButton:inactive {
 Shell-CloseButton:inactive:hover {
   background-image: url( resource/widget/rap/window/shell-close-hover.png );
 }*/
+/* FileUpload default theme */
+/* line 4, ../../sass/md/_upload.scss */
+FileUpload,
+FileUpload[BORDER] {
+  /* BORDER does not seem to be recognized */
+  background-image: none;
+  background-repeat: repeat;
+  background-position: left top;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 15px;
+  spacing: 3px;
+  cursor: default;
+  animation: none;
+  opacity: 1;
+  text-shadow: none;
+  text-decoration: none;
+  font: 15px "Roboto", "Noto", sans-serif;
+  color: #ffffff;
+  background-color: #599FE2;
+  box-shadow: 0px 1px 2px #b0b0b0;
+}
+
+/* line 24, ../../sass/md/_upload.scss */
+FileUpload:disabled {
+  cursor: default;
+  color: #ffffff;
+  background-image: none;
+  background-color: #C0C0C0;
+}
+
+/* line 31, ../../sass/md/_upload.scss */
+FileUpload:hover {
+  background-color: #2e86da;
+  animation: hoverOut 400ms ease-out;
+}
+
+/* line 36, ../../sass/md/_upload.scss */
+FileUpload:pressed {
+  background-color: #206cb5;
+}
+
+/* line 40, ../../sass/md/_upload.scss */
+FileUpload-FocusIndicator {
+  background-color: transparent;
+  border: 1px dotted #b8b8b8;
+  margin: 2px;
+  padding: 0px;
+  opacity: 1;
+}

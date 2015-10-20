@@ -65,34 +65,37 @@ public class SvgImageRegistryHelper
     public final static String      NORMAL48 = "normal48";
 
     /** Image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL48_ACTION = "normal48-link";
+    public final static String      ACTION48 = "normal48-link";
 
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL12 = "normal12";
     
     /** Action image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL12_ACTION = "normal12-link";
+    public final static String      ACTION12 = "normal12-link";
     
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      NORMAL24 = "normal24";
     
-    /** Action image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_ACTION = "normal24-link";
+    /** White/background image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      WHITE24 = "white24";
     
     /** Action image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_OK = "normal24-ok";
+    public final static String      ACTION24 = "normal24-link";
     
     /** Action image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_ALERT = "normal24-alert";
+    public final static String      OK24 = "normal24-ok";
     
     /** Action image configuration used to create {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_ERROR = "normal24-error";
+    public final static String      ALERT24 = "normal24-alert";
+    
+    /** Action image configuration used to create {@link #svgImage(String, String)}. */
+    public final static String      ERROR24 = "normal24-error";
     
     /** Image configuration for normale, disabled icons created by {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_DISABLED = "normal24-disabled";
+    public final static String      DISABLED24 = "normal24-disabled";
     
     /** Image configuration for normale, hovered icons created by {@link #svgImage(String, String)}. */
-    public final static String      NORMAL24_HOVERED = "normal24-hovered";
+    public final static String      HOVER24 = "normal24-hovered";
     
     /** Normal image configuration used to create {@link #svgImage(String, String)}. */
     public final static String      OVR12_ACTION = "ovr12-action";
@@ -140,17 +143,19 @@ public class SvgImageRegistryHelper
         }
         
         // default configs
+        RGB white = new RGB( 0xFF, 0xFF, 0xFF );
         RGB action = new RGB( 0x5A, 0xA9, 0xDD );
         RGB normal = new RGB( 0x84, 0xA4, 0xC1 );  //new RGB( 150, 150, 150 );
         putConfig( NORMAL12, new ReplaceBlackSvgConfiguration( normal, 16 ) );
         putConfig( NORMAL24, new ReplaceBlackSvgConfiguration( normal, 24 ) );
         putConfig( NORMAL48, new ReplaceBlackSvgConfiguration( normal, 48 ) );
-        putConfig( NORMAL48_ACTION, new ReplaceBlackSvgConfiguration( action, 48 ) );
-        putConfig( NORMAL24_ACTION, new ReplaceBlackSvgConfiguration( action, 24 ) );
-        putConfig( NORMAL12_ACTION, new ReplaceBlackSvgConfiguration( action, 16 ) );
-        putConfig( NORMAL24_OK, new ReplaceBlackSvgConfiguration( new RGB( 0x81, 0xCC, 0x39 ), 24 ) );
-        putConfig( NORMAL24_ALERT, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0xD2, 0x2C ), 24 ) );
-        putConfig( NORMAL24_ERROR, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0x61, 0x39 ), 24 ) );
+        putConfig( ACTION48, new ReplaceBlackSvgConfiguration( action, 48 ) );
+        putConfig( ACTION24, new ReplaceBlackSvgConfiguration( action, 24 ) );
+        putConfig( ACTION12, new ReplaceBlackSvgConfiguration( action, 16 ) );
+        putConfig( OK24, new ReplaceBlackSvgConfiguration( new RGB( 0x81, 0xCC, 0x39 ), 24 ) );
+        putConfig( ALERT24, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0xD2, 0x2C ), 24 ) );
+        putConfig( ERROR24, new ReplaceBlackSvgConfiguration( new RGB( 0xFF, 0x61, 0x39 ), 24 ) );
+        putConfig( WHITE24, new ReplaceBlackSvgConfiguration( white, 24 ) );
         putConfig( OVR12_ACTION, new ReplaceBlackSvgConfiguration( new RGB( 140, 240, 100 ), 16 ) );
     }
 

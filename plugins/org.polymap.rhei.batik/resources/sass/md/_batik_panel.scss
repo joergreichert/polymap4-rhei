@@ -36,7 +36,7 @@ Composite.atlas-panel-client {
 }
 
 Composite[BORDER].atlas-panel-header {
-  border-radius: 3px;
+  border-radius: 2px;
   border: 0px solid #ffffff;
   /*background-image: gradient(linear, left top, left bottom, from($header-bg), to(#ffffff));*/
   background-color: $header-bg;

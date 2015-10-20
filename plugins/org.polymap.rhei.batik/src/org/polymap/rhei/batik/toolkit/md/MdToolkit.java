@@ -54,6 +54,25 @@ public class MdToolkit
 
 
     /**
+     * The following button types are allowed:
+     * <ul>
+     * <li>{@link SWT#PUSH}</li>
+     * <li>{@link SWT#TOGGLE}</li>
+     * <li>{@link SWT#CHECK}</li>
+     * <li>{@link SWT#RADIO}</li>
+     * </ul>
+     * {@link SWT#PUSH} and {@link SWT#TOGGLE} buttons are Raised buttons be default. {@link SWT#BORDER}
+     * has no effect. A Flat button appearance can be created by giving {@link SWT#FLAT} flag.
+     * 
+     * @see <a href="http://www.google.com/design/spec/components/buttons.html">Material Design</a>
+     */
+    @Override
+    public Button createButton( Composite parent, String text, int... styles ) {
+        return super.createButton( parent, text, styles );
+    }
+
+
+    /**
      * Creates a Floating Action Button.
      * 
      * @see <a

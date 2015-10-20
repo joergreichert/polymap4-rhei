@@ -55,17 +55,6 @@ Shell-Titlebar {
   font: 22px $font;
 }
 
-/* Action buttons */
-
-Button[PUSH].dialog {
-  color: $action-bg;
-  background-color: #ffffff;
-}
-Button[PUSH]:hover.dialog {
-  color: darken( $action-bg, 10% );
-  /*animation: hoverOut 400ms ease-out;*/
-}
-
 
 /*Shell-Titlebar:inactive {
   background-color: #7996a5;

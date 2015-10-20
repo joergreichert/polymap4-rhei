@@ -138,8 +138,7 @@ public class SimpleDialog
 //            assert action.getId() != null : "Dialog actions must have a unique id set.";
 //            int id = Integer.parseInt( action.getId() );
 
-            Button btn = new Button( parent, SWT.PUSH );
-            UIUtils.setVariant( btn, "dialog" );
+            Button btn = new Button( parent, SWT.PUSH|SWT.FLAT );
             btn.setText( action.getText() );
             btn.setToolTipText( action.getToolTipText() );
 //            btn.setData( new Integer( id ) );

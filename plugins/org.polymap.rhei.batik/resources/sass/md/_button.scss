@@ -13,7 +13,6 @@ Button {
   animation: none;
   opacity: 1;
   text-shadow: none;
-  box-shadow: none;
   text-decoration: none;
   box-shadow: none;
 }
@@ -25,10 +24,25 @@ Button[TOGGLE][BORDER],
 Button[PUSH][FLAT],
 Button[TOGGLE][FLAT] {
   font: $font-button;
+  cursor: pointer;
+}
+
+/* w/o border: Raised button */
+Button[PUSH],
+Button[TOGGLE],
+Button[PUSH][BORDER],
+Button[TOGGLE][BORDER] {
   color: $action-fg;
   background-color: $action-bg;
-  padding: 5px 15px;
-  cursor: pointer;
+  box-shadow: 0px 1px 2px $shadow;
+}
+
+/* flat button */
+Button[PUSH][FLAT],
+Button[TOGGLE][FLAT] {
+  color: $action-bg;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 Button[ARROW],
@@ -68,11 +82,22 @@ Button[TOGGLE]:selected:disabled {
   /*border: 1px solid #d2d2d2;*/
 }
 
+Button[PUSH][FLAT]:disabled,
+Button[TOGGLE][FLAT]:disabled {
+  color: $action-disabled-bg;
+}
+
 Button[ARROW]:hover,
 Button[PUSH]:hover,
 Button[TOGGLE]:hover {
   background-color: darken( $action-bg, 10% );
   animation: hoverOut 400ms ease-out;
+}
+
+Button[PUSH][FLAT]:hover,
+Button[TOGGLE][FLAT]:hover {
+  background-color: transparent;
+  color: darken( $action-bg, 10% );
 }
 
 Button[ARROW]:pressed,
@@ -116,51 +141,42 @@ Button[RADIO][BORDER] {
   border-radius: 2px;
 }
 
+/* Checkbox */
 Button-CheckIcon {
   background-image: url( #{$icon-normal}/checkbox-blank-circle-outline.png );
-
-//  background-image: url( https://www.google.de/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png );
-//  background-image: url( resources/icons/rap/button/check-unselected.png );
 }
-
 Button-CheckIcon:hover {
   background-image: url( #{$icon-hover}/checkbox-blank-circle-outline.png );
-//  background-image: url( resource/widget/rap/button/check-unselected-hover.png );
 }
-
 Button-CheckIcon:selected {
   background-image: url( #{$icon-normal}/checkbox-marked-circle.png );
-//  background-image: url( resource/widget/rap/button/check-selected.png );
 }
-
 Button-CheckIcon:selected:hover {
-  background-image: url( resource/widget/rap/button/check-selected-hover.png );
-}
-
+  background-image: url( #{$icon-hover}/checkbox-marked-circle.png );
+  }
 Button-CheckIcon:selected:grayed {
-  background-image: url( resource/widget/rap/button/check-grayed.png );
+  /*background-image: url( resource/widget/rap/button/check-grayed.png );*/
 }
-
 Button-CheckIcon:selected:grayed:hover {
-  background-image: url( resource/widget/rap/button/check-grayed-hover.png );
+ /* background-image: url( resource/widget/rap/button/check-grayed-hover.png );*/
 }
 
+/* Radio */
 Button-RadioIcon {
-  background-image: url( resource/widget/rap/button/radio-unselected.png );
+  background-image: url( #{$icon-normal}/radiobox-blank.png );
 }
-
 Button-RadioIcon:hover {
-  background-image: url( resource/widget/rap/button/radio-unselected-hover.png );
+  background-image: url( #{$icon-hover}/radiobox-blank.png );
 }
-
 Button-RadioIcon:selected {
-  background-image: url( resource/widget/rap/button/radio-selected.png );
+  background-image: url( #{$icon-normal}/radiobox-marked.png );
 }
-
 Button-RadioIcon:selected:hover {
-  background-image: url( resource/widget/rap/button/radio-selected-hover.png );
+  background-image: url( #{$icon-hover}/radiobox-marked.png );
 }
 
+/** Arrow */
+/*
 Button-ArrowIcon[UP] {
   background-image: url( resource/widget/rap/button/arrow-up.png );
 }
@@ -176,7 +192,7 @@ Button-ArrowIcon[LEFT] {
 Button-ArrowIcon[RIGHT] {
   background-image: url( resource/widget/rap/button/arrow-right.png );
 }
-
+*/
 Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
