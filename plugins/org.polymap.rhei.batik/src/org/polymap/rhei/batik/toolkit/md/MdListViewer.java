@@ -145,7 +145,7 @@ public class MdListViewer
             Template template = new Template();
 
             // 16dp used for the tree node handle
-            dp left = iconProvider.isPresent() ? dp( 56 ) : dp( 0 );
+            dp left = iconProvider.isPresent() ? dp( 64 ) : dp( 0 );
             dp tileHeight = dp( 0 );
             int colCount = 0;
             

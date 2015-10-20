@@ -25,6 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
 import org.polymap.core.ui.UIUtils;
@@ -71,6 +73,26 @@ public class SimpleDialog
     }
 
     
+    /**
+     * Sets the content of this dialog. The parent {@link Composite} has
+     * {@link FillLayout} set. Change this if needed. The build should add children
+     * directyl to the parent without an intermediate Composite.
+     *
+     * @param builder
+     */
+    public void setContents( Consumer<Composite> builder ) {
+        this.contentsBuilder = builder;
+    }
+
+
+    /**
+     * Adds a action to the button bar of this dialog.
+     */
+    public void addAction( IAction action ) {
+        actions.add( action );    
+    }
+
+
     @Override
     protected void initializeBounds() {
         super.initializeBounds();
@@ -95,16 +117,15 @@ public class SimpleDialog
     }
 
     
-    public void addAction( IAction action ) {
-        actions.add( action );    
-    }
-
-    
     @Override
     protected Control createDialogArea( Composite parent ) {
         assert contentsBuilder != null : "No contents builder! Call setContents() before opening the dialog.";
         Composite area = (Composite)super.createDialogArea( parent );
-        contentsBuilder.accept( area );
+        
+        // allow other than GridLayout
+        Composite composite = new Composite( area, SWT.NONE );
+        composite.setLayout( new FillLayout( SWT.VERTICAL ) );
+        contentsBuilder.accept( composite );
         return area;
     }
 
@@ -162,11 +183,6 @@ public class SimpleDialog
 //        buttons.put( new Integer( id ), button );
         setButtonLayoutData( button );
         return button;
-    }
-
-
-    public void setContents( Consumer<Composite> builder ) {
-        this.contentsBuilder = builder;
     }
 
 }
