@@ -161,7 +161,7 @@ public class DeferredFeatureContentProvider2
                 if (selection != null && !selection.isEmpty()) {
                     viewer.getControl().getDisplay().asyncExec( new Runnable() {
                         public void run() {
-                            IFeatureTableElement elm = SelectionAdapter.on( selection ).first( IFeatureTableElement.class ).get();
+                            IFeatureTableElement elm = SelectionAdapter.on( selection ).first( IFeatureTableElement.class );
                             viewer.selectElement( elm.fid(), true, false );
                         }
                     });
