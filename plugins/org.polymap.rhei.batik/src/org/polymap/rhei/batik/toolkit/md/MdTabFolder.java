@@ -45,6 +45,8 @@ public class MdTabFolder extends Composite {
     private Map<String,Composite> tabItemContents = new HashMap<String, Composite>();    
     private List<SelectionListener> selectionListeners = new ArrayList<SelectionListener>();
 
+    private Composite tabContent = null;
+
     public MdTabFolder( Composite parent, java.util.List<String> tabItems,
             Map<String,Function<Composite,Composite>> tabContents, int style ) {
         super( parent, style );
@@ -55,7 +57,7 @@ public class MdTabFolder extends Composite {
 
     private void createTabContents( java.util.List<String> tabItems,
             Map<String,Function<Composite,Composite>> tabContents, Map<String,Button> tabButtons ) {
-        final Composite tabContent = new Composite( this, SWT.NONE );
+        tabContent = new Composite( this, SWT.NONE );
         tabContent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         final StackLayout layout = setTabContentLayout( tabContent );
         tabItemContents = createAndRevealTabContents( tabItems, tabContents, tabButtons, tabContent, layout );
@@ -139,6 +141,10 @@ public class MdTabFolder extends Composite {
         data.grabExcessHorizontalSpace = true;
         data.horizontalAlignment = SWT.FILL;
         return data;
+    }
+
+    public void replaceTabContent( String label, Function<Composite,Composite> tabContentFun ) {
+        tabItemContents.put( label, tabContentFun.apply(tabContent) );
     }
 
     public void openTab( String label ) {
