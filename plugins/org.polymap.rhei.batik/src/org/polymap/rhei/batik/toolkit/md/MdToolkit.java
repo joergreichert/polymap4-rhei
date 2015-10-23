@@ -20,13 +20,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
+import org.polymap.rhei.batik.BatikPlugin;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
 import org.polymap.rhei.batik.toolkit.SimpleDialog;
@@ -73,20 +76,65 @@ public class MdToolkit
 
 
     /**
-     * Creates a Floating Action Button.
+     * Creates a default Floating Action Button with "check" icon and
+     * position TOP|RIGHT.
      * 
+     * @see #createFab(Image, int)
      * @see <a
      *      href="http://www.google.com/design/spec/components/buttons-floating-action-button.html">Material
      *      Design</a>.
      */
     @SuppressWarnings("javadoc")
     public Button createFab() {
-        Button result = createButton( panelPage.control, "+", SWT.PUSH );
+        return createFab( BatikPlugin.images().svgImage( "check.svg", SvgImageRegistryHelper.WHITE24 ), SWT.TOP|SWT.RIGHT );
+    }
+    
+    
+    /**
+     * Creates a Floating Action Button.
+     * 
+     * @param icon
+     * @param position A combination of {@link SWT#TOP}, {@link SWT#BOTTOM},
+     *        {@link SWT#LEFT} and {@link SWT#RIGHT}.
+     * @see <a
+     *      href="http://www.google.com/design/spec/components/buttons-floating-action-button.html">Material
+     *      Design</a>.
+     */
+    @SuppressWarnings("javadoc")
+    public Button createFab( Image icon, int position ) {
+        assert (position & ~SWT.TOP & ~SWT.BOTTOM & ~SWT.LEFT & ~SWT.RIGHT) == 0 : "position param is not valid: " + position;
+        
+        Button result = createButton( panelPage.control, "", SWT.PUSH );
+        result.setImage( icon );
         result.moveAbove( null );
         UIUtils.setVariant( result, CSS_FAB );
-        result.setLayoutData( FormDataFactory.defaults()
-                .top( 0, dp( 72 ) ).right( 100, -dp( 40 ) )
-                .width( dp( 72 ) ).height( dp( 72 ) ).create() );
+        
+        int marginTop = dp( 72 );
+        int margin = dp( 40 );
+        int size = dp( 72 );
+
+        FormDataFactory layout = FormDataFactory.on( result )
+                .width( size ).height( size );
+        
+        if ((position & SWT.TOP) != 0) {
+            layout.top( 0, marginTop );
+        }
+        else if ((position & SWT.BOTTOM) != 0) {
+            layout.bottom( 100, margin );
+        }
+        else {
+            layout.top( 50, -size/2 );            
+        }
+        
+        if ((position & SWT.LEFT) != 0) {
+            layout.left( 0, margin );
+        }
+        else if ((position & SWT.RIGHT) != 0) {
+            layout.right( 100, -margin );
+        }
+        else {
+            layout.left( 50, -size/2 );            
+        }
         return result;
     }
 
