@@ -104,22 +104,22 @@ public abstract class AbstractDelegatingFormField<T>
     private void styleButton() {
         if (!button.isEnabled()) {
             button.setText( getDisabledButtonText( button ) );
-//            button.setBackground( getDisabledButtonBackground( button ) );
+            button.setBackground( getDisabledButtonBackground( button ) );
         }
         else {
             button.setText( getButtonText( button ) );
-//            button.setBackground( getButtonBackground( button ) );
+            button.setBackground( getButtonBackground( button ) );
         }
     }
 
 
     protected String getButtonText( Button button ) {
-        return "";
+        return "Configure...";
     }
 
 
     protected String getDisabledButtonText( Button button ) {
-        return "";
+        return "Configure...";
     }
 
 
