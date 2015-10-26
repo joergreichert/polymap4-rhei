@@ -126,6 +126,13 @@ public class MdTabFolder extends Composite {
         }
         return tabButtons;
     }
+    
+    public void setTabVisibility(String tabItem, boolean visible) {
+        Button button = tabButtons.get( tabItem );
+        if(button != null) {
+            button.setVisible( visible );
+        }
+    }
 
     private void setTabBarLayout( java.util.List<String> tabItems, Composite tabBar ) {
         GridLayout tabBarGridLayout = new org.eclipse.swt.layout.GridLayout( tabItems.size(), true );
