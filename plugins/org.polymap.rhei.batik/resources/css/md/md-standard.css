@@ -1908,7 +1908,7 @@ Button:hover.batik-panel-fab {
 Tree {
   background-color: inherit;
   border: none;
-  color: inherit;
+  color: #4a4a4a;
 }
 
 /* line 9, ../../sass/md/_tree.scss */

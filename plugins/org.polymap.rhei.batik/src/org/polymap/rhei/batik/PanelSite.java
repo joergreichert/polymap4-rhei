@@ -142,7 +142,7 @@ public abstract class PanelSite
             assert a != null : "Missing @FireEventType annotation!";
             
             // XXX avoid race conditions; EventManager does not seem to always handle display events properly
-            EventManager.instance().publish( new PanelChangeEvent( site, a.value(), newValue ) );
+            EventManager.instance().syncPublish( new PanelChangeEvent( site, a.value(), newValue ) );
             return newValue;
         }
     }

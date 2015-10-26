@@ -16,6 +16,7 @@ package org.polymap.rhei.batik.toolkit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
@@ -32,12 +33,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
+import org.polymap.core.ui.StatusDispatcher;
 import org.polymap.core.ui.UIUtils;
 
 /**
@@ -50,9 +52,6 @@ public class SimpleDialog
 
     private static Log log = LogFactory.getLog( SimpleDialog.class );
 
-    public static final String              OK_ID = String.valueOf( IDialogConstants.OK_ID );
-    public static final String              CANCEL_ID = String.valueOf( IDialogConstants.CANCEL_ID );
-    
     public Config2<SimpleDialog,String>     title;
 
     public Config2<SimpleDialog,Control>    centerOn;
@@ -62,12 +61,18 @@ public class SimpleDialog
     private Consumer<Composite>             contentsBuilder;
     
     
-    protected SimpleDialog() {
+    /**
+     * Constructs a new dialog with {@link UIUtils#shellToParentOn()} as parent.
+     */
+    public SimpleDialog() {
         this( UIUtils.shellToParentOn() );
     }
     
     
-    protected SimpleDialog( Shell parentShell ) {
+    /**
+     * Constructs a new dialog with the given parent shell.
+     */
+    public SimpleDialog( Shell parentShell ) {
         super( parentShell );
         ConfigurationFactory.inject( this );
     }
@@ -79,17 +84,81 @@ public class SimpleDialog
      * directyl to the parent without an intermediate Composite.
      *
      * @param builder
+     * @return this; 
      */
-    public void setContents( Consumer<Composite> builder ) {
+    public SimpleDialog setContents( Consumer<Composite> builder ) {
         this.contentsBuilder = builder;
+        return this;
     }
 
 
     /**
      * Adds a action to the button bar of this dialog.
+     * @return this
      */
-    public void addAction( IAction action ) {
-        actions.add( action );    
+    public SimpleDialog addAction( IAction action ) {
+        actions.add( action );
+        return this;
+    }
+
+
+    /**
+     * Adds a 'Cancel' action to the button bar that just closes the dialog.
+     */
+    public SimpleDialog addCancelAction() {
+        return addAction( new Action( "CANCEL" ) {
+            public void run() {
+                SimpleDialog.this.close( );
+            }
+        });
+    }
+
+
+    /**
+     * Adds a 'No' action to the button bar that just closes the dialog.
+     */
+    public SimpleDialog addNoAction() {
+        return addAction( new Action( "NO" ) {
+            public void run() {
+                SimpleDialog.this.close( );
+            }
+        });
+    }
+
+
+    /**
+     * Adds a 'Yes' action to the button bar that just closes the dialog.
+     */
+    public SimpleDialog addYesAction( Consumer<Action> task ) {
+        return addAction( new Action( "YES" ) {
+            public void run() {
+                try {
+                    task.accept( this );
+                    SimpleDialog.this.close( );
+                }
+                catch (Exception e) {
+                    StatusDispatcher.handleError( "Unable to perform task.", e );
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Adds a 'OK' action to the button bar that just closes the dialog.
+     */
+    public SimpleDialog addOkAction( Callable task ) {
+        return addAction( new Action( "OK" ) {
+            public void run() {
+                try {
+                    task.call();
+                    SimpleDialog.this.close( );
+                }
+                catch (Exception e) {
+                    StatusDispatcher.handleError( "Unable to perform task.", e );
+                }
+            }
+        });
     }
 
 

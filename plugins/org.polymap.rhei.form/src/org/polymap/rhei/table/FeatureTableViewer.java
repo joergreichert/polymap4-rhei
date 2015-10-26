@@ -115,11 +115,13 @@ public class FeatureTableViewer
 
 
     protected void controlResized( ControlEvent ev ) {
-        Rectangle area = getTable().getParent().getClientArea();
-        int columnWidth = area.width / displayed.size();
-                
-        for (IFeatureTableColumn column : displayed.values()) {
-            column.getViewerColumn().getColumn().setWidth( columnWidth );
+        if (!getTable().isDisposed() && !displayed.isEmpty()) {
+            Rectangle area = getTable().getParent().getClientArea();
+            int columnWidth = area.width / displayed.size();
+
+            for (IFeatureTableColumn column : displayed.values()) {
+                column.getViewerColumn().getColumn().setWidth( columnWidth );
+            }
         }
     }
 

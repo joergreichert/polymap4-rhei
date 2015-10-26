@@ -31,7 +31,7 @@ a:hover {
 }
 p {
   color: $text-color;
-  font-size: $font-size-body2; 
+  font-size: $font-size-body2 !important; 
   line-height: 18px;
   text-align: justify;
   margin: 10px 0 10px 0;
