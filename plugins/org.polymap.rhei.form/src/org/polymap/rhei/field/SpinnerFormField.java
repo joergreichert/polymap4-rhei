@@ -83,10 +83,9 @@ public class SpinnerFormField
 
     /**
      * Creates a spinner for values in range of the given minimum and maximum value.
-     * The default value will be the minimum value. The parameter anIncrement
-     * will be used to calculate the digit count to be assumed for all values.
-     * So if aMin, aMax, or aDefaultValue has more digits as anIncrement, they 
-     * will be cut off.
+     * The default value will be the minimum value. The parameter anIncrement will be
+     * used to calculate the digit count to be assumed for all values. So if aMin,
+     * aMax, or aDefaultValue has more digits as anIncrement, they will be cut off.
      * 
      * @param aMin
      * @param aMax
@@ -106,13 +105,14 @@ public class SpinnerFormField
 
     /**
      * Creates a spinner for values in range of the given minimum and maximum value.
-     * The given default value will and increment will be set. The parameter aDigitCount
-     * is used to scale aMin, aMax, anIncrement and aDefaultValue, as an spinner is only
-     * able to handle integer values.
+     * The given default value will and increment will be set. The parameter
+     * aDigitCount is used to scale aMin, aMax, anIncrement and aDefaultValue, as an
+     * spinner is only able to handle integer values.
      * 
      * @param aMin minimum number for spinner to accept
      * @param aMax maximum number for spinner to accept
-     * @param anIncrement number to add resp. substract from the current selection when using the spinner down resp. up button
+     * @param anIncrement number to add resp. substract from the current selection
+     *        when using the spinner down resp. up button
      * @param aDefaultValue the initial value to select in the spinner
      * @param aDigitCount digits to show inside the spinner field
      */
@@ -237,10 +237,11 @@ public class SpinnerFormField
 
         loadedValue = site.getFieldValue();
         Double value = null;
-        if(loadedValue instanceof Integer) {
-            value = Double.valueOf( (Integer) loadedValue); 
-        } else if(loadedValue instanceof Double) {
-            value = (Double) loadedValue; 
+        if (loadedValue instanceof Integer) {
+            value = Double.valueOf( (Integer)loadedValue );
+        }
+        else if (loadedValue instanceof Double) {
+            value = (Double)loadedValue;
         }
         spinner.setSelection( loadedValue != null ? getScaled( value ) : getScaled( getDefaultValue() ) );
     }
@@ -259,7 +260,13 @@ public class SpinnerFormField
      */
     @Override
     public void store() throws Exception {
-        site.setFieldValue( spinner.getSelection() );
+        site.setFieldValue( unscale( spinner.getSelection() ) );
+    }
+
+
+    private Double unscale( Integer value ) {
+        int times = Double.valueOf( Math.pow( 10, getDigitCount() ) ).intValue();
+        return Double.valueOf( value / times );
     }
 
 
