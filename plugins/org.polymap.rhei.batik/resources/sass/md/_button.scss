@@ -79,6 +79,7 @@ Button[TOGGLE]:selected:disabled {
   color: $action-disabled-fg;
   background-image: none;
   background-color: $action-disabled-bg;
+  box-shadow: none;
   /*border: 1px solid #d2d2d2;*/
 }
 
