@@ -9,10 +9,10 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.polymap.core</groupId>
+	<groupId>org.polymap.rhei</groupId>
 	<artifactId>org.polymap.rhei.parent</artifactId>
 	<packaging>pom</packaging>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	
 	<profiles>
 		<profile>
