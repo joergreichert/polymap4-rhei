@@ -85,6 +85,7 @@ Button[TOGGLE]:selected:disabled {
 Button[PUSH][FLAT]:disabled,
 Button[TOGGLE][FLAT]:disabled {
   color: $action-disabled-bg;
+  background-color: transparent;
 }
 
 Button[ARROW]:hover,

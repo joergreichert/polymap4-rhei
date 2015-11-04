@@ -1741,9 +1741,10 @@ Button[TOGGLE]:selected:disabled {
 Button[PUSH][FLAT]:disabled,
 Button[TOGGLE][FLAT]:disabled {
   color: #C0C0C0;
+  background-color: transparent;
 }
 
-/* line 90, ../../sass/md/_button.scss */
+/* line 91, ../../sass/md/_button.scss */
 Button[ARROW]:hover,
 Button[PUSH]:hover,
 Button[TOGGLE]:hover {
@@ -1751,14 +1752,14 @@ Button[TOGGLE]:hover {
   animation: hoverOut 400ms ease-out;
 }
 
-/* line 97, ../../sass/md/_button.scss */
+/* line 98, ../../sass/md/_button.scss */
 Button[PUSH][FLAT]:hover,
 Button[TOGGLE][FLAT]:hover {
   background-color: transparent;
   color: #2e86da;
 }
 
-/* line 103, ../../sass/md/_button.scss */
+/* line 104, ../../sass/md/_button.scss */
 Button[ARROW]:pressed,
 Button[PUSH]:pressed,
 Button[TOGGLE]:pressed {
@@ -1770,24 +1771,24 @@ Button[TOGGLE]:pressed {
   );*/
 }
 
-/* line 114, ../../sass/md/_button.scss */
+/* line 115, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 122, ../../sass/md/_button.scss */
+/* line 123, ../../sass/md/_button.scss */
 Button[TOGGLE]:selected:hover {
   background-image: gradient(linear, left top, left bottom, from(#d5d5d5), to(#eaeaea));
 }
 
-/* line 130, ../../sass/md/_button.scss */
+/* line 131, ../../sass/md/_button.scss */
 Button[CHECK],
 Button[RADIO] {
   padding: 3px 3px 3px 0;
   spacing: 7px;
 }
 
-/* line 136, ../../sass/md/_button.scss */
+/* line 137, ../../sass/md/_button.scss */
 Button[CHECK][BORDER],
 Button[RADIO][BORDER] {
   cursor: default;
@@ -1797,53 +1798,53 @@ Button[RADIO][BORDER] {
 }
 
 /* Checkbox */
-/* line 145, ../../sass/md/_button.scss */
+/* line 146, ../../sass/md/_button.scss */
 Button-CheckIcon {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 148, ../../sass/md/_button.scss */
+/* line 149, ../../sass/md/_button.scss */
 Button-CheckIcon:hover {
   background-image: url(resources/icons/rap/png/hover/20//checkbox-blank-circle-outline.png);
 }
 
-/* line 151, ../../sass/md/_button.scss */
+/* line 152, ../../sass/md/_button.scss */
 Button-CheckIcon:selected {
   background-image: url(resources/icons/rap/png/normal/20//checkbox-marked-circle.png);
 }
 
-/* line 154, ../../sass/md/_button.scss */
+/* line 155, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:hover {
   background-image: url(resources/icons/rap/png/hover/20//checkbox-marked-circle.png);
 }
 
-/* line 157, ../../sass/md/_button.scss */
+/* line 158, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed {
   /*background-image: url( resource/widget/rap/button/check-grayed.png );*/
 }
 
-/* line 160, ../../sass/md/_button.scss */
+/* line 161, ../../sass/md/_button.scss */
 Button-CheckIcon:selected:grayed:hover {
   /* background-image: url( resource/widget/rap/button/check-grayed-hover.png );*/
 }
 
 /* Radio */
-/* line 165, ../../sass/md/_button.scss */
+/* line 166, ../../sass/md/_button.scss */
 Button-RadioIcon {
   background-image: url(resources/icons/rap/png/normal/20//radiobox-blank.png);
 }
 
-/* line 168, ../../sass/md/_button.scss */
+/* line 169, ../../sass/md/_button.scss */
 Button-RadioIcon:hover {
   background-image: url(resources/icons/rap/png/hover/20//radiobox-blank.png);
 }
 
-/* line 171, ../../sass/md/_button.scss */
+/* line 172, ../../sass/md/_button.scss */
 Button-RadioIcon:selected {
   background-image: url(resources/icons/rap/png/normal/20//radiobox-marked.png);
 }
 
-/* line 174, ../../sass/md/_button.scss */
+/* line 175, ../../sass/md/_button.scss */
 Button-RadioIcon:selected:hover {
   background-image: url(resources/icons/rap/png/hover/20//radiobox-marked.png);
 }
@@ -1866,7 +1867,7 @@ Button-ArrowIcon[RIGHT] {
   background-image: url( resource/widget/rap/button/arrow-right.png );
 }
 */
-/* line 196, ../../sass/md/_button.scss */
+/* line 197, ../../sass/md/_button.scss */
 Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator[TOGGLE] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
@@ -1875,7 +1876,7 @@ Button-FocusIndicator[ARROW], Button-FocusIndicator[PUSH], Button-FocusIndicator
   opacity: 1;
 }
 
-/* line 204, ../../sass/md/_button.scss */
+/* line 205, ../../sass/md/_button.scss */
 Button-FocusIndicator[CHECK], Button-FocusIndicator[RADIO] {
   background-color: transparent;
   border: 1px dotted #b8b8b8;
