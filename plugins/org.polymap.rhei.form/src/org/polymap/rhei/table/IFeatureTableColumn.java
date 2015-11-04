@@ -60,4 +60,6 @@ public interface IFeatureTableColumn {
      */
     public IFeatureTableColumn sort( int dir );
 
+    public int getWeight();
+
 }

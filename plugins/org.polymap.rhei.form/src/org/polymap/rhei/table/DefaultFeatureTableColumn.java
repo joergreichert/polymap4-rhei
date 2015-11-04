@@ -121,7 +121,12 @@ public class DefaultFeatureTableColumn
         this.minimumWidth = minimumWidth;
         return this;
     }
-    
+
+    @Override
+    public int getWeight() {
+        return weight;
+    }
+
     public DefaultFeatureTableColumn setAlign( int align ) {
         this.align = align;
         return this;

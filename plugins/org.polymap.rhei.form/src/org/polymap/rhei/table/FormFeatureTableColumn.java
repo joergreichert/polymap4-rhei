@@ -148,12 +148,17 @@ public class FormFeatureTableColumn
         return this;
     }
 
-    public FormFeatureTableColumn setWeight( int weight, int minimumWidth) {
+    public FormFeatureTableColumn setWeight( int weight, int minimumWidth ) {
         this.weight = weight;
         this.minimumWidth = minimumWidth;
         return this;
     }
     
+    @Override
+    public int getWeight() {
+        return weight;
+    }
+
     public FormFeatureTableColumn setAlign( int align ) {
         this.align = align;
         return this;

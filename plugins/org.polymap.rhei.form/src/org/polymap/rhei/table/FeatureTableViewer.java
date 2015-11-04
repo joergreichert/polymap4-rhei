@@ -18,7 +18,6 @@ package org.polymap.rhei.table;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -117,10 +116,20 @@ public class FeatureTableViewer
     protected void controlResized( ControlEvent ev ) {
         if (!getTable().isDisposed() && !displayed.isEmpty()) {
             Rectangle area = getTable().getParent().getClientArea();
-            int columnWidth = area.width / displayed.size();
+            int avgWidth = area.width / displayed.size();
+            
+            int sumWeight = displayed.values().stream().mapToInt( c -> c.getWeight() ).sum();
 
             for (IFeatureTableColumn column : displayed.values()) {
-                column.getViewerColumn().getColumn().setWidth( columnWidth );
+                TableViewerColumn viewerColumn = column.getViewerColumn();
+                
+                if (column.getWeight() > 0) {
+                    int width = area.width * column.getWeight() / sumWeight;
+                    viewerColumn.getColumn().setWidth( width );
+                }
+                else {
+                    viewerColumn.getColumn().setWidth( avgWidth );
+                }
             }
         }
     }
