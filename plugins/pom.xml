@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.polymap.core</groupId>
+		<artifactId>org.polymap.rhei.parent</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>org.polymap.rhei.plugins.parent</artifactId>
+	<packaging>pom</packaging>
+	
+
+	<profiles>
+		<profile>
+			<id>rhei-batik</id>
+			<activation>
+      				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>org.polymap.rhei.batik</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>rhei-form</id>
+			<modules>
+				<module>org.polymap.rhei.form</module>
+				<module>org.polymap.rhei.form.batik</module>
+			</modules>
+		</profile>
+	</profiles>
+</project>
