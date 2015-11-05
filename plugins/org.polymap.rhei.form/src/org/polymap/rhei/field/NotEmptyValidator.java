@@ -36,7 +36,7 @@ public class NotEmptyValidator<F,M>
                 return "Dieses Feld darf nicht leer sein";
             }
         }
-       return null;
+        return null;
    }
 
 

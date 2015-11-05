@@ -21,7 +21,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.polymap.core.runtime.Polymap;
+import org.eclipse.rap.rwt.RWT;
+
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.Configurable;
 import org.polymap.core.runtime.config.DefaultBoolean;
@@ -71,7 +72,9 @@ public abstract class FieldBuilder
             // Number
             if (Number.class.isAssignableFrom( binding )) {
                 field.set( new StringFormField() );
-                validator.set( new NumberValidator( binding, Polymap.getSessionLocale() ) );
+                if (!validator.isPresent()) {
+                    validator.set( new NumberValidator( binding, RWT.getLocale() ) );
+                }
             }
             // Date
             else if (Date.class.isAssignableFrom( binding )) {
