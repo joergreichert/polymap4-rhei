@@ -28,6 +28,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import org.polymap.core.runtime.SubMonitor;
+
 import org.polymap.rhei.engine.DefaultFormFieldDecorator;
 import org.polymap.rhei.engine.DefaultFormFieldLabeler;
 import org.polymap.rhei.field.NullValidator;
@@ -87,6 +89,7 @@ public abstract class FormPageController
     
     
     public Map<Property,Object> doSubmit( IProgressMonitor monitor ) throws Exception {
+        monitor.beginTask( "Submit", fields.size() + 3 );
         Map<Property,Object> result = new HashMap();
         
         for (FormFieldComposite field : fields.values()) {
@@ -97,34 +100,30 @@ public abstract class FormPageController
                     throw new RuntimeException( "Submitted value already exists for property: " + field.getProperty() );
                 }
             }
+            monitor.worked( 1 );
         }
 
         // after form fields in order to allow subclassed Property instances
         // to be notified of submit
         if (page instanceof IFormPage2) {
-            ((IFormPage2)page).doSubmit( monitor );
+            ((IFormPage2)page).doSubmit( SubMonitor.on( monitor, 3 ) );
         }
 
+        monitor.done();
         return result;
     }
 
     
     public void doLoad( IProgressMonitor monitor ) throws Exception {
+        monitor.beginTask( "Load", fields.size() + 3 );
+        
+        SubMonitor submon = SubMonitor.on( monitor, 3 );
         if (page instanceof IFormPage2) {
-            ((IFormPage2)page).doLoad( monitor );
+            ((IFormPage2)page).doLoad( submon );
         }
-
-        try {
-            // do not dispatch events while loading
-//            blockEvents = true;
-
-            for (FormFieldComposite field : fields.values()) {
-                field.load();
-            }
-        }
-        finally {
-//            blockEvents = false;
-        }
+        submon.done();
+        
+        super.doLoad( monitor );
     }
 
     
@@ -163,14 +162,8 @@ public abstract class FormPageController
     
 
     @Override
-    public void reloadEditor() throws Exception {
-        doLoad( new NullProgressMonitor() );
-    }
-
-    
-    @Override
-    public void submitEditor() throws Exception {
-        doSubmit( new NullProgressMonitor() );
+    public void submit( IProgressMonitor monitor ) throws Exception {
+        doSubmit( monitor != null ? monitor : new NullProgressMonitor() );            
     }
 
 }

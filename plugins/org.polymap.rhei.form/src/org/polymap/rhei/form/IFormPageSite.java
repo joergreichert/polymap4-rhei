@@ -16,6 +16,8 @@ package org.polymap.rhei.form;
 
 import org.opengis.feature.Property;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * Provides the interface used inside {@link IFormPage} methods to
  * interact with the framework.
@@ -28,13 +30,14 @@ public interface IFormPageSite
     public FieldBuilder newFormField( Property property );
     
     /**
-     * Reloads all fields of the editor from the backend.
+     * (Re)loads all fields of the editor from the backend.
+     * <p/>
+     * This method might long run and/or block while accessing the backend system.
+     * 
+     * @param monitor This method can be called from within a {@link Job}. It reports
+     *        progress to this monitor. Outside a job this parameter might be
+     *        <code>null</code>.
      */
-    public void reloadEditor() throws Exception;
-
-    /**
-     * Submits all changed fields of the editor to the backend.
-     */
-    public void submitEditor() throws Exception;
+    public void submit( IProgressMonitor monitor ) throws Exception;
 
 }

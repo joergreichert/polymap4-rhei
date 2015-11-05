@@ -135,7 +135,7 @@ public class FormDialog
     protected void okPressed() {
         log.debug( "okPressed() ..." );
         try {
-            pageContainer.submit();
+            pageContainer.submit( null );
             pageContainer.dispose();
 
             super.okPressed();
@@ -171,7 +171,7 @@ public class FormDialog
 
         pageContainer.createContents( pageBody );
         try {
-            pageContainer.reloadEditor();
+            pageContainer.reload( null );
         }
         catch (Exception e) {
             StatusDispatcher.handleError( RheiFormPlugin.PLUGIN_ID, this, e.getLocalizedMessage(), e );

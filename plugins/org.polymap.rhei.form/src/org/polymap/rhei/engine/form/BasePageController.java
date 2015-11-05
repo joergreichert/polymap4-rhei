@@ -20,6 +20,9 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+
 import org.polymap.core.runtime.config.Check;
 import org.polymap.core.runtime.config.Config2;
 import org.polymap.core.runtime.config.ConfigurationFactory;
@@ -29,6 +32,7 @@ import org.polymap.core.runtime.event.EventManager;
 import org.polymap.core.ui.UIUtils;
 
 import org.polymap.rhei.field.FormFieldEvent;
+import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldListener;
 import org.polymap.rhei.form.IBasePageSite;
 
@@ -44,6 +48,7 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
 
     protected Map<String,FC>                fields = new HashMap( 64 );
     
+    /** The current model values of the fields. */
     protected Map<String,Object>            values = new HashMap( 64 );
 
     private volatile boolean                blockEvents;
@@ -73,6 +78,16 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
     
 
     protected abstract Object getEditor();
+
+
+    /**
+     * Loads all fields by calling {@link IFormField#load()}.
+     */
+    public void doLoad( IProgressMonitor monitor ) throws Exception {
+        for (FC field : fields.values()) {
+            field.load();
+        }
+    }
     
     
     public synchronized void dispose() {
@@ -95,8 +110,7 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
      * Called from page provider client code.
      */
     @Override
-    public void fireEvent( Object source, String fieldName, int eventCode, 
-            Object newFieldValue, Object newModelValue ) {
+    public void fireEvent( Object source, String fieldName, int eventCode, Object newFieldValue, Object newModelValue ) {
         if (eventCode == IFormFieldListener.VALUE_CHANGE) {
             if (newModelValue == null) {
                 values.remove( fieldName );
@@ -130,15 +144,23 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
     
     // IBasePageSite **************************************
     
-    @Override
-    public void setFieldValue( String fieldName, Object value ) {
+    /**
+     * The field for the given name or {@link RuntimeException}.
+     */
+    protected FC field( String fieldName ) {
         FC field = fields.get( fieldName );
         if (field != null) {
-            field.setFormFieldValue( value );            
+            return field;
         }
         else {
             throw new RuntimeException( "No such field: " + fieldName );
         }
+    }
+
+    
+    @Override
+    public void setFieldValue( String fieldName, Object value ) {
+        field( fieldName ).setFormFieldValue( value );
     }
 
     
@@ -156,35 +178,13 @@ public abstract class BasePageController<FC extends BaseFieldComposite>
 
     @Override
     public void setFieldEnabled( String fieldName, boolean enabled ) {
-        FC field = fields.get( fieldName );
-        if (field != null) {
-            field.setEnabled( enabled );            
-        }
-        else {
-            throw new RuntimeException( "No such field: " + fieldName );
-        }
+        field( fieldName ).setEnabled( enabled );            
     }
 
-    
+
     @Override
-    public void clearFields() {
-        fields.values().forEach( field -> {
-            try {
-                field.setFormFieldValue( null );
-            }
-            catch (Exception e) {
-                throw new RuntimeException( e );
-            } 
-        });
-
-//        dispose();
-//        
-//        // dispose any left sections and stuff
-//        for (Control child : getPageBody().getChildren()) {
-//            if (!child.isDisposed()) {
-//                child.dispose();
-//            }
-//        }
+    public void reload( IProgressMonitor monitor ) throws Exception {
+        doLoad( monitor != null ? monitor : new NullProgressMonitor() );            
     }
-
+    
 }

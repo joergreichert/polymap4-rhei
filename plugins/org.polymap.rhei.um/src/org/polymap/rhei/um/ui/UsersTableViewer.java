@@ -133,7 +133,7 @@ public class UsersTableViewer
 
 
     public User getSelectedUser() {
-        return new SelectionAdapter( getSelection() ).first( User.class );
+        return new SelectionAdapter( getSelection() ).first( User.class ).get();
     }
     
 }

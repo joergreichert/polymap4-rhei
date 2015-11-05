@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import org.polymap.core.ui.StatusDispatcher;
@@ -67,13 +68,16 @@ public abstract class FormPageContainer
     }
 
     
-    public void submit() throws Exception {
-        pageController.submitEditor();
+    /**
+     * Submit all field to the backend.
+     * 
+     * @param monitor This method can be called from within a {@link Job}. It reports
+     *        progress to this monitor. Outside a job this parameter might be
+     *        <code>null</code>.
+     * @throws Exception 
+     */
+    public void submit( IProgressMonitor monitor ) throws Exception {
+        pageController.doSubmit( monitor );
     }
-
     
-    public void reloadEditor() throws Exception {
-        pageController.reloadEditor();
-    }
-
 }

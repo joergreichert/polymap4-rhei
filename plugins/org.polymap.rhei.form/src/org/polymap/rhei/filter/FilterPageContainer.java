@@ -73,5 +73,16 @@ public abstract class FilterPageContainer
     public Filter buildFilter() throws Exception {
         return pageController.doBuildFilter( new NullProgressMonitor() );    
     }
+
     
+    /**
+     * Clears all fields by setting their values to <code>null</code>. Call
+     * {@link #reload(boolean)} afterwards in order to load values into the UI.
+     * 
+     * @throws Exception
+     */
+    public void clear() throws Exception {
+        pageController.clear();
+    }
+
 }

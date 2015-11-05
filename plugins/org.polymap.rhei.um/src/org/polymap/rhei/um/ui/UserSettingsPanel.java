@@ -119,7 +119,7 @@ public class UserSettingsPanel
         pwdBtn.addSelectionListener( new SelectionAdapter() {
             public void widgetSelected( SelectionEvent ev ) {
                 try {
-                    pwdForm.submit();
+                    pwdForm.submit( null );
 
                     IUndoableOperation op = new ChangePasswordOperation( user, pwdFormListener.pwd1 );
                     OperationSupport.instance().execute( op, false, false );
@@ -154,7 +154,7 @@ public class UserSettingsPanel
             public void widgetSelected( SelectionEvent ev ) {
                 try {
                     // create user
-                    personForm.submit();
+                    personForm.submit( null );
                     UserRepository.instance().commitChanges();
                     
                     // XXX this delay is needed to disable in first try; don't know why

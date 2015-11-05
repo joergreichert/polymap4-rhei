@@ -31,4 +31,9 @@ public interface IFilterPageSite
 
     public FieldBuilder newFilterField( String propName, Class<?> propType );
 
+    /**
+     * Clears all fields by settings the value to <code>null</code>.
+     */
+    public void clear() throws Exception;
+
 }

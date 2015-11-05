@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.rap.rwt.RWT;
 
 import org.polymap.core.runtime.event.EventManager;
@@ -196,10 +197,19 @@ public abstract class BasePageContainer<P extends IBasePage,C extends BasePageCo
     public boolean isValid() {
         return pageController.isValid();
     }
+    
 
-
-    public void clearFields() {
-        pageController.clearFields();
+    /**
+     * Reload all field from the backend. This resets the values to the initial
+     * values or last submit.
+     * 
+     * @param monitor This method can be called from within a {@link Job}. It reports
+     *        progress to this monitor. Outside a job this parameter might be
+     *        <code>null</code>.
+     * @throws Exception 
+     */
+    public void reload( IProgressMonitor monitor ) throws Exception {
+        pageController.reload( monitor );
     }
     
 }

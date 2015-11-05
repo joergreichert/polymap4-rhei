@@ -1,19 +1,16 @@
 /* 
  * polymap.org
- * Copyright 2010, Falko Bräutigam, and other contributors as indicated
- * by the @authors tag.
+ * Copyright (C) 2010-2015, Falko Bräutigam. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
+ * published by the Free Software Foundation; either version 3.0 of
  * the License, or (at your option) any later version.
  *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
- * $Id: $
  */
 package org.polymap.rhei.field;
 
@@ -31,7 +28,6 @@ import org.polymap.rhei.form.IFormToolkit;
  * are send by calling {@link IFormFieldSite#fireEvent(Object, int, Object)}.
  * 
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
- * @version ($Revision$)
  */
 public interface IFormField {
 
@@ -59,7 +55,6 @@ public interface IFormField {
     
     public Control createControl( Composite parent, IFormToolkit toolkit );
 
-
     /**
      * The value of a disabled field cannot be modified by the user. It changes its
      * visual representation to signal this to the user. However, the value can be
@@ -71,11 +66,19 @@ public interface IFormField {
      */
     public IFormField setEnabled( boolean enabled );
     
-    public void store() 
-    throws Exception;
+    /**
+     * Stores the value to the backend via the {@link IFormFieldSite}.
+     *
+     * @throws Exception Problem while load, transform or validate.
+     */
+    public void store() throws Exception;
     
-    public void load() 
-    throws Exception;
+    /**
+     * Loads the value from the backend via the {@link IFormFieldSite}.
+     *
+     * @throws Exception Problem while load, transform or validate.
+     */
+    public void load() throws Exception;
 
     /**
      * Explicitly set the value of this field. This causes events to be fired

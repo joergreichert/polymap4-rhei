@@ -17,6 +17,9 @@ package org.polymap.rhei.form;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
+
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.field.IFormField;
@@ -80,14 +83,16 @@ public interface IBasePageSite {
      */
     public void fireEvent( Object source, String fieldName, int eventCode, Object newFieldValue, Object newModelValue );
 
+    /**
+     * Sets the model value of the given field. The model value is not necessarily
+     * the value shown in the UI but the value that is send to backend on next store.
+     */
     public void setFieldValue( String fieldName, Object value );
     
     /**
-     * Returns the validated and transformed value of the given field. This is not
-     * necessarily the value shown in the UI but the value that is send to backend on
-     * next store.
-     * 
-     * @param fieldName
+     * Returns the validated and transformed, current value of the given field. This
+     * is not necessarily the value shown in the UI but the value that is send to
+     * backend on next store.
      */
     public <T> T getFieldValue( String fieldName );
 
@@ -108,7 +113,16 @@ public interface IBasePageSite {
      * @return True if all unsaved changes of the page are valid.
      */
     public boolean isValid();
-
-    public void clearFields();
+    
+    /**
+     * (Re)loads all fields of the editor from the backend.
+     * <p/>
+     * This method might long run and/or block while accessing the backend system.
+     * 
+     * @param monitor This method can be called from within a {@link Job}. It reports
+     *        progress to this monitor. Outside a job this parameter might be
+     *        <code>null</code>.
+     */
+    public void reload( IProgressMonitor monitor ) throws Exception;
 
 }

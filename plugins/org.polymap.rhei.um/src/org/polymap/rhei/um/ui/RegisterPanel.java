@@ -141,11 +141,11 @@ public class RegisterPanel
             public void widgetSelected( SelectionEvent ev ) {
                 try {
                     // create user
-                    personForm.submit();
+                    personForm.submit( null );
 
                     IUndoableOperation op = new NewUserOperation( user );
                     OperationSupport.instance().execute( op, true, false, new JobChangeAdapter() {
-
+                        @Override
                         public void done( IJobChangeEvent ev2 ) {
                             if (ev2.getResult().isOK()) {
                                 getSite().setStatus( new Status( IStatus.OK, UmPlugin.ID, i18n.get( "okText" ) ) );

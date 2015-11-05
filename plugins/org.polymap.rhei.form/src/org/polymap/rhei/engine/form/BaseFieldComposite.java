@@ -155,11 +155,20 @@ public abstract class BaseFieldComposite
         }
     }
 
+    
+    /**
+     * Triggers {@link IFormField#load()}. 
+     */
     public void load() throws Exception {
         field.load();
         //isDirty = false;
     }
     
+    
+    /**
+     * Triggers {@link IFormField#store()} anf fires
+     * {@link IFormFieldListener#VALUE_CHANGE} event.
+     */
     public Object store() throws Exception {
         field.store();
         

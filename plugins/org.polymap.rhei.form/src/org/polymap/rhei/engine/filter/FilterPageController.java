@@ -94,7 +94,7 @@ public abstract class FilterPageController
             }
         }
 
-        // after form fields in order to allow subclassed Property instances
+        // after form fields, in order to allow subclassed Property instances
         // to be notified of submit
         if (page instanceof IFilterPage2) {
             result = ((IFilterPage2)page).doBuildFilter( result, monitor );
@@ -103,25 +103,13 @@ public abstract class FilterPageController
         return result;
     }
 
-    
-    public void doLoad( IProgressMonitor monitor ) throws Exception {
-        if (page instanceof IFilterPage2) {
-            ((IFilterPage2)page).doLoad( monitor );
-        }
 
-        try {
-            // do not dispatch events while loading
-//            blockEvents = true;
-
-            for (FilterFieldComposite field : fields.values()) {
-                field.load();
-            }
-        }
-        finally {
-//            blockEvents = false;
+    public void doClear() throws Exception {
+        for (FilterFieldComposite field : fields.values()) {
+            field.setFieldValue( null );
         }
     }
-
+    
     
     // IFormPageSite ****************************
     
@@ -155,5 +143,11 @@ public abstract class FilterPageController
 
     
     protected abstract Composite createFieldComposite( Composite parent );
+
+
+    @Override
+    public void clear() throws Exception {
+        doClear();            
+    }
 
 }
