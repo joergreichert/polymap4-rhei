@@ -42,7 +42,7 @@ import org.polymap.rhei.batik.toolkit.SimpleDialog;
 public class MdToolkit
         extends DefaultToolkit {
 
-    private static Log                log     = LogFactory.getLog( MdToolkit.class );
+    private static Log log = LogFactory.getLog( MdToolkit.class );
 
     public static final String        CSS_FAB = CSS_PREFIX + "-fab";
 
