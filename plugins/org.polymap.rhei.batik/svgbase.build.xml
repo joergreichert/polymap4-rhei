@@ -7,10 +7,30 @@
 			<include name="*.jar"/>
 		</fileset>
 	</path>
-
-	<target name="build">
+	
+	<target name="initTaskDefFromClass" description="use current build classes" unless="${runtime_classpath}">
+		<echo>class</echo>
 		<!-- requires that Svg2PngTask has been already compiled -->
 		<taskdef name="svg2Png" classname="org.polymap.rhei.batik.engine.svg.Svg2PngTask" classpath="${svg.build.xml.folder}/build/eclipse" classpathref="icons.classpath"/>
+	</target>
+	
+	<target name="initTaskDefFromJar" description="use jar from Maven build to resolve class" if="${runtime_classpath}">
+		<echo>jar</echo>
+		<path id="svg.maven.classpath">
+			<path refid="icons.classpath" />
+			<path refid="compile_classpath" />
+			<path refid="runtime_classpath" />
+		</path>
+		<taskdef name="svg2Png"
+			classname="org.polymap.rhei.batik.engine.svg.Svg2PngTask"
+			classpathref="svg.maven.classpath" />
+	</target>
+
+	<target name="initTaskDef" description="init SVG task definition" 
+			depends="initTaskDefFromClass, initTaskDefFromJar" />
+
+	<target name="build" depends="initTaskDef">
+		<echo>test</echo>
 		<svg2Png svgPath="${svg-input}" pngPath="${png-output}"
 			scale="20, 24">
             <imageConfig name="white" rgb="#000000">
