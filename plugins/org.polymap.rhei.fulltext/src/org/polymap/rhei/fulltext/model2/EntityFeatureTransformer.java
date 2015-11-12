@@ -14,9 +14,11 @@
  */
 package org.polymap.rhei.fulltext.model2;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Optional;
 
 import java.text.NumberFormat;
 
@@ -26,7 +28,14 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.polymap.core.runtime.Polymap;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+
+import org.eclipse.rap.rwt.RWT;
+
+import org.polymap.core.runtime.Lazy;
+import org.polymap.core.runtime.PlainLazyInit;
+
 import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.indexing.FeatureTransformer;
 
@@ -47,15 +56,65 @@ public class EntityFeatureTransformer
 
     private static Log log = LogFactory.getLog( EntityFeatureTransformer.class );
 
-    private NumberFormat        nf = NumberFormat.getInstance( Optional.ofNullable( Polymap.getSessionLocale() ).orElse( Locale.getDefault() ) );
+    /**
+     * 
+     */
+    public interface DuplicateHandler extends Function<String[],String> { }
     
-    private FastDateFormat      df = FastDateFormat.getDateInstance( FastDateFormat.FULL, Polymap.getSessionLocale() );
-
-    private int                 propCount;
+    /**
+     * Always throws a {@link RuntimeException}. 
+     */
+    public static final DuplicateHandler EXCEPTION = new DuplicateHandler() {
+        @Override
+        public String apply( String[] input ) {
+            throw new RuntimeException( "Duplicate values are not allowed: " + Arrays.asList( input ) );
+        }
+    };
+    
+    /**
+     * 
+     */
+    public static final DuplicateHandler CONCAT = new DuplicateHandler() {
+        @Override
+        public String apply( String[] input ) {
+            return Joiner.on( ' ' ).join( input );
+        }
+    };
+    
+    /**
+     * 
+     */
+    public interface FieldNameProvider extends Function<Property,String> { }
+    
+    public class StandardFieldNameProvider
+            implements FieldNameProvider {
+        @Override
+        public String apply( Property input ) {
+            return input.info().getName();
+        }
+    }
+    
+    // instance *******************************************
+    
+    private Lazy<NumberFormat>  nf = new PlainLazyInit( () -> NumberFormat.getInstance( firstNonNull( RWT.getLocale(), Locale.getDefault() ) ) );
+    
+    private Lazy<FastDateFormat> df = new PlainLazyInit( () -> FastDateFormat.getDateInstance( FastDateFormat.FULL, RWT.getLocale() ) );
 
     private volatile JSONObject result;
     
-    private boolean             honorQueryableAnnotation = false;
+    protected boolean           honorQueryableAnnotation = false;
+    
+    /**
+     * By default this is {@link StandardFieldNameProvider}. Change this to affect
+     * subsequent call of {@link #putValue(Property, String)}.
+     */
+    public FieldNameProvider    fieldNameProvider = new StandardFieldNameProvider();
+    
+    /**
+     * By default this is set to {@link #CONCAT}. Change this to affect subsequent
+     * calls of {@link #putValue(Property, String)}.
+     */
+    public DuplicateHandler     duplicateHandler = CONCAT;
     
     
     /**
@@ -74,13 +133,12 @@ public class EntityFeatureTransformer
     public JSONObject apply( Entity entity ) {
         assert result == null : "Implementation is not multi-threaded currently.";
         result = new JSONObject();
-        propCount = 0;
         
         try {
             result.put( FulltextIndex.FIELD_ID, entity.id().toString() );
             //result.put( "_type_", entity.getClass().getName() );
 
-            // process all properties
+            // visit all simple properties
             process( entity );
 
             log.debug( "   " + result.toString( 2 ) );
@@ -97,11 +155,11 @@ public class EntityFeatureTransformer
     protected void visitProperty( Property prop ) {        
         PropertyInfo info = prop.info();
         if (honorQueryableAnnotation && !info.isQueryable()) {
+            log.debug( "   skipping non @Queryable property: " + info.getName() );
             return;
         }
         
         // the hierarchy of propeties may contain properties with same simple name
-        String key = info.getName() + "-" + propCount++;
         Object value = prop.get();
 
         // null
@@ -109,26 +167,41 @@ public class EntityFeatureTransformer
         }
         // Enum
         else if (value.getClass().isEnum()) {
-            result.put( key, value.toString() );
+            putValue( prop, value.toString() );
         }
         // Date
         else if (Date.class.isAssignableFrom( value.getClass() )) {
-            result.put( key, df.format( value ) );                    
+            putValue( prop, df.get().format( value ) );
         }
         // Number
         else if (Number.class.isAssignableFrom( value.getClass() )) {
-            result.put( key, nf.format( value ) );                    
+            putValue( prop, nf.get().format( value ) );                    
         }
         // Boolean -> if true add prop name instead of 'true|false'
         else if (value.getClass().equals( Boolean.class )) {
             if (((Boolean)value).booleanValue()) {
-                result.put( key, key );
+                putValue( prop, prop.info().getName() );
             }
         }
         // String and other types
         else {
-            result.put( key, value );
+            putValue( prop, value.toString() );
         }
+    }
+ 
+    
+    protected void putValue( Property prop, String value ) {
+        String key = fieldNameProvider.apply( prop ); //prop.getInfo().getName() + "-" + propCount++;
+        putValue( key, value );
+    }
+
+
+    protected void putValue( String key, String value ) {
+        String currentValue = result.optString( key );
+        if (currentValue.length() > 0) {
+            value = duplicateHandler.apply( new String[] {currentValue,value} );
+        }
+        result.put( key, value );
     }
     
 }

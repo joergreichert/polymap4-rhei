@@ -41,7 +41,7 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.Function;
 
-import org.polymap.core.data.recordstore.lucene.GeometryValueCoder;
+import org.polymap.core.data.rs.lucene.GeometryValueCoder;
 
 import org.polymap.rhei.fulltext.FulltextIndex;
 import org.polymap.rhei.fulltext.update.UpdateableFulltextIndex;

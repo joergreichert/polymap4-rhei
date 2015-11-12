@@ -60,7 +60,12 @@ public abstract class UpdateableFulltextIndex
         return filters;
     }
 
-    
+
+    public void setTokenizer( FulltextTokenizer tokenizer ) {
+        assert tokenizer != null;
+        this.tokenizer = tokenizer;
+    }
+
     public FulltextTokenizer tokenizer() {
         return tokenizer;
     }

@@ -14,6 +14,12 @@
  */
 package org.polymap.rhei.fulltext.indexing;
 
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_CATEGORIES;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_GEOM;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_ID;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_SRS;
+import static org.polymap.rhei.fulltext.FulltextIndex.FIELD_TITLE;
+
 import org.json.JSONObject;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -22,11 +28,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.base.Joiner;
 import com.vividsolutions.jts.geom.Geometry;
 
 import org.polymap.core.data.util.Geometries;
-import static org.polymap.rhei.fulltext.FulltextIndex.*;
+
+import org.polymap.rhei.fulltext.FulltextIndex;
 
 /**
  * Normalizes features:
