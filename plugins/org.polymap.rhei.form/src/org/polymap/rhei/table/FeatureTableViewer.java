@@ -73,7 +73,7 @@ public class FeatureTableViewer
     public static final Color               LOADING_FOREGROUND = Graphics.getColor( 0xa0, 0xa0, 0xa0 );
     public static final Color               LOADING_BACKGROUND = Graphics.getColor( 0xfa, 0xfb, 0xff );
     
-    private Map<String,IFeatureTableColumn> displayed = new HashMap();
+    protected Map<String,IFeatureTableColumn> displayed = new HashMap();
 
     private Map<String,IFeatureTableColumn> available = new HashMap();
 

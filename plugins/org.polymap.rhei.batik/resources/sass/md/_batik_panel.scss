@@ -49,17 +49,19 @@ Button[TOGGLE].atlas-panel-header {
   border-radius: 3px;
   padding: 0px 5px;
   spacing: 0px;
-  background-color: #ffffff;
+  background-color: $header-bg;
+/*  background-color: #ffffff; */
 /*  background-image : url( resources/icons/close3.gif );*/
-  border: 1px solid $header-fg;
+  border: 0px solid $header-fg;
   color: $header-fg;
+  box-shadow: none;
 }
 
 Button[PUSH]:hover.atlas-panel-header,
 Button[TOGGLE]:hover.atlas-panel-header {
   color: #ffffff;
   border: none;
-  background-color: $header-fg;
+  background-color: darken( $header-bg, 10% );
 }
 
 Label.atlas-panel-header {

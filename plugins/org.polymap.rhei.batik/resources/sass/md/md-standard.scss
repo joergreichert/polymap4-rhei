@@ -724,72 +724,6 @@ TabItem:selected {
   padding : 6px 6px 7px 6px;
 }
 
-/* ToolBar default theme */
-
-ToolBar {
-  color: #4a4a4a;
-  padding: 0;
-  spacing: 0;
-  background-color: #fff;
-  background-image: none;
-  border: none;
-  border-radius: 0;
-  opacity: 1;
-}
-
-ToolBar[BORDER] {
-  border: 1px solid #a4a4a4;
-  border-radius: 2px;
-}
-
-ToolItem {
-  color: inherit;
-  background-color: #fff;
-  background-image: none;
-  border: none;
-  border-radius: 2px;
-  padding: 8px;
-  spacing: 4px;
-  opacity: 1;
-  animation: none;
-  text-shadow: none;
-}
-
-ToolItem:hover {
-  background-color: #f0f0f0;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #f9f9f9 ),
-    to( #e4e4e4 )
-  );
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
-}
-
-ToolItem:pressed, ToolItem:selected {
-  border: 1px solid #a4a4a4;
-  border-radius: 2px;
-  padding: 9px 8px 8px 9px;
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( #e4e4e4 ),
-    to( #f9f9f9 )
-  );
-}
-
-ToolItem-DropDownIcon {
-  background-image: url( resource/widget/rap/toolbar/down.png );
-  border: none;
-}
-
-ToolItem-DropDownIcon:hover {
-  border: 1px inset;
-}
-
-ToolItem-Separator {
-  width: 4px;
-}
-
 /* Scale default theme */
 
 Scale {
@@ -1347,3 +1281,4 @@ Shell.jface_contentProposalPopup, Shell.jface_infoPopupDialog {
 @import "toolbar";
 @import "shell";
 @import "upload";
+@import "toolbar2"

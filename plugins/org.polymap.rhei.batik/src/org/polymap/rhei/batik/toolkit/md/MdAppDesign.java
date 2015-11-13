@@ -32,6 +32,7 @@ import org.eclipse.rap.rwt.internal.service.ContextProvider;
 
 import org.polymap.rhei.batik.BatikApplication;
 import org.polymap.rhei.batik.PanelPath;
+import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.engine.DefaultAppDesign;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
@@ -51,8 +52,11 @@ public class MdAppDesign
     private static Log log = LogFactory.getLog( MdAppDesign.class );
 
     /** The basic font face of the application. By default this is "Roboto". */
-    public static final String        FONT_FACE = "Roboto";
+    public static final String          FONT_FACE = "Roboto";
     
+    /** The SVG config to be used for header und toolbar icons. */
+    public static final String          TOOLBAR_ICON_CONFIG = SvgImageRegistryHelper.WHITE24;
+
     
     /**
      * Predefined font styles.
