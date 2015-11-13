@@ -3,3 +3,5 @@
 /resources/css/md
 /.sass-cache/
 /error.html
+/target/
+**/*.*~
