@@ -38,14 +38,26 @@ import org.polymap.rhei.batik.engine.svg.ImageConfig.TransparenceConfig;
  *
  */
 public class Svg2PngTaskTest {
+    
+    private String getCurrentDirectory() {
+        String folder = System.getProperty( "user.dir" );
+        if(folder != null) {
+            if(!folder.endsWith( "/" )) {
+                folder += "/";
+            }
+        } else {
+            folder = "";
+        }
+        return folder;
+    }
 
     @Test
     public void test_gray() throws IOException {
-        String pngPath = "build/result_gray";
+        String pngPath = getCurrentDirectory() + "build/result_gray";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -64,11 +76,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_color_via_hue() throws IOException {
-        String pngPath = "build/result_color_hue";
+        String pngPath = getCurrentDirectory() + "build/result_color_hue";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -100,11 +112,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_color_via_rgb() throws IOException {
-        String pngPath = "build/result_color_rgb";
+        String pngPath = getCurrentDirectory() + "build/result_color_rgb";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -124,11 +136,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_color_via_argb() throws IOException {
-        String pngPath = "build/result_color_argb";
+        String pngPath = getCurrentDirectory() + "build/result_color_argb";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -150,11 +162,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_replace_alpha() throws IOException {
-        String pngPath = "build/result_replace";
+        String pngPath = getCurrentDirectory() + "build/result_replace";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant/ic_delete_48px.svg" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg/ic_delete_48px.svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -184,11 +196,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_lightgray() throws IOException {
-        String pngPath = "build/result_lightgray";
+        String pngPath = getCurrentDirectory() + "build/result_lightgray";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
@@ -213,11 +225,11 @@ public class Svg2PngTaskTest {
 
     @Test
     public void test_monochrom() throws IOException {
-        String pngPath = "build/result_monochrom";
+        String pngPath = getCurrentDirectory() + "build/result_monochrom";
         int scale = 128;
         
         Svg2PngTask task = new Svg2PngTask();
-        task.setSvgPath( "src-test/org/polymap/rhei/batik/ant" );
+        task.setSvgPath( getCurrentDirectory() + "src-test/org/polymap/rhei/batik/engine/svg" );
         task.setPngPath( pngPath );
         task.setScale( String.valueOf(scale) );
         ImageConfig imageConfig = new ImageConfig();
