@@ -1,0 +1,90 @@
+/* Combo default theme */
+
+Combo,
+Combo[BORDER] {
+  background-color: #ffffff;
+  background-image: none;
+  text-shadow: none;
+  box-shadow: none;
+  border: 1px solid $separator2;
+  border-radius: 3px;
+}
+
+Combo:focused,
+Combo[BORDER]:focused {
+  border: 1px solid $action-bg;
+  background-color: $selection-bg;
+  box-shadow: none;
+}
+
+Combo:disabled,
+Combo[BORDER]:disabled {
+  box-shadow: none;
+}
+
+Combo-Button {
+  width: 30px;
+  cursor: default;
+  border: none;
+  border-left: none;  /*1px solid $separator2;*/
+  border-radius: 0px 3px 3px 0px;
+  /*background-color: $action-bg;*/
+  background-image: none;
+/*  background-image: gradient(
+    linear, left top, left bottom,
+    from( #f9f9f9 ),
+    to( #e4e4e4 )
+  );*/
+}
+
+Combo-Button:disabled {
+  background-image: none;
+  background-color: transparent;
+}
+
+Combo-Button-Icon {
+  background-image: url( #{$icon-normal}/chevron-down.png );
+}
+
+Combo-Button-Icon:hover {
+  background-image: url( #{$icon-hover}/chevron-down.png );
+  /*background-image: url( resource/widget/rap/combo/down-hover.png );*/
+}
+
+Combo-List {
+  border: 1px solid $separator2;
+  box-shadow: 0 4px 8px $shadow;
+  border-radius: 3px;
+  background-image: none;
+  background-color: #ffffff;
+}
+
+Combo-List-Item {
+  color: inherit;
+  background-color: #ffffff;
+  background-image: none;
+  text-decoration: none;
+  text-shadow: none;
+  padding: 6px 10px 6px 10px;
+}
+
+Combo-List-Item:hover {
+  background-color: $selection-hover;
+  }
+
+Combo-List-Item:selected {
+  color: #000000;  /*$selection-fg;*/
+  /*background-color: $selection-bg;*/
+  background-color: #f1f4f6;
+}
+
+Combo-Field {
+  padding: 5px 10px 5px 10px;
+}
+
+Combo-FocusIndicator {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  opacity: 0;
+}

@@ -32,6 +32,7 @@ $action-disabled-fg:    #ffffff;
 /* Selected lines of list, trees and tables */
 $selection-bg:          #FFFEDB;                    /*lighten( $action-bg, 30% );*/
 $selection-fg:          $text-color;
+$selection-hover:       #fafafa;
 
 $header-bg:             lighten( $action-bg, 10% );
 $header-fg:             #ffffff;
@@ -53,6 +54,7 @@ $separator2:            #d0d0d0;
 $icon-base:             "resources/icons/rap/png/";
 $icon-normal:           "resources/icons/rap/png/normal/20/";
 $icon-hover:            "resources/icons/rap/png/hover/20/";
+$icon-white:            "resources/icons/rap/png/white/20/";
 
 /*
  *    Background grey: #f3f3f3 
