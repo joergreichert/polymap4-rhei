@@ -20,4 +20,5 @@ package org.polymap.rhei.batik.toolkit.md;
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 public interface MdItemContainer {
+    
 }

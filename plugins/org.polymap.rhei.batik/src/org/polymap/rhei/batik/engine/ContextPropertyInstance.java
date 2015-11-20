@@ -19,13 +19,21 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+import org.polymap.core.runtime.Lazy;
+import org.polymap.core.runtime.PlainLazyInit;
 import org.polymap.core.runtime.Timer;
 import org.polymap.core.runtime.event.EventFilter;
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.batik.Context;
+import org.polymap.rhei.batik.Mandatory;
 import org.polymap.rhei.batik.PropertyAccessEvent;
 import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
+import org.polymap.rhei.batik.Scope;
 
 /**
  * 
@@ -35,17 +43,39 @@ import org.polymap.rhei.batik.PropertyAccessEvent.TYPE;
 public class ContextPropertyInstance<T>
         implements Context<T> {
 
-    private DefaultAppContext       context;
+    private DefaultAppContext   context;
     
-    private Class<?>                declaredType;
+    private Field               field;
     
-    private String                  scope;
+    /**
+     * 
+     */
+    private Lazy<Class<?>>      declaredType = new PlainLazyInit( () -> {
+        Type ftype = field.getGenericType();
+        return ((ParameterizedType)ftype).getActualTypeArguments()[0];
+    });
+
+    /**
+     * 
+     */
+    private Lazy<String>        scope = new PlainLazyInit( () -> {
+        String result = field.getDeclaringClass().getPackage().getName();
+        Scope a = field.getAnnotation( Scope.class );
+        if (a != null && a.value().length() > 0) {
+            result = a.value();
+        }
+        return result;
+    });
+    
+    /**
+     * 
+     */
+    private Lazy<Boolean>       isMandatory = new PlainLazyInit( () -> field.getAnnotation( Mandatory.class ) != null );
     
 
-    public ContextPropertyInstance( DefaultAppContext context, Class<?> declaredType, String scope ) {
+    public ContextPropertyInstance( Field field, DefaultAppContext context ) {
+        this.field = field;
         this.context = context;
-        this.declaredType = declaredType;
-        this.scope = scope;
     }
 
     
@@ -68,6 +98,9 @@ public class ContextPropertyInstance<T>
     @Override
     public T get() {
         T result = context.getPropertyValue( this );
+        if (result == null && isMandatory.get()) {
+            throw new IllegalStateException( "@Context field is @Mandatory: " + field );
+        }
         //EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.GET ) );
         return result;
     }
@@ -90,6 +123,9 @@ public class ContextPropertyInstance<T>
     
     @Override
     public T set( T value ) {
+        if (value == null && isMandatory.get()) {
+            throw new IllegalArgumentException( "@Context field is @Mandatory: " + field );
+        }
         T result = context.setPropertyValue( this, value );
         EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.SET ) );
         return result;
@@ -98,6 +134,9 @@ public class ContextPropertyInstance<T>
     
     @Override
     public boolean compareAndSet( T expect, T update ) {
+        if (update == null && isMandatory.get()) {
+            throw new IllegalArgumentException( "@Context field is @Mandatory: " + field );
+        }
         boolean updated = context.compareAndSetPropertyValue( this, expect, update );
         if (updated) {
             EventManager.instance().publish( new PropertyAccessEvent( this, TYPE.SET ) );
@@ -111,13 +150,13 @@ public class ContextPropertyInstance<T>
 
     @Override
     public Class getDeclaredType() {
-        return declaredType;
+        return declaredType.get();
     }
 
     
     @Override
     public String getScope() {
-        return scope;
+        return scope.get();
     }
 
     

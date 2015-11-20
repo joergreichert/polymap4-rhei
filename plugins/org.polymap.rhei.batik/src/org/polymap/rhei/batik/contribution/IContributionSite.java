@@ -14,9 +14,9 @@
  */
 package org.polymap.rhei.batik.contribution;
 
-import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.IPanel;
 import org.polymap.rhei.batik.PanelSite;
+import org.polymap.rhei.batik.IAppContext;
 import org.polymap.rhei.batik.toolkit.IPanelToolkit;
 
 /**
@@ -26,12 +26,12 @@ import org.polymap.rhei.batik.toolkit.IPanelToolkit;
  */
 public interface IContributionSite {
 
-    public IPanel getPanel();
+    public IPanel panel();
     
-    public PanelSite getPanelSite();
+    public PanelSite panelSite();
     
-    public IAppContext getContext(); 
-
+    public IAppContext context();
+    
     public <T extends IPanelToolkit> T toolkit();
     
 }

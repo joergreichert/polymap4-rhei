@@ -175,6 +175,14 @@ public class MdToolkit
     }
 
     
+    @Override
+    public SimpleDialog createSimpleDialog( String title ) {
+        SimpleDialog result = super.createSimpleDialog( title );
+        result.centerOn.put( panelPage.control );
+        return result;
+    }
+
+
     /**
      * Creates the main toolbar of the panel.
      * 
@@ -188,12 +196,9 @@ public class MdToolkit
         return new MdToolbar( this, panelPage.control, label, stylebits( styles ) );
     }
 
-    
-    @Override
-    public SimpleDialog createSimpleDialog( String title ) {
-        SimpleDialog result = super.createSimpleDialog( title );
-        result.centerOn.put( panelPage.control );
-        return result;
+
+    public MdToolbar2 createToolbar( Composite parent, int... styles ) {
+        return new MdToolbar2( parent, this, stylebits( styles ) );
     }
 
 }

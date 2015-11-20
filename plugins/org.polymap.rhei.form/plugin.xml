@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.polymap.rhei.form.pageProviders" name="FormPageProviders" schema="schema/pageProviders.exsd"/>
-   <extension-point id="org.polymap.rhei.form.filterProviders" name="FilterProviders" schema="schema/filterProviders.exsd"/>
+   <!--extension-point id="org.polymap.rhei.form.pageProviders" name="FormPageProviders" schema="schema/pageProviders.exsd"/>
+   <extension-point id="org.polymap.rhei.form.filterProviders" name="FilterProviders" schema="schema/filterProviders.exsd"/-->
+   
    <!--extension
          point="net.refractions.udig.ui.dropAction">
       <action

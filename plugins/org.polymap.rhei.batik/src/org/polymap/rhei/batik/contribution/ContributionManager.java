@@ -62,9 +62,25 @@ public class ContributionManager
 
     private static List<Supplier<IContributionFactory>> suppliers = new CopyOnWriteArrayList();
     
-    
+
+    /**
+     * Make contributions to the FAB of the given panel.
+     *
+     * @param panel The panel to contribute to.
+     */
     public void contributeFab( IPanel panel ) {
         factories().forEach( factory -> factory.fillFab( newSite( panel ) ) );
+    }
+
+    
+    /**
+     * Make contributions to the given toolbar of the given panel.
+     *
+     * @param panel The panel to contribute to.
+     * @param tb2 
+     */
+    public void contributeToolbar( IPanel panel, Object toolbar ) {
+        factories().forEach( factory -> factory.fillToolbar( newSite( panel ), toolbar ) );
     }
 
     
@@ -84,22 +100,21 @@ public class ContributionManager
     protected IContributionSite newSite( IPanel panel ) {
         return new IContributionSite() {
             @Override
-            public IPanel getPanel() {
+            public IPanel panel() {
                 return panel;
             }
             @Override
-            public PanelSite getPanelSite() {
+            public PanelSite panelSite() {
                 return panel.site();
             }
             @Override
-            public IAppContext getContext() {
+            public IAppContext context() {
                 return BatikApplication.instance().getContext();
             }
             @Override
             public <T extends IPanelToolkit> T toolkit() {
-                return (T)getPanelSite().toolkit();
+                return (T)panelSite().toolkit();
             }
-            
         };
     }
     

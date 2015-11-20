@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Batik App UI Framework
+Bundle-Name: Batik UI Framework
 Bundle-SymbolicName: org.polymap.rhei.batik;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.polymap.rhei.batik.BatikPlugin

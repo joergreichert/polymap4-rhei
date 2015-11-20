@@ -32,7 +32,7 @@ public class ContributionSiteFilters {
     
     
     public static Predicate<IContributionSite> panelType( Class<? extends IPanel> type ) {
-        return site -> site.getPanel().getClass().equals( type );
+        return site -> site.panel().getClass().equals( type );
     }
     
 

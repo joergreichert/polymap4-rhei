@@ -64,17 +64,9 @@ public class PanelContextInjector
                     f.setAccessible( true );
                     Type ftype = f.getGenericType();
                     if (ftype instanceof ParameterizedType) {
-                        Type ptype = ((ParameterizedType)ftype).getActualTypeArguments()[0];
-
-                        // find scope
-                        String scope = type.getPackage().getName();
-                        Scope annotation = f.getAnnotation( Scope.class );
-                        if (annotation != null && annotation.value().length() > 0) {
-                            scope = annotation.value();
-                        }
                         // set
                         try {
-                            f.set( panel, new ContextPropertyInstance( context, (Class<?>)ptype, scope ) );
+                            f.set( panel, new ContextPropertyInstance( f, context ) );
                             log.debug( "injected: " + f.getName() + " (" + panel.getClass().getSimpleName() + ")" );
                             continue;
                         }

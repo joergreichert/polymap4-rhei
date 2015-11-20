@@ -24,7 +24,6 @@ import java.lang.annotation.Target;
  * or attempting to set the value to <code>null</code> throws a
  * {@link RuntimeException}.
  *
- * @deprecated Not yet supported.
  * @author <a href="http://www.polymap.de">Falko Bräutigam</a>
  */
 @Retention(RetentionPolicy.RUNTIME)

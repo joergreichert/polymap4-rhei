@@ -58,6 +58,7 @@ public abstract class DefaultContribution
     
     private Set<Place>                      places;
 
+    
     /**
      * 
      * 
@@ -105,17 +106,18 @@ public abstract class DefaultContribution
     
     @Override
     public void fillToolbar( IContributionSite site, Object toolbar ) {
-        // XXX Auto-generated method stub
-        throw new RuntimeException( "not yet implemented." );
+        if (places.contains( Place.Toolbar )) {
+            
+        }
     }
 
 
     @Override
     public final void fillFab( IContributionSite site ) {
         if (places.contains( Place.FAB )) {
-            site.getContext().propagate( filter );
+            site.context().propagate( filter );
             if (filter.test( site )) {
-                site.getContext().propagate( this );
+                site.context().propagate( this );
 
                 Button fab = ((MdToolkit)site.toolkit()).createFab();
                 fab.setToolTipText( getTooltip( site ) );
