@@ -61,7 +61,7 @@ public abstract class AbstractFieldFormPair
 
 
             public void setFieldValue( Object value ) throws Exception {
-                throw new RuntimeException( "not yet implemented." );
+                newValue1 = value;
             }
         } );
 
@@ -74,7 +74,7 @@ public abstract class AbstractFieldFormPair
 
 
             public void setFieldValue( Object value ) throws Exception {
-                throw new RuntimeException( "not yet implemented." );
+                newValue2 = value;
             }
         } );
     }
@@ -116,10 +116,8 @@ public abstract class AbstractFieldFormPair
             field1.load();
             field2.load();
         }
-        else if (site.getFieldValue() instanceof Object[]) {
-            loadedValue = (Object[])site.getFieldValue();
-            field1.load();
-            field2.load();
+        else if (isExpectedFieldValueType()) {
+            handleExpectedFieldValueType();
         }
         else {
             log.warn( "Unknown value type: " + site.getFieldValue() );
@@ -127,6 +125,18 @@ public abstract class AbstractFieldFormPair
     }
 
 
+    protected boolean isExpectedFieldValueType() throws Exception {
+        return site.getFieldValue() instanceof Object[];
+    }
+
+    
+    protected void handleExpectedFieldValueType() throws Exception {
+        loadedValue = (Object[])site.getFieldValue();
+        field1.load();
+        field2.load();
+    }
+
+    
     public void store() throws Exception {
         site.setFieldValue( new Object[] { newValue1, newValue2 } );
     }
