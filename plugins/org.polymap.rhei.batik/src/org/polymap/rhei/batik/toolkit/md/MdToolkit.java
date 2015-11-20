@@ -24,6 +24,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.ui.forms.widgets.Section;
+
 import org.polymap.core.ui.FormDataFactory;
 import org.polymap.core.ui.UIUtils;
 
@@ -33,6 +35,7 @@ import org.polymap.rhei.batik.app.SvgImageRegistryHelper;
 import org.polymap.rhei.batik.engine.PageStack;
 import org.polymap.rhei.batik.toolkit.DefaultToolkit;
 import org.polymap.rhei.batik.toolkit.SimpleDialog;
+import org.polymap.rhei.batik.toolkit.md.MdAppDesign.FontStyle;
 
 /**
  * Material design toolkit.
@@ -199,6 +202,14 @@ public class MdToolkit
 
     public MdToolbar2 createToolbar( Composite parent, int... styles ) {
         return new MdToolbar2( parent, this, stylebits( styles ) );
+    }
+
+    
+    @Override
+    public Section createSection( Composite parent, String title, int... styles ) {
+       Section result = super.createSection( parent, title, styles );
+       result.setFont( MdAppDesign.font( FontStyle.Subhead ) );
+       return result;
     }
 
 }
