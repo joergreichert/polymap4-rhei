@@ -1,6 +1,6 @@
 /*
  * polymap.org
- * Copyright (C) 2011-2014, Falko Bräutigam, and other contributors as
+ * Copyright (C) 2011-2015, Falko Bräutigam, and other contributors as
  * indicated by the @authors tag. All rights reserved.
  *
  * This is free software; you can redistribute it and/or modify it
@@ -16,12 +16,16 @@
 package org.polymap.rhei.table;
 
 import java.util.Collections;
+import static org.polymap.core.runtime.event.SourceEventFilter.Identical;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+
+import java.beans.PropertyChangeEvent;
 
 import org.opengis.feature.type.PropertyDescriptor;
 
@@ -50,6 +54,8 @@ import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.rap.rwt.graphics.Graphics;
 
 import org.polymap.core.runtime.Polymap;
+import org.polymap.core.runtime.event.EventManager;
+import org.polymap.core.runtime.event.SourceEventFilter;
 
 import org.polymap.rhei.field.IFormField;
 import org.polymap.rhei.field.IFormFieldValidator;
@@ -113,6 +119,11 @@ public class FormFeatureTableColumn
         this.prop = prop;
     }
 
+    public FormFeatureTableColumn addFieldChangeListener( Object annotated ) {
+        EventManager.instance().subscribe( annotated, new SourceEventFilter( this, Identical ) );
+        return this;
+    }
+    
     public FeatureTableViewer getViewer() {
         return viewer;
     }
@@ -354,6 +365,8 @@ public class FormFeatureTableColumn
         log.debug( "markElement: elm=" + fid + ", dirty=" + dirty + ", success="  + success );
         success = invalid ? invalidFids.add( fid ) : invalidFids.remove( fid );
         log.debug( "markElement: elm=" + fid + ", invalid=" + invalid + ", success="  + success );
+        
+        EventManager.instance().publish( new PropertyChangeEvent( this, getName(), null, null ) );
     }
     
     

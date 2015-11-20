@@ -14,14 +14,22 @@
  */
 package org.polymap.rhei.table;
 
+import java.util.Objects;
+import java.util.function.Supplier;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
 
+import org.polymap.core.runtime.Lazy;
+import org.polymap.core.runtime.PlainLazyInit;
 import org.polymap.core.runtime.event.EventManager;
 
 import org.polymap.rhei.field.FormFieldEvent;
@@ -69,8 +77,7 @@ class FormEditingSupport
     protected Object getValue( Object elm ) {
         try {
             IFeatureTableElement featureElm = (IFeatureTableElement)elm;
-            Object value = featureElm.getValue( tableColumn.getName() );
-            return value;
+            return featureElm.getValue( tableColumn.getName() );
         }
         catch (Exception e) {
             return "Fehler: " + e.getLocalizedMessage();
@@ -96,19 +103,29 @@ class FormEditingSupport
 
         private Control                 control;
 
+        private Color                   defaultBackground;
+
         private FormFieldSite           fieldSite;
         
         private IFeatureTableElement    elm;
-
-        /** Validated field value set from the UI. */
-        private Object                  fieldValue;
 
         private String                  errorMsg;
 
         private String                  externalErrorMsg;
 
         private boolean                 isDirty;
+        
+        private Lazy<IFormFieldValidator> initializedValidator = new PlainLazyInit( new Supplier<IFormFieldValidator>() {
+            @Override
+            public IFormFieldValidator get() {
+                if (validator instanceof ITableFieldValidator) {
+                    ((ITableFieldValidator)validator).init( elm );
+                }
+                return validator;
+            }
+        });
 
+        
         public FormCellEditor( Composite parent, IFeatureTableElement elm ) {
             super( parent );
             this.elm = elm;
@@ -117,16 +134,28 @@ class FormEditingSupport
         @Override
         protected Control createControl( Composite parent ) {
             assert control == null;
-            this.fieldSite = new FormFieldSite();
+            fieldSite = new FormFieldSite();
             field.init( fieldSite );
+            
             control = field.createControl( parent, DEFAULT_TOOLKIT );
+            defaultBackground = control.getBackground();
+            control.addKeyListener( new KeyAdapter() {
+                public void keyReleased( KeyEvent ev ) {
+                    if (ev.keyCode == SWT.Selection) {
+                        deactivate();
+                    }
+                    if (ev.character == '\u001b') { // Escape
+                        deactivate();
+                    }
+                }
+            });
             return control;
         }
 
         @Override
         protected void doSetValue( Object value ) {
             try {
-                // use validator instead of setting directly via field.setValue( value );
+                // validate and set value
                 field.load();
             }
             catch (Exception e) {
@@ -137,12 +166,11 @@ class FormEditingSupport
         @Override
         protected Object doGetValue() {
             try {
-                // use validator instead of setting directly via field.setValue( value );
+                // validate and write value
                 field.store();
                 
-                boolean valid = errorMsg == null;
-                tableColumn.markElement( elm, true, !valid );
-                return fieldValue;
+                tableColumn.markElement( elm, fieldSite.isDirty(), !fieldSite.isValid() );
+                return fieldSite.getValue();
             }
             catch (Exception e) {
                 throw new RuntimeException( e ); 
@@ -152,10 +180,10 @@ class FormEditingSupport
         @Override
         protected void doSetFocus() {
             control.setFocus();
-            // XXX hack as setFocus() is currently missing from IFormField
-            if (control instanceof Text) {
-                ((Text)control).selectAll();
-            }
+//            // XXX hack as setFocus() is currently missing from IFormField
+//            if (control instanceof Text) {
+//                ((Text)control).selectAll();
+//            }
         }
 
         /**
@@ -169,16 +197,19 @@ class FormEditingSupport
                 return tableColumn.getProperty().getName().getLocalPart();
             }
 
+            protected Object getValue() throws Exception {
+                return elm.getValue( tableColumn.getName() );
+            }
+
             @Override
             public Object getFieldValue() throws Exception {
-                Object value = elm.getValue( tableColumn.getName() );
-                return validator.transform2Field( value );
+                return initializedValidator.get().transform2Field( getValue() );
             }
 
             @Override
             public void setFieldValue( Object value ) throws Exception {
                 if (isValid()) {
-                    fieldValue = validator.transform2Model( value );
+                    Object fieldValue = initializedValidator.get().transform2Model( value );
                     elm.setValue( tableColumn.getName(), fieldValue );
                 }
             }
@@ -206,39 +237,36 @@ class FormEditingSupport
             }
 
             @Override
-            public void fireEvent( Object source, int eventCode, Object newValue ) {
-                Object validatedNewValue = null;
-
+            public void fireEvent( Object source, int eventCode, Object newFieldValue ) {
                 // check isDirty / validator
                 if (eventCode == IFormFieldListener.VALUE_CHANGE) {
-                    errorMsg = externalErrorMsg;
-                    if (validator != null) {
-                        errorMsg = validator.validate( newValue );
-                    }
-                    if (errorMsg == null) {
-                        try {
-                            Object value = getFieldValue();
-                            if (value == null && newValue == null) {
-                                isDirty = false;
-                            }
-                            else {
-                                isDirty = value == null && newValue != null ||
-                                        value != null && newValue == null ||
-                                        !value.equals( newValue );
-                            }
-                            validatedNewValue = validator.transform2Model( newValue );
-                        }
-                        catch (Exception e) {
-                            // XXX hmmm... what to do?
-                            throw new RuntimeException( e );
-                        }
-                    }
-                    //fieldValue = validatedNewValue;
-                }
+                    try {
+                        // isDirty?
+                        isDirty = !Objects.equals( getFieldValue(), newFieldValue );
 
-                FormFieldEvent ev = new FormFieldEvent( 
-                        FormEditingSupport.this, source, getFieldName(), field, eventCode, null, validatedNewValue );
-                EventManager.instance().syncPublish( ev );
+                        // isValid?
+                        errorMsg = externalErrorMsg == null ? initializedValidator.get().validate( newFieldValue ) : externalErrorMsg;
+                        if (isValid()) {
+                            // tranform
+                            Object validatedNewValue = validator.transform2Model( newFieldValue );
+                            // fire event
+                            EventManager.instance().syncPublish( new FormFieldEvent( FormEditingSupport.this, source, 
+                                    getFieldName(), field, eventCode, null, validatedNewValue ) );
+                        }
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException( "Exception while validating field value.", e );
+                    }
+                }
+                
+                // show status background
+                control.setBackground( defaultBackground );
+                if (isDirty()) {
+                    control.setBackground( FormFeatureTableColumn.DIRTY_BACKGROUND );
+                }
+                if (!isValid()) {
+                    control.setBackground( FormFeatureTableColumn.INVALID_BACKGROUND );
+                }
             }
 
             @Override
