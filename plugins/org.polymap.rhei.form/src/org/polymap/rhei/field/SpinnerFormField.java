@@ -164,21 +164,21 @@ public class SpinnerFormField
         spinner.addModifyListener( new ModifyListener() {
 
             public void modifyText( ModifyEvent ev ) {
-                log.debug( "modifyEvent(): selection= " + spinner.getSelection() );
+                log.debug( "modifyEvent(): selection= " + unscale(spinner.getSelection()) );
                 site.fireEvent( SpinnerFormField.this, IFormFieldListener.VALUE_CHANGE, loadedValue == null
-                        && spinner.getText().equals( "" ) ? null : spinner.getSelection() );
+                        && spinner.getText().equals( "" ) ? null : unscale(spinner.getSelection()) );
             }
         } );
         // focus listener
         spinner.addFocusListener( new FocusListener() {
 
             public void focusLost( FocusEvent event ) {
-                site.fireEvent( SpinnerFormField.this, IFormFieldListener.FOCUS_LOST, spinner.getSelection() );
+                site.fireEvent( SpinnerFormField.this, IFormFieldListener.FOCUS_LOST, unscale(spinner.getSelection()) );
             }
 
 
             public void focusGained( FocusEvent event ) {
-                site.fireEvent( SpinnerFormField.this, IFormFieldListener.FOCUS_GAINED, spinner.getSelection() );
+                site.fireEvent( SpinnerFormField.this, IFormFieldListener.FOCUS_GAINED, unscale(spinner.getSelection()) );
             }
         } );
         spinner.setEnabled( deferredEnabled );
@@ -260,13 +260,17 @@ public class SpinnerFormField
      */
     @Override
     public void store() throws Exception {
-        site.setFieldValue( unscale( spinner.getSelection() ) );
+        site.setFieldValue( unscale(spinner.getSelection()) );
     }
 
 
-    private Double unscale( Integer value ) {
-        int times = Double.valueOf( Math.pow( 10, getDigitCount() ) ).intValue();
-        return Double.valueOf( value / times );
+    private Object unscale( Integer value ) {
+        if(digitCount != null && digitCount > 0) {
+            int times = Double.valueOf( Math.pow( 10, getDigitCount() ) ).intValue();
+            return Double.valueOf( new Double(value) / new Double(times) );
+        } else {
+            return value;
+        }
     }
 
 
