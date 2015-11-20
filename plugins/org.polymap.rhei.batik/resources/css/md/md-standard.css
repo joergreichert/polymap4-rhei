@@ -2415,9 +2415,75 @@ ScrollBar-DownButton[VERTICAL] {
   background-image: url( resource/widget/rap/scrollbar/up.png );
 }
 */
-/* line 2, ../../sass/md/_toolbar.scss */
-.atlas-toolbar {
-  background-image: gradient(linear, left top, left bottom, from(#84b8ea), to(#ffffff));
+/* ToolBar default theme */
+/* line 3, ../../sass/md/_toolbar.scss */
+ToolBar {
+  color: #ffffff;
+  background-color: #84b8ea;
+  box-shadow: 0px 2px 3px #b0b0b0;
+  border-radius: 2px;
+  padding: 0px;
+  spacing: 0;
+  background-image: none;
+  border: none;
+  opacity: 1;
+}
+
+/* line 15, ../../sass/md/_toolbar.scss */
+ToolBar[BORDER] {
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+}
+
+/* line 20, ../../sass/md/_toolbar.scss */
+ToolItem {
+  font: 15px "Roboto", "Noto", sans-serif;
+  color: inherit;
+  background-color: #84b8ea;
+  background-image: none;
+  border: none;
+  border-radius: 2px;
+  padding: 4px;
+  spacing: 4px;
+  opacity: 1;
+  animation: none;
+  text-shadow: none;
+}
+
+/* line 34, ../../sass/md/_toolbar.scss */
+ToolItem:hover {
+  background-color: #599fe2;
+  /*  background-image: gradient(
+      linear, left top, left bottom,
+      from( #f9f9f9 ),
+      to( #e4e4e4 )
+    );*/
+  border: none;
+  border-radius: 2px;
+}
+
+/* line 45, ../../sass/md/_toolbar.scss */
+ToolItem:pressed, ToolItem:selected {
+  border: 1px solid #a4a4a4;
+  border-radius: 2px;
+  padding: 9px 8px 8px 9px;
+  background-color: #2e86da;
+}
+
+/* line 52, ../../sass/md/_toolbar.scss */
+ToolItem-DropDownIcon {
+  background-image: url(resource/widget/rap/toolbar/down.png);
+  border: none;
+}
+
+/* line 57, ../../sass/md/_toolbar.scss */
+ToolItem-DropDownIcon:hover {
+  border: 1px inset;
+}
+
+/* line 61, ../../sass/md/_toolbar.scss */
+ToolItem-Separator {
+  width: 4px;
 }
 
 /* Shell and Dialog default theme */
@@ -2616,12 +2682,19 @@ FileUpload-FocusIndicator {
   opacity: 1;
 }
 
-/* ToolBar default theme */
+/** MdToolbar */
 /* line 3, ../../sass/md/_toolbar2.scss */
-ToolBar {
+.atlas-toolbar {
+  background-image: gradient(linear, left top, left bottom, from(#84b8ea), to(#ffffff));
+}
+
+/** MdToolbar2 */
+/* line 9, ../../sass/md/_toolbar2.scss */
+Composite.toolbar2 {
   color: #ffffff;
-  background-color: #84b8ea;
-  box-shadow: 0px 2px 3px #b0b0b0;
+  background-color: #64686F;
+  /*$header-bg;*/
+  box-shadow: 0px -1px 2px #b0b0b0;
   border-radius: 2px;
   padding: 0px;
   spacing: 0;
@@ -2630,59 +2703,12 @@ ToolBar {
   opacity: 1;
 }
 
-/* line 15, ../../sass/md/_toolbar2.scss */
-ToolBar[BORDER] {
-  border: 1px solid #a4a4a4;
+/* line 21, ../../sass/md/_toolbar2.scss */
+Button[PUSH].toolbar2-item {
+  color: #ffffff;
+  background-color: inherit;
+  box-shadow: none;
   border-radius: 2px;
-}
-
-/* line 20, ../../sass/md/_toolbar2.scss */
-ToolItem {
-  font: 15px "Roboto", "Noto", sans-serif;
-  color: inherit;
-  background-color: #84b8ea;
   background-image: none;
   border: none;
-  border-radius: 2px;
-  padding: 4px;
-  spacing: 4px;
-  opacity: 1;
-  animation: none;
-  text-shadow: none;
-}
-
-/* line 34, ../../sass/md/_toolbar2.scss */
-ToolItem:hover {
-  background-color: #599fe2;
-  /*  background-image: gradient(
-      linear, left top, left bottom,
-      from( #f9f9f9 ),
-      to( #e4e4e4 )
-    );*/
-  border: none;
-  border-radius: 2px;
-}
-
-/* line 45, ../../sass/md/_toolbar2.scss */
-ToolItem:pressed, ToolItem:selected {
-  border: 1px solid #a4a4a4;
-  border-radius: 2px;
-  padding: 9px 8px 8px 9px;
-  background-color: #2e86da;
-}
-
-/* line 52, ../../sass/md/_toolbar2.scss */
-ToolItem-DropDownIcon {
-  background-image: url(resource/widget/rap/toolbar/down.png);
-  border: none;
-}
-
-/* line 57, ../../sass/md/_toolbar2.scss */
-ToolItem-DropDownIcon:hover {
-  border: 1px inset;
-}
-
-/* line 61, ../../sass/md/_toolbar2.scss */
-ToolItem-Separator {
-  width: 4px;
 }
