@@ -193,7 +193,7 @@ public class SpinnerFormField
      */
     @Override
     public IFormField setEnabled( boolean enabled ) {
-        if (spinner != null) {
+        if (spinner != null && !spinner.isDisposed()) {
             spinner.setEnabled( enabled );
         }
         else {

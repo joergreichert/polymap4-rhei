@@ -40,13 +40,13 @@ public class EnablableFormField
 
     // instance *******************************************
 
-    private IFormFieldSite    site;
+    protected IFormFieldSite  site;
 
     private CheckboxFormField checkboxField;
 
     private IFormField        actualField;
 
-    private Object            checkboxValue, actualValue;
+    protected Object          checkboxValue, actualValue;
 
     private Object[]          loadedValue;
 
@@ -87,7 +87,7 @@ public class EnablableFormField
 
 
             public void setFieldValue( Object value ) throws Exception {
-                throw new RuntimeException( "not yet implemented." );
+                actualValue = value;
             }
         } );
     }
@@ -141,8 +141,10 @@ public class EnablableFormField
 
 
     public IFormField setEnabled( boolean enabled ) {
-        checkboxControl.setEnabled( enabled );
-        actualFieldControl.setEnabled( checkboxControl.getSelection() );
+        if (checkboxControl != null && !checkboxControl.isDisposed()) {
+            checkboxControl.setEnabled( enabled );
+            actualFieldControl.setEnabled( checkboxControl.getSelection() );
+        }
         return this;
     }
 
@@ -173,7 +175,9 @@ public class EnablableFormField
 
 
     public void store() throws Exception {
-        site.setFieldValue( new Object[] { checkboxValue, actualValue } );
+        if (checkboxValue instanceof Boolean && (Boolean)checkboxValue) {
+            site.setFieldValue( actualValue );
+        }
     }
 
 

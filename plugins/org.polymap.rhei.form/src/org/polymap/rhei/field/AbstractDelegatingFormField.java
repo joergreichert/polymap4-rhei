@@ -90,7 +90,7 @@ public abstract class AbstractDelegatingFormField<T>
 
     @Override
     public IFormField setEnabled( boolean enabled ) {
-        if (button != null) {
+        if (button != null && !button.isDisposed()) {
             button.setEnabled( enabled );
             styleButton();
         }
